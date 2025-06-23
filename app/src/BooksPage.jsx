@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function BooksPage() {
   return (
-    <div className="relative min-h-screen px-6 py-24 w-full font-sans">
+    <div className="relative min-h-screen px-6 py-24 max-w-4xl mx-auto font-sans">
       <div className="blob-field" aria-hidden="true" />
       <h1 className="text-4xl font-bold mb-4 text-center">Books</h1>
       <p className="text-lg text-center mb-8 italic">Record of my journey through literature.</p>
