@@ -1,0 +1,63 @@
+@use "sass:math";
+
+@mixin blobs($count) {
+  $text-shadow: ();
+  @for $i from 0 through $count {
+    $text-shadow: $text-shadow,
+                 (-.5 + math.random()) * 3 + em
+                 (-.5 + math.random()) * 3 + em
+                 10px
+                 hsla(210, 100%, 75%, 0.7);
+  }
+  text-shadow: $text-shadow;
+}
+
+// Container that will host the animation
+.blob-field {
+  z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  // width moved
+  height: 100%;
+  color: transparent; // hide the base character
+  overflow: hidden;
+  font-size: 60px; // size of the source character that shadows are based on
+  pointer-events: none; // allow clicks through
+}
+
+.blob-field::before,
+.blob-field::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3em;
+  height: 3em;
+  content: '.';
+  mix-blend-mode: multiply;
+  filter: blur(6px);
+  animation: blobsMove 40s infinite ease-in-out alternate;
+}
+
+.blob-field::before {
+  @include blobs(40);
+  animation-duration: 40s;
+  animation-delay: -20s;
+}
+
+.blob-field::after {
+  @include blobs(40);
+  animation-duration: 38s;
+  animation-delay: -25s;
+}
+
+@keyframes blobsMove {
+  from {
+    transform: rotate(0deg) scale(8) translateX(-20px);
+  }
+  to {
+    transform: rotate(360deg) scale(12) translateX(20px);
+  }
+}
