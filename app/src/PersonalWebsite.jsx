@@ -23,9 +23,9 @@ const projects = [
     image: "/wealthcomplex.png",
   },
   {
-    title: "Great Expectations – SQL MI Integration",
+    title: "Great Expectations – SQL Server Integration",
     description:
-      "Contributed SQL Server Managed Instance support to the open-source Great Expectations library and coordinated Databricks integration.",
+      "Contributed SQL Server Managed Instance support to the open-source Great Expectations library.",
     tech: ["Python", "Great Expectations", "SQL Server", "Databricks"],
     link: "https://github.com/fredwang1012/great_expectations/tree/fredwang1012",
     image: "/gx.png",
@@ -138,6 +138,7 @@ export default function PersonalWebsite() {
   const [audioUrl, setAudioUrl] = React.useState(null);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [modalUrl, setModalUrl] = React.useState(null);
+  const [resumeOpen, setResumeOpen] = React.useState(false);
 
   return (
     <div className="font-sans scroll-smooth">
@@ -186,22 +187,42 @@ export default function PersonalWebsite() {
             of <span className="font-semibold">software engineering</span> &{" "}
             <span className="font-semibold">finance</span>.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
-            <a
-              href="#projects"
-              className="px-5 py-3 rounded-2xl shadow hover:shadow-md transition bg-blue-600 text-white font-semibold"
-            >
-              See Projects
-            </a>
-            <a
-              href="/resume.pdf"
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={() => setResumeOpen(true)}
               className="px-5 py-3 rounded-2xl shadow hover:shadow-md transition border border-blue-600 text-blue-600 font-semibold"
             >
               Download Résumé
-            </a>
+            </button>
           </div>
         </motion.div>
       </section>
+
+      {resumeOpen && (
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+          onClick={() => setResumeOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-3xl h-[80vh] bg-white rounded-lg overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src="/resume.pdf"
+              title="Résumé"
+              className="w-full h-full"
+              frameBorder="0"
+            />
+            <a
+              href="/resume.pdf"
+              download="Frederick Wang - Resume.pdf"
+              className="absolute top-4 right-4 px-4 py-2 rounded-lg bg-blue-600 text-white shadow hover:bg-blue-700"
+            >
+              Download PDF
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* About */}
       <section id="about" className="max-w-6xl mx-auto px-6 py-24">
@@ -220,7 +241,7 @@ export default function PersonalWebsite() {
           className="text-lg leading-relaxed"
         >
           I'm Frederick Wang, a fourth-year Computer Science and Statistics student at the University of British Columbia, passionate about building innovative software, optimizing data-driven solutions, and exploring the intersections of finance and technology. I've interned as a Data Analyst at BCI and Providence Research, taught data science as a TA at UBC, and won hackathons focused on optimizing scheduling algorithms and generative AI-driven sustainability solutions.<br /><br />
-          Beyond my professional interests, I'm also a dedicated pianist, an avid soccer enthusiast, and someone who deeply enjoys diving into classical literature, philosophy, and thoughtful fiction. I love connecting technical creativity with artistic expression, teamwork, and continuous learning through reading.
+          Beyond my professional interests, I'm also a dedicated pianist, an avid soccer enthusiast, and someone who deeply enjoys diving into classical literature, philosophy, and fiction. I love connecting technical creativity with artistic expression, teamwork, and continuous learning through reading.
         </motion.p>
       </section>
 
@@ -451,7 +472,7 @@ export default function PersonalWebsite() {
       </section>
 
       <footer className="py-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Frederick Wang.
+        © {new Date().getFullYear()} Frederick Wang
       </footer>
     </div>
   );
