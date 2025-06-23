@@ -1,76 +1,143 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin } from "lucide-react";
+import { Mail, Github, Linkedin, Play, Pause } from "lucide-react";
+import ReactPlayer from "react-player";
 
 /* ---------- Data ---------- */
 const projects = [
   {
     title: "GreenLife",
     description:
-      "Full-stack web app that personalises Canadian sustainability incentives using AWS Bedrock + RAG.",
-    tech: ["Next.js", "AWS", "Bedrock", "OpenSearch"],
-    link: "https://github.com/youruser/greenlife",
-    image: "/images/greenlife.png",
+      "Full-stack web app that personalises Canadian sustainability incentives using AWS Bedrock + RAG (1st place, UBC CIC Generative-AI Sustainability Hackathon).",
+    tech: ["Next.js", "AWS Bedrock", "OpenSearch", "S3"],
+    link: "https://github.com/fredwang1012/greenlife",
+    image: "/greenlife.png",
   },
   {
-    title: "Discuss",
+    title: "WealthComplex",
     description:
-      "Android app for academic Q&A powered by ChatGPT; won 1st place at nwHacks 2024.",
-    tech: ["Android", "Kotlin", "OpenAI"],
-    link: "https://github.com/youruser/discuss",
-    image: "/images/discuss.png",
+      "Mock investment-management platform that lets users trade, manage funds, and research equities.",
+    tech: ["Node.js", "React", "Oracle SQL*Plus"],
+    link: "https://github.com/fredwang1012/wealthcomplex",
+    image: "/wealthcomplex.png",
   },
   {
-    title: "KNN-from-scratch",
+    title: "Great Expectations – SQL MI Integration",
     description:
-      "Python implementation of k-Nearest Neighbours with custom cross-validation utilities.",
-    tech: ["Python", "NumPy"],
-    link: "https://github.com/youruser/knn-scratch",
-    image: "/images/knn.png",
+      "Contributed SQL Server Managed Instance support to the open-source Great Expectations library and coordinated Databricks integration.",
+    tech: ["Python", "Great Expectations", "SQL Server", "Databricks"],
+    link: "https://github.com/fredwang1012/great_expectations/tree/fredwang1012",
+    image: "/gx.png",
+  },
+  {
+    title: "Query Optimizer++",
+    description:
+      "Cost-based query optimiser with novel heuristics (in progress).",
+    tech: ["Java", "PostgreSQL"],
+    link: "https://github.com/fredwang1012/query-optimizer-plus-plus",
   },
 ];
 
 const experiences = [
   {
     role: "Data & Analytics Intern",
-    company:
-      "BCI (British Columbia Investment Management Corporation)",
+    company: "BCI (British Columbia Investment Management Corporation)",
     period: "May 2025 – Aug 2025",
     bullets: [
-      "Maintained data-quality pipelines in Python + SQL Server for $250 B AUM datasets.",
-      "Built Power BI dashboards consumed daily by 40+ investment analysts.",
-      "Cut ETL runtimes by 60 % through query optimisation and incremental loading.",
+      "Extended Great Expectations with SQL Server MI support for Databricks and contributed the enhancement upstream.",
+      "Led technical demos that increased platform adoption across multiple teams and improved system reliability.",
+      "Won an internal hackathon with a schedule-optimisation algorithm (5 % efficiency gain) and now leading production rollout.",
     ],
   },
   {
-    role: "Data Analyst Intern",
-    company: "Providence Research – Orthopedics",
-    period: "Jan 2024 – Apr 2024",
-    bullets: [
-      "Automated statistical reports in R, reducing manual effort by 10 hrs/week.",
-      "Visualised patient-outcome metrics in Power BI to inform surgical decisions.",
-    ],
-  },
-  {
-    role: "Teaching Assistant (CPSC 304)",
+    role: "Undergraduate Teaching Assistant",
     company: "University of British Columbia",
-    period: "Sep 2024 – Dec 2024",
+    period: "Sep 2024 – Apr 2025",
     bullets: [
-      "Led weekly labs on SQL and relational-model theory for 200+ students.",
-      "Graded projects and designed exam questions on query optimisation.",
+      "Delivered lecture material and 1-on-1 support for a large data-science course using R and JupyterLab.",
+      "Assisted with grading projects/assignments and proctoring exams for 200+ students.",
+    ],
+  },
+  {
+    role: "Data Analyst",
+    company: "Providence Research, St. Paul’s Hospital",
+    period: "Jan 2024 – Aug 2024",
+    bullets: [
+      "Cleaned, analysed, and modelled ankle-surgery outcomes in R to surface clinical insights.",
+      "Managed multiple project databases to ensure data accuracy and consistency across studies.",
     ],
   },
 ];
 
 const skills = {
-  Languages: ["Python", "R", "Java", "C++", "SQL"],
-  "Frameworks & Libraries": ["React", "Next.js", "Tailwind", "scikit-learn"],
-  Cloud: ["AWS (Bedrock, Lambda, S3)", "GCP", "Azure DevOps"],
-  Data: ["Power BI", "Pandas", "Snowflake", "PostgreSQL"],
+  "Programming Languages": [
+    "Python",
+    "R",
+    "SQL",
+    "JavaScript",
+    "Java",
+    "C++",
+    "C",
+    "Assembly",
+  ],
+  "Frameworks & Libraries": [
+    "React",
+    "Next.js",
+    "Node.js",
+    "Tailwind",
+    "Great Expectations",
+  ],
+  "Cloud & Web": [
+    "AWS (Bedrock, S3, OpenSearch)",
+    "Azure",
+    "HTML",
+    "CSS",
+  ],
+  "Data & Analytics": [
+    "Databricks",
+    "Power BI",
+    "SQL Server",
+    "PostgreSQL",
+    "Oracle SQL*Plus",
+  ],
 };
 
 /* ---------- Component ---------- */
 export default function PersonalWebsite() {
+  React.useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const el = document.getElementById(hash.substring(1));
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+    scrollToHash(); // run on mount
+    window.addEventListener("hashchange", scrollToHash);
+    return () => window.removeEventListener("hashchange", scrollToHash);
+  }, []);
+
+  // --- Music state & data ---
+  const pieces = [
+    {
+      title: "Rachmaninov – Piano Concerto No. 3 in D minor, Op. 30",
+      embed: "https://www.youtube.com/embed/GvKQKnIVy1I?start=30&autoplay=1",
+    },
+    {
+      title: "Rachmaninov – Piano Concerto No. 2 in C minor, Op. 18",
+      embed: "https://www.youtube.com/embed/e-x01ddG0x4?start=16&autoplay=1",
+    },
+    {
+      title: "Liszt – Tre sonetti di Petrarca, S. 270 (Sonetto 104)",
+      embed: "https://www.youtube.com/embed/qtqmnnZhjfU?start=9&autoplay=1",
+    },
+  ];
+  const [audioUrl, setAudioUrl] = React.useState(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [modalUrl, setModalUrl] = React.useState(null);
+
   return (
     <div className="font-sans scroll-smooth">
       {/* Navbar */}
@@ -80,7 +147,7 @@ export default function PersonalWebsite() {
             Frederick Wang
           </a>
           <ul className="hidden md:flex gap-6 text-sm font-medium">
-            {["about", "projects", "experience", "skills", "contact"].map((id) => (
+            {["about", "projects", "music", "books", "contact"].map((id) => (
               <li key={id}>
                 <a href={`#${id}`} className="hover:text-blue-600 capitalize">
                   {id}
@@ -102,6 +169,11 @@ export default function PersonalWebsite() {
           transition={{ duration: 0.6 }}
           className="text-center px-6"
         >
+          <img
+            src="/frederick.jpg"
+            alt="Frederick Wang"
+            className="mx-auto mb-6 w-64 h-64 rounded-full object-cover shadow-lg" style={{ objectPosition: "center 0px" }}
+          />
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
             Hi, I’m Frederick <span role="img" aria-label="waving hand">👋</span>
           </h1>
@@ -143,12 +215,8 @@ export default function PersonalWebsite() {
           viewport={{ once: true }}
           className="text-lg leading-relaxed"
         >
-          I’m a 4<sup>th</sup>-year Computer Science & Statistics student at UBC
-          graduating May 2026. I thrive in fast-paced teams where I can ship
-          features, crunch data and learn new tech on the fly—whether it’s spinning
-          up a RAG pipeline on AWS Bedrock during a hackathon or optimising query
-          plans for a 250 billion-row dataset. When I’m not coding you’ll find me
-          tackling Vancouver’s Grouse Grind or hammering Rachmaninov on the piano.
+          I'm Frederick Wang, a fourth-year Computer Science and Statistics student at the University of British Columbia, passionate about building innovative software, optimizing data-driven solutions, and exploring the intersections of finance and technology. I've interned as a Data Analyst at BCI and Providence Research, taught data science as a TA at UBC, and won hackathons focused on optimizing scheduling algorithms and generative AI-driven sustainability solutions.<br /><br />
+          Beyond my professional interests, I'm also a dedicated pianist, an avid soccer enthusiast, and someone who deeply enjoys diving into classical literature, philosophy, and thoughtful fiction. I love connecting technical creativity with artistic expression, teamwork, and continuous learning through reading.
         </motion.p>
       </section>
 
@@ -161,7 +229,7 @@ export default function PersonalWebsite() {
             viewport={{ once: true }}
             className="text-3xl md:text-4xl font-bold mb-12"
           >
-            Selected Projects
+            Projects
           </motion.h2>
           <div className="grid md:grid-cols-2 gap-8">
             {projects.map((proj) => (
@@ -172,12 +240,16 @@ export default function PersonalWebsite() {
                 viewport={{ once: true }}
                 className="rounded-2xl shadow-lg bg-white overflow-hidden flex flex-col"
               >
-                {proj.image && (
+                {proj.image ? (
                   <img
                     src={proj.image}
                     alt={proj.title}
                     className="h-48 w-full object-cover"
                   />
+                ) : (
+                  <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+                    In&nbsp;Progress
+                  </div>
                 )}
                 <div className="p-6 flex flex-col flex-1">
                   <h3 className="text-2xl font-semibold mb-2">{proj.title}</h3>
@@ -205,78 +277,131 @@ export default function PersonalWebsite() {
         </div>
       </section>
 
-      {/* Experience */}
-      <section id="experience" className="max-w-6xl mx-auto px-6 py-24">
+      {/* Contact */}
+      {/* Music */}
+      <section id="music" className="max-w-6xl mx-auto px-6 py-24">
+        {/* Music data & modal logic */}
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold mb-12"
+          className="text-3xl md:text-4xl font-bold mb-8"
         >
-          Experience
+          Music
         </motion.h2>
-        <div className="space-y-12">
-          {experiences.map((exp) => (
-            <motion.div
-              key={exp.role + exp.company}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex flex-col md:flex-row md:items-start gap-4"
-            >
-              <div className="min-w-[200px]">
-                <p className="font-medium">{exp.role}</p>
-                <p className="text-sm text-gray-600">{exp.company}</p>
-                <p className="text-sm text-gray-500">{exp.period}</p>
-              </div>
-              <ul className="list-disc ml-5 space-y-2 text-gray-800">
-                {exp.bullets.map((b, i) => (
-                  <li key={i}>{b}</li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-lg leading-relaxed mb-8"
+        >
+          My personal ranking of favourite piano works:
+        </motion.p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-800">
+          {pieces.map((p) => {
+            const selected = audioUrl === p.embed;
+            const playing = selected && isPlaying;
+            return (
+              <li key={p.title} className="flex items-center gap-3">
+                <button
+                  onClick={() => {
+                    if (audioUrl === p.embed) {
+                      setIsPlaying(!isPlaying);
+                    } else {
+                      setAudioUrl(p.embed);
+                      setIsPlaying(true);
+                    }
+                  }}
+                  className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-none"
+                  aria-label={playing ? "Pause recording" : "Play recording"}
+                >
+                  {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                </button>
+                <button
+                  onClick={() => {
+                  setModalUrl(p.embed);
+                }}
+                  className="text-left text-blue-700 hover:underline"
+                >
+                  {p.title}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="mt-10 text-center">
+          <a
+            href="/music"
+            className="inline-block px-6 py-3 rounded-2xl shadow hover:shadow-md transition bg-blue-600 text-white font-semibold"
+          >
+            More Music
+          </a>
         </div>
+        {/* Video Modal */}
+        <ReactPlayer url={audioUrl} playing={isPlaying} width={0} height={0} style={{ display: "none" }} />
+        {modalUrl && (
+          <div
+            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+            onClick={() => { setModalUrl(null) }}
+          >
+            <div
+              className="w-full max-w-3xl aspect-video"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                 
+                src={modalUrl}
+                title="Music performance"
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
       </section>
 
-      {/* Skills */}
-      <section id="skills" className="bg-gray-50 py-24">
+      {/* Books */}
+      <section id="books" className="bg-gray-50 py-24">
         <div className="max-w-6xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold mb-12"
+            className="text-3xl md:text-4xl font-bold mb-8"
           >
-            Skills
+            Books
           </motion.h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {Object.entries(skills).map(([category, list]) => (
-              <motion.div
-                key={category}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="p-6 rounded-2xl shadow bg-white"
-              >
-                <h3 className="text-xl font-semibold mb-4">{category}</h3>
-                <ul className="flex flex-wrap gap-3">
-                  {list.map((item) => (
-                    <li
-                      key={item}
-                      className="bg-teal-100 text-teal-800 text-sm px-3 py-1 rounded-full"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-lg leading-relaxed mb-8"
+          >
+            A selection of recent reads that left an impression:
+          </motion.p>
+          <h3 className="text-xl font-semibold mb-2">Currently reading</h3>
+          <ul className="list-disc ml-6 space-y-2 text-gray-800">
+            <li>“A Day in the Life of Ivan Denisovich” – Aleksandr Solzhenitsyn</li>
+          </ul>
+          <h3 className="text-xl font-semibold mt-6 mb-2">Favorites</h3>
+          <ul className="list-disc ml-6 space-y-2 text-gray-800">
+            <li>“The Brothers Karamazov” – Fyodor Dostoevsky</li>
+            <li>“The Idiot” – Fyodor Dostoevsky</li>
+            <li>“1984” – George Orwell</li>
+          </ul>
+          <div className="mt-10 text-center">
+            <a
+              href="/books"
+              className="inline-block px-6 py-3 rounded-2xl shadow hover:shadow-md transition bg-blue-600 text-white font-semibold"
+            >
+              More Books
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Contact */}
       <section id="contact" className="max-w-6xl mx-auto px-6 py-24">
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
@@ -292,26 +417,25 @@ export default function PersonalWebsite() {
           viewport={{ once: true }}
           className="text-lg mb-8"
         >
-          Whether you’re looking to collaborate, hire, or just chat about algorithms
-          and Rachmaninov, drop me a line!
+          Whether you're interested in collaborating, sharing ideas, or simply chatting about novels, data science, or piano, feel free to reach out. I’d love to connect!
         </motion.p>
         <div className="flex gap-6 justify-center">
           <a
-            href="mailto:frederick@example.com"
+            href="mailto:fredwang1012@gmail.com"
             className="p-4 rounded-full shadow hover:shadow-md transition bg-blue-600 text-white"
             aria-label="Email"
           >
             <Mail className="w-5 h-5" />
           </a>
           <a
-            href="https://github.com/frederick"
+            href="https://github.com/fredwang1012"
             className="p-4 rounded-full shadow hover:shadow-md transition bg-gray-800 text-white"
             aria-label="GitHub"
           >
             <Github className="w-5 h-5" />
           </a>
           <a
-            href="https://linkedin.com/in/frederick-wang"
+            href="https://www.linkedin.com/in/frederick-wang/"
             className="p-4 rounded-full shadow hover:shadow-md transition bg-blue-700 text-white"
             aria-label="LinkedIn"
           >
@@ -321,7 +445,7 @@ export default function PersonalWebsite() {
       </section>
 
       <footer className="py-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Frederick Wang. Built with React & Tailwind.
+        © {new Date().getFullYear()} Frederick Wang.
       </footer>
     </div>
   );
