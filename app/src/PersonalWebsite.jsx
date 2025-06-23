@@ -1,4 +1,5 @@
 import React from "react";
+import "./blobEffect.scss"; // blue blobs background
 import { motion } from "framer-motion";
 import { Mail, Github, Linkedin, Play, Pause } from "lucide-react";
 import ReactPlayer from "react-player";
@@ -161,13 +162,16 @@ export default function PersonalWebsite() {
       {/* Hero */}
       <section
         id="home"
-        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-teal-50"
+        className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden"
       >
+        {/* Decorative blue blobs */}
+        <div className="blob-field" aria-hidden="true" />
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center px-6"
+          className="relative z-10 text-center px-6"
         >
           <img
             src="/frederick.jpg"
@@ -279,7 +283,8 @@ export default function PersonalWebsite() {
 
       {/* Contact */}
       {/* Music */}
-      <section id="music" className="max-w-6xl mx-auto px-6 py-24">
+      <section id="music" className="relative max-w-6xl mx-auto px-6 py-24 overflow-hidden">
+        
         {/* Music data & modal logic */}
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
@@ -363,7 +368,8 @@ export default function PersonalWebsite() {
       </section>
 
       {/* Books */}
-      <section id="books" className="bg-gray-50 py-24">
+      <section id="books" className="relative bg-gray-50 py-24 overflow-hidden">
+        
         <div className="max-w-6xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
