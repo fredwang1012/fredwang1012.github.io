@@ -18,6 +18,13 @@ const pieces = [
   },
 ];
 
+const myPerformances = [
+  {
+    title: "Kreisler – Liebesleid (arr. Rachmaninov)",
+    url: "https://www.youtube.com/shorts/G9iXslJz-vE",
+  },
+];
+
 export default function MusicPage() {
   const [audioUrl, setAudioUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -29,6 +36,7 @@ export default function MusicPage() {
       <h1 className="text-4xl font-bold mb-4 text-center">Music</h1>
       <p className="text-lg text-center mb-8 italic">A window into my passion for music.</p>
 
+      <h2 className="text-2xl font-semibold mb-4">My personal ranking of favourite piano works:</h2>
       <ul className="space-y-4 mb-12">
         {pieces.map((p) => {
           const selected = audioUrl === p.url;
@@ -58,6 +66,45 @@ export default function MusicPage() {
                   "&autoplay=1"
                 )}
                 className="text-left text-blue-700 hover:underline"
+              >
+                {p.title}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      <h2 className="text-2xl font-semibold mb-4">My performances:</h2>
+      <ul className="space-y-4 mb-12">
+        {myPerformances.map((p) => {
+          const selected = audioUrl === p.url;
+          const playing = selected && isPlaying;
+          return (
+            <li key={p.title} className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  if (audioUrl === p.url) {
+                    setIsPlaying(!isPlaying);
+                  } else {
+                    setAudioUrl(p.url);
+                    setIsPlaying(true);
+                  }
+                }}
+                className="p-3 rounded-full bg-green-600 text-white hover:bg-green-700 focus:outline-none"
+                aria-label={playing ? "Pause recording" : "Play recording"}
+              >
+                {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              </button>
+              <button
+                onClick={() => setModalUrl(
+                  p.url
+                    .replace("shorts/", "embed/")
+                    .replace("watch?v=", "embed/")
+                    .replace("&t=", "?start=")
+                    .replace(/s$/, "") +
+                  "?autoplay=1"
+                )}
+                className="text-left text-green-700 hover:underline"
               >
                 {p.title}
               </button>

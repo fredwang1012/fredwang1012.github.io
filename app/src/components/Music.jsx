@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Play, Pause } from "lucide-react";
 import ReactPlayer from "react-player";
-import { pieces } from "../data/music";
+import { pieces, myPerformances } from "../data/music";
 
 export default function Music() {
   const [audioUrl, setAudioUrl] = React.useState(null);
@@ -19,14 +19,14 @@ export default function Music() {
       >
         Music
       </motion.h2>
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+      <motion.h3
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-lg leading-relaxed mb-8"
+        className="text-2xl font-semibold mb-4"
       >
         My personal ranking of favourite piano works:
-      </motion.p>
+      </motion.h3>
       <ul className="list-disc ml-6 space-y-2 text-gray-800">
         {pieces.map((p) => {
           const selected = audioUrl === p.embed;
@@ -57,6 +57,46 @@ export default function Music() {
           );
         })}
       </ul>
+
+      <motion.h3
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-2xl font-semibold mt-8 mb-4"
+      >
+        My performances:
+      </motion.h3>
+      <ul className="list-disc ml-6 space-y-2 text-gray-800">
+        {myPerformances.map((p) => {
+          const selected = audioUrl === p.embed;
+          const playing = selected && isPlaying;
+          return (
+            <li key={p.title} className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  if (audioUrl === p.embed) {
+                    setIsPlaying(!isPlaying);
+                  } else {
+                    setAudioUrl(p.embed);
+                    setIsPlaying(true);
+                  }
+                }}
+                className="p-3 rounded-full bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                aria-label={playing ? "Pause recording" : "Play recording"}
+              >
+                {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              </button>
+              <button
+                onClick={() => setModalUrl(p.embed)}
+                className="text-left text-green-700 hover:underline focus:outline-none focus:underline"
+              >
+                {p.title}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      
       <div className="mt-10 text-center">
         <a
           href="/music"
