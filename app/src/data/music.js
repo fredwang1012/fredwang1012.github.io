@@ -12,3 +12,10 @@ export const pieces = [
     embed: "https://www.youtube.com/embed/qtqmnnZhjfU?start=9&autoplay=1",
   },
 ];
+
+export const myPerformances = [
+  {
+    title: "Kreisler – Liebesleid (arr. Rachmaninov)",
+    embed: "https://www.youtube.com/embed/G9iXslJz-vE?autoplay=1",
+  },
+];
