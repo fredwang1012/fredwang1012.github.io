@@ -64,7 +64,7 @@ export default function Music() {
         viewport={{ once: true }}
         className="text-2xl font-semibold mt-8 mb-4"
       >
-        My performances:
+        My Playing:
       </motion.h3>
       <ul className="list-disc ml-6 space-y-2 text-gray-800">
         {myPerformances.map((p) => {
