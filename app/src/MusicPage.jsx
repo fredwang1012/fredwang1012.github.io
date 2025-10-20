@@ -74,7 +74,7 @@ export default function MusicPage() {
         })}
       </ul>
 
-      <h2 className="text-2xl font-semibold mb-4">My performances:</h2>
+      <h2 className="text-2xl font-semibold mb-4">My Playing:</h2>
       <ul className="space-y-4 mb-12">
         {myPerformances.map((p) => {
           const selected = audioUrl === p.url;

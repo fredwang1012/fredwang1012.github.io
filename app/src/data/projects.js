@@ -28,6 +28,5 @@ export const projects = [
     description:
       "Cost-based query optimiser with novel heuristics (in progress).",
     tech: ["Java", "PostgreSQL"],
-    link: "https://github.com/fredwang1012/query-optimizer-plus-plus",
   },
 ];

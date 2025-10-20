@@ -47,14 +47,22 @@ export default function Projects() {
                     </span>
                   ))}
                 </div>
-                <a
-                  href={proj.link}
-                  className="mt-6 text-blue-600 font-medium hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Details →
-                </a>
+                <div className="mt-6">
+                  {proj.link ? (
+                    <a
+                      href={proj.link}
+                      className="text-blue-600 font-medium hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Details →
+                    </a>
+                  ) : (
+                    <span className="text-gray-400 font-medium">
+                      Details →
+                    </span>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}
