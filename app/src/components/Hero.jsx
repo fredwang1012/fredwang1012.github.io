@@ -26,9 +26,7 @@ export default function Hero({ onResumeOpen }) {
           Hi, I'm Frederick <span role="img" aria-label="waving hand">👋</span>
         </h1>
         <p className="text-lg md:text-2xl max-w-2xl mx-auto">
-          UBC CS & Stats student building data-driven products at the intersection
-          of <span className="font-semibold">software engineering</span> &{" "}
-          <span className="font-semibold">finance</span>.
+          UBC CS & Stats student building production AI systems and optimization algorithms in retrieval-augmented generation and applied machine learning.
         </p>
         <div className="mt-8 flex justify-center">
           <button
