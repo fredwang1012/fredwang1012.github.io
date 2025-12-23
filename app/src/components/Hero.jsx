@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Interactive3DProfile from "./three/Interactive3DProfile";
 
 export default function Hero({ onResumeOpen }) {
   return (
@@ -16,17 +17,14 @@ export default function Hero({ onResumeOpen }) {
         transition={{ duration: 0.6 }}
         className="relative z-10 text-center px-6"
       >
-        <img
-          src="/frederick.jpg"
-          alt="Frederick Wang"
-          className="mx-auto mb-6 w-64 h-64 rounded-full object-cover shadow-lg" 
-          style={{ objectPosition: "center 0px" }}
-        />
+        <Interactive3DProfile className="mx-auto mb-6" />
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Hi, I'm Frederick <span role="img" aria-label="waving hand">👋</span>
         </h1>
         <p className="text-lg md:text-2xl max-w-2xl mx-auto">
-          UBC CS & Stats student building production AI systems and optimization algorithms in retrieval-augmented generation and applied machine learning.
+          UBC CS & Stats student building data-driven products at the intersection
+          of <span className="font-semibold">software engineering</span> &{" "}
+          <span className="font-semibold">finance</span>.
         </p>
         <div className="mt-8 flex justify-center">
           <button
