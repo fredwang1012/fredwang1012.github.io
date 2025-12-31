@@ -18,7 +18,7 @@ function ProfileImage({ mousePosition, isHovering }) {
 
     // Calculate target rotation (subtle tilt)
     if (isHovering) {
-      targetRotation.current.x = mousePosition.y * 0.15;  // Tilt up/down
+      targetRotation.current.x = -mousePosition.y * 0.15;  // Tilt up/down
       targetRotation.current.y = mousePosition.x * 0.15;  // Tilt left/right
     } else {
       targetRotation.current.x = 0;
