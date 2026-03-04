@@ -28,6 +28,7 @@ export default function Projects() {
                   src={proj.image}
                   alt={proj.title}
                   className="h-48 w-full object-cover"
+                  loading="lazy"
                 />
               ) : (
                 <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">

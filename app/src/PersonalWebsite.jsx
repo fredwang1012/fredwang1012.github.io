@@ -32,13 +32,13 @@ export default function PersonalWebsite() {
     <ErrorBoundary>
       <div className="font-sans scroll-smooth">
         <Header />
-        <Hero onResumeOpen={() => setResumeOpen(true)} />
+        <Hero />
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
         <About />
         <Projects />
         <Music />
         <Books />
-        <Contact />
+        <Contact onResumeOpen={() => setResumeOpen(true)} />
         
         <footer className="py-6 text-center text-sm text-gray-500">
           © {new Date().getFullYear()} Frederick Wang

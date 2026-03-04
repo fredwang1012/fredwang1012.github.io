@@ -1,8 +1,8 @@
 export const books = {
   currentlyReading: [
     {
-      title: "A Day in the Life of Ivan Denisovich",
-      author: "Aleksandr Solzhenitsyn"
+      title: "Great Expectations",
+      author: "Charles Dickens"
     }
   ],
   favorites: [

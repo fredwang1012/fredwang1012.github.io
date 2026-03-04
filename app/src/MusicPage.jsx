@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Play, Pause } from "lucide-react";
 import ReactPlayer from "react-player";
-import { Link } from "react-router-dom";
 
 const pieces = [
   {

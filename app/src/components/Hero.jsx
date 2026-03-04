@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Interactive3DProfile from "./three/Interactive3DProfile";
 
-export default function Hero({ onResumeOpen }) {
+export default function Hero() {
   return (
     <section
       id="home"
@@ -26,14 +26,6 @@ export default function Hero({ onResumeOpen }) {
           of <span className="font-semibold">software engineering</span> &{" "}
           <span className="font-semibold">finance</span>.
         </p>
-        <div className="mt-8 flex justify-center">
-          <button
-            onClick={onResumeOpen}
-            className="px-5 py-3 rounded-2xl shadow hover:shadow-md transition border border-blue-600 text-blue-600 font-semibold"
-          >
-            Download Résumé
-          </button>
-        </div>
       </motion.div>
     </section>
   );
