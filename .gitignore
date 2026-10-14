@@ -6,3 +6,6 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# cf CLI local cache
+.cloudflare/
