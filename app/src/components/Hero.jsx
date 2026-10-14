@@ -1,6 +1,6 @@
-import React from "react";
-import { motion } from "framer-motion";
-import Interactive3DProfile from "./three/Interactive3DProfile";
+import React, { Suspense, lazy } from "react";
+import { motion } from "motion/react";
+const Interactive3DProfile = lazy(() => import("./three/Interactive3DProfile"));
 
 export default function Hero() {
   return (
@@ -17,14 +17,24 @@ export default function Hero() {
         transition={{ duration: 0.6 }}
         className="relative z-10 text-center px-6"
       >
-        <Interactive3DProfile className="mx-auto mb-6" />
+        <Suspense
+          fallback={
+            <img
+              src="/frederick.jpg"
+              alt="Frederick Wang"
+              className="w-64 h-64 rounded-full object-cover mx-auto mb-6"
+            />
+          }
+        >
+          <Interactive3DProfile className="mx-auto mb-6" />
+        </Suspense>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Hi, I'm Frederick <span role="img" aria-label="waving hand">👋</span>
         </h1>
         <p className="text-lg md:text-2xl max-w-2xl mx-auto">
-          UBC CS & Stats student building data-driven products at the intersection
-          of <span className="font-semibold">software engineering</span> &{" "}
-          <span className="font-semibold">finance</span>.
+          M.Sc. Applied Computing (AI) student at UofT, working on{" "}
+          <span className="font-semibold">machine learning</span> &{" "}
+          <span className="font-semibold">data engineering</span>.
         </p>
       </motion.div>
     </section>

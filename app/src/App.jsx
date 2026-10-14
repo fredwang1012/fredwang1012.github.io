@@ -1,7 +1,7 @@
 import PersonalWebsite from "./PersonalWebsite.jsx";
 import MusicPage from "./MusicPage.jsx";
 import BooksPage from "./BooksPage.jsx";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 

@@ -16,22 +16,22 @@ export default function ResumeModal({ isOpen, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <iframe
-          src="/resume.pdf"
+          src="/resume.pdf?v=2026-10"
           title="Frederick Wang's Resume"
           className="w-full h-full"
           frameBorder="0"
         />
         <div className="absolute top-4 right-4 flex gap-2">
           <a
-            href="/resume.pdf"
+            href="/resume.pdf?v=2026-10"
             download="Frederick Wang - Resume.pdf"
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white shadow-sm hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Download PDF
           </a>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-gray-600 text-white shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            className="px-4 py-2 rounded-lg bg-gray-600 text-white shadow-sm hover:bg-gray-700 focus:outline-hidden focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             aria-label="Close resume viewer"
           >
             Close

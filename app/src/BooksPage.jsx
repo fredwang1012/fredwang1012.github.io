@@ -9,7 +9,7 @@ export default function BooksPage() {
 
       <h3 className="text-xl font-semibold mb-2">Currently reading</h3>
       <ul className="list-disc ml-6 space-y-2 text-gray-800 mb-6">
-        <li>"Great Expectations" – Charles Dickens</li>
+        <li>"Dune" – Frank Herbert</li>
       </ul>
 
       <h3 className="text-xl font-semibold mb-2">Favorites</h3>
@@ -61,7 +61,7 @@ export default function BooksPage() {
       <div className="text-center">
         <a
           href="/#books"
-          className="inline-block px-5 py-3 rounded-2xl shadow hover:shadow-md transition bg-blue-600 text-white font-semibold"
+          className="inline-block px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition bg-blue-600 text-white font-semibold"
         >
           Back to Home
         </a>

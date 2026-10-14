@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function About() {
   return (
@@ -18,8 +18,8 @@ export default function About() {
         viewport={{ once: true }}
         className="text-lg leading-relaxed"
       >
-        I'm Frederick Wang, a fourth-year Computer Science and Statistics student at the University of British Columbia, passionate about building innovative software, optimizing data-driven solutions, and exploring technology. I've interned as a Data Analyst at BCI and Providence Research, taught data science as a TA at UBC, and won hackathons focused on optimizing scheduling algorithms and generative AI-driven sustainability solutions.<br /><br />
-        Beyond my professional interests, I'm also a dedicated pianist, an avid soccer enthusiast, and someone who deeply enjoys diving into classical literature, philosophy, and fiction. I love connecting technical creativity with artistic expression, teamwork, and continuous learning through reading.
+        I'm Frederick Wang, an M.Sc. Applied Computing student (AI concentration) at the University of Toronto, after a B.Sc. in Computer Science and Statistics from the University of British Columbia. My current work is on safe autonomous driving with world models and on foundation-model time-series forecasting. Previously, I was a Data Engineer Intern at BCI.<br /><br />
+        Outside of work, I play piano, ski, play soccer and badminton, and spend as much time outdoors as I can. I also read a lot, mostly classic literature, philosophy, and fiction.
       </motion.p>
     </section>
   );

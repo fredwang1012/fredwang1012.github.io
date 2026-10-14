@@ -1,8 +1,8 @@
 export const books = {
   currentlyReading: [
     {
-      title: "Great Expectations",
-      author: "Charles Dickens"
+      title: "Dune",
+      author: "Frank Herbert"
     }
   ],
   favorites: [

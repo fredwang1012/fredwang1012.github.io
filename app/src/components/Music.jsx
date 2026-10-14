@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Play, Pause } from "lucide-react";
 import ReactPlayer from "react-player";
 import { pieces, myPerformances } from "../data/music";
@@ -42,14 +42,14 @@ export default function Music() {
                     setIsPlaying(true);
                   }
                 }}
-                className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label={playing ? "Pause recording" : "Play recording"}
               >
                 {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               </button>
               <button
                 onClick={() => setModalUrl(p.embed)}
-                className="text-left text-blue-700 hover:underline focus:outline-none focus:underline"
+                className="text-left text-blue-700 hover:underline focus:outline-hidden focus:underline"
               >
                 {p.title}
               </button>
@@ -81,14 +81,14 @@ export default function Music() {
                     setIsPlaying(true);
                   }
                 }}
-                className="p-3 rounded-full bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="p-3 rounded-full bg-green-600 text-white hover:bg-green-700 focus:outline-hidden focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 aria-label={playing ? "Pause recording" : "Play recording"}
               >
                 {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               </button>
               <button
                 onClick={() => setModalUrl(p.embed)}
-                className="text-left text-green-700 hover:underline focus:outline-none focus:underline"
+                className="text-left text-green-700 hover:underline focus:outline-hidden focus:underline"
               >
                 {p.title}
               </button>
@@ -100,14 +100,14 @@ export default function Music() {
       <div className="mt-10 text-center">
         <a
           href="/music"
-          className="inline-block px-6 py-3 rounded-2xl shadow hover:shadow-md transition bg-blue-600 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="inline-block px-6 py-3 rounded-2xl shadow-sm hover:shadow-md transition bg-blue-600 text-white font-semibold focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           More Music
         </a>
       </div>
       
       {/* Hidden audio player */}
-      <ReactPlayer url={audioUrl} playing={isPlaying} width={0} height={0} style={{ display: "none" }} />
+      <ReactPlayer src={audioUrl} playing={isPlaying} width={0} height={0} style={{ display: "none" }} />
       
       {/* Video Modal */}
       {modalUrl && (
@@ -133,7 +133,7 @@ export default function Music() {
           </div>
           <button
             onClick={() => setModalUrl(null)}
-            className="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+            className="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 focus:outline-hidden focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
             aria-label="Close video"
           >
             ×

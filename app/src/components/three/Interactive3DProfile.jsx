@@ -9,8 +9,9 @@ import { useMousePosition } from '../../hooks/useMousePosition';
  */
 function ProfileImage({ mousePosition, isHovering }) {
   const meshRef = useRef();
-  const texture = useTexture('/frederick.jpg');
-  texture.colorSpace = THREE.SRGBColorSpace;
+  const texture = useTexture('/frederick.jpg', (tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+  });
   const targetRotation = useRef({ x: 0, y: 0 });
 
   useFrame(() => {

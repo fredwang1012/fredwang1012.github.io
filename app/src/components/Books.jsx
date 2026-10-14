@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { books } from "../data/books";
 
 export default function Books() {
@@ -37,7 +37,7 @@ export default function Books() {
         <div className="mt-10 text-center">
           <a
             href="/books"
-            className="inline-block px-6 py-3 rounded-2xl shadow hover:shadow-md transition bg-blue-600 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="inline-block px-6 py-3 rounded-2xl shadow-sm hover:shadow-md transition bg-blue-600 text-white font-semibold focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             More Books
           </a>

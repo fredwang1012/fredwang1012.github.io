@@ -51,7 +51,7 @@ export default function MusicPage() {
                     setIsPlaying(true);
                   }
                 }}
-                className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-none"
+                className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden"
                 aria-label={playing ? "Pause recording" : "Play recording"}
               >
                 {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -89,7 +89,7 @@ export default function MusicPage() {
                     setIsPlaying(true);
                   }
                 }}
-                className="p-3 rounded-full bg-green-600 text-white hover:bg-green-700 focus:outline-none"
+                className="p-3 rounded-full bg-green-600 text-white hover:bg-green-700 focus:outline-hidden"
                 aria-label={playing ? "Pause recording" : "Play recording"}
               >
                 {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -112,7 +112,7 @@ export default function MusicPage() {
         })}
       </ul>
 
-      <ReactPlayer url={audioUrl} playing={isPlaying} width={0} height={0} style={{ display: "none" }} />
+      <ReactPlayer src={audioUrl} playing={isPlaying} width={0} height={0} style={{ display: "none" }} />
 
       {modalUrl && (
         <div
@@ -140,7 +140,7 @@ export default function MusicPage() {
       <div className="text-center">
         <a
           href="/#music"
-          className="inline-block px-5 py-3 rounded-2xl shadow hover:shadow-md transition bg-blue-600 text-white font-semibold"
+          className="inline-block px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition bg-blue-600 text-white font-semibold"
         >
           Back to Home
         </a>
