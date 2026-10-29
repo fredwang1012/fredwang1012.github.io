@@ -12,6 +12,14 @@ export const projects = [
     tech: ["Python", "Chronos-2", "Bayesian Modelling", "Time-Series"],
   },
   {
+    title: "Unsupervised Patient Stratification",
+    description:
+      "VAE/GMVAE + K-Means on structured labs and Chinese free-text exam reports (234K visits, 109K patients). Discovered 7 interpretable clinical phenotypes without labels, including liver fibrosis, hypothyroidism, and sensorineural hearing loss (silhouette 0.267, DBI 1.694).",
+    tech: ["PyTorch", "VAE / GMVAE", "K-Means", "TF-IDF + SVD"],
+    link: "https://github.com/fredwang1012/patient-stratification",
+    image: "/patient-stratification.webp",
+  },
+  {
     title: "GreenLife",
     description:
       "Full-stack web app that personalises Canadian sustainability incentives using AWS Bedrock + RAG (1st place, AWS x UBC CIC Generative-AI Sustainability Hackathon).",
