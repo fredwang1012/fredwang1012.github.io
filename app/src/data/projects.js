@@ -7,18 +7,18 @@ export const projects = [
     status: "Ongoing",
   },
   {
-    title: "Undercurrent",
-    description:
-      "Foundation-model commodity forecasting: benchmarking Chronos-2 with covariates against a hierarchical Bayesian driver model combined via Bayesian Predictive Synthesis, scored on CRPS and calibration.",
-    tech: ["Python", "Chronos-2", "Bayesian Modelling", "Time-Series"],
-    status: "Ongoing",
-  },
-  {
     title: "Talkback",
     description:
       "Reads books aloud with a full expressive cast and lets you talk back to the characters by voice. Each character answers in their own voice using only what you have read so far, so nothing is spoiled. Includes lip-synced faces, voice cloning and a textbook mode.",
     tech: ["React", "FastAPI", "Higgs Audio TTS", "Realtime Voice"],
     link: "https://github.com/fredwang1012/talkback",
+    status: "Ongoing",
+  },
+  {
+    title: "Undercurrent",
+    description:
+      "Foundation-model commodity forecasting: benchmarking Chronos-2 with covariates against a hierarchical Bayesian driver model combined via Bayesian Predictive Synthesis, scored on CRPS and calibration.",
+    tech: ["Python", "Chronos-2", "Bayesian Modelling", "Time-Series"],
     status: "Ongoing",
   },
   {
