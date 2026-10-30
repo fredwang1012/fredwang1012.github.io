@@ -56,6 +56,7 @@
   --sheen:rgba(255,255,255,.95); --sheen-2:rgba(255,255,255,.55);
   --c-cyan:#00dfd8; --c-blue:#007cf0; --c-violet:#7928ca; --c-amber:#f9cb28; --mesh-o:.34;
   --lq-ring:rgba(17,17,17,.6); --lq-tint:rgba(255,255,255,.2);
+  --wash:rgba(7,97,209,.09);
   --gut-l:max(16px, env(safe-area-inset-left, 0px)); --gut-r:max(16px, env(safe-area-inset-right, 0px));
   color-scheme:light;
 }
@@ -70,6 +71,7 @@
     --sheen:rgba(255,255,255,.10); --sheen-2:rgba(255,255,255,.05);
     --mesh-o:.2;
     --lq-ring:rgba(237,237,237,.62); --lq-tint:rgba(255,255,255,.07);
+    --wash:rgba(82,168,255,.14);
     color-scheme:dark;
   }
 }
@@ -83,6 +85,7 @@
   --sheen:rgba(255,255,255,.10); --sheen-2:rgba(255,255,255,.05);
   --mesh-o:.2;
   --lq-ring:rgba(237,237,237,.62); --lq-tint:rgba(255,255,255,.07);
+  --wash:rgba(82,168,255,.14);
   color-scheme:dark;
 }
 
@@ -232,6 +235,11 @@ section.block{margin-top:120px}
 .who img{width:52px;height:52px;border-radius:999px;border:1px solid var(--line);object-fit:cover}
 .email{font-size:clamp(16px,2vw,20px);color:var(--ink);word-break:break-all;-webkit-user-select:all;user-select:all;border:1px solid var(--line);background:var(--inset);border-radius:8px;padding:12px 14px}
 .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto;padding-top:4px}
+/* arriving at #contact (last section, so it cannot reach the top): a brief tinted wash + halo over the contact grid */
+#contact .contact{position:relative}
+#contact .contact::after{content:"";position:absolute;inset:-1px 0 0 -1px;z-index:4;pointer-events:none;opacity:0}
+#contact.arrive .contact::after{animation:arrive 1.8s ease-out .35s both}
+@keyframes arrive{0%{opacity:1;background:transparent;box-shadow:0 0 0 0 transparent}25%{opacity:1;background:var(--wash);box-shadow:0 0 0 16px var(--wash)}100%{opacity:1;background:transparent;box-shadow:0 0 0 16px transparent}}
 
 /* ---------- footer ---------- */
 footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
@@ -349,6 +357,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .mesh span,.status.building i::after{animation:none}
+  #contact.arrive .contact::after{animation:none}
 }
 </style>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -369,8 +378,8 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
       <nav class="nav" aria-label="Main">
         <a class="t" href="#work" data-liquid="snap">Work</a>
         <a class="t" href="#experience" data-liquid="snap">Experience</a>
-        <a class="t" href="#music" data-liquid="snap" data-view-link="music">Music</a>
-        <a class="t" href="#books" data-liquid="snap" data-view-link="books">Books</a>
+        <a class="t" href="#music-preview" data-liquid="snap">Music</a>
+        <a class="t" href="#books-preview" data-liquid="snap">Books</a>
         <span class="sep" aria-hidden="true"></span>
         <a class="btn hide-sm" href="#contact" data-liquid="snap">Contact</a>
         <a class="btn solid" href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap" style="margin-left:6px">Résumé</a>
@@ -384,8 +393,8 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
     <nav class="tabs" aria-label="Sections">
       <a href="#work" data-liquid="snap">Work</a>
       <a href="#experience" data-liquid="snap">Experience</a>
-      <a href="#music" data-liquid="snap" data-view-link="music">Music</a>
-      <a href="#books" data-liquid="snap" data-view-link="books">Books</a>
+      <a href="#music-preview" data-liquid="snap">Music</a>
+      <a href="#books-preview" data-liquid="snap">Books</a>
     </nav>
   </header>
 
@@ -514,7 +523,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
     <section id="off-clock" class="block" aria-labelledby="oc-h">
       <div class="sec-head"><div><h2 id="oc-h">Music &amp; books</h2><span class="sub mono">Off the clock</span></div></div>
       <div class="contact">
-        <div class="cell" data-liquid="lift">
+        <div class="cell" id="music-preview" data-liquid="lift">
           <div class="meta mono"><span>Music</span><span>Favourite piano works</span></div>
           <ol class="tracks">
 <li class="trk-row" data-liquid="lift"><span class="rank mono">01</span><span class="tw"><b>Piano Concerto No. 3 in D minor, Op. 30</b><small class="mono">Rachmaninov</small></span><a class="go" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
@@ -527,7 +536,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
           </ol>
           <div class="foot"><a class="go" href="#music" data-liquid="snap">See all music →</a></div>
         </div>
-        <div class="cell" data-liquid="lift">
+        <div class="cell" id="books-preview" data-liquid="lift">
           <div class="meta mono"><span>Books</span><span class="status building"><i aria-hidden="true"></i>Currently reading</span></div>
           <div class="now"><b>Dune</b><small class="mono">Frank Herbert</small></div>
           <div class="meta mono"><span>Favourites</span></div>
@@ -1242,13 +1251,25 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
       else if (target && initial) setTimeout(function () { target.scrollIntoView(); }, 0);
       else if (was) toTop();
       if (was) {                                   // the link that was clicked is now hidden: land on a heading
-        var hd = (target && target.querySelector("h1,h2")) || document.getElementById("hero-h");
+        var sec = target && target.closest("section");
+        var hd = (target && target.querySelector("h1,h2")) || (sec && sec.querySelector("h2")) || document.getElementById("hero-h");
         if (hd) { if (!hd.hasAttribute("tabindex")) hd.setAttribute("tabindex", "-1"); try { hd.focus({ preventScroll: true }); } catch (_) { hd.focus(); } }
       }
     } else if (hash === "top") { /* native anchor scroll handles it */ }
   }
-  addEventListener("hashchange", function () { route(false); });
+  addEventListener("hashchange", function () { route(false); if (location.hash === "#contact") arrive(); });
   route(true);
+
+  /* contact is the last section, so a #contact link cannot bring it to the top: mark the arrival instead */
+  var contact = document.getElementById("contact");
+  function arrive() { contact.classList.remove("arrive"); void contact.offsetWidth; contact.classList.add("arrive"); }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href="#contact"]');
+    if (!a || location.hash !== "#contact" || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    contact.scrollIntoView();
+    arrive();
+  });
 
   /* copy email */
   function selectEmail() {
@@ -1275,6 +1296,186 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
   addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(fade); } }, { passive: true });
   fade();
 })();
+</script>
+<style id="rv-theme">#rv{--rv-font:Geist,"Geist Fallback",Inter,system-ui,sans-serif;--rv-tfont:"Geist Mono",ui-monospace,monospace;--rv-tsize:12px;--rv-tweight:400;--rv-tcase:uppercase;--rv-tspace:.08em;--rv-radius:10px;--rv-bradius:6px;--rv-bh:34px;--rv-pradius:2px;--rv-sheet:var(--surface);--rv-ink:var(--ink);--rv-sub:var(--muted);--rv-edge:var(--line);--rv-hi:transparent;--rv-btn:var(--surface-solid);--rv-btn-hover:var(--bg);--rv-accent:var(--btn-bg);--rv-accent-ink:var(--btn-ink);--rv-well:var(--bg);--rv-shadow:0 24px 60px -24px rgba(0,0,0,.35),0 0 0 1px var(--line)}#rv .rv-sheet{background:var(--rv-sheet)}</style>
+<script>/*! Resume viewer
+ * Opens résumé links (any a[href$="resume.pdf"]) in an in-page sheet instead of a new tab.
+ * Pages are drawn with pdf.js, loaded from cdnjs only when the viewer is first needed.
+ * Cmd/Ctrl/Shift/middle-click keep the browser's normal behaviour.
+ */
+(function () {
+  "use strict";
+  var doc = document, PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+  var css = [
+    ":where(:root){--rv-scrim:rgba(18,22,32,.32);--rv-sheet:rgba(250,250,252,.78);--rv-ink:#1c1c1e;--rv-sub:#5b5e66;--rv-edge:rgba(0,0,0,.08);--rv-hi:rgba(255,255,255,.85);--rv-btn:rgba(255,255,255,.7);--rv-btn-hover:rgba(255,255,255,.95);--rv-accent:#1d5fd1;--rv-accent-ink:#fff;--rv-well:rgba(120,126,140,.12);--rv-shadow:0 30px 80px -20px rgba(10,16,32,.45),0 2px 6px rgba(10,16,32,.12)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}}",
+    ":where(:root[data-theme=dark]){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}",
+    // sits just under the liquid pointer, so the cursor keeps working inside it
+    "#rv{position:fixed;inset:0;z-index:2147482000;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:var(--rv-scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .22s ease;font:14px/1.4 var(--rv-font,-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif);color:var(--rv-ink)}",
+    "#rv[hidden]{display:none}",
+    "#rv.open{opacity:1}",
+    "#rv .rv-sheet{position:relative;display:flex;flex-direction:column;width:min(900px,100%);height:min(1100px,100%);border-radius:var(--rv-radius,22px);overflow:hidden;background:var(--rv-sheet);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);border:1px solid var(--rv-edge);box-shadow:inset 0 1px 0 var(--rv-hi),var(--rv-shadow);transform:translateY(14px) scale(.975);transition:transform .38s cubic-bezier(.2,1.3,.4,1)}",
+    "#rv.open .rv-sheet{transform:none}",
+    "#rv .rv-bar{display:flex;align-items:center;gap:8px;padding:10px 10px 10px 18px;border-bottom:1px solid var(--rv-edge)}",
+    "#rv .rv-title{flex:1;min-width:0;font-family:var(--rv-tfont,inherit);font-weight:var(--rv-tweight,600);font-size:var(--rv-tsize,15px);text-transform:var(--rv-tcase,none);letter-spacing:var(--rv-tspace,0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
+    "#rv .rv-title span{font-weight:400;color:var(--rv-sub)}",
+    "#rv .rv-btn{display:inline-flex;align-items:center;gap:7px;height:var(--rv-bh,38px);padding:0 14px;border-radius:var(--rv-bradius,999px);border:1px solid var(--rv-edge);background:var(--rv-btn);color:var(--rv-ink);font:inherit;font-weight:500;text-decoration:none;cursor:pointer;white-space:nowrap;box-shadow:inset 0 1px 0 var(--rv-hi)}",
+    "#rv .rv-btn:hover{background:var(--rv-btn-hover)}",
+    "#rv .rv-btn svg{width:16px;height:16px;flex:none}",
+    "#rv .rv-btn.rv-primary{background:var(--rv-accent);border-color:transparent;color:var(--rv-accent-ink);box-shadow:none}",
+    "#rv .rv-btn.rv-primary:hover{filter:brightness(1.08)}",
+    "#rv .rv-btn.rv-icon{width:var(--rv-bh,38px);padding:0;justify-content:center}",
+    "#rv .rv-btn:focus-visible{outline:2px solid var(--rv-accent);outline-offset:2px}",
+    "#rv .rv-body{flex:1;overflow:auto;overscroll-behavior:contain;background:var(--rv-well);padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px;-webkit-overflow-scrolling:touch}",
+    "#rv canvas{display:block;width:100%;max-width:820px;height:auto;background:#fff;border-radius:var(--rv-pradius,6px);box-shadow:0 8px 24px -10px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.05)}",
+    "#rv .rv-msg{margin:auto;color:var(--rv-sub);text-align:center;padding:24px}",
+    "#rv .rv-msg a{color:var(--rv-accent)}",
+    "#rv .rv-spin{width:22px;height:22px;margin:0 auto 10px;border-radius:50%;border:2px solid var(--rv-edge);border-top-color:var(--rv-accent);animation:rv-spin .8s linear infinite}",
+    "@keyframes rv-spin{to{transform:rotate(360deg)}}",
+    "@media (max-width:560px){#rv{padding:0}#rv .rv-sheet{width:100%;height:100%;border-radius:0;border:0}#rv .rv-bar{padding-top:max(10px,env(safe-area-inset-top))}#rv .rv-btn .rv-label{display:none}#rv .rv-btn{width:var(--rv-bh,38px);padding:0;justify-content:center}#rv .rv-body{padding:10px;gap:10px}}",
+    "@media (prefers-reduced-motion:reduce){#rv,#rv .rv-sheet{transition:none}#rv .rv-spin{animation:none}}",
+    "html.rv-lock,html.rv-lock body{overflow:hidden}"
+  ].join("\n");
+  var ICON = {
+    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>',
+    open: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+  };
+
+  var root = null, body, dl, openA, closeB, lastFocus = null, href = "", lib = null, libP = null, data = null, blobUrl = "", renderId = 0, rTimer = 0;
+
+  function build() {
+    if (root) return;
+    var st = doc.createElement("style"); st.textContent = css; doc.head.appendChild(st);
+    root = doc.createElement("div");
+    root.id = "rv"; root.hidden = true;
+    root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Résumé");
+    root.innerHTML =
+      '<div class="rv-sheet">' +
+        '<div class="rv-bar">' +
+          '<div class="rv-title">Résumé <span>· Frederick Wang</span></div>' +
+          '<a class="rv-btn rv-primary rv-dl" data-liquid="snap" download="Frederick-Wang-Resume.pdf" aria-label="Download PDF">' + ICON.down + '<span class="rv-label">Download</span></a>' +
+          '<a class="rv-btn rv-open" data-liquid="snap" target="_blank" rel="noopener" aria-label="Open in a new tab">' + ICON.open + '<span class="rv-label">Open</span></a>' +
+          '<button type="button" class="rv-btn rv-icon rv-close" data-liquid="snap" aria-label="Close">' + ICON.close + '</button>' +
+        '</div>' +
+        '<div class="rv-body" tabindex="0" aria-label="Résumé pages"></div>' +
+      '</div>';
+    doc.body.appendChild(root);
+    body = root.querySelector(".rv-body"); dl = root.querySelector(".rv-dl"); openA = root.querySelector(".rv-open"); closeB = root.querySelector(".rv-close");
+    closeB.addEventListener("click", close);
+    root.addEventListener("mousedown", function (e) { if (e.target === root) close(); });
+    root.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); close(); return; }
+      if (e.key !== "Tab") return;
+      var f = Array.prototype.filter.call(root.querySelectorAll("a[href],button,[tabindex='0']"), function (n) { return n.offsetParent; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    addEventListener("resize", function () { if (root.hidden || !data) return; clearTimeout(rTimer); rTimer = setTimeout(render, 160); });
+  }
+
+  function loadLib() {
+    if (libP) return libP;
+    libP = new Promise(function (res, rej) {
+      if (window.pdfjsLib) return res(window.pdfjsLib);
+      var s = doc.createElement("script"); s.src = PDFJS + "pdf.min.js"; s.async = true;
+      s.onload = function () { var L = window.pdfjsLib; if (!L) return rej(new Error("pdf.js")); L.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js"; res(L); };
+      s.onerror = function () { libP = null; rej(new Error("pdf.js")); };
+      doc.head.appendChild(s);
+    });
+    return libP;
+  }
+
+  // the file: same-origin copy first (the published site and preview both ship one), then the link itself
+  function fetchPdf(link) {
+    var tries = [];
+    try { var u = new URL(link, location.href); if (u.origin !== location.origin) tries.push("resume.pdf"); } catch (_) {}
+    tries.push(link);
+    var i = 0;
+    return (function next() {
+      if (i >= tries.length) return Promise.reject(new Error("fetch"));
+      var url = tries[i++];
+      return fetch(url).then(function (r) {
+        if (!r.ok || !/pdf|octet/.test(r.headers.get("content-type") || "pdf")) throw new Error(r.status);
+        return r.arrayBuffer();
+      }).catch(next);
+    })();
+  }
+
+  function message(html) { body.innerHTML = '<div class="rv-msg">' + html + "</div>"; }
+
+  function render() {
+    var id = ++renderId;
+    return lib.getDocument({ data: data.slice(0) }).promise.then(function (pdf) {
+      var width = Math.min(820, body.clientWidth - (innerWidth <= 560 ? 20 : 36)), dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      var frag = doc.createDocumentFragment(), canvases = [], chain = Promise.resolve();
+      for (var n = 1; n <= pdf.numPages; n++) (function (n) {
+        chain = chain.then(function () {
+          if (id !== renderId) return;
+          return pdf.getPage(n).then(function (page) {
+            var v = page.getViewport({ scale: 1 }), scale = width / v.width, vp = page.getViewport({ scale: scale * dpr });
+            var c = doc.createElement("canvas"); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+            c.setAttribute("role", "img"); c.setAttribute("aria-label", "Résumé page " + n + " of " + pdf.numPages);
+            canvases.push(c);
+            return page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+          });
+        });
+      })(n);
+      return chain.then(function () {
+        if (id !== renderId) return;
+        canvases.forEach(function (c) { frag.appendChild(c); });
+        body.innerHTML = ""; body.appendChild(frag);
+        if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh();
+      });
+    });
+  }
+
+  function open(link) {
+    build();
+    href = link;
+    openA.href = link; dl.href = blobUrl || link;
+    lastFocus = doc.activeElement;
+    root.hidden = false; void root.offsetWidth; root.classList.add("open");
+    doc.documentElement.classList.add("rv-lock");
+    Array.prototype.forEach.call(doc.body.children, function (n) { if (n !== root && n.id !== "lq-ptr" && !n.inert) { n.inert = true; n.__rvInert = true; } });
+    closeB.focus({ preventScroll: true });
+    if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh();
+    if (data && lib) return;
+    message('<div class="rv-spin"></div>Loading résumé…');
+    Promise.all([loadLib(), data ? Promise.resolve(data) : fetchPdf(link)]).then(function (r) {
+      lib = r[0]; data = r[1];
+      if (!blobUrl) { blobUrl = URL.createObjectURL(new Blob([data], { type: "application/pdf" })); dl.href = blobUrl; }
+      return render();
+    }).catch(function () {
+      message('The preview couldn’t load here. <a href="' + link + '" target="_blank" rel="noopener">Open the PDF</a> instead.');
+    });
+  }
+
+  function close() {
+    if (!root || root.hidden) return;
+    root.classList.remove("open");
+    doc.documentElement.classList.remove("rv-lock");
+    Array.prototype.forEach.call(doc.body.children, function (n) { if (n.__rvInert) { n.inert = false; n.__rvInert = false; } });
+    var done = function () { root.hidden = true; if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh(); };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) done(); else setTimeout(done, 220);
+    if (lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (_) {}
+  }
+
+  function isResume(a) { return a && a.getAttribute && /resume\.pdf(?:[?#].*)?$/i.test(a.getAttribute("href") || ""); }
+  // warm up while the pointer is on its way to the link
+  doc.addEventListener("pointerover", function (e) { var a = e.target.closest && e.target.closest("a[href]"); if (isResume(a)) loadLib().catch(function () {}); }, { passive: true });
+  doc.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!isResume(a) || (root && root.contains(a))) return;
+    e.preventDefault();
+    open(a.getAttribute("href"));
+  });
+  window.ResumeViewer = { open: open, close: close };
+})();
+/*! end resume viewer */
 </script>
   </body>
 </html>
