@@ -72,6 +72,7 @@
   --blob-o-opacity: 0.16;
   --lq-ring: rgba(10, 10, 10, 0.6);
   --lq-tint: rgba(255, 255, 255, 0.2);
+  --wash: rgba(255, 79, 0, 0.08);
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -99,6 +100,7 @@
     --blob-o-opacity: 0.2;
     --lq-ring: rgba(255, 255, 255, 0.72);
     --lq-tint: rgba(255, 255, 255, 0.1);
+    --wash: rgba(255, 79, 0, 0.14);
     color-scheme: dark;
   }
 }
@@ -126,6 +128,7 @@
   --blob-o-opacity: 0.2;
   --lq-ring: rgba(255, 255, 255, 0.72);
   --lq-tint: rgba(255, 255, 255, 0.1);
+  --wash: rgba(255, 79, 0, 0.14);
   color-scheme: dark;
 }
 
@@ -418,6 +421,14 @@ img { display: block; max-width: 100%; }
 .btn svg { width: 15px; height: 15px; }
 .contact .also { grid-column: 10 / span 3; margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted); text-align: right; }
 .contact .also .nw { white-space: nowrap; }
+/* arriving at #contact from a link: a brief accent wash + halo around the contact block */
+.contact .mail { border-radius: 12px; }
+.contact.arrive .mail { animation: arrive 1.8s ease-out .35s both; }
+@keyframes arrive {
+  0% { background: transparent; box-shadow: 0 0 0 0 transparent; }
+  25% { background: var(--wash); box-shadow: 0 0 0 16px var(--wash); }
+  100% { background: transparent; box-shadow: 0 0 0 16px transparent; }
+}
 .contact .also a { color: var(--ink); padding: 2px 4px; border-radius: 6px; }
 
 .foot { margin-top: 96px; padding-top: 18px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; font-size: 13px; color: var(--muted); }
@@ -545,6 +556,7 @@ img { display: block; max-width: 100%; }
   html { scroll-behavior: auto; }
   .field span { animation: none !important; }
   .panel, .row::before, .row .plus, .row .plus::after, .switch .track::after { transition: none !important; }
+  .contact.arrive .mail { animation: none; }
 }
 </style>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -567,8 +579,8 @@ img { display: block; max-width: 100%; }
       <nav aria-label="Main">
         <a href="#index" data-liquid="snap" data-section="index">Index</a>
         <a href="#experience" data-liquid="snap" data-section="experience" class="hide-md">Experience</a>
-        <a href="#music" data-liquid="snap" data-view="music">Music</a>
-        <a href="#books" data-liquid="snap" data-view="books">Books</a>
+        <a href="#pv-music" data-liquid="snap" data-section="pv-music">Music</a>
+        <a href="#pv-books" data-liquid="snap" data-section="pv-books">Books</a>
         <a href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap" class="hide-md">Résumé</a>
         <a href="#contact" data-liquid="snap" data-section="contact" class="hide-sm">Contact</a>
         <span class="tools">
@@ -1672,7 +1684,10 @@ img { display: block; max-width: 100%; }
   var home = document.getElementById("top");
   var views = { music: document.getElementById("music"), books: document.getElementById("books") };
   var links = Array.prototype.slice.call(document.querySelectorAll(".bar nav a[data-section]"));
-  var viewLinks = Array.prototype.slice.call(document.querySelectorAll(".bar nav a[data-view]"));
+  var contact = document.getElementById("contact");
+  // a brief glow on the contact block: as the last section it can't scroll to the top, so make arriving visible
+  function arrive() { if (!contact) return; contact.classList.remove("arrive"); void contact.offsetWidth; contact.classList.add("arrive"); }
+  if (contact) contact.addEventListener("animationend", function (e) { if (e.animationName === "arrive") contact.classList.remove("arrive"); });
   var currentView = null;
   function clearSections() { links.forEach(function (a) { a.removeAttribute("aria-current"); }); }
   function route() {
@@ -1680,9 +1695,6 @@ img { display: block; max-width: 100%; }
     var v = views[h] ? h : null;
     home.hidden = !!v;
     Object.keys(views).forEach(function (k) { views[k].hidden = k !== v; });
-    viewLinks.forEach(function (a) {
-      if (a.getAttribute("data-view") === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
-    });
     if (v) {
       clearSections();
       document.title = (v === "music" ? "Music" : "Books") + " · " + BASE_TITLE;
@@ -1701,25 +1713,223 @@ img { display: block; max-width: 100%; }
       if (currentView && !target) { var hh = home.querySelector("h1"); if (hh) hh.focus({ preventScroll: true }); }
     }
     currentView = v;
+    return h;
   }
-  addEventListener("hashchange", route);
+  addEventListener("hashchange", function () { if (route() === "contact") arrive(); });
   route();
+  // clicking a #contact link while the hash is already #contact: no hashchange, so scroll and glow here
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest('a[href="#contact"]') : null;
+    if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (location.hash !== "#contact" || currentView) return;
+    e.preventDefault();
+    contact.scrollIntoView();
+    arrive();
+  });
 
   /* current section in the header (home view only) */
+  /* The Music/Books links point at the preview headings (#pv-music, #pv-books); their whole preview column is
+     what is watched. Side by side on wide screens both columns sit in the band at once: the one last clicked
+     in the header wins, otherwise the first. */
+  var spyIds = ["index", "experience", "pv-music", "pv-books", "contact"], inBand = {}, preferred = null;
+  links.forEach(function (a) { a.addEventListener("click", function () { preferred = a.getAttribute("data-section"); }); });
+  function markCurrent() {
+    var on = spyIds.filter(function (id) { return inBand[id]; });
+    var cur = on.indexOf(preferred) >= 0 ? preferred : on[0] || null; // nothing in the band (top of page): none
+    links.forEach(function (a) { if (a.getAttribute("data-section") === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+  }
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
-      if (currentView) return;
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) { // left the band: un-mark it (back at the top, nothing is current)
-          links.forEach(function (a) { if (a.getAttribute("data-section") === e.target.id) a.removeAttribute("aria-current"); });
-          return;
-        }
-        links.forEach(function (a) { if (a.getAttribute("data-section") === e.target.id) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
-      });
+      entries.forEach(function (e) { inBand[e.target.__spy] = e.isIntersecting; });
+      if (!currentView) markCurrent();
     }, { rootMargin: "-40% 0px -55% 0px" });
-    ["index", "experience", "contact"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    spyIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && id.indexOf("pv-") === 0) el = el.closest(".pv");
+      if (el) { el.__spy = id; io.observe(el); }
+    });
   }
 })();
+</script>
+<style id="rv-theme">#rv{--rv-font:"Geist","Inter",ui-sans-serif,system-ui,sans-serif;--rv-tfont:"Geist Mono",ui-monospace,monospace;--rv-tsize:12px;--rv-tweight:400;--rv-tcase:uppercase;--rv-tspace:.08em;--rv-radius:14px;--rv-bradius:10px;--rv-bh:38px;--rv-pradius:2px;--rv-sheet:var(--glass-strong);--rv-ink:var(--ink);--rv-sub:var(--muted);--rv-edge:var(--glass-edge);--rv-hi:var(--glass-hi);--rv-btn:var(--glass);--rv-btn-hover:var(--glass-strong);--rv-accent:var(--ink);--rv-accent-ink:var(--bg);--rv-well:color-mix(in srgb,var(--ink) 5%,transparent);--rv-shadow:var(--glass-shadow)}#rv .rv-sheet{background:var(--rv-sheet)}</style>
+<script>/*! Resume viewer
+ * Opens résumé links (any a[href$="resume.pdf"]) in an in-page sheet instead of a new tab.
+ * Pages are drawn with pdf.js, loaded from cdnjs only when the viewer is first needed.
+ * Cmd/Ctrl/Shift/middle-click keep the browser's normal behaviour.
+ */
+(function () {
+  "use strict";
+  var doc = document, PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+  var css = [
+    ":where(:root){--rv-scrim:rgba(18,22,32,.32);--rv-sheet:rgba(250,250,252,.78);--rv-ink:#1c1c1e;--rv-sub:#5b5e66;--rv-edge:rgba(0,0,0,.08);--rv-hi:rgba(255,255,255,.85);--rv-btn:rgba(255,255,255,.7);--rv-btn-hover:rgba(255,255,255,.95);--rv-accent:#1d5fd1;--rv-accent-ink:#fff;--rv-well:rgba(120,126,140,.12);--rv-shadow:0 30px 80px -20px rgba(10,16,32,.45),0 2px 6px rgba(10,16,32,.12)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}}",
+    ":where(:root[data-theme=dark]){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}",
+    // sits just under the liquid pointer, so the cursor keeps working inside it
+    "#rv{position:fixed;inset:0;z-index:2147482000;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:var(--rv-scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .22s ease;font:14px/1.4 var(--rv-font,-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif);color:var(--rv-ink)}",
+    "#rv[hidden]{display:none}",
+    "#rv.open{opacity:1}",
+    "#rv .rv-sheet{position:relative;display:flex;flex-direction:column;width:min(900px,100%);height:min(1100px,100%);border-radius:var(--rv-radius,22px);overflow:hidden;background:var(--rv-sheet);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);border:1px solid var(--rv-edge);box-shadow:inset 0 1px 0 var(--rv-hi),var(--rv-shadow);transform:translateY(14px) scale(.975);transition:transform .38s cubic-bezier(.2,1.3,.4,1)}",
+    "#rv.open .rv-sheet{transform:none}",
+    "#rv .rv-bar{display:flex;align-items:center;gap:8px;padding:10px 10px 10px 18px;border-bottom:1px solid var(--rv-edge)}",
+    "#rv .rv-title{flex:1;min-width:0;font-family:var(--rv-tfont,inherit);font-weight:var(--rv-tweight,600);font-size:var(--rv-tsize,15px);text-transform:var(--rv-tcase,none);letter-spacing:var(--rv-tspace,0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
+    "#rv .rv-title span{font-weight:400;color:var(--rv-sub)}",
+    "#rv .rv-btn{display:inline-flex;align-items:center;gap:7px;height:var(--rv-bh,38px);padding:0 14px;border-radius:var(--rv-bradius,999px);border:1px solid var(--rv-edge);background:var(--rv-btn);color:var(--rv-ink);font:inherit;font-weight:500;text-decoration:none;cursor:pointer;white-space:nowrap;box-shadow:inset 0 1px 0 var(--rv-hi)}",
+    "#rv .rv-btn:hover{background:var(--rv-btn-hover)}",
+    "#rv .rv-btn svg{width:16px;height:16px;flex:none}",
+    "#rv .rv-btn.rv-primary{background:var(--rv-accent);border-color:transparent;color:var(--rv-accent-ink);box-shadow:none}",
+    "#rv .rv-btn.rv-primary:hover{filter:brightness(1.08)}",
+    "#rv .rv-btn.rv-icon{width:var(--rv-bh,38px);padding:0;justify-content:center}",
+    "#rv .rv-btn:focus-visible{outline:2px solid var(--rv-accent);outline-offset:2px}",
+    "#rv .rv-body{flex:1;overflow:auto;overscroll-behavior:contain;background:var(--rv-well);padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px;-webkit-overflow-scrolling:touch}",
+    "#rv canvas{display:block;width:100%;max-width:820px;height:auto;background:#fff;border-radius:var(--rv-pradius,6px);box-shadow:0 8px 24px -10px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.05)}",
+    "#rv .rv-msg{margin:auto;color:var(--rv-sub);text-align:center;padding:24px}",
+    "#rv .rv-msg a{color:var(--rv-accent)}",
+    "#rv .rv-spin{width:22px;height:22px;margin:0 auto 10px;border-radius:50%;border:2px solid var(--rv-edge);border-top-color:var(--rv-accent);animation:rv-spin .8s linear infinite}",
+    "@keyframes rv-spin{to{transform:rotate(360deg)}}",
+    "@media (max-width:560px){#rv{padding:0}#rv .rv-sheet{width:100%;height:100%;border-radius:0;border:0}#rv .rv-bar{padding-top:max(10px,env(safe-area-inset-top))}#rv .rv-btn .rv-label{display:none}#rv .rv-btn{width:var(--rv-bh,38px);padding:0;justify-content:center}#rv .rv-body{padding:10px;gap:10px}}",
+    "@media (prefers-reduced-motion:reduce){#rv,#rv .rv-sheet{transition:none}#rv .rv-spin{animation:none}}",
+    "html.rv-lock,html.rv-lock body{overflow:hidden}"
+  ].join("\n");
+  var ICON = {
+    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>',
+    open: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+  };
+
+  var root = null, body, dl, openA, closeB, lastFocus = null, href = "", lib = null, libP = null, data = null, blobUrl = "", renderId = 0, rTimer = 0;
+
+  function build() {
+    if (root) return;
+    var st = doc.createElement("style"); st.textContent = css; doc.head.appendChild(st);
+    root = doc.createElement("div");
+    root.id = "rv"; root.hidden = true;
+    root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Résumé");
+    root.innerHTML =
+      '<div class="rv-sheet">' +
+        '<div class="rv-bar">' +
+          '<div class="rv-title">Résumé <span>· Frederick Wang</span></div>' +
+          '<a class="rv-btn rv-primary rv-dl" data-liquid="snap" download="Frederick-Wang-Resume.pdf" aria-label="Download PDF">' + ICON.down + '<span class="rv-label">Download</span></a>' +
+          '<a class="rv-btn rv-open" data-liquid="snap" target="_blank" rel="noopener" aria-label="Open in a new tab">' + ICON.open + '<span class="rv-label">Open</span></a>' +
+          '<button type="button" class="rv-btn rv-icon rv-close" data-liquid="snap" aria-label="Close">' + ICON.close + '</button>' +
+        '</div>' +
+        '<div class="rv-body" tabindex="0" aria-label="Résumé pages"></div>' +
+      '</div>';
+    doc.body.appendChild(root);
+    body = root.querySelector(".rv-body"); dl = root.querySelector(".rv-dl"); openA = root.querySelector(".rv-open"); closeB = root.querySelector(".rv-close");
+    closeB.addEventListener("click", close);
+    root.addEventListener("mousedown", function (e) { if (e.target === root) close(); });
+    root.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); close(); return; }
+      if (e.key !== "Tab") return;
+      var f = Array.prototype.filter.call(root.querySelectorAll("a[href],button,[tabindex='0']"), function (n) { return n.offsetParent; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    addEventListener("resize", function () { if (root.hidden || !data) return; clearTimeout(rTimer); rTimer = setTimeout(render, 160); });
+  }
+
+  function loadLib() {
+    if (libP) return libP;
+    libP = new Promise(function (res, rej) {
+      if (window.pdfjsLib) return res(window.pdfjsLib);
+      var s = doc.createElement("script"); s.src = PDFJS + "pdf.min.js"; s.async = true;
+      s.onload = function () { var L = window.pdfjsLib; if (!L) return rej(new Error("pdf.js")); L.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js"; res(L); };
+      s.onerror = function () { libP = null; rej(new Error("pdf.js")); };
+      doc.head.appendChild(s);
+    });
+    return libP;
+  }
+
+  // the file: same-origin copy first (the published site and preview both ship one), then the link itself
+  function fetchPdf(link) {
+    var tries = [];
+    try { var u = new URL(link, location.href); if (u.origin !== location.origin) tries.push("resume.pdf"); } catch (_) {}
+    tries.push(link);
+    var i = 0;
+    return (function next() {
+      if (i >= tries.length) return Promise.reject(new Error("fetch"));
+      var url = tries[i++];
+      return fetch(url).then(function (r) {
+        if (!r.ok || !/pdf|octet/.test(r.headers.get("content-type") || "pdf")) throw new Error(r.status);
+        return r.arrayBuffer();
+      }).catch(next);
+    })();
+  }
+
+  function message(html) { body.innerHTML = '<div class="rv-msg">' + html + "</div>"; }
+
+  function render() {
+    var id = ++renderId;
+    return lib.getDocument({ data: data.slice(0) }).promise.then(function (pdf) {
+      var width = Math.min(820, body.clientWidth - (innerWidth <= 560 ? 20 : 36)), dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      var frag = doc.createDocumentFragment(), canvases = [], chain = Promise.resolve();
+      for (var n = 1; n <= pdf.numPages; n++) (function (n) {
+        chain = chain.then(function () {
+          if (id !== renderId) return;
+          return pdf.getPage(n).then(function (page) {
+            var v = page.getViewport({ scale: 1 }), scale = width / v.width, vp = page.getViewport({ scale: scale * dpr });
+            var c = doc.createElement("canvas"); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+            c.setAttribute("role", "img"); c.setAttribute("aria-label", "Résumé page " + n + " of " + pdf.numPages);
+            canvases.push(c);
+            return page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+          });
+        });
+      })(n);
+      return chain.then(function () {
+        if (id !== renderId) return;
+        canvases.forEach(function (c) { frag.appendChild(c); });
+        body.innerHTML = ""; body.appendChild(frag);
+        if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh();
+      });
+    });
+  }
+
+  function open(link) {
+    build();
+    href = link;
+    openA.href = link; dl.href = blobUrl || link;
+    lastFocus = doc.activeElement;
+    root.hidden = false; void root.offsetWidth; root.classList.add("open");
+    doc.documentElement.classList.add("rv-lock");
+    Array.prototype.forEach.call(doc.body.children, function (n) { if (n !== root && n.id !== "lq-ptr" && !n.inert) { n.inert = true; n.__rvInert = true; } });
+    closeB.focus({ preventScroll: true });
+    if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh();
+    if (data && lib) return;
+    message('<div class="rv-spin"></div>Loading résumé…');
+    Promise.all([loadLib(), data ? Promise.resolve(data) : fetchPdf(link)]).then(function (r) {
+      lib = r[0]; data = r[1];
+      if (!blobUrl) { blobUrl = URL.createObjectURL(new Blob([data], { type: "application/pdf" })); dl.href = blobUrl; }
+      return render();
+    }).catch(function () {
+      message('The preview couldn’t load here. <a href="' + link + '" target="_blank" rel="noopener">Open the PDF</a> instead.');
+    });
+  }
+
+  function close() {
+    if (!root || root.hidden) return;
+    root.classList.remove("open");
+    doc.documentElement.classList.remove("rv-lock");
+    Array.prototype.forEach.call(doc.body.children, function (n) { if (n.__rvInert) { n.inert = false; n.__rvInert = false; } });
+    var done = function () { root.hidden = true; if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh(); };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) done(); else setTimeout(done, 220);
+    if (lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (_) {}
+  }
+
+  function isResume(a) { return a && a.getAttribute && /resume\.pdf(?:[?#].*)?$/i.test(a.getAttribute("href") || ""); }
+  // warm up while the pointer is on its way to the link
+  doc.addEventListener("pointerover", function (e) { var a = e.target.closest && e.target.closest("a[href]"); if (isResume(a)) loadLib().catch(function () {}); }, { passive: true });
+  doc.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!isResume(a) || (root && root.contains(a))) return;
+    e.preventDefault();
+    open(a.getAttribute("href"));
+  });
+  window.ResumeViewer = { open: open, close: close };
+})();
+/*! end resume viewer */
 </script>
   </body>
 </html>
