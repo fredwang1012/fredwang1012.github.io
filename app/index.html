@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Frederick Wang - ML &amp; Data Engineer</title>
     <link rel="icon" type="image/png" href="/icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>Frederick Wang - ML & Data Engineer</title>
     <meta name="title" content="Frederick Wang - ML & Data Engineer" />
     <meta name="description" content="M.Sc. Applied Computing (AI) student at the University of Toronto and UBC CS & Statistics graduate, working on machine learning, world models, and data engineering." />
     <meta name="keywords" content="Frederick Wang, University of Toronto, UBC, Machine Learning, Data Engineering, World Models, PyTorch, Databricks, MCP, RAG" />
@@ -29,10 +29,1079 @@
     <!-- Additional SEO -->
     <link rel="canonical" href="https://fredwang1012.github.io/" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#2563eb" />
+    <script>
+      // old routes from the previous site
+      (function () { var p = location.pathname.replace(/\/+$/, ""); if (p === "/music" || p === "/books") location.replace("/#" + p.slice(1)); })();
+    </script>
+    <style>
+      /* the same base the design was built on */
+      :root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+      body { margin: 0; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+      img { max-width: 100%; }
+      [hidden] { display: none !important; }
+    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fafafa; --ink:#171717; --muted:#4d4d4d; --line:#ebebeb; --line-hi:#a8a8a8;
+  --surface:rgba(255,255,255,.78); --surface-solid:#ffffff; --inset:#fafafa;
+  --gridline:rgba(0,0,0,.075); --link:#0761d1;
+  --amber:#ab570a; --amber-dot:#f5a623; --blue:#0761d1; --blue-dot:#0070f3;
+  --btn-bg:#171717; --btn-ink:#ffffff;
+  --glass:rgba(250,250,250,.62); --glass-edge:rgba(255,255,255,.9);
+  --sheen:rgba(255,255,255,.95); --sheen-2:rgba(255,255,255,.55);
+  --c-cyan:#00dfd8; --c-blue:#007cf0; --c-violet:#7928ca; --c-amber:#f9cb28; --mesh-o:.34;
+  --lq-ring:rgba(17,17,17,.6); --lq-tint:rgba(255,255,255,.2);
+  --gut-l:max(16px, env(safe-area-inset-left, 0px)); --gut-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a0a0a; --ink:#ededed; --muted:#a1a1a1; --line:#262626; --line-hi:#6e6e6e;
+    --surface:rgba(17,17,17,.74); --surface-solid:#111111; --inset:#0a0a0a;
+    --gridline:rgba(255,255,255,.055); --link:#52a8ff;
+    --amber:#f5a623; --amber-dot:#f5a623; --blue:#52a8ff; --blue-dot:#0070f3;
+    --btn-bg:#ededed; --btn-ink:#0a0a0a;
+    --glass:rgba(10,10,10,.58); --glass-edge:rgba(255,255,255,.08);
+    --sheen:rgba(255,255,255,.10); --sheen-2:rgba(255,255,255,.05);
+    --mesh-o:.2;
+    --lq-ring:rgba(237,237,237,.62); --lq-tint:rgba(255,255,255,.07);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0a0a; --ink:#ededed; --muted:#a1a1a1; --line:#262626; --line-hi:#6e6e6e;
+  --surface:rgba(17,17,17,.74); --surface-solid:#111111; --inset:#0a0a0a;
+  --gridline:rgba(255,255,255,.055); --link:#52a8ff;
+  --amber:#f5a623; --amber-dot:#f5a623; --blue:#52a8ff; --blue-dot:#0070f3;
+  --btn-bg:#ededed; --btn-ink:#0a0a0a;
+  --glass:rgba(10,10,10,.58); --glass-edge:rgba(255,255,255,.08);
+  --sheen:rgba(255,255,255,.10); --sheen-2:rgba(255,255,255,.05);
+  --mesh-o:.2;
+  --lq-ring:rgba(237,237,237,.62); --lq-tint:rgba(255,255,255,.07);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Geist,"Geist Fallback",Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+p,h1,h2,h3{margin:0}
+img{max-width:100%;display:block}
+.mono{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:6px}
+.sm-only{display:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- reactive colour mesh (fixed, behind everything) ---------- */
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;transition:opacity .2s linear}
+.mesh>div{position:absolute;width:var(--s);height:var(--s);will-change:transform}
+.mesh span{display:block;width:100%;height:100%;background:var(--c);opacity:var(--mesh-o);filter:blur(64px);border-radius:46% 54% 58% 42%/48% 44% 56% 52%;animation:drift var(--d,26s) ease-in-out infinite alternate,morph var(--m,18s) ease-in-out infinite alternate}
+.mesh .m1{--s:min(36vmax,560px);left:calc(14% - 140px);top:44vh;--c:var(--c-blue)}
+.mesh .m2{--s:min(32vmax,500px);left:calc(36% - 120px);top:54vh;--c:var(--c-cyan);--d:31s;--m:22s}
+.mesh .m3{--s:min(34vmax,520px);left:calc(58% - 120px);top:48vh;--c:var(--c-violet);--d:24s;--m:16s}
+.mesh .m4{--s:min(30vmax,460px);left:calc(80% - 120px);top:38vh;--c:var(--c-amber);--d:28s;--m:20s}
+.mesh .m2 span{animation-delay:-7s,-4s}.mesh .m3 span{animation-delay:-12s,-9s}.mesh .m4 span{animation-delay:-3s,-11s}
+@keyframes drift{0%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(6%,-5%,0) rotate(14deg)}100%{transform:translate3d(-5%,4%,0) rotate(-10deg)}}
+@keyframes morph{0%{border-radius:46% 54% 58% 42%/48% 44% 56% 52%}50%{border-radius:58% 42% 40% 60%/40% 58% 42% 60%}100%{border-radius:40% 60% 52% 48%/60% 40% 60% 40%}}
+
+/* ---------- outer wrapper ---------- */
+.site{position:relative;z-index:1;padding-left:var(--gut-l);padding-right:var(--gut-r);padding-block:0 0;min-height:100vh}
+.wrap{max-width:1216px;margin-inline:auto;min-width:0}
+
+/* ---------- header: the glass bar ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-left:calc(-1 * var(--gut-l));margin-right:calc(-1 * var(--gut-r));padding-left:var(--gut-l);padding-right:var(--gut-r);background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);border-bottom:1px solid var(--line);box-shadow:inset 0 1px 0 var(--glass-edge)}
+.bar-in{max-width:1216px;margin-inline:auto;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;text-decoration:none;padding:6px 8px;margin-left:-8px;border-radius:8px;white-space:nowrap}
+.logo svg path{fill:var(--ink)}
+.nav{display:flex;align-items:center;gap:4px;font-size:14px;min-width:0}
+.nav a.t{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:6px;transition:color .15s}
+.nav a.t:hover{color:var(--ink)}
+.nav .sep{width:1px;height:20px;background:var(--line);margin:0 8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:36px;padding:0 12px;border-radius:6px;font:inherit;font-size:14px;font-weight:500;text-decoration:none;cursor:pointer;border:1px solid var(--line);background:var(--surface-solid);color:var(--ink);white-space:nowrap;transition:border-color .15s,background .15s}
+.btn:hover{border-color:var(--line-hi)}
+.btn.solid{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.btn.solid:hover{opacity:.9}
+.btn.lg{min-height:48px;padding:0 22px;border-radius:8px;font-size:15px}
+.icon-btn{width:36px;padding:0;margin-left:6px}
+.icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn .moon{display:none}
+:root[data-theme="dark"] .icon-btn .sun{display:none} :root[data-theme="dark"] .icon-btn .moon{display:block}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .icon-btn .sun{display:none}:root:not([data-theme="light"]) .icon-btn .moon{display:block}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:72px 72px;background-position:-1px -1px;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 18%,#000 100%);mask-image:linear-gradient(to bottom,transparent,#000 18%,#000 100%)}
+.hero-in{position:relative;padding:120px 72px 128px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px}
+.badge{font-size:13px;color:var(--muted);background:var(--surface-solid);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+h1{font-size:clamp(40px,6.6vw,80px);line-height:1.02;font-weight:600;letter-spacing:-.05em;max-width:1000px;text-wrap:balance}
+.lede{font-size:clamp(17px,1.6vw,20px);line-height:1.5;color:var(--muted);max-width:640px}
+.cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:8px}
+
+/* ---------- number strip ---------- */
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.stat{padding:28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);min-width:0}
+.stat b{display:block;font-size:36px;font-weight:600;letter-spacing:-.04em;line-height:1.15}
+.stat span{display:block;margin-top:6px;font-size:14px;color:var(--muted)}
+
+/* ---------- sections ---------- */
+section.block{margin-top:120px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px}
+.sec-head h2,.exp h2{font-size:clamp(34px,4vw,48px);font-weight:600;letter-spacing:-.045em;line-height:1.05}
+.sec-head .sub{display:block;margin-top:10px;font-size:13px;color:var(--muted)}
+.quiet{font-size:14px;color:var(--muted);text-decoration:none;padding:6px 8px;margin-right:-8px;border-radius:6px}
+.quiet:hover{color:var(--ink)}
+
+/* ---------- the shared-edge grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.cell{position:relative;min-width:0;padding:32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);display:flex;flex-direction:column;gap:14px}
+.cell.span-2{grid-column:span 2}
+.cell.span-3{grid-column:1 / -1}
+.cell>*{position:relative;z-index:1}
+.cell::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:var(--lq-spec,0);background:radial-gradient(520px circle at var(--lq-mx,50%) var(--lq-my,0%),var(--sheen),transparent 55%),linear-gradient(140deg,var(--sheen-2),transparent 38%);box-shadow:inset 0 1px 0 var(--glass-edge)}
+.cell::after{content:"";position:absolute;inset:-1px;z-index:2;pointer-events:none;border:1px solid var(--line-hi);opacity:var(--lq-spec,0)}
+.cell:hover,.cell:focus-within{z-index:3}
+.cell:focus-within::after{opacity:1}
+
+.meta{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}
+.status{display:inline-flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;white-space:nowrap}
+.status i{position:relative;width:7px;height:7px;border-radius:999px;background:var(--amber-dot)}
+.status.building{color:var(--amber)}
+.status.building i::after{content:"";position:absolute;inset:-3px;border-radius:inherit;border:1px solid var(--amber-dot);animation:ping 2.2s cubic-bezier(.2,.6,.3,1) infinite}
+.status.ready{color:var(--blue)} .status.ready i{background:var(--blue-dot)}
+@keyframes ping{0%{transform:scale(.6);opacity:.9}80%,100%{transform:scale(1.9);opacity:0}}
+.cell h3{font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1.2}
+.cell.hi h3{font-size:clamp(24px,2.4vw,30px)}
+.cell p.d{font-size:15px;line-height:1.6;color:var(--muted)}
+.stack{font-size:12px;color:var(--muted);line-height:1.6}
+.cell .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:4px}
+.go{display:inline-flex;align-items:center;min-height:36px;padding:0 10px;margin-left:-10px;border-radius:6px;font-size:14px;font-weight:500;text-decoration:none;color:var(--ink)}
+.go:hover{color:var(--link)}
+
+/* world models: text + pipeline side by side */
+.wm{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:stretch;flex:1}
+.wm-text{display:flex;flex-direction:column;gap:14px;min-width:0}
+.pipe{border:1px solid var(--line);border-radius:8px;background:var(--inset);overflow:hidden;font-size:12.5px;line-height:1.5;align-self:end;min-width:0}
+.pipe-h{display:flex;justify-content:space-between;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+.pipe ol{list-style:none;margin:0;padding:8px 0}
+.pipe li{display:flex;gap:14px;padding:7px 14px;color:var(--ink)}
+.pipe li span{color:var(--muted)}
+
+/* talkback figures */
+.figs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:8px;background:var(--inset);overflow:hidden}
+.figs div{padding:12px 12px 11px;border-right:1px solid var(--line);min-width:0}
+.figs div:last-child{border-right:0}
+.figs b{display:block;font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1.2}
+.figs span{display:block;margin-top:2px;font-size:11.5px;color:var(--muted);line-height:1.35}
+
+/* patient stratification */
+.umap{width:100%;height:auto;aspect-ratio:1485/508;object-fit:contain;background:#ffffff;border:1px solid var(--line);border-radius:8px}
+
+/* also row */
+.also{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--inset);overflow:hidden}
+.also li{min-width:0;border-right:1px solid var(--line)}
+.also li:last-child{border-right:0}
+.also a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:14px 18px;text-decoration:none;height:100%}
+.also a:hover b{color:var(--link)}
+.also b{display:block;font-size:15px;font-weight:500}
+.also small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap;background:var(--surface-solid)}
+.arr{color:var(--muted)}
+
+/* ---------- experience ---------- */
+.exp{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:48px}
+.exp h2 .sub{display:block;margin-top:12px;font-size:13px;letter-spacing:0;font-weight:400;color:var(--muted)}
+.table{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);min-width:0}
+.row{position:relative;display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;padding:22px 28px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row>*{position:relative;z-index:1}
+.row::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:var(--lq-spec,0);background:radial-gradient(420px circle at var(--lq-mx,50%) var(--lq-my,50%),var(--sheen),transparent 60%)}
+.row .when{font-size:13px;color:var(--muted);padding-top:3px}
+.row h3{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.row p{margin-top:4px;font-size:15px;color:var(--muted);line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+
+/* ---------- contact ---------- */
+.contact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.who{display:flex;align-items:center;gap:14px}
+.who img{width:52px;height:52px;border-radius:999px;border:1px solid var(--line);object-fit:cover}
+.email{font-size:clamp(16px,2vw,20px);color:var(--ink);word-break:break-all;-webkit-user-select:all;user-select:all;border:1px solid var(--line);background:var(--inset);border-radius:8px;padding:12px 14px}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto;padding-top:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.foot-l{display:flex;flex-direction:column;gap:4px}
+.foot-l .proto{font-size:12px}
+.foot-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.foot-r a{color:var(--muted);text-decoration:none;padding:8px;border-radius:6px}
+.foot-r a:hover{color:var(--ink)}
+.switch{display:inline-flex;align-items:center;gap:10px;min-height:36px;padding:0 12px 0 8px;margin-left:8px;border:1px solid var(--line);border-radius:999px;background:var(--surface-solid);color:var(--ink);font:inherit;font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:12px;cursor:pointer}
+.switch .trk{position:relative;width:28px;height:16px;border-radius:999px;background:var(--line);transition:background .2s}
+.switch .trk::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:999px;background:var(--surface-solid);box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
+.switch[aria-checked="true"] .trk{background:var(--blue-dot)}
+.switch[aria-checked="true"] .trk::after{transform:translateX(12px);background:#fff}
+
+/* ---------- responsive ---------- */
+@media (max-width:1023px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cell.span-2{grid-column:1 / -1}
+  .also{grid-template-columns:minmax(0,1fr)}
+  .also li{border-right:0;border-bottom:1px solid var(--line)}
+  .also li:last-child{border-bottom:0}
+  .exp{grid-template-columns:minmax(0,1fr);gap:28px}
+  .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .nav a.t,.nav .sep{display:none}
+}
+@media (max-width:639px){
+  .bar-in{height:56px}
+  .hero-in{padding:72px 4px 80px;gap:20px}
+  .badge{font-size:11.5px;padding:5px 12px}
+  .grid,.contact{grid-template-columns:minmax(0,1fr)}
+  .cell.span-2,.cell.span-3{grid-column:auto}
+  .cell{padding:24px 20px}
+  .wm{grid-template-columns:minmax(0,1fr)}
+  .stat{padding:20px 16px}
+  .stat b{font-size:28px}
+  .stat span{font-size:13px}
+  .row{grid-template-columns:minmax(0,1fr);gap:4px;padding:18px 20px}
+  section.block{margin-top:88px}
+  footer{margin-top:88px}
+  .nav .hide-sm{display:none}
+  .lg-only{display:none} .sm-only{display:inline}
+}
+
+/* header cursor toggle */
+.cursor-btn{position:relative}
+.cursor-btn .slash{opacity:0;transition:opacity .2s}
+.cursor-btn[aria-checked="false"]{opacity:.55}
+.cursor-btn[aria-checked="false"] .slash{opacity:1}
+@media (hover: none){.cursor-btn{display:none}}
+.icon-btn+.icon-btn{margin-left:6px}
+.nav a.t[aria-current="page"]{color:var(--ink);background:var(--line)}
+
+/* music + books */
+.tracks{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--inset);overflow:hidden}
+.trk-row{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.trk-row:last-child{border-bottom:0}
+.trk-row .go{margin-left:0;font-size:13px;white-space:nowrap}
+.rank{font-size:12px;color:var(--muted)}
+.tw{min-width:0}
+.tw b,.now b,.shelf b{display:block;font-weight:500;font-size:15px;line-height:1.35}
+.tw small,.now small,.shelf small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.now{border:1px solid var(--line);border-radius:8px;background:var(--inset);padding:14px 16px}
+.now b{font-size:clamp(22px,2.4vw,28px);font-weight:600;letter-spacing:-.03em}
+.shelf{list-style:none;margin:0;padding:0}
+.shelf.one li{padding:10px 0;border-bottom:1px solid var(--line)}
+.shelf.one li:last-child{border-bottom:0}
+.shelf.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:8px;background:var(--inset);overflow:hidden}
+.shelf.three li{padding:14px 16px;border-right:1px solid var(--line);min-width:0}
+.shelf.three li:last-child{border-right:0}
+.grid-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.grid-list li{min-width:0;padding:18px 22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);transition:background .2s}
+.grid-list li:hover{background:var(--surface-solid)}
+.shelf-h{margin-top:72px}
+.view-hero{position:relative;border-left:1px solid var(--line);border-right:1px solid var(--line);padding:72px 48px 88px;margin-bottom:56px;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.view-hero::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:72px 72px;background-position:-1px -1px;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 30%);mask-image:linear-gradient(to bottom,transparent,#000 30%)}
+.view-hero>*{position:relative}
+.view-hero h1:focus{outline:none}
+.back{margin-left:-8px}
+.big-n{font-size:56px;font-weight:600;letter-spacing:-.05em;line-height:1}
+.playing{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.playing .tw b{font-size:clamp(20px,2.2vw,26px);font-weight:600;letter-spacing:-.03em}
+@media (max-width:1023px){.grid-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:639px){
+  .grid-list,.shelf.three{grid-template-columns:minmax(0,1fr)}
+  .shelf.three li{border-right:0;border-bottom:1px solid var(--line)}
+  .shelf.three li:last-child{border-bottom:0}
+  .trk-row{grid-template-columns:24px minmax(0,1fr)}
+  .trk-row .go{grid-column:2;justify-self:start;margin-left:-10px;min-height:36px}
+  .view-hero{padding:48px 16px 56px;margin-bottom:40px}
+  .big-n{font-size:44px}
+  .shelf-h{margin-top:56px}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .mesh span,.status.building i::after{animation:none}
+}
+</style>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+<div class="mesh" aria-hidden="true">
+  <div class="m1" data-field="0.06"><span></span></div>
+  <div class="m2" data-field="-0.045"><span></span></div>
+  <div class="m3" data-field="0.075"><span></span></div>
+  <div class="m4" data-field="-0.065"><span></span></div>
+</div>
+
+<div class="site">
+  <header class="bar" data-refract="soft">
+    <div class="bar-in">
+      <a class="logo" href="#top" data-liquid="snap"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 22 20H2Z"></path></svg>Frederick Wang</a>
+      <nav class="nav" aria-label="Main">
+        <a class="t" href="#work" data-liquid="snap">Work</a>
+        <a class="t" href="#experience" data-liquid="snap">Experience</a>
+        <a class="t" href="#music" data-liquid="snap" data-view-link="music">Music</a>
+        <a class="t" href="#books" data-liquid="snap" data-view-link="books">Books</a>
+        <span class="sep" aria-hidden="true"></span>
+        <a class="btn hide-sm" href="#contact" data-liquid="snap">Contact</a>
+        <a class="btn solid" href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap" style="margin-left:6px">Résumé</a>
+        <button class="btn icon-btn" type="button" id="theme" data-theme-toggle data-liquid="snap" aria-label="Switch to dark theme">
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"></path></svg>
+        </button>
+        
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+   <div id="home">
+    <section id="top" class="hero" aria-labelledby="hero-h">
+      <div class="hero-in">
+        <p class="badge mono">M.Sc. Applied Computing (AI) · <span class="lg-only">University of Toronto</span><span class="sm-only">UofT</span></p>
+        <h1 id="hero-h">Train it. Evaluate it.<br>Ship it to production.</h1>
+        <p class="lede">I’m Frederick: machine learning for driving, forecasting and health, and the systems that carry it into production.</p>
+        <div class="cta">
+          <a class="btn solid lg" href="#work" data-liquid="snap">See the work</a>
+          <a class="btn lg" href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="strip" aria-label="Highlights">
+      <div class="stat"><b>0.267</b><span>silhouette, patient phenotypes found without labels</span></div>
+      <div class="stat"><b>$20M</b><span>projected value from a hackathon win at BCI</span></div>
+      <div class="stat"><b>−50%</b><span>ad hoc analysis time with a production MCP server</span></div>
+      <div class="stat"><b>100+</b><span>students mentored as a UBC TA</span></div>
+    </section>
+
+    <section id="work" class="block" aria-labelledby="work-h">
+      <div class="sec-head">
+        <div><h2 id="work-h">Selected work</h2><span class="sub mono">Ten projects · six ongoing</span></div>
+        <a class="quiet" href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">All repositories ↗</a>
+      </div>
+
+      <div class="grid">
+        <article class="cell span-2 hi" data-liquid="lift">
+          <div class="meta mono"><span>Autonomy · UofT · Oct 2026</span><span class="status building"><i aria-hidden="true"></i>Building</span></div>
+          <div class="wm">
+            <div class="wm-text">
+              <h3>Recoverability-Aware World Models</h3>
+              <p class="d">Prediction-only world models can call a scene safe after the point of no return. This objective keeps whether the car can still recover, then distils it into a driving policy.</p>
+              <p class="stack mono" style="margin-top:auto">PyTorch · CARLA · NVIDIA Cosmos · imitation learning</p>
+            </div>
+            <div class="pipe mono" role="group" aria-label="Pipeline">
+              <div class="pipe-h"><span>pipeline</span><span>4 stages</span></div>
+              <ol>
+                <li><span>01</span>carla scene mining</li>
+                <li><span>02</span>cosmos counterfactuals</li>
+                <li><span>03</span>recoverability-aware world model</li>
+                <li><span>04</span>dagger policy distillation</li>
+              </ol>
+            </div>
+          </div>
+        </article>
+
+        <article class="cell hi" data-liquid="lift">
+          <div class="meta mono"><span>Voice · Oct 2026</span><span class="status building"><i aria-hidden="true"></i>Building</span></div>
+          <h3>Talkback</h3>
+          <p class="d">Books read aloud by a full expressive cast. Stop anywhere and ask a character a question out loud: they answer in their own voice, using only what you have read so far, so nothing is spoiled.</p>
+          <div class="figs">
+            <div><b>20</b><span class="mono">voiced emotions</span></div>
+            <div><b>191</b><span class="mono">features tracked</span></div>
+            <div><b>~1,750</b><span class="mono">tests</span></div>
+          </div>
+          <p class="stack mono">React · FastAPI · Higgs Audio TTS · realtime voice · lip-sync</p>
+          <div class="foot"><a class="go" href="https://github.com/fredwang1012/talkback" target="_blank" rel="noopener" data-liquid="snap">View repository ↗</a></div>
+        </article>
+
+        <article class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Retrieval · SQL</span><span class="status building"><i aria-hidden="true"></i>Building</span></div>
+          <h3>text2sql-memory</h3>
+          <p class="d">Text-to-SQL that retrieves business logic, not just schema: glossary terms, metric definitions and join paths, tested against a schema-only baseline on BIRD.</p>
+          <p class="stack mono">Python · Claude API · BM25 + embeddings</p>
+          <div class="foot"><a class="go" href="https://github.com/fredwang1012/text2sql-memory" target="_blank" rel="noopener" data-liquid="snap">View repository ↗</a></div>
+        </article>
+
+        <article class="cell" data-liquid="lift">
+          <div class="meta mono"><span>RAG · Research</span><span class="status building"><i aria-hidden="true"></i>Building</span></div>
+          <h3>arXiv Paper RAG</h3>
+          <p class="d">Answers about a reading list of papers, every claim cited to the exact paper and section, and every quote checked against the passage it came from.</p>
+          <p class="stack mono">Python · Claude API · FastAPI · LaTeX parsing</p>
+          <div class="foot"><a class="go" href="https://github.com/fredwang1012/arxiv-paper-rag" target="_blank" rel="noopener" data-liquid="snap">View repository ↗</a></div>
+        </article>
+
+        <article class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Search · Local</span><span class="status building"><i aria-hidden="true"></i>Building</span></div>
+          <h3>Semantic PDF Reader</h3>
+          <p class="d">Search a PDF by meaning. It jumps to the page and highlights the passage, in one document or a whole library, and nothing leaves your machine.</p>
+          <p class="stack mono">React · pdf.js · FastAPI · PyMuPDF</p>
+          <div class="foot"><a class="go" href="https://github.com/fredwang1012/semantic-pdf-reader" target="_blank" rel="noopener" data-liquid="snap">View repository ↗</a></div>
+        </article>
+
+        <article class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Forecasting · 2026</span><span class="status building"><i aria-hidden="true"></i>Building</span></div>
+          <h3>Undercurrent</h3>
+          <p class="d">Chronos-2 with covariates against a hierarchical Bayesian driver model, combined by Bayesian Predictive Synthesis and scored on CRPS and calibration.</p>
+          <p class="stack mono" style="margin-top:auto">Python · Chronos-2 · Bayesian modelling</p>
+        </article>
+
+        <article class="cell span-2" data-liquid="lift">
+          <div class="meta mono"><span>Clinical ML · UBC CPSC 440 · Apr 2026</span><span class="status ready"><i aria-hidden="true"></i>Ready</span></div>
+          <h3>Unsupervised Patient Stratification</h3>
+          <img class="umap" src="/patient-stratification.webp" width="1485" height="508" loading="lazy" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right">
+          <p class="d">A VAE compresses checkup labs and Chinese free-text reports; K-Means on its latent space finds seven clinical phenotypes without labels. Silhouette 0.267 across 234K visits.</p>
+          <div class="foot"><a class="go" href="https://github.com/fredwang1012/patient-stratification" target="_blank" rel="noopener" data-liquid="snap">Code + report ↗</a></div>
+        </article>
+
+        <div class="cell span-3" data-liquid="lift">
+          <div class="meta mono"><span>Also</span><span>Earlier work</span></div>
+          <ul class="also">
+            <li><a href="https://github.com/fredwang1012/greenlife" target="_blank" rel="noopener" data-liquid="snap"><span><b>GreenLife</b><small class="mono">RAG on AWS Bedrock · 2024</small></span><span class="tag mono">1st place</span></a></li>
+            <li><a href="https://github.com/fredwang1012/great_expectations/tree/fredwang1012" target="_blank" rel="noopener" data-liquid="snap"><span><b>Great Expectations</b><small class="mono">SQL Server support, open source · 2025</small></span><span class="arr" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap"><span><b>WealthComplex</b><small class="mono">Investment platform</small></span><span class="arr" aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="block exp" aria-labelledby="exp-h">
+      <h2 id="exp-h">Experience<span class="sub mono">Newest first</span></h2>
+      <div class="table">
+        <div class="row" data-liquid="lift"><span class="when mono">Sep 2026 — now</span><div><h3>Teaching Assistant · University of Toronto</h3><p>CSC207 tutorials and labs on Java, object-oriented design and Git-based teamwork.</p></div></div>
+        <div class="row" data-liquid="lift"><span class="when mono">May — Dec 2025</span><div><h3>Data Engineer Intern · British Columbia Investment Management</h3><p>Won the internal hackathon with a schedule-optimization algorithm and led it to production. Shipped an MCP server on Databricks Apps connecting Claude to Unity Catalog, and a RAG knowledge base over unstructured data.</p>
+          <div class="chips"><span class="tag mono">1st place hackathon</span><span class="tag mono">+25% efficiency</span><span class="tag mono">$20M projected value</span><span class="tag mono">−50% analysis time</span></div></div></div>
+        <div class="row" data-liquid="lift"><span class="when mono">Sep 2024 — Apr 2026</span><div><h3>Teaching Assistant · UBC CS &amp; Statistics</h3><p>Led ML tutorials in R, mentored 100+ students, and co-facilitated 400-level database lectures.</p></div></div>
+        <div class="row" data-liquid="lift"><span class="when mono">Jan — Aug 2024</span><div><h3>Data Analyst Intern · Providence Research</h3><p>Built supervised models in R predicting ankle-surgery outcomes from patient risk factors.</p></div></div>
+      </div>
+    </section>
+
+    <section id="off-clock" class="block" aria-labelledby="oc-h">
+      <div class="sec-head"><div><h2 id="oc-h">Music &amp; books</h2><span class="sub mono">Off the clock</span></div></div>
+      <div class="contact">
+        <div class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Music</span><span>Favourite piano works</span></div>
+          <ol class="tracks">
+<li class="trk-row" data-liquid="lift"><span class="rank mono">01</span><span class="tw"><b>Piano Concerto No. 3 in D minor, Op. 30</b><small class="mono">Rachmaninov</small></span><a class="go" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+<li class="trk-row" data-liquid="lift"><span class="rank mono">02</span><span class="tw"><b>Piano Concerto No. 2 in C minor, Op. 18</b><small class="mono">Rachmaninov</small></span><a class="go" href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+<li class="trk-row" data-liquid="lift"><span class="rank mono">03</span><span class="tw"><b>Tre sonetti di Petrarca, S. 270 (Sonetto 104)</b><small class="mono">Liszt</small></span><a class="go" href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+          </ol>
+          <div class="meta mono"><span>My playing</span></div>
+          <ol class="tracks">
+<li class="trk-row" data-liquid="lift"><span class="rank mono" aria-hidden="true">▶</span><span class="tw"><b>Liebesleid (arr. Rachmaninov)</b><small class="mono">Kreisler</small></span><a class="go" href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+          </ol>
+          <div class="foot"><a class="go" href="#music" data-liquid="snap">See all music →</a></div>
+        </div>
+        <div class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Books</span><span class="status building"><i aria-hidden="true"></i>Currently reading</span></div>
+          <div class="now"><b>Dune</b><small class="mono">Frank Herbert</small></div>
+          <div class="meta mono"><span>Favourites</span></div>
+          <ul class="shelf one">
+<li><b>The Brothers Karamazov</b><small class="mono">Fyodor Dostoevsky</small></li><li><b>The Idiot</b><small class="mono">Fyodor Dostoevsky</small></li><li><b>1984</b><small class="mono">George Orwell</small></li>
+          </ul>
+          <div class="foot"><a class="go" href="#books" data-liquid="snap">See all books →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="block" aria-labelledby="contact-h">
+      <div class="sec-head"><div><h2 id="contact-h">Get in touch</h2><span class="sub mono">The fastest way to reach me is email</span></div></div>
+      <div class="contact">
+        <div class="cell" data-liquid="lift">
+          <div class="who"><img src="/frederick.jpg" width="52" height="52" alt="Frederick Wang"><div><h3>Frederick Wang</h3><p class="d" style="font-size:14px">M.Sc. Applied Computing (AI), University of Toronto</p></div></div>
+          <p class="email mono" id="email-text">fredwang1012@gmail.com</p>
+          <div class="links">
+            <button class="btn solid copy-email" type="button" data-liquid="snap"><span>Copy email</span></button>
+            <a class="btn" href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-liquid="snap">LinkedIn ↗</a>
+            <a class="btn" href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap">Résumé ↗</a>
+          </div>
+          <p class="sr" aria-live="polite" id="copy-live"></p>
+        </div>
+        <div class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Off the clock</span></div>
+          <p class="d">Piano (lately Rachmaninov), skiing, soccer, badminton, and classic literature. B.Sc. in Computer Science and Statistics from UBC, Dean's List 2022–2026.</p>
+          <div class="links">
+            <a class="btn" href="#music" data-liquid="snap">Music →</a>
+            <a class="btn" href="#books" data-liquid="snap">Books →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   </div>
+
+   <section id="view-music" class="view" aria-labelledby="music-h" hidden>
+    <div class="view-hero">
+      <a class="quiet back" href="#top" data-liquid="snap">← Home</a>
+      <h1 id="music-h" tabindex="-1">Music</h1>
+      <p class="lede">A window into my passion for music.</p>
+    </div>
+    <div class="sec-head"><div><h2>Favourite piano works</h2><span class="sub mono">My personal ranking · 1–3</span></div></div>
+    <div class="grid">
+        <article class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Rank</span><span>Rachmaninov</span></div>
+          <p class="big-n">01</p>
+          <h3>Piano Concerto No. 3 in D minor, Op. 30</h3>
+          <div class="foot"><a class="go" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></div>
+        </article>
+        <article class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Rank</span><span>Rachmaninov</span></div>
+          <p class="big-n">02</p>
+          <h3>Piano Concerto No. 2 in C minor, Op. 18</h3>
+          <div class="foot"><a class="go" href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></div>
+        </article>
+        <article class="cell" data-liquid="lift">
+          <div class="meta mono"><span>Rank</span><span>Liszt</span></div>
+          <p class="big-n">03</p>
+          <h3>Tre sonetti di Petrarca, S. 270 (Sonetto 104)</h3>
+          <div class="foot"><a class="go" href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></div>
+        </article>
+      <article class="cell span-3" data-liquid="lift">
+        <div class="meta mono"><span>My playing</span><span>Piano</span></div>
+        <div class="playing"><span class="tw"><b>Liebesleid (arr. Rachmaninov)</b><small class="mono">Kreisler</small></span><a class="btn" href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></div>
+      </article>
+    </div>
+   </section>
+
+   <section id="view-books" class="view" aria-labelledby="books-h" hidden>
+    <div class="view-hero">
+      <a class="quiet back" href="#top" data-liquid="snap">← Home</a>
+      <h1 id="books-h" tabindex="-1">Books</h1>
+      <p class="lede">Record of my journey through literature.</p>
+    </div>
+    <div class="grid">
+      <article class="cell" data-liquid="lift">
+        <div class="meta mono"><span>Currently reading</span><span class="status building"><i aria-hidden="true"></i>Reading</span></div>
+        <div class="now"><b>Dune</b><small class="mono">Frank Herbert</small></div>
+      </article>
+      <article class="cell span-2" data-liquid="lift">
+        <div class="meta mono"><span>Favourites</span><span>3</span></div>
+        <ul class="shelf three">
+<li><b>The Brothers Karamazov</b><small class="mono">Fyodor Dostoevsky</small></li><li><b>The Idiot</b><small class="mono">Fyodor Dostoevsky</small></li><li><b>1984</b><small class="mono">George Orwell</small></li>
+        </ul>
+      </article>
+    </div>
+    <div class="sec-head shelf-h"><div><h2>Read</h2><span class="sub mono">13 books</span></div></div>
+    <ul class="shelf grid-list">
+<li><b>A Day in the Life of Ivan Denisovich</b><small class="mono">Aleksandr Solzhenitsyn</small></li><li><b>White Nights</b><small class="mono">Fyodor Dostoevsky</small></li><li><b>The Great Gatsby</b><small class="mono">F. Scott Fitzgerald</small></li><li><b>Animal Farm</b><small class="mono">George Orwell</small></li><li><b>The Emperor of All Maladies</b><small class="mono">Siddhartha Mukherjee</small></li><li><b>The Three-Body Problem</b><small class="mono">Liu Cixin</small></li><li><b>The Dark Forest</b><small class="mono">Liu Cixin</small></li><li><b>Death&#x27;s End</b><small class="mono">Liu Cixin</small></li><li><b>Kokoro</b><small class="mono">Natsume Sōseki</small></li><li><b>The Setting Sun</b><small class="mono">Osamu Dazai</small></li><li><b>No Longer Human</b><small class="mono">Osamu Dazai</small></li><li><b>Norwegian Wood</b><small class="mono">Haruki Murakami</small></li><li><b>Crime and Punishment</b><small class="mono">Fyodor Dostoevsky</small></li>
+    </ul>
+    <div class="sec-head shelf-h"><div><h2>To read</h2><span class="sub mono">16 on the list</span></div></div>
+    <ul class="shelf grid-list">
+<li><b>Meditations</b><small class="mono">Marcus Aurelius</small></li><li><b>Flatland: A Romance of Many Dimensions</b><small class="mono">Edwin A. Abbott</small></li><li><b>Faust</b><small class="mono">Johann Wolfgang von Goethe</small></li><li><b>Dune series</b><small class="mono">Frank Herbert</small></li><li><b>The Iliad</b><small class="mono">Homer</small></li><li><b>The Metamorphosis</b><small class="mono">Franz Kafka</small></li><li><b>A Song of Ice and Fire</b><small class="mono">George R.R. Martin</small></li><li><b>I Am a Cat</b><small class="mono">Natsume Sōseki</small></li><li><b>Beyond Good and Evil</b><small class="mono">Friedrich Nietzsche</small></li><li><b>The Song of the Cell</b><small class="mono">Siddhartha Mukherjee</small></li><li><b>One Hundred Years of Solitude</b><small class="mono">Gabriel García Márquez</small></li><li><b>The Republic</b><small class="mono">Plato</small></li><li><b>Cancer Ward</b><small class="mono">Aleksandr Solzhenitsyn</small></li><li><b>The Gulag Archipelago</b><small class="mono">Aleksandr Solzhenitsyn</small></li><li><b>War and Peace</b><small class="mono">Leo Tolstoy</small></li><li><b>Lord of the Flies</b><small class="mono">William Golding</small></li>
+    </ul>
+   </section>
+
+    <footer>
+      <div class="foot-l"><span>© 2026 Frederick Wang</span><span class="proto mono">© 2026 Frederick Wang</span></div>
+      <div class="foot-r">
+        <a href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">GitHub</a>
+        <a href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-liquid="snap">LinkedIn</a>
+        <a href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap">Résumé</a>
+        <button type="button" role="switch" aria-checked="false" data-liquid-toggle data-liquid="snap" class="switch"><span class="trk" aria-hidden="true"></span>Liquid cursor</button>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<script>
+/*!
+ * Liquid engine: an iPadOS (Magic Keyboard era) pointer after Apple's "Design for the iPadOS pointer":
+ * a 19px glassy dot that becomes a line-height text beam over text, a highlight that sits behind the label
+ * of controls without a background, a lift (scale, shadow, specular light) for controls with one,
+ * magnetism with generous hit margins, gentle parallax, idle fade. Plus reactive colour fields and
+ * Chromium backdrop refraction.
+ *
+ * Markup hooks
+ *   data-liquid="snap"   small controls (links, buttons, nav items): the cursor merges into them and they bobble
+ *   data-liquid="lift"   large surfaces (cards): they tilt toward the cursor; the page can read
+ *                        --lq-mx, --lq-my (pointer position, %) and --lq-spec (0..1) for a highlight
+ *   data-refract         glass that bends the content behind it (Chromium); "soft" or "strong" as the value
+ *   data-liquid-toggle   a button that turns the liquid cursor on and off (aria-checked is kept in sync)
+ *   data-field="0.06"    a background colour blob that drifts toward or away from the pointer and with scroll;
+ *                        the value is its depth (negative moves away). Put the CSS drift/morph animation on a
+ *                        child element, since the engine owns this element's transform. Works on touch via scroll.
+ * Theme hooks (CSS custom properties on :root)
+ *   --lq-dot    fill of the pointer dot and text beam   --lq-hl  fill of a control's highlight   --lq-press  pressed highlight
+ *   (--lq-ring and --lq-tint are still read by pages for their own glass)
+ * Off automatically on touch screens and when the viewer prefers reduced motion.
+ * Refraction technique after deepika-builds/liquid-glass (MIT).
+ */
+(function () {
+  "use strict";
+  if (window.Liquid) return;
+
+  var doc = document, root = doc.documentElement;
+  var reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  var finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+  };
+
+  // ---------- styles ----------
+  // Defaults use :where() so a page's own tokens always win.
+  var css = [
+    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-dot:rgba(60,60,67,.46);--lq-hl:rgba(60,60,67,.12);--lq-press:rgba(60,60,67,.22);--lq-blend:multiply;--lq-sheen:rgba(255,255,255,.55)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}}",
+    ":where(:root[data-theme=dark]){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}",
+    "body.lq-on,body.lq-on *{cursor:none!important}",
+    "#lq-ptr{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;opacity:0;width:19px;height:19px;border-radius:9.5px;transform-origin:50% 50%;" +
+      "background:var(--lq-dot);-webkit-backdrop-filter:blur(1.5px) saturate(170%);backdrop-filter:blur(1.5px) saturate(170%);" +
+      "box-shadow:inset 0 0 0 .5px rgba(255,255,255,.4),inset 0 1px 1px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.12);" +
+      "transition:opacity .35s ease,background-color .2s ease,box-shadow .25s ease}",
+    // highlight: a flat translucent shape that blends under the label, with a sheen that follows the pointer
+    "#lq-ptr.hl{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,50%),var(--lq-sheen),transparent 60%) ,var(--lq-hl);background-blend-mode:soft-light;mix-blend-mode:var(--lq-blend);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.hl.down{background:var(--lq-press)}",
+    // lift: the pointer becomes the specular light on top of a raised control
+    "#lq-ptr.lift{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.5),rgba(255,255,255,0) 55%);mix-blend-mode:soft-light;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.beam{border-radius:1.5px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "[data-liquid]{will-change:transform}",
+    ".lq-lifted{box-shadow:0 12px 26px -10px rgba(0,0,0,.38),0 3px 8px -2px rgba(0,0,0,.14)!important;position:relative;z-index:2}",
+    "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}"
+  ].join("\n");
+  var style = doc.createElement("style");
+  style.textContent = css;
+  doc.head.insertBefore(style, doc.head.firstChild);
+
+  // ---------- the pointer: one shape that is a dot, a text beam or a control's highlight ----------
+  var ptrEl = doc.createElement("div");
+  ptrEl.id = "lq-ptr"; ptrEl.setAttribute("aria-hidden", "true");
+  function mount() { doc.body.appendChild(ptrEl); }
+  if (doc.body) mount(); else doc.addEventListener("DOMContentLoaded", mount);
+
+  // ---------- refraction (Chromium) ----------
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var refractionOK = (function () {
+    var ua = navigator.userAgent;
+    if (/Firefox/.test(ua)) return false;
+    if (/Safari/.test(ua) && !/Chrome|Chromium|Edg/.test(ua)) return false;
+    return CSS.supports("backdrop-filter", "url(#x)");
+  })();
+  var defs = null, uid = 0, mapCache = {};
+  function ensureDefs() {
+    if (defs) return defs;
+    var svg = doc.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("width", "0"); svg.setAttribute("height", "0"); svg.setAttribute("aria-hidden", "true");
+    svg.style.position = "absolute";
+    defs = doc.createElementNS(SVG_NS, "defs"); svg.appendChild(defs); doc.body.appendChild(svg);
+    return defs;
+  }
+  function makeMap(w, h, radius, border, blurPx) {
+    w = Math.max(8, Math.round(w)); h = Math.max(8, Math.round(h));
+    var key = [w, h, Math.round(radius), border, blurPx].join("|");
+    if (mapCache[key]) return mapCache[key];
+    var c = doc.createElement("canvas"); c.width = w; c.height = h;
+    var ctx = c.getContext("2d");
+    var gx = ctx.createLinearGradient(0, 0, w, 0); gx.addColorStop(0, "#000"); gx.addColorStop(1, "#f00");
+    ctx.fillStyle = gx; ctx.fillRect(0, 0, w, h);
+    var gy = ctx.createLinearGradient(0, 0, 0, h); gy.addColorStop(0, "#000"); gy.addColorStop(1, "#00f");
+    ctx.globalCompositeOperation = "difference"; ctx.fillStyle = gy; ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    var inset = border * Math.min(w, h);
+    ctx.filter = "blur(" + blurPx + "px)"; ctx.fillStyle = "rgba(128,128,128,0.94)";
+    ctx.beginPath();
+    ctx.roundRect(inset, inset, w - inset * 2, h - inset * 2, Math.max(1, Math.min(radius, h / 2) - inset));
+    ctx.fill();
+    return (mapCache[key] = c.toDataURL());
+  }
+  function makeFilter(scale, chroma) {
+    var id = "lq-f" + (++uid);
+    var f = doc.createElementNS(SVG_NS, "filter");
+    f.setAttribute("id", id); f.setAttribute("x", "0"); f.setAttribute("y", "0");
+    f.setAttribute("width", "100%"); f.setAttribute("height", "100%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    var img = doc.createElementNS(SVG_NS, "feImage");
+    img.setAttribute("x", "0"); img.setAttribute("y", "0"); img.setAttribute("result", "map");
+    img.setAttribute("preserveAspectRatio", "none"); f.appendChild(img);
+    var keep = ["1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"];
+    for (var i = 0; i < 3; i++) {
+      var d = doc.createElementNS(SVG_NS, "feDisplacementMap");
+      d.setAttribute("in", "SourceGraphic"); d.setAttribute("in2", "map");
+      d.setAttribute("scale", String(scale + i * chroma));
+      d.setAttribute("xChannelSelector", "R"); d.setAttribute("yChannelSelector", "B");
+      d.setAttribute("result", "d" + i); f.appendChild(d);
+      var m = doc.createElementNS(SVG_NS, "feColorMatrix");
+      m.setAttribute("in", "d" + i); m.setAttribute("type", "matrix"); m.setAttribute("values", keep[i]);
+      m.setAttribute("result", "c" + i); f.appendChild(m);
+    }
+    var b1 = doc.createElementNS(SVG_NS, "feBlend");
+    b1.setAttribute("in", "c0"); b1.setAttribute("in2", "c1"); b1.setAttribute("mode", "screen"); b1.setAttribute("result", "c01"); f.appendChild(b1);
+    var b2 = doc.createElementNS(SVG_NS, "feBlend");
+    b2.setAttribute("in", "c01"); b2.setAttribute("in2", "c2"); b2.setAttribute("mode", "screen"); f.appendChild(b2);
+    ensureDefs().appendChild(f);
+    return { id: id, img: img };
+  }
+  function refract(el) {
+    if (!refractionOK || el.__lqRefract) return;
+    el.__lqRefract = true;
+    var strong = el.getAttribute("data-refract") === "strong";
+    var filt = makeFilter(strong ? -90 : -60, strong ? 5 : 3);
+    var base = getComputedStyle(el).backdropFilter;
+    var extra = base && base !== "none" ? base.replace(/blur\([^)]*\)/, "blur(3px)") : "blur(3px) saturate(170%)";
+    function fit() {
+      var w = el.offsetWidth, h = el.offsetHeight; if (!w || !h) return;
+      var r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      filt.img.setAttribute("href", makeMap(w, h, r, strong ? 0.2 : 0.16, Math.max(4, Math.min(12, h / 6))));
+      filt.img.setAttribute("width", String(w)); filt.img.setAttribute("height", String(h));
+    }
+    fit();
+    el.style.backdropFilter = "url(#" + filt.id + ") " + extra;
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(el);
+  }
+  function refractAll() { doc.querySelectorAll("[data-refract]").forEach(refract); }
+
+  // ---------- springs (fixed sub-steps keep stiff springs stable) ----------
+  function S(x) { return { x: x, v: 0 }; }
+  function step(s, target, k, c, dt) {
+    var n = Math.max(1, Math.ceil(dt * 480)), h = dt / n;
+    for (var i = 0; i < n; i++) { var a = -k * (s.x - target) - c * s.v; s.v += a * h; s.x += s.v * h; }
+  }
+
+  // ---------- state ----------
+  var liquidOn = store.get("lq-cursor") === "on"; // off until the visitor turns it on
+  function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
+  function applyMode() {
+    var on = active();
+    doc.body && doc.body.classList.toggle("lq-on", on);
+    doc.querySelectorAll("[data-liquid-toggle]").forEach(function (b) {
+      b.setAttribute("aria-checked", liquidOn ? "true" : "false");
+    });
+    if (!on) ptrEl.style.opacity = "0";
+  }
+
+  var ptr = { x: -200, y: -200, lx: -200, ly: -200, vx: 0, vy: 0, seen: false, moved: 0, down: false, typing: false };
+  // P: the pointer shape (centre x/y, width, height, radius, press scale)
+  var P = { x: S(-200), y: S(-200), w: S(18), h: S(18), r: S(9), s: S(1), o: S(0) };
+  var target = null, mode = null, targetRadius = 12, viaKeyboard = false, lifted = null;
+  var beam = null; // {top, h} of the text line under the pointer
+  var jelly = new Map();
+  function J(el) {
+    var j = jelly.get(el);
+    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false }; jelly.set(el, j); }
+    return j;
+  }
+  function alpha(c) { var m = /rgba?\(([^)]+)\)/.exec(c || ""); if (!m) return c && c !== "transparent" ? 1 : 0; var p = m[1].split(/[ ,\/]+/).filter(Boolean); return p.length > 3 ? parseFloat(p[3]) : 1; }
+  function hasBezel(el) {
+    var cs = getComputedStyle(el);
+    return alpha(cs.backgroundColor) > 0.06 || (cs.backgroundImage && cs.backgroundImage !== "none") ||
+      (parseFloat(cs.borderTopWidth) > 0 && alpha(cs.borderTopColor) > 0.08);
+  }
+  function isIcon(r) { return r.width <= 56 && r.height <= 56 && Math.abs(r.width - r.height) <= 18; }
+  // magnetism: controls keep a generous invisible margin, like iPadOS hit regions
+  function magnetAt(x, y) {
+    var best = null, bestD = 1e9;
+    doc.querySelectorAll('[data-liquid="snap"]').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+      var pad = Math.min(14, Math.max(6, Math.min(r.width, r.height) * 0.35));
+      var dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
+      if (d <= pad && d < bestD) { best = el; bestD = d; }
+    });
+    return best;
+  }
+  var magnet = false;
+  function enter(el, keyboard) {
+    if (target === el) return;
+    if (target) leave(target);
+    target = el; mode = el.getAttribute("data-liquid"); viaKeyboard = !!keyboard;
+    var j = J(el); j.on = true;
+    if (mode === "snap") {
+      var r = el.getBoundingClientRect();
+      var rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      if (hasBezel(el) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
+        mode = "icon"; lifted = el; el.classList.add("lq-lifted"); targetRadius = Math.min(rad, r.height / 2);
+      } else {                                   // highlight: a soft shape behind the label
+        var pad = Math.max(3, Math.min(8, Math.min(r.width, r.height) / 6));
+        targetRadius = Math.min(rad ? rad + pad : Math.min(12, r.height / 2 + pad), (r.height + pad * 2) / 2);
+        el.__lqPad = pad;
+      }
+      if (!reduceMotion.matches) j.s.v += mode === "icon" ? 1.1 : 0.6;
+    } else if (!reduceMotion.matches) j.s.v += 0.25;
+  }
+  function leave(el) {
+    var j = jelly.get(el); if (j) j.on = false;
+    if (lifted === el) { el.classList.remove("lq-lifted"); lifted = null; }
+    if (target === el) { target = null; mode = null; magnet = false; }
+  }
+  // iPadOS keeps a control highlighted until the pointer is clearly outside it
+  function stillInside(el, x, y) {
+    var r = el.getBoundingClientRect(), slack = magnet ? 14 : 8;
+    return x >= r.left - slack && x <= r.right + slack && y >= r.top - slack && y <= r.bottom + slack;
+  }
+  var NON_TEXT = /^(IMG|SVG|PATH|CANVAS|VIDEO|BUTTON|INPUT|SELECT|TEXTAREA|HTML|BODY)$/;
+  function textLineAt(x, y, node) {
+    if (!node || NON_TEXT.test(node.nodeName)) return null;
+    var r = null, n = null, off = 0;
+    if (doc.caretRangeFromPoint) { r = doc.caretRangeFromPoint(x, y); if (r) { n = r.startContainer; off = r.startOffset; } }
+    else if (doc.caretPositionFromPoint) { var cp = doc.caretPositionFromPoint(x, y); if (cp) { n = cp.offsetNode; off = cp.offset; } }
+    if (!n || n.nodeType !== 3 || !n.textContent.trim()) return null;
+    var len = n.textContent.length, a = Math.max(0, Math.min(off, len - 1));
+    var rg = doc.createRange(); rg.setStart(n, a); rg.setEnd(n, Math.min(len, a + 1));
+    var rect = rg.getBoundingClientRect();
+    if (!rect || !rect.height) return null;
+    if (y < rect.top - 2 || y > rect.bottom + 2 || x < rect.left - 14 || x > rect.right + 14) return null;
+    return { top: rect.top, h: rect.height };
+  }
+  var liftCard = null;
+  function updateHover(node) {
+    if (target && mode !== "lift" && !viaKeyboard && stillInside(target, ptr.x, ptr.y)) {
+      var deeper = node && node.closest ? node.closest('[data-liquid="snap"]') : null;
+      if (!deeper || deeper === target) { beam = null; return; }
+    }
+    var hit = node && node.closest ? node.closest("[data-liquid]") : null;
+    var snapHit = hit && hit.getAttribute("data-liquid") === "snap" ? hit : null;
+    var near = snapHit ? null : (active() ? magnetAt(ptr.x, ptr.y) : null);
+    if (near) { enter(near, false); magnet = true; }
+    else if (hit) { enter(hit, false); magnet = false; }
+    else if (target) leave(target);
+    var card = node && node.closest ? node.closest('[data-liquid="lift"]') : null;
+    if (liftCard && liftCard !== card && liftCard !== target) { var jo = jelly.get(liftCard); if (jo) jo.on = false; }
+    liftCard = card;
+    if (card) {
+      var jc = J(card); jc.on = true;
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--lq-mx", ((ptr.x - r.left) / r.width * 100).toFixed(1) + "%");
+      card.style.setProperty("--lq-my", ((ptr.y - r.top) / r.height * 100).toFixed(1) + "%");
+    }
+    beam = (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
+  }
+
+  doc.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
+    ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
+    if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
+    viaKeyboard = false;
+    updateHover(e.target);
+  }, { passive: true });
+  addEventListener("scroll", function () {
+    if (!ptr.seen || viaKeyboard) return;
+    updateHover(doc.elementFromPoint(ptr.x, ptr.y));
+  }, { passive: true });
+  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); });
+  doc.addEventListener("pointerdown", function (e) {
+    ptr.down = true; ptrEl.classList.add("down");
+    if (reduceMotion.matches) return;
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el) J(el).s.v -= 1.1;
+  });
+  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("down"); });
+  doc.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) ptr.typing = true; // hide while typing
+  });
+  doc.addEventListener("focusin", function (e) {
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el && el.matches(":focus-visible")) {
+      enter(el, true);
+      if (active() && !ptr.seen) { var r = el.getBoundingClientRect(); P.x.x = r.left + r.width / 2; P.y.x = r.top + r.height / 2; P.w.x = r.width; P.h.x = r.height; }
+    }
+  });
+  doc.addEventListener("focusout", function (e) {
+    if (viaKeyboard && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
+  });
+  // a click while the pointer is magnetized to a nearby control presses that control (iPadOS behaviour)
+  doc.addEventListener("click", function (e) {
+    if (!active() || !target || !magnet || viaKeyboard) return;
+    if (target.contains(e.target)) return;
+    if (e.target.closest && e.target.closest("a,button,input,select,textarea,label,[role=button],[data-liquid]")) return;
+    e.preventDefault(); e.stopPropagation();
+    var t = target; magnet = false; t.click();
+  }, true);
+  doc.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-liquid-toggle]") : null;
+    if (!t) return;
+    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode();
+    if (!liquidOn && lifted) { lifted.classList.remove("lq-lifted"); lifted = null; }
+  });
+  finePointer.addEventListener && finePointer.addEventListener("change", applyMode);
+  reduceMotion.addEventListener && reduceMotion.addEventListener("change", applyMode);
+
+  // ---------- frame ----------
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    var ivx = (ptr.x - ptr.lx) / Math.max(dt, 0.001), ivy = (ptr.y - ptr.ly) / Math.max(dt, 0.001);
+    ptr.vx += (ivx - ptr.vx) * 0.25; ptr.vy += (ivy - ptr.vy) * 0.25; ptr.lx = ptr.x; ptr.ly = ptr.y;
+    var on = active();
+    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+
+    // geometry of the pointer for this frame (centre-based)
+    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1;
+    if (showTarget && mode === "snap") {
+      var r = target.getBoundingClientRect(), mx = 0, my = 0;
+      if (!viaKeyboard) {
+        mx = Math.max(-1, Math.min(1, (ptr.x - (r.left + r.width / 2)) / (r.width / 2))) * Math.min(6, r.width * 0.06);
+        my = Math.max(-1, Math.min(1, (ptr.y - (r.top + r.height / 2)) / (r.height / 2))) * Math.min(4, r.height * 0.08);
+      }
+      var pd = target.__lqPad || 4;
+      cx = r.left + r.width / 2 + mx; cy = r.top + r.height / 2 + my;
+      tw = r.width + pd * 2; th = r.height + pd * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "hl";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - r.left + pd) / tw * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - r.top + pd) / th * 100)).toFixed(1) + "%");
+    } else if (showTarget && mode === "icon") {
+      // lift: the pointer melts into the raised control and becomes its specular light (same rect as the control)
+      var ri = target.getBoundingClientRect();
+      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lift";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100)).toFixed(1) + "%");
+    } else if (beam) {
+      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "beam";
+    } else {
+      cx = ptr.x; cy = ptr.y; tw = 19; th = 19; tr = 9.5; k = 1700; c = 82;
+    }
+    if (on && !viaKeyboard && (!ptr.seen || ptr.typing || (now - ptr.moved > 2500 && !showTarget))) vis = 0; // idle and typing fade
+    step(P.x, cx, k, c, dt); step(P.y, cy, k, c, dt);
+    step(P.w, tw, k * 0.6, c * 0.7, dt); step(P.h, th, k * 0.6, c * 0.7, dt); step(P.r, tr, k * 0.6, c * 0.7, dt);
+    step(P.s, ptr.down ? (cls ? 0.97 : 0.8) : 1, 700, 30, dt);
+    if (on) {
+      var w = Math.max(1.5, P.w.x), h = Math.max(1.5, P.h.x);
+      ptrEl.className = cls + (ptr.down ? " down" : "");
+      ptrEl.style.opacity = String(vis);
+      ptrEl.style.width = w.toFixed(2) + "px"; ptrEl.style.height = h.toFixed(2) + "px";
+      ptrEl.style.borderRadius = Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(2) + "px";
+      var stretch = "";
+      if (!cls) { // a little liquid squash while the dot travels fast
+        var amt = Math.min(Math.hypot(ptr.vx, ptr.vy) / 4200, 0.16);
+        if (amt > 0.01) { var ang = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI; stretch = " rotate(" + ang.toFixed(1) + "deg) scale(" + (1 + amt).toFixed(3) + "," + (1 - amt * 0.6).toFixed(3) + ") rotate(" + (-ang).toFixed(1) + "deg)"; }
+      }
+      ptrEl.style.transform = "translate3d(" + (P.x.x - w / 2).toFixed(2) + "px," + (P.y.x - h / 2).toFixed(2) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch;
+    }
+
+    // controls and cards: parallax toward the pointer, lift for icons, tilt for cards
+    jelly.forEach(function (j, el) {
+      var lm = el.getAttribute("data-liquid"), snap = lm === "snap";
+      var icon = snap && el === lifted;
+      var ts = 1, ttx = 0, tty = 0, trx = 0, tryy = 0, tspec = 0;
+      if (j.on && !reduceMotion.matches && on) {
+        var rr = el.getBoundingClientRect(), ccx = rr.left + rr.width / 2, ccy = rr.top + rr.height / 2;
+        var nx = Math.max(-1, Math.min(1, (ptr.x - ccx) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - ccy) / (rr.height / 2)));
+        if (icon) { ts = 1 + Math.min(0.12, 9 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
+        else if (snap) { ts = 1; if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
+        else { ts = 1.006; tspec = 1; }
+      } else if (j.on && !snap) { tspec = 1; }
+      step(j.s, ts, snap ? 420 : 260, snap ? 21 : 26, dt);
+      step(j.tx, ttx, 300, 26, dt); step(j.ty, tty, 300, 26, dt);
+      step(j.rx, trx, 180, 20, dt); step(j.ry, tryy, 180, 20, dt);
+      step(j.spec, tspec, 120, 22, dt);
+      if (!j.on && Math.abs(j.s.x - 1) < 5e-4 && Math.abs(j.s.v) < 1e-3 && Math.abs(j.tx.x) < 0.02 && Math.abs(j.ty.x) < 0.02 &&
+          Math.abs(j.rx.x) < 0.01 && Math.abs(j.ry.x) < 0.01 && j.spec.x < 0.01) {
+        el.style.transform = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
+      }
+      el.style.transform = (snap ? "" : "perspective(900px) rotateX(" + j.rx.x.toFixed(3) + "deg) rotateY(" + j.ry.x.toFixed(3) + "deg) ") +
+        "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
+      if (!snap) el.style.setProperty("--lq-spec", Math.max(0, Math.min(1, j.spec.x)).toFixed(3));
+    });
+    stepFields(dt);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- reactive colour fields ----------
+  var fields = [];
+  function collectFields() {
+    fields = Array.prototype.map.call(doc.querySelectorAll("[data-field]"), function (el) {
+      return { el: el, d: parseFloat(el.getAttribute("data-field")) || 0.05, x: S(0), y: S(0) };
+    });
+  }
+  function stepFields(dt) {
+    if (!fields.length || reduceMotion.matches) return;
+    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0;
+    fields.forEach(function (f) {
+      var px = ptr.seen ? (ptr.x - cx) : 0, py = ptr.seen ? (ptr.y - cy) : 0;
+      var tx = px * f.d, ty = py * f.d - sy * f.d * 0.6;
+      step(f.x, tx, 18, 7, dt); step(f.y, ty, 18, 7, dt);
+      f.el.style.transform = "translate3d(" + f.x.x.toFixed(1) + "px," + f.y.x.toFixed(1) + "px,0)";
+    });
+  }
+
+  function start() { applyMode(); refractAll(); collectFields(); requestAnimationFrame(frame); }
+  if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start); else start();
+
+  window.Liquid = { refresh: function () { refractAll(); collectFields(); }, spring: S, step: step, isOn: active };
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var EMAIL = "fredwang1012@gmail.com";
+  var root = document.documentElement;
+  var live = document.getElementById("copy-live");
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (_) { return null; } }
+
+  /* theme */
+  var saved = store("lq-theme");
+  if (saved === "light" || saved === "dark") root.dataset.theme = saved;
+  var themeBtn = document.querySelector("[data-theme-toggle]");
+  function isDark() {
+    var t = root.getAttribute("data-theme");
+    return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function label() { themeBtn.setAttribute("aria-label", isDark() ? "Switch to light theme" : "Switch to dark theme"); }
+  label();
+  themeBtn.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.dataset.theme = next; store("lq-theme", next); label();
+  });
+  var mq = matchMedia("(prefers-color-scheme: dark)");
+  mq.addEventListener && mq.addEventListener("change", label);
+
+  /* views: #music and #books */
+  var BASE = "Frederick Wang - ML & Data Engineer";
+  var home = document.getElementById("home");
+  var views = { music: document.getElementById("view-music"), books: document.getElementById("view-books") };
+  var current = null;
+  function toTop() { try { window.scrollTo({ top: 0, left: 0, behavior: "instant" }); } catch (_) { window.scrollTo(0, 0); } }
+  function route(initial) {
+    var hash = decodeURIComponent(location.hash.slice(1));
+    var name = views[hash] ? hash : null;
+    var was = current;
+    current = name;
+    home.hidden = !!name;
+    Object.keys(views).forEach(function (k) { views[k].hidden = k !== name; });
+    document.querySelectorAll("[data-view-link]").forEach(function (a) {
+      if (a.getAttribute("data-view-link") === name) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    document.title = name ? (name === "music" ? "Music" : "Books") + " · " + BASE : BASE;
+    if (name) {
+      toTop();
+      var h1 = views[name].querySelector("h1");
+      try { h1.focus({ preventScroll: true }); } catch (_) { h1.focus(); }
+    } else if (was || initial) {
+      var target = hash && hash !== "top" ? document.getElementById(hash) : null;
+      if (target && !initial) target.scrollIntoView();
+      else if (target && initial) setTimeout(function () { target.scrollIntoView(); }, 0);
+      else if (was) toTop();
+    } else if (hash === "top") { /* native anchor scroll handles it */ }
+  }
+  addEventListener("hashchange", function () { route(false); });
+  route(true);
+
+  /* copy email */
+  function selectEmail() {
+    var el = document.getElementById("email-text"), r = document.createRange();
+    r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  document.querySelectorAll(".copy-email").forEach(function (btn) {
+    var span = btn.querySelector("span");
+    btn.addEventListener("click", function () {
+      var done = function (msg) { span.textContent = msg; live.textContent = msg; setTimeout(function () { span.textContent = "Copy email"; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).then(function () { done("Copied"); }, function () { selectEmail(); done("Selected, press Ctrl/⌘ C"); });
+      } else { selectEmail(); done("Selected, press Ctrl/⌘ C"); }
+    });
+  });
+
+  /* the mesh glows brightest behind the hero, then settles to a faint tint behind the frosted grid */
+  var mesh = document.querySelector(".mesh"), ticking = false;
+  function fade() { ticking = false; var k = Math.min(1, (scrollY || 0) / 1100); mesh.style.opacity = (1 - k * 0.5).toFixed(3); }
+  addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(fade); } }, { passive: true });
+  fade();
+})();
+</script>
   </body>
 </html>
