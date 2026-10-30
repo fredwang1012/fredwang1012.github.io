@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Frederick Wang - ML &amp; Data Engineer</title>
     <link rel="icon" type="image/png" href="/icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>Frederick Wang - ML & Data Engineer</title>
     <meta name="title" content="Frederick Wang - ML & Data Engineer" />
     <meta name="description" content="M.Sc. Applied Computing (AI) student at the University of Toronto and UBC CS & Statistics graduate, working on machine learning, world models, and data engineering." />
     <meta name="keywords" content="Frederick Wang, University of Toronto, UBC, Machine Learning, Data Engineering, World Models, PyTorch, Databricks, MCP, RAG" />
@@ -29,10 +29,1676 @@
     <!-- Additional SEO -->
     <link rel="canonical" href="https://fredwang1012.github.io/" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#2563eb" />
+    <script>
+      // old routes from the previous site
+      (function () { var p = location.pathname.replace(/\/+$/, ""); if (p === "/music" || p === "/books") location.replace("/#" + p.slice(1)); })();
+    </script>
+    <style>
+      /* the same base the design was built on */
+      :root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+      body { margin: 0; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+      img { max-width: 100%; }
+      [hidden] { display: none !important; }
+    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+/* Dark first (bare :root), light mirrored below with the brief's token pattern. */
+:root{
+  color-scheme: dark;
+  --bg:#08090a; --surface:#0c0d0e; --panel:#0f1011; --raised:#141517; --hover:#1a1b1e;
+  --line:#1c1e22; --line-2:#23252a; --line-3:#2c2e33; --line-strong:#3a3d44; --open-line:#34374a;
+  --text:#f7f8f8; --text-2:#d0d6e0; --text-3:#b4b9c2; --muted:#8a8f98;
+  --accent:#7b83eb; --accent-text:#a9aef7; --accent-soft:rgba(123,131,235,.18); --accent-line:rgba(123,131,235,.4);
+  --accent-ring:rgba(123,131,235,.22); --accent-glow:rgba(123,131,235,.08);
+  --green:#4cc38a; --green-dot:#4cc38a; --green-line:rgba(76,195,138,.35);
+  --queued:#5d626b;
+  --glass:rgba(13,14,17,.56); --glass-line:rgba(255,255,255,.08); --glass-hi:rgba(255,255,255,.06); --glass-shadow:rgba(0,0,0,.8);
+  --pal-bg:rgba(15,16,19,.5); --pal-line:rgba(255,255,255,.09); --pal-hi:rgba(255,255,255,.07); --pal-div:rgba(255,255,255,.07);
+  --pal-ring:rgba(255,255,255,.02); --pal-shadow:rgba(0,0,0,.55);
+  --tint-1:rgba(255,255,255,.025); --tint-2:rgba(255,255,255,.04); --tint-3:rgba(255,255,255,.065); --entry-glow:rgba(255,255,255,.035);
+  --soft-bg:rgba(15,16,17,.7); --chip-bg:rgba(15,16,17,.6);
+  --cta-bg:#f7f8f8; --cta-hover:#ffffff; --on-cta:#08090a;
+  --knob:#b4b9c2; --knob-on:#ffffff;
+  --figure-bg:#f5f5f4;
+  --scroll-thumb:#2c2e33;
+  --blob-a:#3a3f9e; --blob-b:#0f6a6e; --blob-c:#4f2b80; --blob-d:#2b3a7a;
+  --blob-op-a:.52; --blob-op-b:.42; --blob-op-c:.3; --blob-op-d:.18;
+  --lq-ring:rgba(247,248,248,.62); --lq-tint:rgba(255,255,255,.07);
+  --sans:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --nav-h:60px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    color-scheme: light;
+    --bg:#fbfbfa; --surface:#ffffff; --panel:#f7f7f5; --raised:#f2f2f0; --hover:#ececea;
+    --line:#ebebe8; --line-2:#e2e2de; --line-3:#d6d6d1; --line-strong:#bdbdb7; --open-line:#c9cbf1;
+    --text:#16171a; --text-2:#2a2c31; --text-3:#45484f; --muted:#62666d;
+    --accent:#5e66d6; --accent-text:#4249b8; --accent-soft:rgba(94,102,214,.12); --accent-line:rgba(94,102,214,.38);
+    --accent-ring:rgba(94,102,214,.2); --accent-glow:rgba(94,102,214,.07);
+    --green:#16774d; --green-dot:#26a467; --green-line:rgba(22,119,77,.32);
+    --queued:#a3a6ad;
+    --glass:rgba(255,255,255,.62); --glass-line:rgba(16,17,20,.08); --glass-hi:rgba(255,255,255,.9); --glass-shadow:rgba(30,32,48,.18);
+    --pal-bg:rgba(255,255,255,.58); --pal-line:rgba(16,17,20,.09); --pal-hi:rgba(255,255,255,.95); --pal-div:rgba(16,17,20,.07);
+    --pal-ring:rgba(16,17,20,.02); --pal-shadow:rgba(30,32,60,.16);
+    --tint-1:rgba(16,17,20,.025); --tint-2:rgba(16,17,20,.04); --tint-3:rgba(16,17,20,.055); --entry-glow:rgba(94,102,214,.05);
+    --soft-bg:rgba(255,255,255,.75); --chip-bg:rgba(255,255,255,.7);
+    --cta-bg:#16171a; --cta-hover:#000000; --on-cta:#ffffff;
+    --knob:#ffffff; --knob-on:#ffffff;
+    --figure-bg:#f5f5f4;
+    --scroll-thumb:#d6d6d1;
+    --blob-a:#8d94ef; --blob-b:#62c6c1; --blob-c:#b89cf0; --blob-d:#9fb0f0;
+    --blob-op-a:.34; --blob-op-b:.26; --blob-op-c:.26; --blob-op-d:.16;
+    --lq-ring:rgba(16,20,28,.55); --lq-tint:rgba(255,255,255,.3);
+  }
+}
+:root[data-theme="light"]{
+  color-scheme: light;
+  --bg:#fbfbfa; --surface:#ffffff; --panel:#f7f7f5; --raised:#f2f2f0; --hover:#ececea;
+  --line:#ebebe8; --line-2:#e2e2de; --line-3:#d6d6d1; --line-strong:#bdbdb7; --open-line:#c9cbf1;
+  --text:#16171a; --text-2:#2a2c31; --text-3:#45484f; --muted:#62666d;
+  --accent:#5e66d6; --accent-text:#4249b8; --accent-soft:rgba(94,102,214,.12); --accent-line:rgba(94,102,214,.38);
+  --accent-ring:rgba(94,102,214,.2); --accent-glow:rgba(94,102,214,.07);
+  --green:#16774d; --green-dot:#26a467; --green-line:rgba(22,119,77,.32);
+  --queued:#a3a6ad;
+  --glass:rgba(255,255,255,.62); --glass-line:rgba(16,17,20,.08); --glass-hi:rgba(255,255,255,.9); --glass-shadow:rgba(30,32,48,.18);
+  --pal-bg:rgba(255,255,255,.58); --pal-line:rgba(16,17,20,.09); --pal-hi:rgba(255,255,255,.95); --pal-div:rgba(16,17,20,.07);
+  --pal-ring:rgba(16,17,20,.02); --pal-shadow:rgba(30,32,60,.16);
+  --tint-1:rgba(16,17,20,.025); --tint-2:rgba(16,17,20,.04); --tint-3:rgba(16,17,20,.055); --entry-glow:rgba(94,102,214,.05);
+  --soft-bg:rgba(255,255,255,.75); --chip-bg:rgba(255,255,255,.7);
+  --cta-bg:#16171a; --cta-hover:#000000; --on-cta:#ffffff;
+  --knob:#ffffff; --knob-on:#ffffff;
+  --figure-bg:#f5f5f4;
+  --scroll-thumb:#d6d6d1;
+  --blob-a:#8d94ef; --blob-b:#62c6c1; --blob-c:#b89cf0; --blob-d:#9fb0f0;
+  --blob-op-a:.34; --blob-op-b:.26; --blob-op-c:.26; --blob-op-d:.16;
+  --lq-ring:rgba(16,20,28,.55); --lq-tint:rgba(255,255,255,.3);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top, 0px) + 96px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-feature-settings:"cv11","ss03";-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--text)}
+a:hover{color:var(--accent-text)}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--accent-text);outline-offset:2px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+[hidden]{display:none!important}
+
+/* ---------- background field ---------- */
+.field{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.field > div{position:absolute;will-change:transform}
+.field span{display:block;width:100%;height:100%;filter:blur(90px);border-radius:46% 54% 58% 42% / 48% 42% 58% 52%;animation:drift 38s ease-in-out infinite alternate, morph 26s ease-in-out infinite alternate}
+.f1{left:calc(50% - 470px);top:300px;width:520px;height:420px}
+.f1 span{background:var(--blob-a);opacity:var(--blob-op-a)}
+.f2{left:calc(50% + 40px);top:420px;width:460px;height:380px}
+.f2 span{background:var(--blob-b);opacity:var(--blob-op-b);animation-duration:44s, 31s;animation-delay:-12s,-6s}
+.f3{left:calc(50% - 160px);top:140px;width:420px;height:320px}
+.f3 span{background:var(--blob-c);opacity:var(--blob-op-c);animation-duration:52s, 23s;animation-delay:-20s,-9s}
+.f4{left:-120px;top:72%;width:420px;height:360px}
+.f4 span{background:var(--blob-d);opacity:var(--blob-op-d);animation-duration:60s, 34s;animation-delay:-30s,-14s}
+@keyframes drift{
+  0%{transform:translate3d(0,0,0) rotate(0deg) scale(1)}
+  50%{transform:translate3d(60px,-40px,0) rotate(18deg) scale(1.08)}
+  100%{transform:translate3d(-50px,30px,0) rotate(-12deg) scale(.96)}
+}
+@keyframes morph{
+  0%{border-radius:46% 54% 58% 42% / 48% 42% 58% 52%}
+  50%{border-radius:58% 42% 40% 60% / 60% 55% 45% 40%}
+  100%{border-radius:40% 60% 52% 48% / 42% 60% 40% 58%}
+}
+
+/* ---------- page ---------- */
+.page{position:relative;z-index:1;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:calc(env(safe-area-inset-top, 0px) + 12px) max(24px, env(safe-area-inset-bottom, 0px))}
+.wrap{max-width:1216px;margin-inline:auto;min-width:0}
+
+/* ---------- nav (glass) ---------- */
+.nav{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 10px);z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:var(--nav-h);padding:0 10px 0 14px;border-radius:14px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-hi),0 12px 40px -18px var(--glass-shadow);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
+.brand{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;text-decoration:none;min-height:40px;padding:0 6px;border-radius:9px;white-space:nowrap}
+.brand:hover{color:var(--text)}
+.logo{width:26px;height:26px;border-radius:7px;background:var(--text);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;flex:none}
+.nav-r{display:flex;align-items:center;gap:4px;min-width:0}
+.nav-links{display:flex;align-items:center;gap:4px;font-size:14px;min-width:0}
+.nav-links a,.nav-search{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:9px;color:var(--text-3);text-decoration:none;white-space:nowrap}
+.nav-links a:hover,.nav-search:hover{color:var(--text);background:var(--tint-2)}
+.nav-links a[aria-current="page"]{color:var(--text);background:var(--tint-3)}
+.nav-search{font:inherit;font-size:14px;background:transparent;border:1px solid var(--line-3);cursor:pointer;margin-right:6px;min-height:36px;padding:0 8px 0 10px}
+.nav-search kbd{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line-3);border-radius:5px;padding:1px 5px}
+.nav-links a.cta{min-height:36px;margin-left:6px;padding:0 14px;border-radius:8px;background:var(--cta-bg);color:var(--on-cta);font-weight:500}
+.nav-links a.cta:hover{background:var(--cta-hover);color:var(--on-cta)}
+.tools{display:flex;align-items:center;gap:2px;margin-left:6px;padding-left:8px;border-left:1px solid var(--line-2)}
+.tool{position:relative;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;border:0;background:transparent;color:var(--text-3);cursor:pointer;padding:0}
+.tool:hover{color:var(--text);background:var(--tint-2)}
+.tool svg{width:18px;height:18px}
+.theme-btn .i-moon{display:none}
+.theme-btn[data-showing="light"] .i-sun{display:none}
+.theme-btn[data-showing="light"] .i-moon{display:block}
+.cursor-btn .slash{opacity:0;transition:opacity .15s ease}
+.cursor-btn[aria-checked="false"]{color:var(--muted)}
+.cursor-btn[aria-checked="false"] svg{opacity:.7}
+.cursor-btn[aria-checked="false"] .slash{opacity:1}
+.cursor-btn[aria-checked="true"]::after{content:"";position:absolute;right:7px;top:8px;width:5px;height:5px;border-radius:999px;background:var(--accent)}
+
+/* ---------- hero ---------- */
+.hero{padding-top:104px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px}
+.badge{margin:0;display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-3);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;background:var(--soft-bg);max-width:100%}
+.badge i{width:6px;height:6px;border-radius:999px;background:var(--accent);flex:none}
+h1{margin:0;font-size:clamp(40px, 6.6vw, 76px);line-height:1.04;font-weight:600;letter-spacing:-.04em;max-width:980px;text-wrap:balance}
+.lede{margin:0;font-size:clamp(17px, 1.6vw, 20px);line-height:1.5;color:var(--muted);max-width:680px;text-wrap:pretty}
+
+/* ---------- command palette (glass) ---------- */
+.palette-wrap{display:flex;justify-content:center;padding-top:60px}
+.palette{width:min(760px, 100%);border-radius:16px;background:var(--pal-bg);border:1px solid var(--pal-line);box-shadow:inset 0 1px 0 var(--pal-hi),0 0 0 1px var(--pal-ring),0 40px 80px var(--pal-shadow);-webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%);overflow:hidden;text-align:left}
+.pal-head{display:flex;align-items:center;gap:12px;padding:0 16px 0 20px;min-height:60px;border-bottom:1px solid var(--pal-div);color:var(--muted)}
+.pal-head svg{flex:none}
+.pal-head input{flex:1 1 auto;min-width:0;height:58px;background:transparent;border:0;outline:none;color:var(--text);font-family:var(--sans);font-size:16px}
+.pal-head input::placeholder{color:var(--muted);opacity:1}
+.pal-head:focus-within{box-shadow:inset 0 -1px 0 var(--accent-line)}
+.kbd{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line-3);border-radius:6px;padding:2px 7px;white-space:nowrap;flex:none}
+.pal-list{position:relative;max-height:392px;overflow-y:auto;overscroll-behavior:contain;padding:8px;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent}
+.grp-h{margin:0;padding:10px 12px 6px;font-size:12px;font-weight:500;color:var(--muted)}
+.opt{display:flex;align-items:center;gap:12px;padding:0 12px;min-height:44px;border-radius:8px;text-decoration:none;font-size:14px;color:var(--text-2);cursor:pointer}
+.opt:hover{color:var(--text-2)}
+.opt.is-active{background:var(--tint-3);color:var(--text)}
+.ico{width:22px;height:22px;border-radius:6px;background:var(--hover);color:var(--text-3);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;flex:none}
+.opt.is-active .ico{background:var(--accent-soft);color:var(--accent-text)}
+.ico.ln{background:transparent;color:var(--muted);font-family:var(--sans);font-size:13px}
+.opt-t{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt-m{font-size:12px;color:var(--muted);white-space:nowrap;flex:none}
+.opt-m.run{color:var(--accent-text)}
+.ret{font-family:var(--mono);font-size:11px;color:var(--text-3);border:1px solid var(--line-3);border-radius:5px;padding:1px 6px;visibility:hidden;flex:none}
+.opt.is-active .ret{visibility:visible}
+.pal-empty{margin:0;padding:22px 12px;font-size:14px;color:var(--muted);text-align:center}
+.pal-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-top:1px solid var(--pal-div);font-size:12px;color:var(--muted)}
+.pal-foot span{display:inline-flex;align-items:center;gap:6px}
+.pal-foot kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line-3);border-radius:4px;padding:0 5px;color:var(--text-3)}
+.pal-keys{display:flex;gap:14px}
+
+/* ---------- section heads ---------- */
+section.block{padding-top:136px}
+.eyebrow{margin:0 0 8px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+h2{margin:0;font-size:clamp(32px, 4vw, 44px);font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.sec-head .count{margin:0;font-size:14px;color:var(--muted)}
+
+/* ---------- runs table ---------- */
+.runs{border:1px solid var(--line-2);border-radius:14px;overflow:hidden;background:var(--surface)}
+.cols{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1fr) minmax(0,1.6fr) minmax(0,1.6fr) minmax(0,.6fr);gap:16px;align-items:center}
+.thead{padding:12px 20px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.thead span:last-child,.c-year{text-align:right}
+.run-list{list-style:none;margin:0;padding:0}
+.run{position:relative;scroll-margin-top:calc(env(safe-area-inset-top, 0px) + 96px)}
+.run[data-liquid]{transform:none!important}
+.run + .run{border-top:1px solid var(--line)}
+.run::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(520px circle at var(--lq-mx, 50%) var(--lq-my, 50%), var(--accent-glow), transparent 62%);opacity:var(--lq-spec, 0)}
+.run h3{margin:0;font:inherit}
+.row{width:100%;padding:0 20px;min-height:56px;background:transparent;border:0;color:inherit;font:inherit;font-size:14px;text-align:left;cursor:pointer}
+.row:hover{background:var(--tint-1)}
+.row:focus-visible{outline-offset:-2px;border-radius:2px}
+.run.open .row{background:var(--raised);box-shadow:inset 2px 0 0 var(--accent)}
+.c-name{display:flex;align-items:center;gap:10px;font-weight:500;min-width:0}
+.c-name b{font-weight:inherit;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.run.open .c-name{font-weight:600}
+.chev{flex:none;color:var(--muted);transition:transform .2s ease}
+.run.open .chev{transform:rotate(90deg);color:var(--accent-text)}
+.c-key{color:var(--text-3);min-width:0}
+.run.open .c-key{color:var(--text)}
+.c-stack,.c-year{font-family:var(--mono);font-size:12px;color:var(--muted);min-width:0}
+.status{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.status.running{color:var(--accent-text)}
+.status.done{color:var(--green)}
+.status.queued{color:var(--muted)}
+.status.fav{color:var(--accent-text)}
+.dot{position:relative;width:7px;height:7px;border-radius:999px;background:var(--green-dot);flex:none}
+.running .dot{background:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}
+.running .dot::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--accent);animation:pulse 2.6s cubic-bezier(.2,.6,.4,1) infinite}
+.queued .dot{background:transparent;box-shadow:inset 0 0 0 1.5px var(--queued)}
+.fav .dot{background:var(--accent);border-radius:2px;transform:rotate(45deg);width:6px;height:6px}
+@keyframes pulse{0%{transform:scale(1);opacity:.55}80%,100%{transform:scale(3.2);opacity:0}}
+
+/* detail panel */
+.detail{border-top:1px solid var(--line-2);background:var(--panel)}
+.detail:not([hidden]){animation:reveal .28s ease}
+@keyframes reveal{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.d-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+.d-main{padding:22px 24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:16px;min-width:0}
+.d-main p{margin:0;font-size:15px;line-height:1.6;color:var(--text-3);max-width:62ch}
+.d-main figure{margin:0}
+.d-main figure img{width:100%;height:240px;object-fit:contain;background:var(--figure-bg);border:1px solid var(--line-2);border-radius:10px}
+.d-main figcaption{margin-top:10px;font-size:13px;color:var(--muted)}
+.lead-in{color:var(--text);font-weight:600}
+.kv{margin:0;padding:22px 24px;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:24px;row-gap:12px;align-content:start;font-family:var(--mono);font-size:13px;line-height:1.5;min-width:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;color:var(--text-2);min-width:0;overflow-wrap:anywhere}
+.kv dd.good{color:var(--green)}
+.kv a{color:var(--accent-text);text-decoration:none;display:inline-flex;align-items:center;min-height:28px;margin:-4px -6px;padding:0 6px;border-radius:6px}
+.kv a:hover{color:var(--text);background:var(--tint-2)}
+.kv .m-only{display:none}
+.pipe{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:10px}
+.pipe li{position:relative;display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);font-size:13.5px;line-height:1.45;color:var(--text-2);min-width:0}
+.pipe li span{font-family:var(--mono);font-size:11px;color:var(--accent-text);letter-spacing:.04em}
+.pipe li + li::before{content:"";position:absolute;left:-10px;top:50%;width:10px;height:1px;background:var(--line-3)}
+.d-wide{padding:22px 24px;display:flex;flex-direction:column;gap:18px;border-bottom:1px solid var(--line)}
+.d-wide p{margin:0;font-size:15px;line-height:1.6;color:var(--text-3);max-width:76ch}
+.kv.row-kv{grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr)}
+.stats{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:10px}
+.stat{padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);min-width:0}
+.stat b{display:block;font-size:24px;font-weight:600;letter-spacing:-.02em;color:var(--text)}
+.stat span{font-size:12.5px;color:var(--muted)}
+
+/* ---------- changelog ---------- */
+.changelog{display:grid;grid-template-columns:340px minmax(0,1fr);gap:64px}
+.changelog .intro p{margin:12px 0 0;font-size:15px;line-height:1.6;color:var(--muted)}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.entry{position:relative;display:grid;grid-template-columns:140px minmax(0,1fr);gap:24px;padding:30px 16px;margin-inline:-16px;border-radius:12px;scroll-margin-top:calc(env(safe-area-inset-top, 0px) + 96px)}
+.entry:first-child{padding-top:8px}
+.entry + .entry{border-top:1px solid var(--line);border-top-left-radius:0;border-top-right-radius:0}
+.entry::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(380px circle at var(--lq-mx, 50%) var(--lq-my, 50%), var(--entry-glow), transparent 65%);opacity:var(--lq-spec, 0)}
+.entry:focus{outline:none}
+.entry:focus-visible{outline:2px solid var(--accent-text)}
+.when{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:4px}
+.what{display:flex;flex-direction:column;gap:8px;min-width:0}
+.what h3{margin:0;font-size:18px;font-weight:600;letter-spacing:-.01em}
+.what h3 small{font-size:inherit;font-weight:500;color:var(--text-3)}
+.what p{margin:0;font-size:15px;line-height:1.6;color:var(--text-3)}
+.notes{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.55;color:var(--text-3)}
+.notes li{display:flex;gap:10px;align-items:baseline}
+.tag{font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--accent-text);border:1px solid var(--accent-line);border-radius:4px;padding:0 6px;flex:none}
+.tag.won{color:var(--green);border-color:var(--green-line)}
+
+/* ---------- off the clock previews + music/books tables ---------- */
+.previews{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:16px}
+.pcard{border:1px solid var(--line-2);border-radius:14px;background:var(--surface);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.pcard-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.pcard-h h3{margin:0;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.pcard-h p{margin:0;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.grp-label{margin:0;padding:12px 20px 4px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tlist{list-style:none;margin:0;padding:0}
+.trow{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 20px;min-height:52px;font-size:14px}
+.tlist .trow + .trow{border-top:1px solid var(--line)}
+.trow .n{font-family:var(--mono);font-size:12px;color:var(--accent-text)}
+.trow .t{min-width:0}
+.trow .t b{display:block;font-weight:500;color:var(--text)}
+.trow .t span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.yt{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--line-3);color:var(--text-2);text-decoration:none;font-size:13px;white-space:nowrap;background:var(--chip-bg)}
+.yt:hover{color:var(--text);border-color:var(--line-strong)}
+.see-all{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 20px;border-top:1px solid var(--line);font-size:14px;font-weight:500;color:var(--accent-text);text-decoration:none}
+.see-all:hover{background:var(--tint-1);color:var(--text)}
+.see-all .kbd{font-size:11px}
+
+/* full views */
+.view{padding-top:72px;min-height:70vh}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;margin-left:-10px;border-radius:8px;color:var(--text-3);text-decoration:none;font-size:14px}
+.back:hover{color:var(--text);background:var(--tint-2)}
+.view-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:28px 0 32px}
+.view-head h1{font-size:clamp(40px, 5.4vw, 64px);text-align:left}
+.view-head h1:focus{outline:none}
+.view-head .lede{margin-top:12px}
+.view-head .count{margin:0;font-size:14px;color:var(--muted)}
+.vtable{border:1px solid var(--line-2);border-radius:14px;overflow:hidden;background:var(--surface)}
+.vtable + .vtable{margin-top:20px}
+.vt-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.vt-h b{font-weight:500;color:var(--text-3)}
+.vt-h span{white-space:nowrap}
+.mrow{display:grid;grid-template-columns:48px minmax(0,2.2fr) minmax(0,1fr) auto;gap:16px;align-items:center;padding:12px 20px;min-height:64px;font-size:15px}
+.mrow + .mrow{border-top:1px solid var(--line)}
+.mrow .n{font-family:var(--mono);font-size:13px;color:var(--accent-text)}
+.mrow .piece{font-weight:500;color:var(--text);min-width:0}
+.mrow .comp{font-family:var(--mono);font-size:12.5px;color:var(--muted);min-width:0}
+.brow{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.4fr) minmax(0,.8fr);gap:16px;align-items:center;padding:0 20px;min-height:48px;font-size:14px}
+.brow + .brow{border-top:1px solid var(--line)}
+.brow .bt{font-weight:500;color:var(--text);min-width:0}
+.brow .ba{color:var(--text-3);min-width:0}
+.brow .status{justify-self:end;font-size:13px}
+
+/* ---------- footer ---------- */
+footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
+.talk{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.talk-l{display:flex;align-items:center;gap:18px;min-width:0}
+.avatar{width:60px;height:60px;border-radius:999px;object-fit:cover;border:1px solid var(--line-3);flex:none}
+.talk-l p{margin:0}
+.talk-h{font-size:32px;font-weight:600;letter-spacing:-.03em}
+.talk-s{margin-top:6px!important;font-size:15px;color:var(--muted)}
+.talk-r{display:flex;flex-direction:column;align-items:flex-end;gap:12px;min-width:0}
+.email-line{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.email{font-family:var(--mono);font-size:14px;color:var(--text-2);user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--cta-bg);color:var(--on-cta);font:inherit;font-size:15px;font-weight:600;border:0;cursor:pointer;text-decoration:none}
+.pill:hover{background:var(--cta-hover);color:var(--on-cta)}
+.links{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.chip{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--line-3);color:var(--text-3);text-decoration:none;font-size:13.5px;background:var(--chip-bg)}
+.chip:hover{color:var(--text);border-color:var(--line-strong)}
+.about{margin:28px 0 0;font-size:14px;line-height:1.6;color:var(--muted);max-width:70ch}
+.base{margin-top:56px;padding-block:20px 8px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.base p{margin:0}
+.switch{display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:0 14px 0 8px;border-radius:999px;border:1px solid var(--line-3);background:var(--chip-bg);color:var(--text-3);font:inherit;font-size:13px;cursor:pointer}
+.switch:hover{color:var(--text)}
+.track{position:relative;width:30px;height:18px;border-radius:999px;background:var(--line-3);transition:background .2s ease;flex:none}
+.track::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:999px;background:var(--knob);transition:transform .2s ease, background .2s ease}
+.switch[aria-checked="true"] .track{background:var(--accent)}
+.switch[aria-checked="true"] .track::after{transform:translateX(12px);background:var(--knob-on)}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px){
+  .changelog{grid-template-columns:minmax(0,1fr);gap:28px}
+  .pipe{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .pipe li + li::before{display:none}
+}
+@media (max-width: 860px){
+  .nav-search{display:none}
+  .brand .full{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .cols{grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1.6fr) minmax(0,.5fr)}
+  .c-stack,.thead .h-stack{display:none}
+  .d-grid{grid-template-columns:minmax(0,1fr)}
+  .d-main{border-right:0;border-bottom:1px solid var(--line)}
+  .kv.row-kv{grid-template-columns:auto minmax(0,1fr)}
+  .previews{grid-template-columns:minmax(0,1fr)}
+  .talk-r{align-items:flex-start}
+  .email-line,.links{justify-content:flex-start}
+}
+@media (max-width: 640px){
+  .nav{padding:0 6px 0 8px;gap:6px;--nav-h:56px}
+  .nav-links a.hide-sm{display:none}
+  .nav-links a{padding:0 10px}
+  .nav-links a.cta{margin-left:2px;padding:0 12px}
+  .tools{margin-left:4px;padding-left:4px}
+  .hero{padding-top:64px;gap:16px}
+  .badge{font-size:12px;text-align:left}
+  .palette-wrap{padding-top:40px}
+  .pal-head{padding:0 12px 0 14px}
+  .pal-list{max-height:356px;padding:6px}
+  .opt{padding:0 10px;gap:10px}
+  .opt-m{display:none}
+  .pal-keys span:nth-child(3){display:none}
+  section.block{padding-top:96px}
+  .runs{border:0;border-radius:0;overflow:visible;background:transparent}
+  .thead{display:none}
+  .run-list{display:flex;flex-direction:column;gap:10px}
+  .run{border:1px solid var(--line-2);border-radius:12px;background:var(--surface);overflow:hidden}
+  .run + .run{border-top:1px solid var(--line-2)}
+  .run.open{border-color:var(--open-line)}
+  .row.cols{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name status" "key key";row-gap:6px;column-gap:12px;padding:14px 16px}
+  .c-name{grid-area:name}
+  .c-status{grid-area:status}
+  .c-key{grid-area:key;padding-left:24px;font-size:13.5px}
+  .c-year{display:none}
+  .d-main,.kv,.d-wide{padding:18px 16px}
+  .kv .m-only{display:block}
+  .pipe{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(3, minmax(0,1fr));gap:8px}
+  .stat{padding:10px}
+  .stat b{font-size:20px}
+  .d-main figure img{height:auto;aspect-ratio:4 / 3}
+  .entry{grid-template-columns:minmax(0,1fr);gap:8px;padding:24px 16px}
+  .trow{grid-template-columns:22px minmax(0,1fr);padding:12px 16px;row-gap:8px}
+  .trow .yt{grid-column:2;justify-self:start}
+  .pcard-h,.grp-label,.see-all{padding-inline:16px}
+  .view{padding-top:48px}
+  .vt-h{padding:12px 16px}
+  .mrow{grid-template-columns:28px minmax(0,1fr);row-gap:6px;padding:14px 16px}
+  .mrow .comp{grid-column:2}
+  .mrow .yt{grid-column:2;justify-self:start;margin-top:4px}
+  .brow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t s" "a a";row-gap:2px;padding:12px 16px}
+  .brow .bt{grid-area:t}
+  .brow .ba{grid-area:a;font-size:13px;color:var(--muted)}
+  .brow .status{grid-area:s}
+  footer{margin-top:96px;padding-top:48px}
+  .talk-h{font-size:28px}
+  .avatar{width:52px;height:52px}
+}
+@media (hover: none){
+  .pal-head .kbd,.pal-keys,.cursor-btn{display:none}
+  .opt.fine-only{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .field span,.running .dot::after,.detail:not([hidden]){animation:none!important}
+  .running .dot::after{display:none}
+  .chev,.track,.track::after,.cursor-btn .slash{transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+<script>try{var lqT=localStorage.getItem("lq-theme");if(lqT==="light"||lqT==="dark")document.documentElement.dataset.theme=lqT;}catch(e){}</script>
+
+<div class="field" aria-hidden="true">
+  <div class="f1" data-field="0.05"><span></span></div>
+  <div class="f2" data-field="-0.06"><span></span></div>
+  <div class="f3" data-field="0.035"><span></span></div>
+  <div class="f4" data-field="-0.03"><span></span></div>
+</div>
+
+<div class="page">
+<div class="wrap">
+
+  <header class="nav" data-refract="soft">
+    <a class="brand" href="#top" data-liquid="snap"><span class="logo" aria-hidden="true">fw</span><span class="full">Frederick Wang</span><span class="sr-only">, back to top</span></a>
+    <div class="nav-r">
+    <nav class="nav-links" aria-label="Main">
+      <button class="nav-search" type="button" data-liquid="snap" data-focus-palette aria-label="Search the site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><kbd class="kbd-label">⌘K</kbd></button>
+      <a href="#work" class="hide-sm" data-liquid="snap">Work</a>
+      <a href="#changelog" class="hide-sm" data-liquid="snap">Experience</a>
+      <a href="#music" class="opt-nav" data-view-link="music" data-liquid="snap">Music</a>
+      <a href="#books" class="opt-nav" data-view-link="books" data-liquid="snap">Books</a>
+      <a href="/resume.pdf" class="cta" target="_blank" rel="noopener" data-liquid="snap">Résumé</a>
+    </nav>
+    <div class="tools">
+      <button type="button" class="tool theme-btn" data-theme-toggle data-liquid="snap" aria-label="Switch to light theme" data-showing="dark">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"></path></svg>
+      </button>
+      
+    </div>
+    </div>
+  </header>
+
+  <main id="top">
+   <div id="view-home">
+    <section class="hero" aria-labelledby="hero-h">
+      <p class="badge"><i aria-hidden="true"></i>M.Sc. Applied Computing (AI), University of Toronto</p>
+      <h1 id="hero-h">I ship ML models and the infrastructure under them.</h1>
+      <p class="lede">World models for autonomous driving, probabilistic forecasting, clinical ML. Previously data engineering at BCI.</p>
+    </section>
+
+    <section class="palette-wrap" aria-label="Command palette">
+      <div class="palette" id="palette-panel" data-refract="soft">
+        <div class="pal-head">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <label for="palette" class="sr-only">Search projects, experience and links</label>
+          <input id="palette" type="text" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list" aria-activedescendant="opt-wm" autocomplete="off" spellcheck="false" placeholder="Search projects, experience, links…">
+          <kbd class="kbd kbd-label" aria-hidden="true">⌘K</kbd>
+        </div>
+        <div class="pal-list" id="palette-list" role="listbox" aria-label="Results">
+          <div class="grp" role="group" aria-labelledby="g-proj">
+            <p class="grp-h" id="g-proj" role="presentation">Projects</p>
+            <a class="opt is-active" role="option" aria-selected="true" id="opt-wm" tabindex="-1" href="#run-wm" data-go="run-wm" data-k="recoverability-world-models autonomy driving carla cosmos dagger pytorch" data-liquid="snap"><span class="ico">AV</span><span class="opt-t">Recoverability-Aware World Models</span><span class="opt-m run">running</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-tb" tabindex="-1" href="#run-talkback" data-go="run-talkback" data-k="talkback books voice tts audio characters react fastapi" data-liquid="snap"><span class="ico">VO</span><span class="opt-t">Talkback</span><span class="opt-m run">running</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-sql" tabindex="-1" href="#run-text2sql" data-go="run-text2sql" data-k="text2sql-memory text-to-sql bird business logic claude bm25" data-liquid="snap"><span class="ico">SQ</span><span class="opt-t">text2sql-memory</span><span class="opt-m run">running</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-rag" tabindex="-1" href="#run-arxiv" data-go="run-arxiv" data-k="arxiv paper rag citations papers claude fastapi latex" data-liquid="snap"><span class="ico">RG</span><span class="opt-t">arXiv Paper RAG</span><span class="opt-m run">running</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-pdf" tabindex="-1" href="#run-pdf" data-go="run-pdf" data-k="semantic-pdf-reader search pdf.js pymupdf react" data-liquid="snap"><span class="ico">PD</span><span class="opt-t">Semantic PDF Reader</span><span class="opt-m run">running</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-uc" tabindex="-1" href="#run-undercurrent" data-go="run-undercurrent" data-k="undercurrent forecasting chronos-2 bayesian crps calibration" data-liquid="snap"><span class="ico">TS</span><span class="opt-t">Undercurrent</span><span class="opt-m run">running</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-ps" tabindex="-1" href="#run-patient" data-go="run-patient" data-k="unsupervised patient-stratification vae k-means clinical umap health" data-liquid="snap"><span class="ico">ML</span><span class="opt-t">Unsupervised Patient Stratification</span><span class="opt-m">7 phenotypes · 0.267 silhouette</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-gl" tabindex="-1" href="#run-greenlife" data-go="run-greenlife" data-k="greenlife rag aws bedrock hackathon 1st place" data-liquid="snap"><span class="ico">HK</span><span class="opt-t">GreenLife</span><span class="opt-m">1st place</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-ge" tabindex="-1" href="#run-ge" data-go="run-ge" data-k="great-expectations-sqlserver sql server open source databricks data quality" data-liquid="snap"><span class="ico">DQ</span><span class="opt-t">Great Expectations</span><span class="opt-m">SQL Server support</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-wc" tabindex="-1" href="#run-wealthcomplex" data-go="run-wealthcomplex" data-k="wealthcomplex investment platform node react oracle" data-liquid="snap"><span class="ico">FN</span><span class="opt-t">WealthComplex</span><span class="opt-m">Investment platform</span><span class="ret" aria-hidden="true">↵</span></a>
+          </div>
+          <div class="grp" role="group" aria-labelledby="g-exp">
+            <p class="grp-h" id="g-exp" role="presentation">Experience</p>
+            <a class="opt" role="option" aria-selected="false" id="opt-x1" tabindex="-1" href="#exp-uoft" data-go="exp-uoft" data-k="teaching assistant toronto uoft csc207 java" data-liquid="snap"><span class="ico">TA</span><span class="opt-t">Teaching Assistant, University of Toronto</span><span class="opt-m">2026 → now</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-x2" tabindex="-1" href="#exp-bci" data-go="exp-bci" data-k="data engineer intern bci british columbia investment management hackathon mcp databricks unity catalog rag" data-liquid="snap"><span class="ico">DE</span><span class="opt-t">Data Engineer Intern, BCI</span><span class="opt-m">2025</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-x3" tabindex="-1" href="#exp-ubc" data-go="exp-ubc" data-k="teaching assistant ubc statistics r database" data-liquid="snap"><span class="ico">TA</span><span class="opt-t">Teaching Assistant, UBC</span><span class="opt-m">2024 → 2026</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-x4" tabindex="-1" href="#exp-prov" data-go="exp-prov" data-k="data analyst intern providence research r surgery" data-liquid="snap"><span class="ico">DA</span><span class="opt-t">Data Analyst Intern, Providence Research</span><span class="opt-m">2024</span><span class="ret" aria-hidden="true">↵</span></a>
+          </div>
+          <div class="grp" role="group" aria-labelledby="g-links">
+            <p class="grp-h" id="g-links" role="presentation">Links</p>
+            <a class="opt" role="option" aria-selected="false" id="opt-cv" tabindex="-1" href="/resume.pdf" target="_blank" rel="noopener" data-k="resume cv pdf" data-liquid="snap"><span class="ico ln" aria-hidden="true">↗</span><span class="opt-t">Open résumé</span><span class="opt-m">PDF</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-gh" tabindex="-1" href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-k="github code repos" data-liquid="snap"><span class="ico ln" aria-hidden="true">↗</span><span class="opt-t">GitHub</span><span class="opt-m">github.com/fredwang1012</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-li" tabindex="-1" href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-k="linkedin profile" data-liquid="snap"><span class="ico ln" aria-hidden="true">↗</span><span class="opt-t">LinkedIn</span><span class="opt-m">in/frederick-wang</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-em" tabindex="-1" href="#contact" data-copy="email" data-k="email contact mail fredwang1012@gmail.com copy" data-liquid="snap"><span class="ico ln" aria-hidden="true">@</span><span class="opt-t">Copy email</span><span class="opt-m" data-copy-meta>fredwang1012@gmail.com</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-mu" tabindex="-1" href="#music" data-k="music piano rachmaninov liszt kreisler youtube" data-liquid="snap"><span class="ico">MU</span><span class="opt-t">Music</span><span class="opt-m">favourite piano works · my playing</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-bk" tabindex="-1" href="#books" data-k="books reading literature dune dostoevsky orwell" data-liquid="snap"><span class="ico">BK</span><span class="opt-t">Books</span><span class="opt-m">reading · favourites · read · to read</span><span class="ret" aria-hidden="true">↵</span></a>
+          </div>
+          <div class="grp" role="group" aria-labelledby="g-cmd">
+            <p class="grp-h" id="g-cmd" role="presentation">Commands</p>
+            <a class="opt" role="option" aria-selected="false" id="opt-theme" tabindex="-1" href="#top" data-cmd="theme" data-k="toggle theme light dark mode appearance" data-liquid="snap"><span class="ico ln" aria-hidden="true">◐</span><span class="opt-t">Toggle theme</span><span class="opt-m" data-cmd-meta="theme">Dark</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt fine-only" role="option" aria-selected="false" id="opt-cursor" tabindex="-1" href="#top" data-cmd="cursor" data-k="toggle liquid cursor pointer glass" data-liquid="snap"><span class="ico ln" aria-hidden="true">↖</span><span class="opt-t">Toggle liquid cursor</span><span class="opt-m" data-cmd-meta="cursor">Off</span><span class="ret" aria-hidden="true">↵</span></a>
+          </div>
+          <p class="pal-empty" id="palette-empty" hidden>No matches. Try “rag”, “carla” or “email”.</p>
+        </div>
+        <div class="pal-foot" aria-hidden="true">
+          <span id="palette-count">22 results</span>
+          <span class="pal-keys"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> clear</span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="work" aria-labelledby="work-h">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">work / runs</p>
+          <h2 id="work-h">Every project, as a run.</h2>
+        </div>
+        <p class="count">10 runs · 6 running</p>
+      </div>
+
+      <div class="runs">
+        <div class="cols thead" aria-hidden="true"><span>Run</span><span>Status</span><span>Key result</span><span class="h-stack">Stack</span><span>Year</span></div>
+        <ul class="run-list">
+
+          <li class="run open" id="run-wm" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="true" aria-controls="d-wm">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>recoverability-world-models</b></span>
+              <span class="c-status"><span class="status running"><span class="dot" aria-hidden="true"></span>running</span></span>
+              <span class="c-key">CARLA mining pipeline</span>
+              <span class="c-stack">pytorch carla cosmos</span>
+              <span class="c-year">2026</span>
+            </button></h3>
+            <div class="detail" id="d-wm" role="region" aria-label="Recoverability-Aware World Models details">
+              <div class="d-wide">
+                <p><strong class="lead-in">Recoverability-Aware World Models.</strong> Prediction-only world models can call a scene safe after the point of no return. This objective keeps whether the car can still recover, then distils it into a driving policy.</p>
+                <ol class="pipe" aria-label="Pipeline">
+                  <li><span>01 · mine</span>Mine unrecoverable scenes in headless CARLA</li>
+                  <li><span>02 · counterfactuals</span>Generate counterfactual variants with NVIDIA Cosmos</li>
+                  <li><span>03 · world model</span>Train a recoverability-aware world model</li>
+                  <li><span>04 · distil</span>Distil it into a DAgger-trained driving policy</li>
+                </ol>
+              </div>
+              <dl class="kv row-kv">
+                <dt>status</dt><dd>ongoing · Oct 2026</dd>
+                <dt>area</dt><dd>Autonomy · UofT</dd>
+                <dt>stack</dt><dd>PyTorch · CARLA · NVIDIA Cosmos · imitation learning</dd>
+                <dt>year</dt><dd>2026</dd>
+              </dl>
+            </div>
+          </li>
+
+          <li class="run" id="run-talkback" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-talkback">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>talkback</b></span>
+              <span class="c-status"><span class="status running"><span class="dot" aria-hidden="true"></span>running</span></span>
+              <span class="c-key">Talk back to book characters, spoiler-free</span>
+              <span class="c-stack">react fastapi higgs-tts</span>
+              <span class="c-year">2026</span>
+            </button></h3>
+            <div class="detail" id="d-talkback" role="region" aria-label="Talkback details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>Books read aloud by a full expressive cast. Stop anywhere and ask a character a question out loud: they answer in their own voice, using only what you have read so far, so nothing is spoiled.</p>
+                  <div class="stats">
+                    <div class="stat"><b>20</b><span>voiced emotions</span></div>
+                    <div class="stat"><b>191</b><span>features tracked</span></div>
+                    <div class="stat"><b>~1,750</b><span>tests</span></div>
+                  </div>
+                </div>
+                <dl class="kv">
+                  <dt>status</dt><dd>ongoing · Oct 2026</dd>
+                  <dt>stack</dt><dd>React · FastAPI · Higgs Audio TTS · realtime voice · lip-sync</dd>
+                  <dt class="m-only">year</dt><dd class="m-only">2026</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/talkback" target="_blank" rel="noopener" data-liquid="snap">github ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-text2sql" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-text2sql">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>text2sql-memory</b></span>
+              <span class="c-status"><span class="status running"><span class="dot" aria-hidden="true"></span>running</span></span>
+              <span class="c-key">Business-logic memory vs. schema-only on BIRD</span>
+              <span class="c-stack">python claude bm25</span>
+              <span class="c-year">2026</span>
+            </button></h3>
+            <div class="detail" id="d-text2sql" role="region" aria-label="text2sql-memory details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>Text-to-SQL that retrieves business logic, not just schema: glossary terms, metric definitions and join paths, tested against a schema-only baseline on BIRD.</p>
+                </div>
+                <dl class="kv">
+                  <dt>status</dt><dd>ongoing</dd>
+                  <dt>stack</dt><dd>Python · Claude API · BM25 + embeddings</dd>
+                  <dt class="m-only">year</dt><dd class="m-only">2026</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/text2sql-memory" target="_blank" rel="noopener" data-liquid="snap">github ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-arxiv" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-arxiv">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>arxiv-paper-rag</b></span>
+              <span class="c-status"><span class="status running"><span class="dot" aria-hidden="true"></span>running</span></span>
+              <span class="c-key">Section-level citations, checked quotes</span>
+              <span class="c-stack">python claude fastapi</span>
+              <span class="c-year">2026</span>
+            </button></h3>
+            <div class="detail" id="d-arxiv" role="region" aria-label="arXiv Paper RAG details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>Answers about a reading list of papers, every claim cited to the exact paper and section, and every quote checked against the passage it came from.</p>
+                </div>
+                <dl class="kv">
+                  <dt>status</dt><dd>ongoing</dd>
+                  <dt>stack</dt><dd>Python · Claude API · FastAPI · LaTeX parsing</dd>
+                  <dt class="m-only">year</dt><dd class="m-only">2026</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/arxiv-paper-rag" target="_blank" rel="noopener" data-liquid="snap">github ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-pdf" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-pdf">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>semantic-pdf-reader</b></span>
+              <span class="c-status"><span class="status running"><span class="dot" aria-hidden="true"></span>running</span></span>
+              <span class="c-key">Search a PDF by meaning, jump + highlight</span>
+              <span class="c-stack">react pdf.js pymupdf</span>
+              <span class="c-year">2026</span>
+            </button></h3>
+            <div class="detail" id="d-pdf" role="region" aria-label="Semantic PDF Reader details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>Search a PDF by meaning. It jumps to the page and highlights the passage, in one document or a whole library, and nothing leaves your machine.</p>
+                </div>
+                <dl class="kv">
+                  <dt>status</dt><dd>ongoing</dd>
+                  <dt>stack</dt><dd>React · pdf.js · FastAPI · PyMuPDF</dd>
+                  <dt class="m-only">year</dt><dd class="m-only">2026</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/semantic-pdf-reader" target="_blank" rel="noopener" data-liquid="snap">github ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-undercurrent" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-undercurrent">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>undercurrent</b></span>
+              <span class="c-status"><span class="status running"><span class="dot" aria-hidden="true"></span>running</span></span>
+              <span class="c-key">CRPS + calibration benchmark</span>
+              <span class="c-stack">chronos-2 bayes bps</span>
+              <span class="c-year">2026</span>
+            </button></h3>
+            <div class="detail" id="d-undercurrent" role="region" aria-label="Undercurrent details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>Chronos-2 with covariates against a hierarchical Bayesian driver model, combined by Bayesian Predictive Synthesis and scored on CRPS and calibration.</p>
+                </div>
+                <dl class="kv">
+                  <dt>status</dt><dd>ongoing</dd>
+                  <dt>area</dt><dd>Forecasting · 2026</dd>
+                  <dt>stack</dt><dd>Python · Chronos-2 · Bayesian modelling</dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-patient" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-patient">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>patient-stratification</b></span>
+              <span class="c-status"><span class="status done"><span class="dot" aria-hidden="true"></span>finished</span></span>
+              <span class="c-key">silhouette 0.267</span>
+              <span class="c-stack">pytorch vae k-means</span>
+              <span class="c-year">2026</span>
+            </button></h3>
+            <div class="detail" id="d-patient" role="region" aria-label="Unsupervised Patient Stratification details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <figure>
+                    <img src="/patient-stratification.webp" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right" loading="lazy" width="800" height="600">
+                    <figcaption>VAE latent space (UMAP). Seven phenotypes found with no labels.</figcaption>
+                  </figure>
+                  <p>Unsupervised Patient Stratification: a VAE compresses checkup labs and Chinese free-text reports; K-Means on its latent space finds seven clinical phenotypes without labels.</p>
+                </div>
+                <dl class="kv">
+                  <dt>data</dt><dd>234,532 visits · 109,500 patients</dd>
+                  <dt>inputs</dt><dd>labs + Chinese free text (TF-IDF SVD)</dd>
+                  <dt>model</dt><dd>VAE, d_z = 32 → K-Means, K = 15</dd>
+                  <dt>silhouette</dt><dd class="good">0.267</dd>
+                  <dt>davies-bouldin</dt><dd class="good">1.694</dd>
+                  <dt>phenotypes</dt><dd>7, incl. liver fibrosis, hypothyroidism</dd>
+                  <dt>course</dt><dd>UBC CPSC 440 · Apr 2026</dd>
+                  <dt class="m-only">stack</dt><dd class="m-only">pytorch vae k-means</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/patient-stratification" target="_blank" rel="noopener" data-liquid="snap">code + report ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-greenlife" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-greenlife">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>greenlife</b></span>
+              <span class="c-status"><span class="status done"><span class="dot" aria-hidden="true"></span>finished</span></span>
+              <span class="c-key">1st place, AWS × UBC hackathon</span>
+              <span class="c-stack">next.js bedrock rag</span>
+              <span class="c-year">2024</span>
+            </button></h3>
+            <div class="detail" id="d-greenlife" role="region" aria-label="GreenLife details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>GreenLife: RAG on AWS Bedrock. 1st place, AWS × UBC hackathon.</p>
+                </div>
+                <dl class="kv">
+                  <dt>result</dt><dd class="good">1st place</dd>
+                  <dt>stack</dt><dd>next.js · AWS Bedrock · RAG</dd>
+                  <dt class="m-only">year</dt><dd class="m-only">2024</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/greenlife" target="_blank" rel="noopener" data-liquid="snap">github ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-ge" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-ge">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>great-expectations-sqlserver</b></span>
+              <span class="c-status"><span class="status done"><span class="dot" aria-hidden="true"></span>shipped</span></span>
+              <span class="c-key">SQL Server support, open source</span>
+              <span class="c-stack">python databricks</span>
+              <span class="c-year">2025</span>
+            </button></h3>
+            <div class="detail" id="d-ge" role="region" aria-label="Great Expectations details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>Great Expectations: SQL Server support, contributed in the open. Shipped during the BCI data engineering internship.</p>
+                </div>
+                <dl class="kv">
+                  <dt>status</dt><dd class="good">shipped</dd>
+                  <dt>stack</dt><dd>python · databricks</dd>
+                  <dt class="m-only">year</dt><dd class="m-only">2025</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/great_expectations/tree/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">github ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+          <li class="run" id="run-wealthcomplex" data-liquid="lift">
+            <h3><button class="row cols" type="button" aria-expanded="false" aria-controls="d-wealthcomplex">
+              <span class="c-name"><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg><b>wealthcomplex</b></span>
+              <span class="c-status"><span class="status done"><span class="dot" aria-hidden="true"></span>finished</span></span>
+              <span class="c-key">Investment platform</span>
+              <span class="c-stack">node react oracle</span>
+              <span class="c-year">—</span>
+            </button></h3>
+            <div class="detail" id="d-wealthcomplex" role="region" aria-label="WealthComplex details" hidden>
+              <div class="d-grid">
+                <div class="d-main">
+                  <p>WealthComplex: an investment platform.</p>
+                </div>
+                <dl class="kv">
+                  <dt>stack</dt><dd>node · react · oracle</dd>
+                  <dt>source</dt><dd><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap">github ↗</a></dd>
+                </dl>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <section class="block changelog" id="changelog" aria-labelledby="log-h">
+      <div class="intro">
+        <p class="eyebrow">experience / changelog</p>
+        <h2 id="log-h">Changelog</h2>
+        <p>Roles, newest first.</p>
+      </div>
+      <ol class="log">
+        <li class="entry" id="exp-uoft" tabindex="-1" data-liquid="lift">
+          <span class="when">2026-09 → now</span>
+          <div class="what"><h3>Teaching Assistant <small>· University of Toronto</small></h3><p>CSC207 tutorials and labs on Java, object-oriented design and Git-based teamwork.</p></div>
+        </li>
+        <li class="entry" id="exp-bci" tabindex="-1" data-liquid="lift">
+          <span class="when">2025-05 → 12</span>
+          <div class="what">
+            <h3>Data Engineer Intern <small>· British Columbia Investment Management (BCI)</small></h3>
+            <ul class="notes">
+              <li><span class="tag won">WON</span><span>Internal hackathon: schedule optimizer, +25% efficiency, $20M projected value; led it to production.</span></li>
+              <li><span class="tag">SHIPPED</span><span>Production MCP server on Databricks Apps connecting Claude to Unity Catalog, −50% ad hoc analysis time.</span></li>
+              <li><span class="tag">SHIPPED</span><span>RAG knowledge base over unstructured data; SQL Server support in Great Expectations.</span></li>
+            </ul>
+          </div>
+        </li>
+        <li class="entry" id="exp-ubc" tabindex="-1" data-liquid="lift">
+          <span class="when">2024-09 → 2026-04</span>
+          <div class="what"><h3>Teaching Assistant <small>· UBC CS &amp; Statistics</small></h3><p>Led ML tutorials in R, mentored 100+ students, and co-facilitated 400-level database lectures.</p></div>
+        </li>
+        <li class="entry" id="exp-prov" tabindex="-1" data-liquid="lift">
+          <span class="when">2024-01 → 08</span>
+          <div class="what"><h3>Data Analyst Intern <small>· Providence Research</small></h3><p>Built supervised models in R predicting ankle-surgery outcomes from patient risk factors.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="block" id="off-the-clock" aria-labelledby="otc-h">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">off the clock / queue</p>
+          <h2 id="otc-h">Music and books.</h2>
+        </div>
+        <p class="count">4 pieces · 33 books</p>
+      </div>
+      <div class="previews">
+        <article class="pcard" aria-labelledby="pm-h">
+          <div class="pcard-h"><h3 id="pm-h">Music</h3><p>favourite piano works</p></div>
+          <p class="grp-label">My ranking</p>
+          <ol class="tlist">
+              <li class="trow"><span class="n">01</span><span class="t"><b>Piano Concerto No. 3 in D minor, Op. 30</b><span>Rachmaninov</span></span><a class="yt" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Rachmaninov – Piano Concerto No. 3 in D minor, Op. 30">Listen on YouTube ↗</a></li>
+              <li class="trow"><span class="n">02</span><span class="t"><b>Piano Concerto No. 2 in C minor, Op. 18</b><span>Rachmaninov</span></span><a class="yt" href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Rachmaninov – Piano Concerto No. 2 in C minor, Op. 18">Listen on YouTube ↗</a></li>
+              <li class="trow"><span class="n">03</span><span class="t"><b>Tre sonetti di Petrarca, S. 270 (Sonetto 104)</b><span>Liszt</span></span><a class="yt" href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Liszt – Tre sonetti di Petrarca, S. 270 (Sonetto 104)">Listen on YouTube ↗</a></li>
+          </ol>
+          <p class="grp-label">My playing</p>
+          <ul class="tlist">
+              <li class="trow"><span class="n" aria-hidden="true">▸</span><span class="t"><b>Liebesleid (arr. Rachmaninov)</b><span>Kreisler</span></span><a class="yt" href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Kreisler – Liebesleid (arr. Rachmaninov)">Listen on YouTube ↗</a></li>
+          </ul>
+          <a class="see-all" href="#music" data-liquid="snap">See all music →</a>
+        </article>
+        <article class="pcard" aria-labelledby="pb-h">
+          <div class="pcard-h"><h3 id="pb-h">Books</h3><p>reading log</p></div>
+          <p class="grp-label">Currently reading</p>
+          <ul class="tlist">
+              <li class="trow"><span class="n" aria-hidden="true">▸</span><span class="t"><b>Dune</b><span>Frank Herbert</span></span><span class="status running"><span class="dot" aria-hidden="true"></span>reading</span></li>
+          </ul>
+          <p class="grp-label">Favourites</p>
+          <ol class="tlist">
+              <li class="trow"><span class="n">01</span><span class="t"><b>The Brothers Karamazov</b><span>Fyodor Dostoevsky</span></span><span class="status fav"><span class="dot" aria-hidden="true"></span>favourite</span></li>
+              <li class="trow"><span class="n">02</span><span class="t"><b>The Idiot</b><span>Fyodor Dostoevsky</span></span><span class="status fav"><span class="dot" aria-hidden="true"></span>favourite</span></li>
+              <li class="trow"><span class="n">03</span><span class="t"><b>1984</b><span>George Orwell</span></span><span class="status fav"><span class="dot" aria-hidden="true"></span>favourite</span></li>
+          </ol>
+          <a class="see-all" href="#books" data-liquid="snap">See all books →</a>
+        </article>
+      </div>
+    </section>
+   </div>
+
+   <section class="view" id="view-music" aria-labelledby="music-h" hidden>
+     <a class="back" href="#top" data-liquid="snap">← Home</a>
+     <div class="view-head">
+       <div>
+         <p class="eyebrow">off the clock / music</p>
+         <h1 id="music-h" tabindex="-1">Music</h1>
+         <p class="lede">A window into my passion for music.</p>
+       </div>
+       <p class="count">3 ranked · my playing</p>
+     </div>
+     <div class="vtable">
+       <p class="vt-h"><b>My personal ranking of favourite piano works</b><span>ranked 1–3</span></p>
+       <ol class="tlist">
+          <li class="mrow"><span class="n">01</span><span class="piece">Piano Concerto No. 3 in D minor, Op. 30</span><span class="comp">Rachmaninov</span><a class="yt" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Rachmaninov – Piano Concerto No. 3 in D minor, Op. 30">Listen on YouTube ↗</a></li>
+          <li class="mrow"><span class="n">02</span><span class="piece">Piano Concerto No. 2 in C minor, Op. 18</span><span class="comp">Rachmaninov</span><a class="yt" href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Rachmaninov – Piano Concerto No. 2 in C minor, Op. 18">Listen on YouTube ↗</a></li>
+          <li class="mrow"><span class="n">03</span><span class="piece">Tre sonetti di Petrarca, S. 270 (Sonetto 104)</span><span class="comp">Liszt</span><a class="yt" href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Liszt – Tre sonetti di Petrarca, S. 270 (Sonetto 104)">Listen on YouTube ↗</a></li>
+       </ol>
+     </div>
+     <div class="vtable">
+       <p class="vt-h"><b>My playing</b><span>1</span></p>
+       <ul class="tlist">
+          <li class="mrow"><span class="n" aria-hidden="true">▸</span><span class="piece">Liebesleid (arr. Rachmaninov)</span><span class="comp">Kreisler</span><a class="yt" href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap" aria-label="Listen on YouTube: Kreisler – Liebesleid (arr. Rachmaninov)">Listen on YouTube ↗</a></li>
+       </ul>
+     </div>
+   </section>
+
+   <section class="view" id="view-books" aria-labelledby="books-h" hidden>
+     <a class="back" href="#top" data-liquid="snap">← Home</a>
+     <div class="view-head">
+       <div>
+         <p class="eyebrow">off the clock / books</p>
+         <h1 id="books-h" tabindex="-1">Books</h1>
+         <p class="lede">Record of my journey through literature.</p>
+       </div>
+       <p class="count">33 books · 1 reading</p>
+     </div>
+     <div class="vtable">
+       <p class="vt-h"><b>Currently reading</b><span>1</span></p>
+       <ul class="tlist">
+          <li class="brow"><span class="bt">Dune</span><span class="ba">Frank Herbert</span><span class="status running"><span class="dot" aria-hidden="true"></span>reading</span></li>
+       </ul>
+     </div>
+     <div class="vtable">
+       <p class="vt-h"><b>Favourites</b><span>3</span></p>
+       <ul class="tlist">
+          <li class="brow"><span class="bt">The Brothers Karamazov</span><span class="ba">Fyodor Dostoevsky</span><span class="status fav"><span class="dot" aria-hidden="true"></span>favourite</span></li>
+          <li class="brow"><span class="bt">The Idiot</span><span class="ba">Fyodor Dostoevsky</span><span class="status fav"><span class="dot" aria-hidden="true"></span>favourite</span></li>
+          <li class="brow"><span class="bt">1984</span><span class="ba">George Orwell</span><span class="status fav"><span class="dot" aria-hidden="true"></span>favourite</span></li>
+       </ul>
+     </div>
+     <div class="vtable">
+       <p class="vt-h"><b>Read</b><span>13</span></p>
+       <ul class="tlist">
+          <li class="brow"><span class="bt">A Day in the Life of Ivan Denisovich</span><span class="ba">Aleksandr Solzhenitsyn</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">White Nights</span><span class="ba">Fyodor Dostoevsky</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">The Great Gatsby</span><span class="ba">F. Scott Fitzgerald</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">Animal Farm</span><span class="ba">George Orwell</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">The Emperor of All Maladies</span><span class="ba">Siddhartha Mukherjee</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">The Three-Body Problem</span><span class="ba">Liu Cixin</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">The Dark Forest</span><span class="ba">Liu Cixin</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">Death's End</span><span class="ba">Liu Cixin</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">Kokoro</span><span class="ba">Natsume Sōseki</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">The Setting Sun</span><span class="ba">Osamu Dazai</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">No Longer Human</span><span class="ba">Osamu Dazai</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">Norwegian Wood</span><span class="ba">Haruki Murakami</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+          <li class="brow"><span class="bt">Crime and Punishment</span><span class="ba">Fyodor Dostoevsky</span><span class="status done"><span class="dot" aria-hidden="true"></span>read</span></li>
+       </ul>
+     </div>
+     <div class="vtable">
+       <p class="vt-h"><b>To read</b><span>16</span></p>
+       <ul class="tlist">
+          <li class="brow"><span class="bt">Meditations</span><span class="ba">Marcus Aurelius</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">Flatland: A Romance of Many Dimensions</span><span class="ba">Edwin A. Abbott</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">Faust</span><span class="ba">Johann Wolfgang von Goethe</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">Dune series</span><span class="ba">Frank Herbert</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">The Iliad</span><span class="ba">Homer</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">The Metamorphosis</span><span class="ba">Franz Kafka</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">A Song of Ice and Fire</span><span class="ba">George R.R. Martin</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">I Am a Cat</span><span class="ba">Natsume Sōseki</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">Beyond Good and Evil</span><span class="ba">Friedrich Nietzsche</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">The Song of the Cell</span><span class="ba">Siddhartha Mukherjee</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">One Hundred Years of Solitude</span><span class="ba">Gabriel García Márquez</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">The Republic</span><span class="ba">Plato</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">Cancer Ward</span><span class="ba">Aleksandr Solzhenitsyn</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">The Gulag Archipelago</span><span class="ba">Aleksandr Solzhenitsyn</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">War and Peace</span><span class="ba">Leo Tolstoy</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+          <li class="brow"><span class="bt">Lord of the Flies</span><span class="ba">William Golding</span><span class="status queued"><span class="dot" aria-hidden="true"></span>to read</span></li>
+       </ul>
+     </div>
+   </section>
+  </main>
+
+  <footer id="contact" aria-labelledby="talk-h">
+    <div class="talk">
+      <div class="talk-l">
+        <img class="avatar" src="/frederick.jpg" alt="Portrait of Frederick Wang" width="60" height="60">
+        <div>
+          <p class="talk-h" id="talk-h">Let’s talk.</p>
+          <p class="talk-s">Piano, skiing and classic literature also welcome topics.</p>
+        </div>
+      </div>
+      <div class="talk-r">
+        <div class="email-line">
+          <span class="email" id="email-text">fredwang1012@gmail.com</span>
+          <button class="pill copy-email" type="button" data-liquid="snap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="lbl">Copy email</span></button>
+        </div>
+        <div class="links">
+          <a class="chip" href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a>
+          <a class="chip" href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-liquid="snap">LinkedIn ↗</a>
+          <a class="chip" href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap">Résumé ↗</a>
+          <a class="chip" href="#music" data-liquid="snap">Music</a>
+          <a class="chip" href="#books" data-liquid="snap">Books</a>
+        </div>
+      </div>
+    </div>
+    <p class="about">Off the clock: piano (lately Rachmaninov), skiing, soccer, badminton and classic literature. B.Sc. in Computer Science and Statistics from UBC, Dean’s List 2022–2026.</p>
+    <div class="base">
+      <p>© 2026 Frederick Wang</p>
+      <button class="switch" type="button" role="switch" aria-checked="false" data-liquid-toggle data-liquid="snap"><span class="track" aria-hidden="true"></span>Liquid cursor</button>
+    </div>
+  </footer>
+
+</div>
+</div>
+<p class="sr-only" id="live" aria-live="polite"></p>
+<script>
+/*!
+ * Liquid engine: an iPadOS (Magic Keyboard era) pointer after Apple's "Design for the iPadOS pointer":
+ * a 19px glassy dot that becomes a line-height text beam over text, a highlight that sits behind the label
+ * of controls without a background, a lift (scale, shadow, specular light) for controls with one,
+ * magnetism with generous hit margins, gentle parallax, idle fade. Plus reactive colour fields and
+ * Chromium backdrop refraction.
+ *
+ * Markup hooks
+ *   data-liquid="snap"   small controls (links, buttons, nav items): the cursor merges into them and they bobble
+ *   data-liquid="lift"   large surfaces (cards): they tilt toward the cursor; the page can read
+ *                        --lq-mx, --lq-my (pointer position, %) and --lq-spec (0..1) for a highlight
+ *   data-refract         glass that bends the content behind it (Chromium); "soft" or "strong" as the value
+ *   data-liquid-toggle   a button that turns the liquid cursor on and off (aria-checked is kept in sync)
+ *   data-field="0.06"    a background colour blob that drifts toward or away from the pointer and with scroll;
+ *                        the value is its depth (negative moves away). Put the CSS drift/morph animation on a
+ *                        child element, since the engine owns this element's transform. Works on touch via scroll.
+ * Theme hooks (CSS custom properties on :root)
+ *   --lq-dot    fill of the pointer dot and text beam   --lq-hl  fill of a control's highlight   --lq-press  pressed highlight
+ *   (--lq-ring and --lq-tint are still read by pages for their own glass)
+ * Off automatically on touch screens and when the viewer prefers reduced motion.
+ * Refraction technique after deepika-builds/liquid-glass (MIT).
+ */
+(function () {
+  "use strict";
+  if (window.Liquid) return;
+
+  var doc = document, root = doc.documentElement;
+  var reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  var finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+  };
+
+  // ---------- styles ----------
+  // Defaults use :where() so a page's own tokens always win.
+  var css = [
+    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-dot:rgba(60,60,67,.46);--lq-hl:rgba(60,60,67,.12);--lq-press:rgba(60,60,67,.22);--lq-blend:multiply;--lq-sheen:rgba(255,255,255,.55)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}}",
+    ":where(:root[data-theme=dark]){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}",
+    "body.lq-on,body.lq-on *{cursor:none!important}",
+    "#lq-ptr{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;opacity:0;width:19px;height:19px;border-radius:9.5px;transform-origin:50% 50%;" +
+      "background:var(--lq-dot);-webkit-backdrop-filter:blur(1.5px) saturate(170%);backdrop-filter:blur(1.5px) saturate(170%);" +
+      "box-shadow:inset 0 0 0 .5px rgba(255,255,255,.4),inset 0 1px 1px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.12);" +
+      "transition:opacity .35s ease,background-color .2s ease,box-shadow .25s ease}",
+    // highlight: a flat translucent shape that blends under the label, with a sheen that follows the pointer
+    "#lq-ptr.hl{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,50%),var(--lq-sheen),transparent 60%) ,var(--lq-hl);background-blend-mode:soft-light;mix-blend-mode:var(--lq-blend);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.hl.down{background:var(--lq-press)}",
+    // lift: the pointer becomes the specular light on top of a raised control
+    "#lq-ptr.lift{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.5),rgba(255,255,255,0) 55%);mix-blend-mode:soft-light;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.beam{border-radius:1.5px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "[data-liquid]{will-change:transform}",
+    ".lq-lifted{box-shadow:0 12px 26px -10px rgba(0,0,0,.38),0 3px 8px -2px rgba(0,0,0,.14)!important;position:relative;z-index:2}",
+    "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}"
+  ].join("\n");
+  var style = doc.createElement("style");
+  style.textContent = css;
+  doc.head.insertBefore(style, doc.head.firstChild);
+
+  // ---------- the pointer: one shape that is a dot, a text beam or a control's highlight ----------
+  var ptrEl = doc.createElement("div");
+  ptrEl.id = "lq-ptr"; ptrEl.setAttribute("aria-hidden", "true");
+  function mount() { doc.body.appendChild(ptrEl); }
+  if (doc.body) mount(); else doc.addEventListener("DOMContentLoaded", mount);
+
+  // ---------- refraction (Chromium) ----------
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var refractionOK = (function () {
+    var ua = navigator.userAgent;
+    if (/Firefox/.test(ua)) return false;
+    if (/Safari/.test(ua) && !/Chrome|Chromium|Edg/.test(ua)) return false;
+    return CSS.supports("backdrop-filter", "url(#x)");
+  })();
+  var defs = null, uid = 0, mapCache = {};
+  function ensureDefs() {
+    if (defs) return defs;
+    var svg = doc.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("width", "0"); svg.setAttribute("height", "0"); svg.setAttribute("aria-hidden", "true");
+    svg.style.position = "absolute";
+    defs = doc.createElementNS(SVG_NS, "defs"); svg.appendChild(defs); doc.body.appendChild(svg);
+    return defs;
+  }
+  function makeMap(w, h, radius, border, blurPx) {
+    w = Math.max(8, Math.round(w)); h = Math.max(8, Math.round(h));
+    var key = [w, h, Math.round(radius), border, blurPx].join("|");
+    if (mapCache[key]) return mapCache[key];
+    var c = doc.createElement("canvas"); c.width = w; c.height = h;
+    var ctx = c.getContext("2d");
+    var gx = ctx.createLinearGradient(0, 0, w, 0); gx.addColorStop(0, "#000"); gx.addColorStop(1, "#f00");
+    ctx.fillStyle = gx; ctx.fillRect(0, 0, w, h);
+    var gy = ctx.createLinearGradient(0, 0, 0, h); gy.addColorStop(0, "#000"); gy.addColorStop(1, "#00f");
+    ctx.globalCompositeOperation = "difference"; ctx.fillStyle = gy; ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    var inset = border * Math.min(w, h);
+    ctx.filter = "blur(" + blurPx + "px)"; ctx.fillStyle = "rgba(128,128,128,0.94)";
+    ctx.beginPath();
+    ctx.roundRect(inset, inset, w - inset * 2, h - inset * 2, Math.max(1, Math.min(radius, h / 2) - inset));
+    ctx.fill();
+    return (mapCache[key] = c.toDataURL());
+  }
+  function makeFilter(scale, chroma) {
+    var id = "lq-f" + (++uid);
+    var f = doc.createElementNS(SVG_NS, "filter");
+    f.setAttribute("id", id); f.setAttribute("x", "0"); f.setAttribute("y", "0");
+    f.setAttribute("width", "100%"); f.setAttribute("height", "100%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    var img = doc.createElementNS(SVG_NS, "feImage");
+    img.setAttribute("x", "0"); img.setAttribute("y", "0"); img.setAttribute("result", "map");
+    img.setAttribute("preserveAspectRatio", "none"); f.appendChild(img);
+    var keep = ["1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"];
+    for (var i = 0; i < 3; i++) {
+      var d = doc.createElementNS(SVG_NS, "feDisplacementMap");
+      d.setAttribute("in", "SourceGraphic"); d.setAttribute("in2", "map");
+      d.setAttribute("scale", String(scale + i * chroma));
+      d.setAttribute("xChannelSelector", "R"); d.setAttribute("yChannelSelector", "B");
+      d.setAttribute("result", "d" + i); f.appendChild(d);
+      var m = doc.createElementNS(SVG_NS, "feColorMatrix");
+      m.setAttribute("in", "d" + i); m.setAttribute("type", "matrix"); m.setAttribute("values", keep[i]);
+      m.setAttribute("result", "c" + i); f.appendChild(m);
+    }
+    var b1 = doc.createElementNS(SVG_NS, "feBlend");
+    b1.setAttribute("in", "c0"); b1.setAttribute("in2", "c1"); b1.setAttribute("mode", "screen"); b1.setAttribute("result", "c01"); f.appendChild(b1);
+    var b2 = doc.createElementNS(SVG_NS, "feBlend");
+    b2.setAttribute("in", "c01"); b2.setAttribute("in2", "c2"); b2.setAttribute("mode", "screen"); f.appendChild(b2);
+    ensureDefs().appendChild(f);
+    return { id: id, img: img };
+  }
+  function refract(el) {
+    if (!refractionOK || el.__lqRefract) return;
+    el.__lqRefract = true;
+    var strong = el.getAttribute("data-refract") === "strong";
+    var filt = makeFilter(strong ? -90 : -60, strong ? 5 : 3);
+    var base = getComputedStyle(el).backdropFilter;
+    var extra = base && base !== "none" ? base.replace(/blur\([^)]*\)/, "blur(3px)") : "blur(3px) saturate(170%)";
+    function fit() {
+      var w = el.offsetWidth, h = el.offsetHeight; if (!w || !h) return;
+      var r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      filt.img.setAttribute("href", makeMap(w, h, r, strong ? 0.2 : 0.16, Math.max(4, Math.min(12, h / 6))));
+      filt.img.setAttribute("width", String(w)); filt.img.setAttribute("height", String(h));
+    }
+    fit();
+    el.style.backdropFilter = "url(#" + filt.id + ") " + extra;
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(el);
+  }
+  function refractAll() { doc.querySelectorAll("[data-refract]").forEach(refract); }
+
+  // ---------- springs (fixed sub-steps keep stiff springs stable) ----------
+  function S(x) { return { x: x, v: 0 }; }
+  function step(s, target, k, c, dt) {
+    var n = Math.max(1, Math.ceil(dt * 480)), h = dt / n;
+    for (var i = 0; i < n; i++) { var a = -k * (s.x - target) - c * s.v; s.v += a * h; s.x += s.v * h; }
+  }
+
+  // ---------- state ----------
+  var liquidOn = store.get("lq-cursor") === "on"; // off until the visitor turns it on
+  function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
+  function applyMode() {
+    var on = active();
+    doc.body && doc.body.classList.toggle("lq-on", on);
+    doc.querySelectorAll("[data-liquid-toggle]").forEach(function (b) {
+      b.setAttribute("aria-checked", liquidOn ? "true" : "false");
+    });
+    if (!on) ptrEl.style.opacity = "0";
+  }
+
+  var ptr = { x: -200, y: -200, lx: -200, ly: -200, vx: 0, vy: 0, seen: false, moved: 0, down: false, typing: false };
+  // P: the pointer shape (centre x/y, width, height, radius, press scale)
+  var P = { x: S(-200), y: S(-200), w: S(18), h: S(18), r: S(9), s: S(1), o: S(0) };
+  var target = null, mode = null, targetRadius = 12, viaKeyboard = false, lifted = null;
+  var beam = null; // {top, h} of the text line under the pointer
+  var jelly = new Map();
+  function J(el) {
+    var j = jelly.get(el);
+    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false }; jelly.set(el, j); }
+    return j;
+  }
+  function alpha(c) { var m = /rgba?\(([^)]+)\)/.exec(c || ""); if (!m) return c && c !== "transparent" ? 1 : 0; var p = m[1].split(/[ ,\/]+/).filter(Boolean); return p.length > 3 ? parseFloat(p[3]) : 1; }
+  function hasBezel(el) {
+    var cs = getComputedStyle(el);
+    return alpha(cs.backgroundColor) > 0.06 || (cs.backgroundImage && cs.backgroundImage !== "none") ||
+      (parseFloat(cs.borderTopWidth) > 0 && alpha(cs.borderTopColor) > 0.08);
+  }
+  function isIcon(r) { return r.width <= 56 && r.height <= 56 && Math.abs(r.width - r.height) <= 18; }
+  // magnetism: controls keep a generous invisible margin, like iPadOS hit regions
+  function magnetAt(x, y) {
+    var best = null, bestD = 1e9;
+    doc.querySelectorAll('[data-liquid="snap"]').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+      var pad = Math.min(14, Math.max(6, Math.min(r.width, r.height) * 0.35));
+      var dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
+      if (d <= pad && d < bestD) { best = el; bestD = d; }
+    });
+    return best;
+  }
+  var magnet = false;
+  function enter(el, keyboard) {
+    if (target === el) return;
+    if (target) leave(target);
+    target = el; mode = el.getAttribute("data-liquid"); viaKeyboard = !!keyboard;
+    var j = J(el); j.on = true;
+    if (mode === "snap") {
+      var r = el.getBoundingClientRect();
+      var rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      if (hasBezel(el) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
+        mode = "icon"; lifted = el; el.classList.add("lq-lifted"); targetRadius = Math.min(rad, r.height / 2);
+      } else {                                   // highlight: a soft shape behind the label
+        var pad = Math.max(3, Math.min(8, Math.min(r.width, r.height) / 6));
+        targetRadius = Math.min(rad ? rad + pad : Math.min(12, r.height / 2 + pad), (r.height + pad * 2) / 2);
+        el.__lqPad = pad;
+      }
+      if (!reduceMotion.matches) j.s.v += mode === "icon" ? 1.1 : 0.6;
+    } else if (!reduceMotion.matches) j.s.v += 0.25;
+  }
+  function leave(el) {
+    var j = jelly.get(el); if (j) j.on = false;
+    if (lifted === el) { el.classList.remove("lq-lifted"); lifted = null; }
+    if (target === el) { target = null; mode = null; magnet = false; }
+  }
+  // iPadOS keeps a control highlighted until the pointer is clearly outside it
+  function stillInside(el, x, y) {
+    var r = el.getBoundingClientRect(), slack = magnet ? 14 : 8;
+    return x >= r.left - slack && x <= r.right + slack && y >= r.top - slack && y <= r.bottom + slack;
+  }
+  var NON_TEXT = /^(IMG|SVG|PATH|CANVAS|VIDEO|BUTTON|INPUT|SELECT|TEXTAREA|HTML|BODY)$/;
+  function textLineAt(x, y, node) {
+    if (!node || NON_TEXT.test(node.nodeName)) return null;
+    var r = null, n = null, off = 0;
+    if (doc.caretRangeFromPoint) { r = doc.caretRangeFromPoint(x, y); if (r) { n = r.startContainer; off = r.startOffset; } }
+    else if (doc.caretPositionFromPoint) { var cp = doc.caretPositionFromPoint(x, y); if (cp) { n = cp.offsetNode; off = cp.offset; } }
+    if (!n || n.nodeType !== 3 || !n.textContent.trim()) return null;
+    var len = n.textContent.length, a = Math.max(0, Math.min(off, len - 1));
+    var rg = doc.createRange(); rg.setStart(n, a); rg.setEnd(n, Math.min(len, a + 1));
+    var rect = rg.getBoundingClientRect();
+    if (!rect || !rect.height) return null;
+    if (y < rect.top - 2 || y > rect.bottom + 2 || x < rect.left - 14 || x > rect.right + 14) return null;
+    return { top: rect.top, h: rect.height };
+  }
+  var liftCard = null;
+  function updateHover(node) {
+    if (target && mode !== "lift" && !viaKeyboard && stillInside(target, ptr.x, ptr.y)) {
+      var deeper = node && node.closest ? node.closest('[data-liquid="snap"]') : null;
+      if (!deeper || deeper === target) { beam = null; return; }
+    }
+    var hit = node && node.closest ? node.closest("[data-liquid]") : null;
+    var snapHit = hit && hit.getAttribute("data-liquid") === "snap" ? hit : null;
+    var near = snapHit ? null : (active() ? magnetAt(ptr.x, ptr.y) : null);
+    if (near) { enter(near, false); magnet = true; }
+    else if (hit) { enter(hit, false); magnet = false; }
+    else if (target) leave(target);
+    var card = node && node.closest ? node.closest('[data-liquid="lift"]') : null;
+    if (liftCard && liftCard !== card && liftCard !== target) { var jo = jelly.get(liftCard); if (jo) jo.on = false; }
+    liftCard = card;
+    if (card) {
+      var jc = J(card); jc.on = true;
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--lq-mx", ((ptr.x - r.left) / r.width * 100).toFixed(1) + "%");
+      card.style.setProperty("--lq-my", ((ptr.y - r.top) / r.height * 100).toFixed(1) + "%");
+    }
+    beam = (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
+  }
+
+  doc.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
+    ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
+    if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
+    viaKeyboard = false;
+    updateHover(e.target);
+  }, { passive: true });
+  addEventListener("scroll", function () {
+    if (!ptr.seen || viaKeyboard) return;
+    updateHover(doc.elementFromPoint(ptr.x, ptr.y));
+  }, { passive: true });
+  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); });
+  doc.addEventListener("pointerdown", function (e) {
+    ptr.down = true; ptrEl.classList.add("down");
+    if (reduceMotion.matches) return;
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el) J(el).s.v -= 1.1;
+  });
+  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("down"); });
+  doc.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) ptr.typing = true; // hide while typing
+  });
+  doc.addEventListener("focusin", function (e) {
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el && el.matches(":focus-visible")) {
+      enter(el, true);
+      if (active() && !ptr.seen) { var r = el.getBoundingClientRect(); P.x.x = r.left + r.width / 2; P.y.x = r.top + r.height / 2; P.w.x = r.width; P.h.x = r.height; }
+    }
+  });
+  doc.addEventListener("focusout", function (e) {
+    if (viaKeyboard && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
+  });
+  // a click while the pointer is magnetized to a nearby control presses that control (iPadOS behaviour)
+  doc.addEventListener("click", function (e) {
+    if (!active() || !target || !magnet || viaKeyboard) return;
+    if (target.contains(e.target)) return;
+    if (e.target.closest && e.target.closest("a,button,input,select,textarea,label,[role=button],[data-liquid]")) return;
+    e.preventDefault(); e.stopPropagation();
+    var t = target; magnet = false; t.click();
+  }, true);
+  doc.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-liquid-toggle]") : null;
+    if (!t) return;
+    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode();
+    if (!liquidOn && lifted) { lifted.classList.remove("lq-lifted"); lifted = null; }
+  });
+  finePointer.addEventListener && finePointer.addEventListener("change", applyMode);
+  reduceMotion.addEventListener && reduceMotion.addEventListener("change", applyMode);
+
+  // ---------- frame ----------
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    var ivx = (ptr.x - ptr.lx) / Math.max(dt, 0.001), ivy = (ptr.y - ptr.ly) / Math.max(dt, 0.001);
+    ptr.vx += (ivx - ptr.vx) * 0.25; ptr.vy += (ivy - ptr.vy) * 0.25; ptr.lx = ptr.x; ptr.ly = ptr.y;
+    var on = active();
+    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+
+    // geometry of the pointer for this frame (centre-based)
+    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1;
+    if (showTarget && mode === "snap") {
+      var r = target.getBoundingClientRect(), mx = 0, my = 0;
+      if (!viaKeyboard) {
+        mx = Math.max(-1, Math.min(1, (ptr.x - (r.left + r.width / 2)) / (r.width / 2))) * Math.min(6, r.width * 0.06);
+        my = Math.max(-1, Math.min(1, (ptr.y - (r.top + r.height / 2)) / (r.height / 2))) * Math.min(4, r.height * 0.08);
+      }
+      var pd = target.__lqPad || 4;
+      cx = r.left + r.width / 2 + mx; cy = r.top + r.height / 2 + my;
+      tw = r.width + pd * 2; th = r.height + pd * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "hl";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - r.left + pd) / tw * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - r.top + pd) / th * 100)).toFixed(1) + "%");
+    } else if (showTarget && mode === "icon") {
+      // lift: the pointer melts into the raised control and becomes its specular light (same rect as the control)
+      var ri = target.getBoundingClientRect();
+      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lift";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100)).toFixed(1) + "%");
+    } else if (beam) {
+      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "beam";
+    } else {
+      cx = ptr.x; cy = ptr.y; tw = 19; th = 19; tr = 9.5; k = 1700; c = 82;
+    }
+    if (on && !viaKeyboard && (!ptr.seen || ptr.typing || (now - ptr.moved > 2500 && !showTarget))) vis = 0; // idle and typing fade
+    step(P.x, cx, k, c, dt); step(P.y, cy, k, c, dt);
+    step(P.w, tw, k * 0.6, c * 0.7, dt); step(P.h, th, k * 0.6, c * 0.7, dt); step(P.r, tr, k * 0.6, c * 0.7, dt);
+    step(P.s, ptr.down ? (cls ? 0.97 : 0.8) : 1, 700, 30, dt);
+    if (on) {
+      var w = Math.max(1.5, P.w.x), h = Math.max(1.5, P.h.x);
+      ptrEl.className = cls + (ptr.down ? " down" : "");
+      ptrEl.style.opacity = String(vis);
+      ptrEl.style.width = w.toFixed(2) + "px"; ptrEl.style.height = h.toFixed(2) + "px";
+      ptrEl.style.borderRadius = Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(2) + "px";
+      var stretch = "";
+      if (!cls) { // a little liquid squash while the dot travels fast
+        var amt = Math.min(Math.hypot(ptr.vx, ptr.vy) / 4200, 0.16);
+        if (amt > 0.01) { var ang = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI; stretch = " rotate(" + ang.toFixed(1) + "deg) scale(" + (1 + amt).toFixed(3) + "," + (1 - amt * 0.6).toFixed(3) + ") rotate(" + (-ang).toFixed(1) + "deg)"; }
+      }
+      ptrEl.style.transform = "translate3d(" + (P.x.x - w / 2).toFixed(2) + "px," + (P.y.x - h / 2).toFixed(2) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch;
+    }
+
+    // controls and cards: parallax toward the pointer, lift for icons, tilt for cards
+    jelly.forEach(function (j, el) {
+      var lm = el.getAttribute("data-liquid"), snap = lm === "snap";
+      var icon = snap && el === lifted;
+      var ts = 1, ttx = 0, tty = 0, trx = 0, tryy = 0, tspec = 0;
+      if (j.on && !reduceMotion.matches && on) {
+        var rr = el.getBoundingClientRect(), ccx = rr.left + rr.width / 2, ccy = rr.top + rr.height / 2;
+        var nx = Math.max(-1, Math.min(1, (ptr.x - ccx) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - ccy) / (rr.height / 2)));
+        if (icon) { ts = 1 + Math.min(0.12, 9 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
+        else if (snap) { ts = 1; if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
+        else { ts = 1.006; tspec = 1; }
+      } else if (j.on && !snap) { tspec = 1; }
+      step(j.s, ts, snap ? 420 : 260, snap ? 21 : 26, dt);
+      step(j.tx, ttx, 300, 26, dt); step(j.ty, tty, 300, 26, dt);
+      step(j.rx, trx, 180, 20, dt); step(j.ry, tryy, 180, 20, dt);
+      step(j.spec, tspec, 120, 22, dt);
+      if (!j.on && Math.abs(j.s.x - 1) < 5e-4 && Math.abs(j.s.v) < 1e-3 && Math.abs(j.tx.x) < 0.02 && Math.abs(j.ty.x) < 0.02 &&
+          Math.abs(j.rx.x) < 0.01 && Math.abs(j.ry.x) < 0.01 && j.spec.x < 0.01) {
+        el.style.transform = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
+      }
+      el.style.transform = (snap ? "" : "perspective(900px) rotateX(" + j.rx.x.toFixed(3) + "deg) rotateY(" + j.ry.x.toFixed(3) + "deg) ") +
+        "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
+      if (!snap) el.style.setProperty("--lq-spec", Math.max(0, Math.min(1, j.spec.x)).toFixed(3));
+    });
+    stepFields(dt);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- reactive colour fields ----------
+  var fields = [];
+  function collectFields() {
+    fields = Array.prototype.map.call(doc.querySelectorAll("[data-field]"), function (el) {
+      return { el: el, d: parseFloat(el.getAttribute("data-field")) || 0.05, x: S(0), y: S(0) };
+    });
+  }
+  function stepFields(dt) {
+    if (!fields.length || reduceMotion.matches) return;
+    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0;
+    fields.forEach(function (f) {
+      var px = ptr.seen ? (ptr.x - cx) : 0, py = ptr.seen ? (ptr.y - cy) : 0;
+      var tx = px * f.d, ty = py * f.d - sy * f.d * 0.6;
+      step(f.x, tx, 18, 7, dt); step(f.y, ty, 18, 7, dt);
+      f.el.style.transform = "translate3d(" + f.x.x.toFixed(1) + "px," + f.y.x.toFixed(1) + "px,0)";
+    });
+  }
+
+  function start() { applyMode(); refractAll(); collectFields(); requestAnimationFrame(frame); }
+  if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start); else start();
+
+  window.Liquid = { refresh: function () { refractAll(); collectFields(); }, spring: S, step: step, isOn: active };
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var doc = document;
+  var EMAIL = "fredwang1012@gmail.com";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  var live = doc.getElementById("live");
+  var sayTimer = 0;
+  function say(t) {
+    clearTimeout(sayTimer);
+    live.textContent = "";
+    sayTimer = setTimeout(function () { live.textContent = t; }, 60);
+  }
+
+  // ---------- platform shortcut label ----------
+  var isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent || "");
+  doc.querySelectorAll(".kbd-label").forEach(function (k) { k.textContent = isMac ? "⌘K" : "Ctrl K"; });
+
+  // ---------- theme (dark first; system light counts when no attribute is set) ----------
+  var root = doc.documentElement;
+  var sysLight = matchMedia("(prefers-color-scheme: light)");
+  function showing() {
+    var t = root.dataset.theme;
+    if (t === "light" || t === "dark") return t;
+    return sysLight.matches ? "light" : "dark";
+  }
+  function syncTheme() {
+    var cur = showing(), next = cur === "dark" ? "light" : "dark";
+    doc.querySelectorAll("[data-theme-toggle]").forEach(function (b) {
+      b.setAttribute("aria-label", "Switch to " + next + " theme");
+      b.setAttribute("data-showing", cur);
+    });
+    doc.querySelectorAll('[data-cmd-meta="theme"]').forEach(function (m) { m.textContent = cur === "dark" ? "Dark" : "Light"; });
+  }
+  function toggleTheme() {
+    var next = showing() === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("lq-theme", next); } catch (_) {}
+    syncTheme();
+    say(next === "dark" ? "Dark theme" : "Light theme");
+  }
+  try { var saved = localStorage.getItem("lq-theme"); if (saved === "light" || saved === "dark") root.dataset.theme = saved; } catch (_) {}
+  syncTheme();
+  if (sysLight.addEventListener) sysLight.addEventListener("change", syncTheme);
+  doc.querySelectorAll("[data-theme-toggle]").forEach(function (b) { b.addEventListener("click", toggleTheme); });
+
+  // cursor state in the palette command (the engine flips aria-checked on [data-liquid-toggle])
+  var navCursor = doc.querySelector(".nav [data-liquid-toggle]");
+  function syncCursorMeta() {
+    var on = navCursor && navCursor.getAttribute("aria-checked") !== "false";
+    doc.querySelectorAll('[data-cmd-meta="cursor"]').forEach(function (m) { m.textContent = on ? "On" : "Off"; });
+  }
+  doc.addEventListener("click", function (e) {
+    if (e.target.closest && e.target.closest("[data-liquid-toggle]")) setTimeout(syncCursorMeta, 0);
+  });
+
+  // ---------- run rows (disclosures) ----------
+  function setOpen(btn, open) {
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    var panel = doc.getElementById(btn.getAttribute("aria-controls"));
+    if (panel) panel.hidden = !open;
+    var run = btn.closest(".run");
+    if (run) run.classList.toggle("open", open);
+  }
+  doc.querySelectorAll(".row[aria-controls]").forEach(function (b) {
+    b.addEventListener("click", function () { setOpen(b, b.getAttribute("aria-expanded") !== "true"); });
+  });
+
+  function goTo(id) {
+    var el = doc.getElementById(id);
+    if (!el) return;
+    if (current !== "home") { history.pushState(null, "", "#top"); route(); }
+    var btn = el.querySelector(".row[aria-controls]");
+    if (btn) setOpen(btn, true);
+    el.scrollIntoView({ behavior: reduce.matches ? "auto" : "smooth", block: "start" });
+    var f = btn || el;
+    try { f.focus({ preventScroll: true }); } catch (_) { f.focus(); }
+  }
+
+  // ---------- views (#music, #books, everything else = home) ----------
+  var BASE_TITLE = "Frederick Wang - ML & Data Engineer";
+  var views = { home: doc.getElementById("view-home"), music: doc.getElementById("view-music"), books: doc.getElementById("view-books") };
+  var current = "home";
+  function route(initial) {
+    var h = "";
+    try { h = decodeURIComponent(location.hash.slice(1)); } catch (_) { h = location.hash.slice(1); }
+    var v = h === "music" || h === "books" ? h : "home";
+    var prev = current;
+    current = v;
+    Object.keys(views).forEach(function (k) { if (views[k]) views[k].hidden = k !== v; });
+    doc.querySelectorAll("[data-view-link]").forEach(function (a) {
+      if (a.getAttribute("data-view-link") === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    doc.title = v === "home" ? BASE_TITLE : (v === "music" ? "Music" : "Books") + " · " + BASE_TITLE;
+    if (v !== "home") {
+      scrollTo(0, 0);
+      var h1 = views[v].querySelector("h1");
+      if (h1) { try { h1.focus({ preventScroll: true }); } catch (_) { h1.focus(); } }
+      return;
+    }
+    var target = h && h !== "top" ? doc.getElementById(h) : null;
+    if (target && views.home.contains(target)) {
+      var btn = target.classList.contains("run") ? target.querySelector(".row[aria-controls]") : null;
+      if (btn) setOpen(btn, true);
+      if (prev !== "home" || initial) target.scrollIntoView({ block: "start" });
+    } else if (prev !== "home" || h === "top") {
+      scrollTo(0, 0);
+    }
+  }
+  addEventListener("hashchange", function () { route(false); });
+
+  // ---------- copy email ----------
+  function selectEmail() {
+    var el = doc.getElementById("email-text");
+    if (!el) return;
+    var r = doc.createRange(); r.selectNodeContents(el);
+    var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  function copyEmail(onDone) {
+    var fallback = "Email selected, press " + (isMac ? "⌘C" : "Ctrl+C");
+    function finish(msg, short) { say(msg); if (onDone) onDone(short); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).then(function () {
+        finish("Email copied to clipboard", "Copied");
+      }, function () {
+        selectEmail(); finish(fallback, "Selected");
+      });
+    } else {
+      selectEmail(); finish(fallback, "Selected");
+    }
+  }
+  doc.querySelectorAll(".copy-email").forEach(function (btn) {
+    var lbl = btn.querySelector(".lbl") || btn, orig = lbl.textContent, t = 0;
+    btn.addEventListener("click", function () {
+      copyEmail(function (short) {
+        lbl.textContent = short; clearTimeout(t);
+        t = setTimeout(function () { lbl.textContent = orig; }, 1800);
+      });
+    });
+  });
+
+  // ---------- command palette ----------
+  var input = doc.getElementById("palette");
+  var list = doc.getElementById("palette-list");
+  var panel = doc.getElementById("palette-panel");
+  var empty = doc.getElementById("palette-empty");
+  var countEl = doc.getElementById("palette-count");
+  var finePtr = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (!finePtr) list.querySelectorAll(".opt.fine-only").forEach(function (o) { o.parentNode.removeChild(o); });
+  var opts = Array.prototype.slice.call(list.querySelectorAll(".opt"));
+  var groups = Array.prototype.slice.call(list.querySelectorAll(".grp"));
+  var visible = opts.slice(), idx = 0, announceTimer = 0;
+
+  function norm(s) {
+    s = String(s).toLowerCase();
+    return s.normalize ? s.normalize("NFD").replace(/[̀-ͯ]/g, "") : s;
+  }
+  opts.forEach(function (o) { o._k = norm(o.textContent + " " + (o.getAttribute("data-k") || "")); });
+
+  function keepInView(o) {
+    var top = o.offsetTop, bottom = top + o.offsetHeight, pad = 8;
+    // include the group heading when moving to the first option of a group
+    var grp = o.closest(".grp");
+    if (grp && grp.querySelector(".opt:not([hidden])") === o) top = grp.offsetTop;
+    if (top - pad < list.scrollTop) list.scrollTop = Math.max(0, top - pad);
+    else if (bottom + pad > list.scrollTop + list.clientHeight) list.scrollTop = bottom + pad - list.clientHeight;
+  }
+  function setActive(i, scroll) {
+    opts.forEach(function (o) { o.classList.remove("is-active"); o.setAttribute("aria-selected", "false"); });
+    if (!visible.length) { idx = -1; input.removeAttribute("aria-activedescendant"); return; }
+    idx = (i + visible.length) % visible.length;
+    var o = visible[idx];
+    o.classList.add("is-active"); o.setAttribute("aria-selected", "true");
+    input.setAttribute("aria-activedescendant", o.id);
+    if (scroll) keepInView(o);
+  }
+  function filter() {
+    var toks = norm(input.value).trim().split(/\s+/).filter(Boolean);
+    visible = [];
+    opts.forEach(function (o) {
+      var ok = toks.every(function (t) { return o._k.indexOf(t) !== -1; });
+      o.hidden = !ok;
+      if (ok) visible.push(o);
+    });
+    groups.forEach(function (g) { g.hidden = !g.querySelector(".opt:not([hidden])"); });
+    empty.hidden = visible.length > 0;
+    var label = visible.length === 1 ? "1 result" : visible.length + " results";
+    countEl.textContent = visible.length ? label : "No results";
+    list.scrollTop = 0;
+    setActive(0, true);
+    clearTimeout(announceTimer);
+    announceTimer = setTimeout(function () { say(visible.length ? label : "No results"); }, 450);
+  }
+  function flashMeta(o, text) {
+    var m = o.querySelector("[data-copy-meta]"); if (!m) return;
+    var orig = m.getAttribute("data-orig") || m.textContent;
+    m.setAttribute("data-orig", orig); m.textContent = text;
+    setTimeout(function () { m.textContent = orig; }, 1800);
+  }
+  function activate(o, viaKey) {
+    if (!o) return;
+    if (o.hasAttribute("data-copy")) { copyEmail(function (short) { flashMeta(o, short); }); return; }
+    var cmd = o.getAttribute("data-cmd");
+    if (cmd === "theme") { toggleTheme(); return; }
+    if (cmd === "cursor") { if (navCursor) navCursor.click(); syncCursorMeta(); say("Liquid cursor " + (navCursor && navCursor.getAttribute("aria-checked") === "false" ? "off" : "on")); return; }
+    var go = o.getAttribute("data-go");
+    if (go) { goTo(go); return; }
+    var href = o.getAttribute("href") || "";
+    if (href.charAt(0) === "#") { if (location.hash === href) route(false); else location.hash = href; return; }
+    if (viaKey) {
+      var w = window.open(o.href, "_blank", "noopener");
+      if (!w) location.href = o.href;
+    }
+  }
+
+  input.addEventListener("input", filter);
+  input.addEventListener("keydown", function (e) {
+    if (e.isComposing) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); setActive(idx + 1, true); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); setActive(idx - 1, true); }
+    else if (e.key === "Enter") { if (idx >= 0) { e.preventDefault(); activate(visible[idx], true); } }
+    else if (e.key === "Escape") {
+      if (input.value) { e.preventDefault(); input.value = ""; filter(); }
+      else input.blur();
+    }
+  });
+  opts.forEach(function (o) {
+    o.addEventListener("mousemove", function () {
+      var i = visible.indexOf(o);
+      if (i !== -1 && i !== idx) setActive(i, false);
+    });
+    o.addEventListener("click", function (e) {
+      if (o.hasAttribute("data-copy") || o.hasAttribute("data-go") || o.hasAttribute("data-cmd")) { e.preventDefault(); activate(o, false); }
+    });
+  });
+
+  function isTextField(el) {
+    if (!el || el === doc.body) return false;
+    if (el.isContentEditable) return true;
+    var tag = el.tagName;
+    if (tag === "TEXTAREA" || tag === "SELECT") return true;
+    if (tag === "INPUT") return !/^(button|checkbox|radio|submit|reset|range|color|file|image)$/i.test(el.type || "");
+    return false;
+  }
+  function focusPalette() {
+    if (current !== "home") { history.pushState(null, "", "#top"); route(); }
+    try { input.focus({ preventScroll: true }); } catch (_) { input.focus(); }
+    input.select();
+    var r = panel.getBoundingClientRect();
+    if (r.top < 70 || r.top + 120 > innerHeight) {
+      panel.scrollIntoView({ behavior: reduce.matches ? "auto" : "smooth", block: "center" });
+    }
+  }
+  doc.addEventListener("keydown", function (e) {
+    if ((e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && (e.key === "k" || e.key === "K")) {
+      if (isTextField(doc.activeElement)) return;
+      e.preventDefault();
+      focusPalette();
+    }
+  });
+  doc.querySelectorAll("[data-focus-palette]").forEach(function (b) {
+    b.addEventListener("click", focusPalette);
+  });
+  countEl.textContent = opts.length + " results";
+  syncCursorMeta();
+  doc.addEventListener("DOMContentLoaded", function () { setTimeout(syncCursorMeta, 0); });
+  if (location.hash) route(true);
+})();
+</script>
   </body>
 </html>
