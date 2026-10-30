@@ -1382,7 +1382,7 @@ abbr[title]{ text-decoration: none; cursor: help; }
   }
 
   // ---------- state ----------
-  var liquidOn = store.get("lq-cursor") === "on"; // off until the visitor turns it on
+  var liquidOn = store.get("lq-cursor") !== "off"; // on unless the visitor has turned it off
   function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
   function applyMode() {
     var on = active();
