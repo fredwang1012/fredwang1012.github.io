@@ -2064,17 +2064,39 @@ abbr[title]{ text-decoration: none; cursor: help; }
     if (lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (_) {}
   }
 
-  function isResume(a) { return a && a.getAttribute && /resume\.pdf(?:[?#].*)?$/i.test(a.getAttribute("href") || ""); }
+  // Résumé links stop pointing off-site once the viewer is ready: the PDF's address moves to data-rv-href, so no
+  // host frame or other script treats the click as an external link. The HTML itself keeps the real href.
+  function realHref(a) { return a.getAttribute("data-rv-href") || a.getAttribute("href") || ""; }
+  function isResume(a) { return !!(a && a.getAttribute && /resume\.pdf(?:[?#].*)?$/i.test(realHref(a))); }
+  function wire() {
+    Array.prototype.forEach.call(doc.querySelectorAll("a[href]"), function (a) {
+      if (a.hasAttribute("data-rv-href") || !isResume(a) || (root && root.contains(a))) return;
+      a.setAttribute("data-rv-href", a.getAttribute("href"));
+      a.setAttribute("href", "#resume");
+      a.removeAttribute("target");
+      a.setAttribute("aria-haspopup", "dialog");
+    });
+  }
+  wire();
+  if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", wire);
   // warm up while the pointer is on its way to the link
   doc.addEventListener("pointerover", function (e) { var a = e.target.closest && e.target.closest("a[href]"); if (isResume(a)) loadLib().catch(function () {}); }, { passive: true });
-  doc.addEventListener("click", function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  // capture on window, so the viewer acts before page routers and before anything that opens links
+  window.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a[href]");
     if (!isResume(a) || (root && root.contains(a))) return;
-    e.preventDefault();
-    open(a.getAttribute("href"));
-  });
-  window.ResumeViewer = { open: open, close: close };
+    e.preventDefault(); e.stopPropagation();
+    var url = realHref(a);
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) { window.open(url, "_blank", "noopener"); return; }
+    open(url);
+  }, true);
+  // middle-click arrives as auxclick
+  window.addEventListener("auxclick", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (e.button !== 1 || !isResume(a) || (root && root.contains(a))) return;
+    e.preventDefault(); e.stopPropagation(); window.open(realHref(a), "_blank", "noopener");
+  }, true);
+  window.ResumeViewer = { open: open, close: close, isResume: isResume, href: realHref, wire: wire };
 })();
 /*! end resume viewer */
 </script>
