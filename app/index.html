@@ -793,6 +793,61 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
   .card { padding: 20px; }
   .figure img { height: 170px; }
 }
+/* ---------- touch, phone and tablet fit (none of this applies to a desktop window wider than 920px) ---------- */
+/* overflow navigation: what the bar can't hold goes into a menu; the résumé gets its own button on touch tablets */
+.nav .tools .nav-more, .nav .tools .nav-resume { display: none; }
+.nav-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 1; min-width: 210px;
+  display: flex; flex-direction: column; gap: 4px; padding: 6px; border-radius: 22px;
+  background: linear-gradient(160deg, var(--glass-strong), var(--glass)), var(--ground);
+  box-shadow: inset 0 1px 0 var(--rim), 0 0 0 1px var(--edge), 0 18px 44px -14px var(--shadow);
+}
+.nav-menu[hidden] { display: none; }
+.nav-menu a {
+  display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 16px; border-radius: 16px;
+  text-decoration: none; color: var(--ink); font-size: 16px; font-weight: 500;
+}
+.nav-menu a[aria-current="true"] { background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--rim), 0 0 0 1px var(--edge); }
+.nav-menu a svg { width: 18px; height: 18px; flex: none; }
+.nav-menu a.m-resume { margin-top: 4px; border-top: 1px solid var(--edge); border-radius: 0 0 16px 16px; padding-top: 2px; }
+.nav-more[aria-expanded="true"], .nav-more.has-current { background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--rim), 0 0 0 1px var(--edge); }
+@media (max-width: 920px) {
+  .nav-items a.hide-md { display: inline; } /* the full bar fits from 768px up */
+}
+@media (max-width: 767px) {
+  .nav-items a.hide-md { display: none; }
+  .nav .tools .nav-more { display: inline-flex; }
+}
+@media (min-width: 641px) { .nav-menu a.m-sm { display: none; } }
+@media (pointer: coarse) and (min-width: 768px) { .nav .tools .nav-resume { display: inline-flex; } }
+@media (pointer: coarse) {
+  .nav-items a { padding-block: 12px; }
+  .icon-btn { width: 44px; height: 44px; }
+  .nav .tools { gap: 4px; }
+  .go { min-height: 44px; }
+  .back { min-height: 44px; align-items: center; }
+  .mini { gap: 8px; }
+  .mini a { padding-block: 10px; }
+  footer { padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (pointer: coarse) and (max-width: 640px) { .nav .mark { padding: 8px; } }
+/* small phones: the email address stays on one line */
+@media (max-width: 640px) { .panel { padding: 24px; } }
+@media (max-width: 400px) { .email { font-size: 20px; } }
+/* stacked wide card: the figure takes the image's own height, no letterbox (and no flex-basis of a column) */
+@media (max-width: 920px) { .card.wide .figure { flex: none; } .card.wide .figure img { height: auto; min-height: 0; aspect-ratio: 1485 / 508; } }
+/* narrow cards: a long chip and its link button wrap as whole pills instead of breaking inside */
+@media (max-width: 640px) { .card-top { flex-wrap: wrap; row-gap: 8px; } .card-top .chip, .card-top .go { white-space: nowrap; } }
+/* short landscape phones: keep the sticky bar under a fifth of the screen */
+@media (max-height: 500px) and (orientation: landscape) {
+  .nav { top: calc(env(safe-area-inset-top, 0px) + 8px); margin-top: 8px; }
+}
+/* tablets in portrait and phones in landscape: two columns where one would leave long lines or giant cards */
+@media (min-width: 700px) and (max-width: 920px) {
+  .hero { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 32px; }
+  .span-7, .span-5, .span-4 { grid-column: span 6; }
+  .split, .shelves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (prefers-reduced-motion: reduce) {
   .fields span { animation: none !important; } /* the per-blob rules above are more specific */
   html { scroll-behavior: auto; }
@@ -814,13 +869,28 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
       <a href="#music-preview" data-liquid="snap" data-section="music-preview" class="hide-md">Music</a>
       <a href="#books-preview" data-liquid="snap" data-section="books-preview" class="hide-md">Books</a>
       <a href="#about" data-liquid="snap" data-section="about" class="hide-sm">About</a>
-      <a href="#contact" data-liquid="snap" data-section="contact">Contact</a>
+      <a href="#contact" data-liquid="snap" data-section="contact" class="hide-sm">Contact</a>
     </div>
     <div class="tools">
-      
+      <a class="icon-btn nav-resume" href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap" aria-label="Résumé">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+      </a>
+      <button class="icon-btn nav-more" id="nav-more" type="button" data-liquid="snap" aria-label="More sections" aria-expanded="false" aria-controls="nav-menu">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg>
+      </button>
       <button class="icon-btn" id="theme" type="button" data-theme-toggle data-liquid="snap" aria-label="Switch to dark theme">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
       </button>
+    </div>
+    <div class="nav-menu" id="nav-menu" hidden>
+      <a href="#music-preview" data-liquid="snap" data-section="music-preview">Music</a>
+      <a href="#books-preview" data-liquid="snap" data-section="books-preview">Books</a>
+      <a href="#about" data-liquid="snap" data-section="about" class="m-sm">About</a>
+      <a href="#contact" data-liquid="snap" data-section="contact" class="m-sm">Contact</a>
+      <a href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap" class="m-resume">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+        Résumé
+      </a>
     </div>
   </nav>
 
@@ -1791,6 +1861,34 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
   route();
 })();
 </script>
+<script>
+/* overflow menu for the sections the bar hides on small screens */
+(function () {
+  "use strict";
+  var btn = document.getElementById("nav-more"), menu = document.getElementById("nav-menu");
+  var items = Array.prototype.slice.call(menu.querySelectorAll("a"));
+  function set(open) {
+    btn.setAttribute("aria-expanded", open ? "true" : "false"); menu.hidden = !open;
+    if (open && window.Liquid) Liquid.refresh();
+  }
+  btn.addEventListener("click", function () { set(menu.hidden); });
+  // capture on window before the résumé viewer, which stops the click from reaching anything else
+  addEventListener("click", function (e) { if (!menu.hidden && e.target.closest && e.target.closest("#nav-menu a")) setTimeout(function () { set(false); }, 0); }, true);
+  document.addEventListener("pointerdown", function (e) { if (!menu.hidden && !menu.contains(e.target) && !btn.contains(e.target)) set(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) { set(false); btn.focus(); } });
+  addEventListener("hashchange", function () { set(false); });
+  addEventListener("resize", function () { if (!menu.hidden && !btn.offsetWidth) set(false); });
+  // when the current section is one the bar hides, mark it in the menu and on the button
+  function sync() {
+    var cur = document.querySelector('#nav-items a[aria-current="true"]');
+    var id = cur && !cur.offsetWidth ? cur.getAttribute("data-section") : "";
+    items.forEach(function (a) { if (a.getAttribute("data-section") === id && id) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+    btn.classList.toggle("has-current", !!id);
+  }
+  if (window.MutationObserver) new MutationObserver(sync).observe(document.getElementById("nav-items"), { subtree: true, attributes: true, attributeFilter: ["aria-current"] });
+  addEventListener("resize", sync); sync();
+})();
+</script>
 <style id="rv-theme">#rv{--rv-font:var(--font-sans);--rv-tfont:var(--font-serif);--rv-tsize:20px;--rv-tweight:400;--rv-radius:28px;--rv-bradius:999px;--rv-bh:40px;--rv-pradius:8px;--rv-sheet:var(--glass-strong);--rv-ink:var(--ink);--rv-sub:var(--ink-3);--rv-edge:var(--edge);--rv-hi:rgba(255,255,255,.55);--rv-btn:var(--glass);--rv-btn-hover:var(--glass-strong);--rv-accent:var(--solid);--rv-accent-ink:var(--on-solid);--rv-well:color-mix(in srgb,var(--ink) 6%,transparent);--rv-shadow:0 30px 80px -20px var(--shadow)}#rv .rv-sheet{background:var(--rv-sheet)}#rv .rv-title{font-style:italic}</style>
 <script>/*! Resume viewer
  * Opens résumé links (any a[href$="resume.pdf"]) in an in-page sheet instead of a new tab.
@@ -1801,9 +1899,9 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
   "use strict";
   var doc = document, PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
   var css = [
-    ":where(:root){--rv-scrim:rgba(18,22,32,.32);--rv-sheet:rgba(250,250,252,.78);--rv-ink:#1c1c1e;--rv-sub:#5b5e66;--rv-edge:rgba(0,0,0,.08);--rv-hi:rgba(255,255,255,.85);--rv-btn:rgba(255,255,255,.7);--rv-btn-hover:rgba(255,255,255,.95);--rv-accent:#1d5fd1;--rv-accent-ink:#fff;--rv-well:rgba(120,126,140,.12);--rv-shadow:0 30px 80px -20px rgba(10,16,32,.45),0 2px 6px rgba(10,16,32,.12)}",
-    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}}",
-    ":where(:root[data-theme=dark]){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}",
+    ":where(:root){--rv-scrim:rgba(18,22,32,.32);--rv-sheet:rgba(250,250,252,.78);--rv-ink:#1c1c1e;--rv-sub:#5b5e66;--rv-edge:rgba(0,0,0,.08);--rv-hi:rgba(255,255,255,.85);--rv-btn:rgba(255,255,255,.7);--rv-btn-hover:rgba(255,255,255,.95);--rv-accent:#1d5fd1;--rv-accent-ink:#fff;--rv-well:rgba(120,126,140,.12);--rv-shadow:0 30px 80px -20px rgba(10,16,32,.45),0 2px 6px rgba(10,16,32,.12);--rv-solid:#f4f5f7}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4);--rv-solid:#16181d}}",
+    ":where(:root[data-theme=dark]){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4);--rv-solid:#16181d}",
     // sits just under the liquid pointer, so the cursor keeps working inside it
     "#rv{position:fixed;inset:0;z-index:2147482000;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:var(--rv-scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .22s ease;font:14px/1.4 var(--rv-font,-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif);color:var(--rv-ink)}",
     "#rv[hidden]{display:none}",
@@ -1818,25 +1916,32 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
     "#rv .rv-btn svg{width:16px;height:16px;flex:none}",
     "#rv .rv-btn.rv-primary{background:var(--rv-accent);border-color:transparent;color:var(--rv-accent-ink);box-shadow:none}",
     "#rv .rv-btn.rv-primary:hover{filter:brightness(1.08)}",
+    "#rv .rv-btn[disabled]{opacity:.4;cursor:default}",
+    "#rv .rv-zoom{display:inline-flex;gap:4px}",
     "#rv .rv-btn.rv-icon{width:var(--rv-bh,38px);padding:0;justify-content:center}",
     "#rv .rv-btn:focus-visible{outline:2px solid var(--rv-accent);outline-offset:2px}",
-    "#rv .rv-body{flex:1;overflow:auto;overscroll-behavior:contain;background:var(--rv-well);padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px;-webkit-overflow-scrolling:touch}",
-    "#rv canvas{display:block;width:100%;max-width:820px;height:auto;background:#fff;border-radius:var(--rv-pradius,6px);box-shadow:0 8px 24px -10px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.05)}",
-    "#rv .rv-msg{margin:auto;color:var(--rv-sub);text-align:center;padding:24px}",
+    "#rv .rv-body{flex:1;overflow:auto;overscroll-behavior:contain;background:var(--rv-well);padding:18px;touch-action:manipulation;-webkit-overflow-scrolling:touch}",
+    "#rv canvas{display:block;margin:0 auto 16px;max-width:none;height:auto;background:#fff;border-radius:var(--rv-pradius,6px);box-shadow:0 8px 24px -10px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.05)}",
+    "#rv .rv-msg{color:var(--rv-sub);text-align:center;padding:18vh 24px 24px}",
     "#rv .rv-msg a{color:var(--rv-accent)}",
     "#rv .rv-spin{width:22px;height:22px;margin:0 auto 10px;border-radius:50%;border:2px solid var(--rv-edge);border-top-color:var(--rv-accent);animation:rv-spin .8s linear infinite}",
     "@keyframes rv-spin{to{transform:rotate(360deg)}}",
-    "@media (max-width:560px){#rv{padding:0}#rv .rv-sheet{width:100%;height:100%;border-radius:0;border:0}#rv .rv-bar{padding-top:max(10px,env(safe-area-inset-top))}#rv .rv-btn .rv-label{display:none}#rv .rv-btn{width:var(--rv-bh,38px);padding:0;justify-content:center}#rv .rv-body{padding:10px;gap:10px}}",
+    "@media (max-width:560px),(max-height:500px) and (pointer:coarse){#rv{padding:0}#rv .rv-sheet{width:100%;height:100%;border-radius:0;border:0;background:var(--rv-solid)!important;-webkit-backdrop-filter:none;backdrop-filter:none}#rv .rv-bar{padding-top:max(10px,env(safe-area-inset-top))}#rv .rv-btn .rv-label{display:none}#rv .rv-btn{width:var(--rv-bh,38px);padding:0;justify-content:center}#rv .rv-body{padding:10px}#rv canvas{margin-bottom:10px}}",
+    // touch: every control is at least 44px
+    "@media (pointer:coarse){#rv .rv-btn{height:44px;min-width:44px}#rv .rv-bar{gap:8px}}",
     "@media (prefers-reduced-motion:reduce){#rv,#rv .rv-sheet{transition:none}#rv .rv-spin{animation:none}}",
     "html.rv-lock,html.rv-lock body{overflow:hidden}"
   ].join("\n");
   var ICON = {
     down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>',
     open: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>',
+    minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12M12 6v12"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
   };
 
-  var root = null, body, dl, openA, closeB, lastFocus = null, href = "", lib = null, libP = null, data = null, blobUrl = "", renderId = 0, rTimer = 0;
+  var root = null, body, dl, openA, closeB, zIn, zOut, lastFocus = null, href = "", lib = null, libP = null, data = null, pdfDoc = null, blobUrl = "", renderId = 0, rTimer = 0;
+  var ZOOMS = [1, 1.5, 2, 3], zi = 0, lastTap = 0, tapX = 0, tapY = 0;
 
   function build() {
     if (root) return;
@@ -1848,6 +1953,8 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
       '<div class="rv-sheet">' +
         '<div class="rv-bar">' +
           '<div class="rv-title">Résumé <span>· Frederick Wang</span></div>' +
+          '<span class="rv-zoom"><button type="button" class="rv-btn rv-icon rv-zout" data-liquid="snap" aria-label="Zoom out">' + ICON.minus + '</button>' +
+          '<button type="button" class="rv-btn rv-icon rv-zin" data-liquid="snap" aria-label="Zoom in">' + ICON.plus + '</button></span>' +
           '<a class="rv-btn rv-primary rv-dl" data-liquid="snap" download="Frederick-Wang-Resume.pdf" aria-label="Download PDF">' + ICON.down + '<span class="rv-label">Download</span></a>' +
           '<a class="rv-btn rv-open" data-liquid="snap" target="_blank" rel="noopener" aria-label="Open in a new tab">' + ICON.open + '<span class="rv-label">Open</span></a>' +
           '<button type="button" class="rv-btn rv-icon rv-close" data-liquid="snap" aria-label="Close">' + ICON.close + '</button>' +
@@ -1856,10 +1963,24 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
       '</div>';
     doc.body.appendChild(root);
     body = root.querySelector(".rv-body"); dl = root.querySelector(".rv-dl"); openA = root.querySelector(".rv-open"); closeB = root.querySelector(".rv-close");
+    zIn = root.querySelector(".rv-zin"); zOut = root.querySelector(".rv-zout");
     closeB.addEventListener("click", close);
+    zIn.addEventListener("click", function () { zoomTo(zi + 1); });
+    zOut.addEventListener("click", function () { zoomTo(zi - 1); });
+    // double-tap (touch) or double-click zooms in on that spot, and back out to fit
+    body.addEventListener("pointerup", function (e) {
+      if (e.pointerType !== "touch") return;
+      var now = Date.now(), near = Math.abs(e.clientX - tapX) < 30 && Math.abs(e.clientY - tapY) < 30;
+      if (now - lastTap < 400 && near) { lastTap = 0; toggleZoom(e.clientX, e.clientY); }
+      else { lastTap = now; tapX = e.clientX; tapY = e.clientY; }
+    });
+    // browsers may also fire dblclick for the same double-tap; whichever arrives first acts, the other is ignored
+    body.addEventListener("dblclick", function (e) { toggleZoom(e.clientX, e.clientY); });
     root.addEventListener("mousedown", function (e) { if (e.target === root) close(); });
     root.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { e.preventDefault(); close(); return; }
+      if ((e.key === "+" || e.key === "=") && !e.metaKey && !e.ctrlKey) { e.preventDefault(); zoomTo(zi + 1); return; }
+      if (e.key === "-" && !e.metaKey && !e.ctrlKey) { e.preventDefault(); zoomTo(zi - 1); return; }
       if (e.key !== "Tab") return;
       var f = Array.prototype.filter.call(root.querySelectorAll("a[href],button,[tabindex='0']"), function (n) { return n.offsetParent; });
       if (!f.length) return;
@@ -1900,10 +2021,25 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
 
   function message(html) { body.innerHTML = '<div class="rv-msg">' + html + "</div>"; }
 
+  function zoomTo(i, cx, cy) {
+    i = Math.max(0, Math.min(ZOOMS.length - 1, i));
+    if (i === zi || !pdfDoc) { syncZoom(); return; }
+    var r = body.getBoundingClientRect(), x = (cx === undefined ? r.left + r.width / 2 : cx) - r.left, y = (cy === undefined ? r.top + r.height / 2 : cy) - r.top;
+    var fx = (body.scrollLeft + x) / Math.max(1, body.scrollWidth), fy = (body.scrollTop + y) / Math.max(1, body.scrollHeight);
+    zi = i;
+    render().then(function () { body.scrollLeft = fx * body.scrollWidth - x; body.scrollTop = fy * body.scrollHeight - y; });
+  }
+  var toggledAt = 0;
+  function toggleZoom(x, y) { var now = Date.now(); if (now - toggledAt < 600) return; toggledAt = now; zoomTo(zi ? 0 : 2, x, y); }
+  function syncZoom() { if (!zIn) return; zIn.disabled = zi >= ZOOMS.length - 1; zOut.disabled = zi <= 0; }
+
   function render() {
     var id = ++renderId;
-    return lib.getDocument({ data: data.slice(0) }).promise.then(function (pdf) {
-      var width = Math.min(820, body.clientWidth - (innerWidth <= 560 ? 20 : 36)), dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    syncZoom();
+    var docP = pdfDoc ? Promise.resolve(pdfDoc) : lib.getDocument({ data: data.slice(0) }).promise.then(function (d) { return (pdfDoc = d); });
+    return docP.then(function (pdf) {
+      var pad = innerWidth <= 560 ? 20 : 36, fit = Math.min(820, body.clientWidth - pad), width = Math.round(fit * ZOOMS[zi]);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2.5, 4096 / width);
       var frag = doc.createDocumentFragment(), canvases = [], chain = Promise.resolve();
       for (var n = 1; n <= pdf.numPages; n++) (function (n) {
         chain = chain.then(function () {
@@ -1911,6 +2047,7 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
           return pdf.getPage(n).then(function (page) {
             var v = page.getViewport({ scale: 1 }), scale = width / v.width, vp = page.getViewport({ scale: scale * dpr });
             var c = doc.createElement("canvas"); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+            c.style.width = width + "px";
             c.setAttribute("role", "img"); c.setAttribute("aria-label", "Résumé page " + n + " of " + pdf.numPages);
             canvases.push(c);
             return page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
@@ -1936,7 +2073,7 @@ footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
     Array.prototype.forEach.call(doc.body.children, function (n) { if (n !== root && n.id !== "lq-ptr" && !n.inert) { n.inert = true; n.__rvInert = true; } });
     closeB.focus({ preventScroll: true });
     if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh();
-    if (data && lib) return;
+    if (data && lib) { if (zi) { zi = 0; render(); } else syncZoom(); return; }
     message('<div class="rv-spin"></div>Loading résumé…');
     Promise.all([loadLib(), data ? Promise.resolve(data) : fetchPdf(link)]).then(function (r) {
       lib = r[0]; data = r[1];
