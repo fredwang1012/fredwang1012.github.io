@@ -27,7 +27,9 @@ export default function Projects() {
                 <img
                   src={proj.image}
                   alt={proj.title}
-                  className="h-48 w-full object-cover"
+                  className={`h-48 w-full ${
+                    proj.imageFit === "contain" ? "object-contain" : "object-cover"
+                  }`}
                   loading="lazy"
                 />
               ) : (

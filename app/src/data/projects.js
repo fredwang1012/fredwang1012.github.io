@@ -18,6 +18,7 @@ export const projects = [
     tech: ["PyTorch", "VAE / GMVAE", "K-Means", "TF-IDF + SVD"],
     link: "https://github.com/fredwang1012/patient-stratification",
     image: "/patient-stratification.webp",
+    imageFit: "contain",
   },
   {
     title: "GreenLife",
