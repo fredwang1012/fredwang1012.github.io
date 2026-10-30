@@ -1308,8 +1308,16 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
     doc.body && doc.body.classList.toggle("lq-glassonly", on && glassOnly());
     doc.querySelectorAll("[data-liquid-toggle]").forEach(function (b) {
       b.setAttribute("aria-checked", liquidOn ? "true" : "false");
+      // on an iPad nothing replaces the pointer, only the hover changes, so the switch says so
+      var t = Array.prototype.filter.call(b.childNodes, function (n) { return n.nodeType === 3 && /Liquid (cursor|hover)/.test(n.textContent); })[0];
+      if (t) t.textContent = t.textContent.replace(/Liquid (cursor|hover)/, glassOnly() ? "Liquid hover" : "Liquid cursor");
     });
-    if (!on) ptrEl.style.opacity = "0";
+    if (!on) {
+      // switched off (or not available): drop the hover target and keep the write cache honest, so switching back on
+      // shows the pointer again instead of skipping an opacity write the cache thinks already happened
+      ptrEl.style.opacity = "0"; if (typeof W !== "undefined") W.op = "0";
+      if (typeof target !== "undefined" && target) leave(target);
+    }
   }
 
   var ptr = { x: -200, y: -200, lx: -200, ly: -200, vx: 0, vy: 0, seen: false, moved: 0, down: false, typing: false };
@@ -1433,6 +1441,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
       if (e.buttons || performance.now() - lastTouch < 1000) return;
       trackpad = true; liquidOn = readPref(); applyMode();
     }
+    // after a finger tap, iPad Safari can send compatibility "mouse" events at the tap point; they are not the trackpad
+    if (touchFirst() && performance.now() - lastTouch < 800) return;
     ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
     if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
     viaKeyboard = false;
@@ -1447,12 +1457,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
   addEventListener("hashchange", function () { collectSnaps(); wake(); });
   doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); wake(); });
   doc.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "touch") return; // a finger never presses the liquid pointer
     ptr.down = true; ptrEl.classList.add("lq-down"); wake();
     if (reduceMotion.matches) return;
     var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
     if (el) J(el).s.v -= 1.1;
   });
-  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("lq-down"); wake(); });
+  // a scroll or system gesture ends a press with pointercancel instead of pointerup
+  ["pointerup", "pointercancel"].forEach(function (t) { doc.addEventListener(t, function () { ptr.down = false; ptrEl.classList.remove("lq-down"); wake(); }); });
   doc.addEventListener("keydown", function (e) {
     var t = e.target;
     if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) ptr.typing = true; // hide while typing
