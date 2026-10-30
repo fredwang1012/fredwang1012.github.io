@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Frederick Wang - ML &amp; Data Engineer</title>
     <link rel="icon" type="image/png" href="/icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>Frederick Wang - ML & Data Engineer</title>
     <meta name="title" content="Frederick Wang - ML & Data Engineer" />
     <meta name="description" content="M.Sc. Applied Computing (AI) student at the University of Toronto and UBC CS & Statistics graduate, working on machine learning, world models, and data engineering." />
     <meta name="keywords" content="Frederick Wang, University of Toronto, UBC, Machine Learning, Data Engineering, World Models, PyTorch, Databricks, MCP, RAG" />
@@ -29,10 +29,1452 @@
     <!-- Additional SEO -->
     <link rel="canonical" href="https://fredwang1012.github.io/" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#2563eb" />
+    <script>
+      // old routes from the previous site
+      (function () { var p = location.pathname.replace(/\/+$/, ""); if (p === "/music" || p === "/books") location.replace("/#" + p.slice(1)); })();
+    </script>
+    <style>
+      /* the same base the design was built on */
+      :root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+      body { margin: 0; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+      img { max-width: 100%; }
+      [hidden] { display: none !important; }
+    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+/* Direction C, Index: a Swiss 12-column grid, type first. Glass is an instrument here:
+   a thin floating header that refracts the page, and a lens strip that slides over the hovered row. */
+:root {
+  --bg: #ffffff;
+  --ink: #0a0a0a;
+  --ink-2: #262626;
+  --muted: #525252;
+  --rule: #0a0a0a;
+  --rule-soft: #e5e5e5;
+  --accent: #ff4f00;
+  --accent-ink: #c23a00;
+  --figure-bg: #ffffff;
+  --glass: rgba(255, 255, 255, 0.58);
+  --glass-strong: rgba(255, 255, 255, 0.72);
+  --glass-edge: rgba(10, 10, 10, 0.10);
+  --glass-hi: rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 18px 40px -24px rgba(10, 10, 10, 0.45), 0 2px 6px -3px rgba(10, 10, 10, 0.12);
+  --spec: rgba(255, 255, 255, 0.9);
+  --blob-a: #cfcfcf;
+  --blob-b: #b8b8b8;
+  --blob-c: #e2e2e2;
+  --blob-o: #ff4f00;
+  --blob-opacity: 0.42;
+  --blob-o-opacity: 0.16;
+  --lq-ring: rgba(10, 10, 10, 0.6);
+  --lq-tint: rgba(255, 255, 255, 0.2);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000;
+    --ink: #ffffff;
+    --ink-2: #e5e5e5;
+    --muted: #a3a3a3;
+    --rule: #ffffff;
+    --rule-soft: #262626;
+    --accent: #ff4f00;
+    --accent-ink: #ff7a3d;
+    --figure-bg: #f5f5f5;
+    --glass: rgba(28, 28, 28, 0.55);
+    --glass-strong: rgba(24, 24, 24, 0.72);
+    --glass-edge: rgba(255, 255, 255, 0.14);
+    --glass-hi: rgba(255, 255, 255, 0.22);
+    --glass-shadow: 0 18px 44px -22px rgba(0, 0, 0, 0.9), 0 2px 6px -3px rgba(0, 0, 0, 0.6);
+    --spec: rgba(255, 255, 255, 0.12);
+    --blob-a: #3d3d3d;
+    --blob-b: #2b2b2b;
+    --blob-c: #4a4a4a;
+    --blob-o: #ff4f00;
+    --blob-opacity: 0.55;
+    --blob-o-opacity: 0.2;
+    --lq-ring: rgba(255, 255, 255, 0.72);
+    --lq-tint: rgba(255, 255, 255, 0.1);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --ink: #ffffff;
+  --ink-2: #e5e5e5;
+  --muted: #a3a3a3;
+  --rule: #ffffff;
+  --rule-soft: #262626;
+  --accent: #ff4f00;
+  --accent-ink: #ff7a3d;
+  --figure-bg: #f5f5f5;
+  --glass: rgba(28, 28, 28, 0.55);
+  --glass-strong: rgba(24, 24, 24, 0.72);
+  --glass-edge: rgba(255, 255, 255, 0.14);
+  --glass-hi: rgba(255, 255, 255, 0.22);
+  --glass-shadow: 0 18px 44px -22px rgba(0, 0, 0, 0.9), 0 2px 6px -3px rgba(0, 0, 0, 0.6);
+  --spec: rgba(255, 255, 255, 0.12);
+  --blob-a: #3d3d3d;
+  --blob-b: #2b2b2b;
+  --blob-c: #4a4a4a;
+  --blob-o: #ff4f00;
+  --blob-opacity: 0.55;
+  --blob-o-opacity: 0.2;
+  --lq-ring: rgba(255, 255, 255, 0.72);
+  --lq-tint: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 96px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.mono { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+a { color: inherit; }
+a:hover { color: var(--accent-ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+img { display: block; max-width: 100%; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.label { margin: 0; font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+
+/* ---------- background colour field ---------- */
+.field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.field > div { position: absolute; will-change: transform; }
+.field span {
+  display: block; width: 100%; height: 100%;
+  border-radius: 46% 54% 58% 42% / 44% 46% 54% 56%;
+  filter: blur(70px);
+  opacity: var(--blob-opacity);
+  animation: drift 46s ease-in-out infinite alternate, morph 28s ease-in-out infinite;
+}
+.f1 { width: 46vmax; height: 40vmax; left: -14vmax; top: -12vmax; }
+.f1 span { background: var(--blob-a); }
+.f2 { width: 38vmax; height: 34vmax; right: -12vmax; top: 22vh; }
+.f2 span { background: var(--blob-o); opacity: var(--blob-o-opacity); animation-duration: 52s, 31s; animation-delay: -12s, -6s; }
+.f3 { width: 42vmax; height: 36vmax; left: 18vw; bottom: -18vmax; }
+.f3 span { background: var(--blob-b); animation-duration: 58s, 34s; animation-delay: -20s, -9s; }
+.f4 { width: 30vmax; height: 28vmax; left: 46vw; top: 4vh; }
+.f4 span { background: var(--blob-c); animation-duration: 40s, 25s; animation-delay: -8s, -14s; }
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(4vw, 3vh, 0) rotate(18deg); }
+  100% { transform: translate3d(-3vw, 5vh, 0) rotate(-12deg); }
+}
+@keyframes morph {
+  0%, 100% { border-radius: 46% 54% 58% 42% / 44% 46% 54% 56%; }
+  33% { border-radius: 60% 40% 44% 56% / 52% 60% 40% 48%; }
+  66% { border-radius: 40% 60% 52% 48% / 58% 42% 58% 42%; }
+}
+
+/* ---------- page frame ---------- */
+.page {
+  position: relative; z-index: 1;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.wrap { max-width: 1312px; margin: 0 auto; padding-inline: clamp(0px, 3.2vw, 48px); }
+.grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+.grid12 > * { min-width: 0; }
+
+/* ---------- floating glass header ---------- */
+.bar {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 20;
+  margin-top: 12px;
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center;
+  padding: 8px 10px 8px 18px;
+  font-size: 14px;
+  border-radius: 14px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow: inset 0 0 0 1px var(--glass-edge), inset 0 1px 0 var(--glass-hi), var(--glass-shadow);
+}
+.bar > * { min-width: 0; }
+.bar .name { grid-column: span 2; font-weight: 600; text-decoration: none; justify-self: start; padding: 4px 6px; margin-left: -6px; border-radius: 8px; }
+.bar .meta { grid-column: span 3; margin: 0; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .meta.short { display: none; }
+.bar nav { grid-column: span 7; display: flex; justify-content: flex-end; align-items: center; gap: 2px; }
+.bar nav a { text-decoration: none; padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
+.bar nav a[aria-current] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--accent); border-radius: 0; }
+.tools { display: inline-flex; gap: 6px; margin-left: 8px; flex: none; }
+.icon-btn {
+  display: inline-grid; place-items: center; width: 36px; height: 36px;
+  border: 0; border-radius: 9px; background: transparent; color: var(--ink); cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--glass-edge);
+}
+.icon-btn svg { width: 17px; height: 17px; }
+.icon-btn .i-sun { display: none; }
+.icon-btn.is-dark .i-sun { display: block; }
+.icon-btn.is-dark .i-moon { display: none; }
+.cursor-btn .slash { display: none; }
+.cursor-btn[aria-checked="false"] { opacity: 0.55; }
+.cursor-btn[aria-checked="false"] .slash { display: block; }
+@media (hover: none) { .cursor-btn { display: none; } }
+
+/* ---------- views: music, books ---------- */
+.home-link { display: inline-block; margin-top: 40px; padding: 6px 10px; margin-left: -10px; border-radius: 8px; font-size: 14px; text-decoration: none; }
+.vhero { padding-block: 48px 72px; align-items: end; row-gap: 20px; }
+.vhero h1 { grid-column: 1 / span 8; margin: 0; font-size: clamp(56px, 10vw, 152px); line-height: 0.9; font-weight: 600; letter-spacing: -0.06em; }
+.vhero h1:focus { outline: none; }
+.vhero .stop { color: var(--accent); }
+.vlede { grid-column: 9 / span 4; margin: 0; font-size: 20px; line-height: 1.4; letter-spacing: -0.01em; }
+.vblock { padding-bottom: 72px; }
+.vhead { padding-bottom: 12px; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.vhead .label { grid-column: 1 / span 4; }
+.vhead .label + .label { grid-column: 5 / span 8; text-align: right; }
+.vlist, .plist { list-style: none; margin: 0; padding: 0; }
+.lrow { align-items: baseline; padding-block: 20px; }
+.lrow .lt { grid-column: 2 / span 6; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+.lrow .la { grid-column: 8 / span 3; font-size: 15px; color: var(--muted); }
+.lrow .lk { grid-column: 11 / span 2; justify-self: end; text-align: right; }
+.lrow.book .lt { grid-column: 2 / span 7; font-size: 22px; }
+.lrow.book .la { grid-column: 9 / span 4; text-align: right; }
+.yt { display: inline-block; font-size: 14px; text-decoration: none; padding: 4px 8px; margin-right: -8px; border-radius: 8px; white-space: nowrap; }
+.yt:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
+@media (min-width: 1081px) {
+  .vlist.cols2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+  .vlist.cols2 .lrow { margin-inline: -14px; grid-template-columns: 48px minmax(0, 1fr) auto; column-gap: 16px; }
+  .vlist.cols2 .lrow > * { grid-column: auto; }
+  .vlist.cols2 .lrow .lt { font-size: 19px; }
+  .vlist.cols2 .lrow:nth-last-child(2):nth-child(odd) { --line: var(--rule); }
+}
+
+/* home previews */
+.previews { padding-top: 128px; row-gap: 72px; }
+.pv { grid-column: span 6; min-width: 0; display: flex; flex-direction: column; }
+.pv-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+.pv-head h2 { margin: 0; font-size: clamp(36px, 3.6vw, 48px); font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
+.pv-sub { margin-top: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--rule-soft); }
+.prow { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; column-gap: 12px; align-items: baseline; padding-block: 14px; }
+.prow:last-child { --line: var(--rule-soft); }
+.prow .pt { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.prow .lt { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; }
+.prow .la { font-size: 14px; color: var(--muted); }
+.lrow .no, .prow .no { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: var(--muted); }
+.see-all { align-self: flex-start; margin-top: 20px; margin-left: -10px; padding: 8px 10px; border-radius: 8px; font-size: 15px; font-weight: 500; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+
+/* ---------- hero ---------- */
+.hero { padding-block: 88px 72px; align-items: end; row-gap: 32px; }
+.hero h1 {
+  grid-column: 1 / span 10; margin: 0;
+  font-size: clamp(46px, 7.8vw, 112px); line-height: 0.95; font-weight: 600; letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+.hero h1 .stop { color: var(--accent); }
+.hero .portrait { grid-column: 11 / span 2; margin: 0; }
+.hero .portrait img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover;  }
+
+.about { padding-bottom: 112px; row-gap: 20px; }
+.about .label { grid-column: 1 / span 3; }
+.about .lede { grid-column: 4 / span 6; margin: 0; font-size: 22px; line-height: 1.45; letter-spacing: -0.01em; }
+.about .links { grid-column: 11 / span 2; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; font-size: 14px; }
+.about .links a { padding: 3px 6px; margin-left: -6px; border-radius: 6px; }
+
+/* ---------- project index ---------- */
+.index-head { padding-bottom: 20px; align-items: baseline; }
+.index-head .label { grid-column: 1 / span 6; }
+.index-head .label + .label { grid-column: 7 / span 6; text-align: right; }
+.cols { padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+.c-no { grid-column: span 1; }
+.c-title { grid-column: span 5; }
+.c-area { grid-column: span 3; }
+.c-year { grid-column: span 1; }
+.c-status { grid-column: span 2; text-align: right; justify-self: end; }
+
+.list { list-style: none; margin: 0; padding: 0; }
+.row {
+  position: relative;
+  margin-inline: -14px; padding-inline: 14px;
+  --line: var(--rule-soft); --inset: 14px;
+  background: linear-gradient(var(--line), var(--line)) no-repeat 50% 100% / calc(100% - 2 * var(--inset)) 1px;
+  border-radius: 12px;
+  --lq-spec: 0;
+  transform: none !important; /* the grid stays crisp: the lens glides, the row does not tilt */
+}
+.row:last-child { --line: var(--rule); }
+/* the glass lens strip: fades in with the engine's --lq-spec, and with keyboard focus */
+.row::before {
+  content: ""; position: absolute; inset: -1px 0; z-index: 0; pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(420px 140px at var(--lq-mx, 50%) var(--lq-my, 50%), var(--spec), transparent 70%),
+    var(--glass-strong);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: inset 0 0 0 1px var(--glass-edge), inset 0 1px 0 var(--glass-hi), var(--glass-shadow);
+  opacity: var(--lq-spec);
+}
+.row:has(:focus-visible)::before { opacity: 1; }
+.row > * { position: relative; z-index: 1; }
+.row-head { align-items: baseline; }
+.row-btn {
+  grid-column: 1 / span 10;
+  display: grid; grid-template-columns: subgrid; column-gap: 24px; align-items: baseline;
+  margin: 0; padding: 22px 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  border-radius: 8px;
+}
+.row-btn > * { min-width: 0; }
+.row-btn:focus-visible { outline-offset: 2px; }
+.row .no { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; color: var(--muted); }
+.row .title { font-size: 28px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; display: flex; align-items: baseline; gap: 14px; }
+.row .title .tx { min-width: 0; overflow-wrap: anywhere; }
+.row .plus { flex: none; position: relative; width: 11px; height: 11px; align-self: flex-start; margin-top: 0.48em; opacity: 0.55; transition: transform 0.35s cubic-bezier(.2,.8,.2,1), opacity 0.2s; }
+.row .plus::before, .row .plus::after { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1.5px; background: currentColor; }
+.row .plus::after { transform: rotate(90deg); transition: transform 0.35s cubic-bezier(.2,.8,.2,1); }
+.row-btn[aria-expanded="true"] .plus { opacity: 1; color: var(--accent); }
+.row-btn[aria-expanded="true"] .plus::after { transform: rotate(0deg); }
+.row .area { font-size: 15px; color: var(--muted); }
+.row .year { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; }
+.row .status { grid-column: 11 / span 2; justify-self: end; text-align: right; font-size: 14px; padding: 22px 0; }
+.row .status a, .row .status span.st { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 4px 8px; margin-right: -8px; border-radius: 8px; white-space: nowrap; }
+.row .status a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; }
+
+/* the two newest projects carry the most weight */
+.row.lead .title { font-size: clamp(30px, 3.1vw, 42px); font-weight: 600; letter-spacing: -0.035em; }
+.row.lead .row-btn, .row.lead .status { padding-block: 28px; }
+
+/* expanding panel: grid-rows trick, opens on click / Enter, previews on hover and keyboard focus */
+.panel { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 0.42s cubic-bezier(.2,.8,.2,1), visibility 0s linear 0.42s; }
+.panel > .inner { overflow: hidden; min-height: 0; }
+.row.open .panel,
+.row:not(.no-peek):has(:focus-visible) .panel { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows 0.42s cubic-bezier(.2,.8,.2,1), visibility 0s; }
+@media (hover: hover) and (pointer: fine) {
+  .row:not(.no-peek):hover .panel { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows 0.42s cubic-bezier(.2,.8,.2,1) 0.14s, visibility 0s 0.14s; }
+  .row:not(.no-peek):hover .plus { opacity: 1; }
+}
+.panel .body { padding: 0 0 26px; row-gap: 18px; }
+.panel .desc { grid-column: 2 / span 6; margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink-2); max-width: 64ch; }
+.panel .tech { grid-column: 8 / span 5; margin: 0; align-self: start; text-align: right; font-size: 12px; line-height: 1.6; letter-spacing: 0.02em; color: var(--muted); }
+.panel .steps { grid-column: 2 / span 11; list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 24px; row-gap: 10px; }
+.panel .steps li { min-width: 0; border-top: 1px solid var(--rule-soft); padding-top: 10px; font-size: 14px; line-height: 1.45; }
+.panel .steps b { display: block; font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 400; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.figs { grid-column: 2 / span 11; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; margin: 0; }
+.fig { min-width: 0; margin: 0; }
+.fig b, .fig dd { display: block; margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+.fig dt, .fig span { display: block; margin: 6px 0 0; font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.fig { display: flex; flex-direction: column-reverse; justify-content: flex-end; }
+/* row 07 keeps the mockup's figure layout */
+.ps .umap { grid-column: 2 / span 5; margin: 0; }
+.ps .umap img { width: 100%; height: 220px; object-fit: contain; background: var(--figure-bg); border: 1px solid var(--rule-soft); }
+.ps .desc { grid-column: 7 / span 3; }
+.ps .figs { grid-column: 10 / span 3; grid-template-columns: 1fr; row-gap: 16px; align-self: start; }
+.ps .tech { grid-column: 2 / span 5; text-align: left; }
+
+/* ---------- experience ---------- */
+.exp { padding-top: 128px; }
+.exp-head { padding-bottom: 28px; align-items: end; }
+.exp-head h2 { grid-column: 1 / span 6; margin: 0; font-size: clamp(40px, 4.6vw, 64px); font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
+.exp-head .label { grid-column: 7 / span 6; text-align: right; }
+.exp-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.job { padding-block: 24px; }
+.job time { grid-column: span 2; font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: var(--muted); padding-top: 5px; }
+.job h3 { grid-column: span 4; margin: 0; font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
+.job .org { grid-column: span 2; margin: 0; font-size: 15px; color: var(--muted); padding-top: 3px; }
+.job .what { grid-column: span 4; margin: 0; font-size: 15px; line-height: 1.5; padding-top: 3px; }
+.job .wins { display: block; margin-top: 10px; font-size: 12px; letter-spacing: 0.02em; color: var(--muted); }
+.job.row { border-radius: 12px; }
+
+/* ---------- contact ---------- */
+.contact { padding-top: 128px; align-items: end; row-gap: 28px; }
+.contact .mail { grid-column: 1 / span 9; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.email {
+  margin: 0; font-size: clamp(25px, 5.6vw, 76px); font-weight: 600; letter-spacing: -0.05em; line-height: 1.05;
+  text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 0.045em; text-underline-offset: 0.14em;
+  overflow-wrap: anywhere; user-select: all; -webkit-user-select: all;
+}
+.mail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px;
+  font: inherit; font-size: 14px; font-weight: 500; color: var(--ink); text-decoration: none; cursor: pointer;
+  border: 0; border-radius: 10px; background: var(--glass);
+  -webkit-backdrop-filter: blur(12px) saturate(170%); backdrop-filter: blur(12px) saturate(170%);
+  box-shadow: inset 0 0 0 1px var(--glass-edge), inset 0 1px 0 var(--glass-hi);
+}
+.btn.solid { background: var(--ink); color: var(--bg); box-shadow: none; }
+.btn.solid:hover { color: var(--bg); background: var(--accent-ink); }
+.btn svg { width: 15px; height: 15px; }
+.contact .also { grid-column: 10 / span 3; margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted); text-align: right; }
+.contact .also .nw { white-space: nowrap; }
+.contact .also a { color: var(--ink); padding: 2px 4px; border-radius: 6px; }
+
+.foot { margin-top: 96px; padding-top: 18px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; font-size: 13px; color: var(--muted); }
+.foot p { margin: 0; }
+.switch {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; min-height: 36px;
+  font: inherit; font-size: 13px; color: var(--ink); cursor: pointer; border: 0; border-radius: 999px;
+  background: var(--glass); -webkit-backdrop-filter: blur(12px) saturate(170%); backdrop-filter: blur(12px) saturate(170%);
+  box-shadow: inset 0 0 0 1px var(--glass-edge), inset 0 1px 0 var(--glass-hi);
+}
+.switch .track { position: relative; width: 34px; height: 20px; border-radius: 999px; background: var(--rule-soft); box-shadow: inset 0 0 0 1px var(--glass-edge); transition: background 0.25s; }
+.switch .track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); box-shadow: 0 1px 3px rgba(0,0,0,.35); transition: transform 0.3s cubic-bezier(.2,.8,.2,1); }
+.switch[aria-checked="true"] .track { background: var(--accent); }
+.switch[aria-checked="true"] .track::after { transform: translateX(14px); background: #ffffff; }
+
+/* ---------- tablet ---------- */
+@media (max-width: 1080px) {
+  .bar .meta { display: none; }
+  .bar .name { grid-column: span 4; }
+  .bar nav { grid-column: 5 / span 8; }
+  .pv { grid-column: 1 / -1; }
+  .vhero h1 { grid-column: 1 / -1; }
+  .vlede { grid-column: 1 / span 8; }
+  .lrow .lt { grid-column: 2 / span 7; }
+  .lrow .la { grid-column: 9 / span 4; text-align: right; }
+  .lrow .lk { grid-column: 2 / span 11; justify-self: start; text-align: left; }
+  .lrow .yt { margin-left: -8px; }
+}
+@media (max-width: 900px) {
+  .bar nav .hide-md { display: none; }
+  .c-title { grid-column: span 6; }
+  .c-area { grid-column: span 3; }
+  .c-year { display: none; }
+  .row .year { display: none; }
+  .about .lede { grid-column: 1 / span 9; }
+  .about .label { grid-column: 1 / -1; }
+  .about .links { grid-column: 10 / span 3; }
+  .panel .desc { grid-column: 2 / span 11; }
+  .panel .tech { grid-column: 2 / span 11; text-align: left; }
+  .ps .umap { grid-column: 2 / span 11; }
+  .ps .desc { grid-column: 2 / span 7; }
+  .ps .figs { grid-column: 9 / span 4; }
+  .ps .tech { grid-column: 2 / span 11; }
+  .panel .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .job time { grid-column: span 3; }
+  .job h3 { grid-column: span 4; }
+  .job .org { grid-column: span 5; }
+  .job .what { grid-column: 4 / span 9; padding-top: 10px; }
+}
+
+/* ---------- phone: the table becomes stacked rows ---------- */
+@media (max-width: 720px) {
+  html { scroll-padding-top: 80px; }
+  .grid12 { grid-template-columns: minmax(0, 1fr); column-gap: 0; }
+  .grid12 > * { grid-column: 1 / -1 !important; }
+  .bar { display: flex; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; }
+  .bar .name { flex: none; }
+  .bar nav { gap: 0; }
+  .bar nav a { padding: 6px 7px; font-size: 13px; }
+  .bar nav .hide-sm { display: none; }
+  .tools { margin-left: 4px; gap: 4px; }
+  .vhero { padding-block: 32px 48px; }
+  .vblock { padding-bottom: 48px; }
+  .vhead .label + .label { text-align: left; padding-top: 4px; }
+  .lrow { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 8px; row-gap: 4px; padding-block: 14px; margin-inline: -10px; padding-inline: 10px; --inset: 10px; }
+  .lrow > * { grid-column: 2 !important; }
+  .lrow .no { grid-column: 1 !important; grid-row: 1; padding-top: 3px; }
+  .lrow .lt, .lrow.book .lt { font-size: 19px; }
+  .lrow .la, .lrow.book .la { text-align: left; font-size: 14px; }
+  .lrow .lk { justify-self: start; }
+  .previews { padding-top: 88px; row-gap: 56px; }
+  .prow { grid-template-columns: 30px minmax(0, 1fr); row-gap: 4px; margin-inline: -10px; padding-inline: 10px; --inset: 10px; }
+  .prow .lk { grid-column: 2; }
+  .prow .yt { margin-left: -8px; }
+  .hero { padding-block: 40px 40px; row-gap: 28px; }
+  .hero h1 { font-size: clamp(40px, 12vw, 56px); grid-row: 2; }
+  .hero .portrait { grid-row: 1; width: 112px; }
+  .about { padding-bottom: 64px; }
+  .about .lede { font-size: 19px; }
+  .about .links { flex-direction: row; flex-wrap: wrap; gap: 4px 18px; }
+  .index-head .label + .label { text-align: left; }
+  .cols { display: none; }
+  .list { border-top: 1px solid var(--rule); }
+  .row { margin-inline: -10px; padding-inline: 10px; --inset: 10px; }
+  .row-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; align-items: end; }
+  .row-head > * { grid-column: auto !important; }
+  .row-btn { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 8px; row-gap: 4px; padding: 16px 0; }
+  .row-btn > * { grid-column: auto !important; }
+  .row .no { grid-row: 1; grid-column: 1 !important; padding-top: 3px; font-size: 13px; }
+  .row .title { grid-row: 1; grid-column: 2 !important; font-size: 21px; gap: 10px; }
+  .row.lead .title { font-size: 25px; }
+  .row .area { grid-row: 2; grid-column: 2 !important; font-size: 13px; }
+  .row .area .yr { display: inline; }
+  .row .status { padding: 16px 0; font-size: 13px; align-self: end; }
+  .row.lead .row-btn, .row.lead .status { padding-block: 20px; }
+  .panel .body { padding: 0 0 20px 38px; }
+  .panel .steps { grid-template-columns: minmax(0, 1fr); }
+  .figs { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 12px; }
+  .fig b, .fig dd { font-size: 28px; }
+  .fig dt, .fig span { font-size: 11px; }
+  .ps .figs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ps .umap img { height: 180px; }
+  .exp { padding-top: 88px; }
+  .exp-head .label { text-align: left; padding-top: 10px; }
+  .job { row-gap: 4px; }
+  .job time { padding-top: 0; }
+  .job .what { padding-top: 6px; }
+  .contact { padding-top: 88px; }
+  .contact .also { text-align: left; }
+  .foot { margin-top: 56px; }
+}
+.area .yr { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .field span { animation: none !important; }
+  .panel, .row .plus, .row .plus::after, .switch .track::after { transition: none !important; }
+}
+</style>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+<div class="field" aria-hidden="true">
+  <div class="f1" data-field="0.05"><span></span></div>
+  <div class="f2" data-field="-0.07"><span></span></div>
+  <div class="f3" data-field="0.035"><span></span></div>
+  <div class="f4" data-field="-0.04"><span></span></div>
+</div>
+
+<div class="page">
+  <div class="wrap">
+    <header class="bar" data-refract="soft">
+      <a class="name" href="#top" data-liquid="snap">Frederick Wang</a>
+      <p class="meta">Machine learning · Toronto</p>
+      <p class="meta short">M.Sc. AI, UofT</p>
+      <nav aria-label="Main">
+        <a href="#index" data-liquid="snap" data-section="index">Index</a>
+        <a href="#experience" data-liquid="snap" data-section="experience" class="hide-md">Experience</a>
+        <a href="#music" data-liquid="snap" data-view="music">Music</a>
+        <a href="#books" data-liquid="snap" data-view="books">Books</a>
+        <a href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap" class="hide-md">Résumé</a>
+        <a href="#contact" data-liquid="snap" data-section="contact" class="hide-sm">Contact</a>
+        <span class="tools">
+          
+          <button class="icon-btn" id="theme" type="button" data-theme-toggle data-liquid="snap" aria-label="Switch to dark theme">
+            <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+            <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+          </button>
+        </span>
+      </nav>
+    </header>
+
+    <main id="main">
+    <div id="top" class="home">
+      <section class="hero grid12" aria-label="Introduction">
+        <h1>Machine learning for decisions under uncertainty<span class="stop">.</span></h1>
+        <figure class="portrait"><img src="/frederick.jpg" alt="Portrait of Frederick Wang" width="240" height="300"></figure>
+      </section>
+
+      <section class="about grid12" aria-labelledby="about-l">
+        <p class="label" id="about-l">(About)</p>
+        <p class="lede">I’m Frederick, an M.Sc. Applied Computing student at the University of Toronto. I work on world models for autonomous driving, probabilistic forecasting, and clinical ML, with a data-engineering background from BCI and a B.Sc. in CS and Statistics from UBC.</p>
+        <div class="links">
+          <a href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a>
+          <a href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-liquid="snap">LinkedIn ↗</a>
+          <a href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap">Résumé ↗</a>
+        </div>
+      </section>
+
+      <section id="index" aria-labelledby="index-h">
+        <div class="index-head grid12">
+          <h2 class="label" id="index-h">(Index)</h2>
+          <p class="label">Ten projects · six ongoing · newest first</p>
+        </div>
+        <div class="cols grid12 label" aria-hidden="true">
+          <span class="c-no">No.</span><span class="c-title">Project</span><span class="c-area">Area</span><span class="c-year">Year</span><span class="c-status">Status</span>
+        </div>
+
+        <ol class="list">
+          <!-- 01 -->
+          <li class="row lead open" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="true" aria-controls="p01">
+                <span class="no">01</span>
+                <span class="title c-title"><span class="tx">Recoverability-Aware World Models</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Autonomous driving<span class="yr"> · 2026</span></span>
+                <span class="year c-year">2026</span>
+              </button>
+              <div class="status"><span class="st"><span class="dot" aria-hidden="true"></span>Ongoing</span></div>
+            </div>
+            <div class="panel" id="p01"><div class="inner"><div class="body grid12">
+              <p class="desc">Prediction-only world models can call a scene safe after the point of no return. This objective keeps whether the car can still recover, then distils it into a driving policy.</p>
+              <p class="tech mono">Autonomy · UofT<br>PyTorch · CARLA · NVIDIA Cosmos · imitation learning</p>
+              <ol class="steps">
+                <li><b>01</b>Mine unrecoverable scenes in headless CARLA</li>
+                <li><b>02</b>Generate counterfactual variants with NVIDIA Cosmos</li>
+                <li><b>03</b>Train a recoverability-aware world model</li>
+                <li><b>04</b>Distil it into a DAgger-trained driving policy</li>
+              </ol>
+            </div></div></div>
+          </li>
+
+          <!-- 02 -->
+          <li class="row lead" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p02">
+                <span class="no">02</span>
+                <span class="title c-title"><span class="tx">Talkback</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Voice AI · Reading<span class="yr"> · 2026</span></span>
+                <span class="year c-year">2026</span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/talkback" target="_blank" rel="noopener" data-liquid="snap"><span class="dot" aria-hidden="true"></span>Ongoing<span class="sr-only">: Talkback on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p02"><div class="inner"><div class="body grid12">
+              <p class="desc">Books read aloud by a full expressive cast. Stop anywhere and ask a character a question out loud: they answer in their own voice, using only what you have read so far, so nothing is spoiled.</p>
+              <p class="tech mono">React · FastAPI · Higgs Audio TTS<br>realtime voice · lip-sync</p>
+              <dl class="figs">
+                <div class="fig"><dt>voiced emotions</dt><dd>20</dd></div>
+                <div class="fig"><dt>features tracked</dt><dd>191</dd></div>
+                <div class="fig"><dt>tests</dt><dd>~1,750</dd></div>
+              </dl>
+            </div></div></div>
+          </li>
+
+          <!-- 03 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p03">
+                <span class="no">03</span>
+                <span class="title c-title"><span class="tx">text2sql-memory</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">LLMs · Text-to-SQL<span class="yr"> · 2026</span></span>
+                <span class="year c-year">2026</span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/text2sql-memory" target="_blank" rel="noopener" data-liquid="snap"><span class="dot" aria-hidden="true"></span>Ongoing<span class="sr-only">: text2sql-memory on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p03"><div class="inner"><div class="body grid12">
+              <p class="desc">Text-to-SQL that retrieves business logic, not just schema: glossary terms, metric definitions and join paths, tested against a schema-only baseline on BIRD.</p>
+              <p class="tech mono">Python · Claude API · BM25 + embeddings</p>
+            </div></div></div>
+          </li>
+
+          <!-- 04 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p04">
+                <span class="no">04</span>
+                <span class="title c-title"><span class="tx">arXiv Paper RAG</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Retrieval · Citations<span class="yr"> · 2026</span></span>
+                <span class="year c-year">2026</span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/arxiv-paper-rag" target="_blank" rel="noopener" data-liquid="snap"><span class="dot" aria-hidden="true"></span>Ongoing<span class="sr-only">: arXiv Paper RAG on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p04"><div class="inner"><div class="body grid12">
+              <p class="desc">Answers about a reading list of papers, every claim cited to the exact paper and section, and every quote checked against the passage it came from.</p>
+              <p class="tech mono">Python · Claude API · FastAPI · LaTeX parsing</p>
+            </div></div></div>
+          </li>
+
+          <!-- 05 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p05">
+                <span class="no">05</span>
+                <span class="title c-title"><span class="tx">Semantic PDF Reader</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Search · Local-first<span class="yr"> · 2026</span></span>
+                <span class="year c-year">2026</span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/semantic-pdf-reader" target="_blank" rel="noopener" data-liquid="snap"><span class="dot" aria-hidden="true"></span>Ongoing<span class="sr-only">: Semantic PDF Reader on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p05"><div class="inner"><div class="body grid12">
+              <p class="desc">Search a PDF by meaning. It jumps to the page and highlights the passage, in one document or a whole library, and nothing leaves your machine.</p>
+              <p class="tech mono">React · pdf.js · FastAPI · PyMuPDF</p>
+            </div></div></div>
+          </li>
+
+          <!-- 06 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p06">
+                <span class="no">06</span>
+                <span class="title c-title"><span class="tx">Undercurrent</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Forecasting<span class="yr"> · 2026</span></span>
+                <span class="year c-year">2026</span>
+              </button>
+              <div class="status"><span class="st"><span class="dot" aria-hidden="true"></span>Ongoing</span></div>
+            </div>
+            <div class="panel" id="p06"><div class="inner"><div class="body grid12">
+              <p class="desc">Chronos-2 with covariates against a hierarchical Bayesian driver model, combined by Bayesian Predictive Synthesis and scored on CRPS and calibration.</p>
+              <p class="tech mono">Python · Chronos-2 · Bayesian modelling</p>
+            </div></div></div>
+          </li>
+
+          <!-- 07 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p07">
+                <span class="no">07</span>
+                <span class="title c-title"><span class="tx">Unsupervised Patient Stratification</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Clinical ML<span class="yr"> · 2026</span></span>
+                <span class="year c-year">2026</span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/patient-stratification" target="_blank" rel="noopener" data-liquid="snap">Code + report<span class="sr-only">: Unsupervised Patient Stratification on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p07"><div class="inner"><div class="body grid12 ps">
+              <figure class="umap"><img src="/patient-stratification.webp" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right" loading="lazy"></figure>
+              <p class="desc">VAE + K-Means on structured labs and Chinese free-text exam reports. Seven interpretable phenotypes, including liver fibrosis and hypothyroidism, found without labels.</p>
+              <dl class="figs">
+                <div class="fig"><dt>Silhouette · DBI 1.694</dt><dd>0.267</dd></div>
+                <div class="fig"><dt>Visits · 109K patients</dt><dd>234K</dd></div>
+              </dl>
+              <p class="tech mono">UBC CPSC 440 · Apr 2026</p>
+            </div></div></div>
+          </li>
+
+          <!-- 08 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p08">
+                <span class="no">08</span>
+                <span class="title c-title"><span class="tx">GreenLife</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">GenAI · RAG<span class="yr"> · 2024</span></span>
+                <span class="year c-year">2024</span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/greenlife" target="_blank" rel="noopener" data-liquid="snap">1st place<span class="sr-only">: GreenLife on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p08"><div class="inner"><div class="body grid12">
+              <p class="desc">Retrieval-augmented generation on AWS Bedrock. Took 1st place.</p>
+              <p class="tech mono">RAG · AWS Bedrock · 2024</p>
+            </div></div></div>
+          </li>
+
+          <!-- 09 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p09">
+                <span class="no">09</span>
+                <span class="title c-title"><span class="tx">Great Expectations</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Open source · Data quality<span class="yr"> · 2025</span></span>
+                <span class="year c-year">2025</span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/great_expectations/tree/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">Contribution<span class="sr-only">: Great Expectations on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p09"><div class="inner"><div class="body grid12">
+              <p class="desc">SQL Server support for Great Expectations, the open-source data-quality library.</p>
+              <p class="tech mono">Open source · 2025</p>
+            </div></div></div>
+          </li>
+
+          <!-- 10 -->
+          <li class="row" data-liquid="lift">
+            <div class="row-head grid12">
+              <button class="row-btn" type="button" aria-expanded="false" aria-controls="p10">
+                <span class="no">10</span>
+                <span class="title c-title"><span class="tx">WealthComplex</span><span class="plus" aria-hidden="true"></span></span>
+                <span class="area c-area">Full-stack</span>
+                <span class="year c-year"><span aria-hidden="true">—</span><span class="sr-only">No year listed</span></span>
+              </button>
+              <div class="status"><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap">Code<span class="sr-only">: WealthComplex on GitHub</span> ↗</a></div>
+            </div>
+            <div class="panel" id="p10"><div class="inner"><div class="body grid12">
+              <p class="desc">An investment platform, built full-stack.</p>
+              <p class="tech mono">Full-stack</p>
+            </div></div></div>
+          </li>
+        </ol>
+      </section>
+
+      <section id="experience" class="exp" aria-labelledby="exp-h">
+        <div class="exp-head grid12">
+          <h2 id="exp-h">Experience</h2>
+          <p class="label">Newest first</p>
+        </div>
+        <ol class="exp-list">
+          <li class="job row grid12" data-liquid="lift">
+            <time>Sep 2026 – now</time>
+            <h3>Teaching Assistant</h3>
+            <p class="org">University of Toronto, CS</p>
+            <p class="what">CSC207 tutorials and labs on Java, object-oriented design and Git-based teamwork.</p>
+          </li>
+          <li class="job row grid12" data-liquid="lift">
+            <time>May – Dec 2025</time>
+            <h3>Data Engineer Intern</h3>
+            <p class="org">British Columbia Investment Management (BCI)</p>
+            <p class="what">Won the internal hackathon with a schedule-optimization algorithm and led it to production. Shipped an MCP server on Databricks Apps connecting Claude to Unity Catalog, and a RAG knowledge base over unstructured data.<span class="wins mono">1st place hackathon · +25% efficiency · $20M projected value · −50% analysis time</span></p>
+          </li>
+          <li class="job row grid12" data-liquid="lift">
+            <time>Sep 2024 – Apr 2026</time>
+            <h3>Teaching Assistant</h3>
+            <p class="org">UBC CS &amp; Statistics</p>
+            <p class="what">Led ML tutorials in R, mentored 100+ students, and co-facilitated 400-level database lectures.</p>
+          </li>
+          <li class="job row grid12" data-liquid="lift">
+            <time>Jan – Aug 2024</time>
+            <h3>Data Analyst Intern</h3>
+            <p class="org">Providence Research</p>
+            <p class="what">Built supervised models in R predicting ankle-surgery outcomes from patient risk factors.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="previews grid12" aria-label="Music and books">
+        <div class="pv">
+          <div class="pv-head"><h2 id="pv-music">Music</h2><p class="label">Favourite piano works, ranked</p></div>
+          <ol class="plist">
+<li class="row prow" data-liquid="lift"><span class="no">01</span><span class="pt"><span class="lt">Piano Concerto No. 3 in D minor, Op. 30</span><span class="la">Rachmaninov</span></span><span class="lk"><a class="yt" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Rachmaninov, Piano Concerto No. 3 in D minor, Op. 30</span> ↗</a></span></li>
+<li class="row prow" data-liquid="lift"><span class="no">02</span><span class="pt"><span class="lt">Piano Concerto No. 2 in C minor, Op. 18</span><span class="la">Rachmaninov</span></span><span class="lk"><a class="yt" href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Rachmaninov, Piano Concerto No. 2 in C minor, Op. 18</span> ↗</a></span></li>
+<li class="row prow" data-liquid="lift"><span class="no">03</span><span class="pt"><span class="lt">Tre sonetti di Petrarca, S. 270 (Sonetto 104)</span><span class="la">Liszt</span></span><span class="lk"><a class="yt" href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Liszt, Tre sonetti di Petrarca, S. 270 (Sonetto 104)</span> ↗</a></span></li>
+          </ol>
+          <p class="label pv-sub">My playing</p>
+          <ol class="plist">
+<li class="row prow" data-liquid="lift"><span class="no">01</span><span class="pt"><span class="lt">Liebesleid (arr. Rachmaninov)</span><span class="la">Kreisler</span></span><span class="lk"><a class="yt" href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Kreisler, Liebesleid (arr. Rachmaninov)</span> ↗</a></span></li>
+          </ol>
+          <a class="see-all" href="#music" data-liquid="snap">See all →</a>
+        </div>
+        <div class="pv">
+          <div class="pv-head"><h2 id="pv-books">Books</h2><p class="label">Currently reading</p></div>
+          <ol class="plist">
+<li class="row prow" data-liquid="lift"><span class="no">01</span><span class="pt"><span class="lt">Dune</span><span class="la">Frank Herbert</span></span></li>
+          </ol>
+          <p class="label pv-sub">Favourites</p>
+          <ol class="plist">
+<li class="row prow" data-liquid="lift"><span class="no">01</span><span class="pt"><span class="lt">The Brothers Karamazov</span><span class="la">Fyodor Dostoevsky</span></span></li>
+<li class="row prow" data-liquid="lift"><span class="no">02</span><span class="pt"><span class="lt">The Idiot</span><span class="la">Fyodor Dostoevsky</span></span></li>
+<li class="row prow" data-liquid="lift"><span class="no">03</span><span class="pt"><span class="lt">1984</span><span class="la">George Orwell</span></span></li>
+          </ol>
+          <a class="see-all" href="#books" data-liquid="snap">See all →</a>
+        </div>
+      </section>
+
+      <section id="contact" class="contact grid12" aria-labelledby="contact-l">
+        <div class="mail">
+          <h2 class="label" id="contact-l">(Contact)</h2>
+          <p class="email" id="email-text">fredwang1012@gmail.com</p>
+          <div class="mail-actions">
+            <button class="btn solid copy-email" type="button" data-liquid="snap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+              <span>Copy email</span>
+            </button>
+            <a class="btn" href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-liquid="snap">LinkedIn ↗</a>
+            <a class="btn" href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a>
+          </div>
+        </div>
+        <p class="also">Also: piano, skiing, classic literature. <span class="nw"><a href="#music" data-liquid="snap">Music</a> · <a href="#books" data-liquid="snap">Books</a></span></p>
+      </section>
+    </div>
+    <section id="music" class="view" aria-labelledby="music-h" hidden>
+      <a class="home-link" href="#top" data-liquid="snap">← Home</a>
+      <div class="vhero grid12">
+        <h1 id="music-h" tabindex="-1">Music<span class="stop">.</span></h1>
+        <p class="vlede">A window into my passion for music.</p>
+      </div>
+        <div class="vblock">
+          <div class="vhead grid12"><h2 class="label">(Ranking)</h2><p class="label">My personal ranking of favourite piano works</p></div>
+          <ol class="vlist">
+          <li class="row lrow grid12" data-liquid="lift"><span class="no">01</span><span class="lt">Piano Concerto No. 3 in D minor, Op. 30</span><span class="la">Rachmaninov</span><span class="lk"><a class="yt" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Rachmaninov, Piano Concerto No. 3 in D minor, Op. 30</span> ↗</a></span></li>
+          <li class="row lrow grid12" data-liquid="lift"><span class="no">02</span><span class="lt">Piano Concerto No. 2 in C minor, Op. 18</span><span class="la">Rachmaninov</span><span class="lk"><a class="yt" href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Rachmaninov, Piano Concerto No. 2 in C minor, Op. 18</span> ↗</a></span></li>
+          <li class="row lrow grid12" data-liquid="lift"><span class="no">03</span><span class="lt">Tre sonetti di Petrarca, S. 270 (Sonetto 104)</span><span class="la">Liszt</span><span class="lk"><a class="yt" href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Liszt, Tre sonetti di Petrarca, S. 270 (Sonetto 104)</span> ↗</a></span></li>
+          </ol>
+        </div>
+        <div class="vblock">
+          <div class="vhead grid12"><h2 class="label">(My playing)</h2><p class="label">One recording</p></div>
+          <ol class="vlist">
+          <li class="row lrow grid12" data-liquid="lift"><span class="no">01</span><span class="lt">Liebesleid (arr. Rachmaninov)</span><span class="la">Kreisler</span><span class="lk"><a class="yt" href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube<span class="sr-only">: Kreisler, Liebesleid (arr. Rachmaninov)</span> ↗</a></span></li>
+          </ol>
+        </div>
+    </section>
+    <section id="books" class="view" aria-labelledby="books-h" hidden>
+      <a class="home-link" href="#top" data-liquid="snap">← Home</a>
+      <div class="vhero grid12">
+        <h1 id="books-h" tabindex="-1">Books<span class="stop">.</span></h1>
+        <p class="vlede">Record of my journey through literature.</p>
+      </div>
+        <div class="vblock">
+          <div class="vhead grid12"><h2 class="label">(Currently reading)</h2><p class="label">One book</p></div>
+          <ol class="vlist">
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">01</span><span class="lt">Dune</span><span class="la">Frank Herbert</span></li>
+          </ol>
+        </div>
+        <div class="vblock">
+          <div class="vhead grid12"><h2 class="label">(Favourites)</h2><p class="label">Three books</p></div>
+          <ol class="vlist">
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">01</span><span class="lt">The Brothers Karamazov</span><span class="la">Fyodor Dostoevsky</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">02</span><span class="lt">The Idiot</span><span class="la">Fyodor Dostoevsky</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">03</span><span class="lt">1984</span><span class="la">George Orwell</span></li>
+          </ol>
+        </div>
+        <div class="vblock">
+          <div class="vhead grid12"><h2 class="label">(Read)</h2><p class="label">13 books</p></div>
+          <ol class="vlist cols2">
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">01</span><span class="lt">A Day in the Life of Ivan Denisovich</span><span class="la">Aleksandr Solzhenitsyn</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">02</span><span class="lt">White Nights</span><span class="la">Fyodor Dostoevsky</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">03</span><span class="lt">The Great Gatsby</span><span class="la">F. Scott Fitzgerald</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">04</span><span class="lt">Animal Farm</span><span class="la">George Orwell</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">05</span><span class="lt">The Emperor of All Maladies</span><span class="la">Siddhartha Mukherjee</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">06</span><span class="lt">The Three-Body Problem</span><span class="la">Liu Cixin</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">07</span><span class="lt">The Dark Forest</span><span class="la">Liu Cixin</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">08</span><span class="lt">Death&#x27;s End</span><span class="la">Liu Cixin</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">09</span><span class="lt">Kokoro</span><span class="la">Natsume Sōseki</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">10</span><span class="lt">The Setting Sun</span><span class="la">Osamu Dazai</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">11</span><span class="lt">No Longer Human</span><span class="la">Osamu Dazai</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">12</span><span class="lt">Norwegian Wood</span><span class="la">Haruki Murakami</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">13</span><span class="lt">Crime and Punishment</span><span class="la">Fyodor Dostoevsky</span></li>
+          </ol>
+        </div>
+        <div class="vblock">
+          <div class="vhead grid12"><h2 class="label">(To read)</h2><p class="label">16 books</p></div>
+          <ol class="vlist cols2">
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">01</span><span class="lt">Meditations</span><span class="la">Marcus Aurelius</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">02</span><span class="lt">Flatland: A Romance of Many Dimensions</span><span class="la">Edwin A. Abbott</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">03</span><span class="lt">Faust</span><span class="la">Johann Wolfgang von Goethe</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">04</span><span class="lt">Dune series</span><span class="la">Frank Herbert</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">05</span><span class="lt">The Iliad</span><span class="la">Homer</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">06</span><span class="lt">The Metamorphosis</span><span class="la">Franz Kafka</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">07</span><span class="lt">A Song of Ice and Fire</span><span class="la">George R.R. Martin</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">08</span><span class="lt">I Am a Cat</span><span class="la">Natsume Sōseki</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">09</span><span class="lt">Beyond Good and Evil</span><span class="la">Friedrich Nietzsche</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">10</span><span class="lt">The Song of the Cell</span><span class="la">Siddhartha Mukherjee</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">11</span><span class="lt">One Hundred Years of Solitude</span><span class="la">Gabriel García Márquez</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">12</span><span class="lt">The Republic</span><span class="la">Plato</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">13</span><span class="lt">Cancer Ward</span><span class="la">Aleksandr Solzhenitsyn</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">14</span><span class="lt">The Gulag Archipelago</span><span class="la">Aleksandr Solzhenitsyn</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">15</span><span class="lt">War and Peace</span><span class="la">Leo Tolstoy</span></li>
+          <li class="row lrow book grid12" data-liquid="lift"><span class="no">16</span><span class="lt">Lord of the Flies</span><span class="la">William Golding</span></li>
+          </ol>
+        </div>
+    </section>
+    </main>
+
+    <footer class="foot">
+      <p>© 2026 Frederick Wang</p>
+      <button class="switch" type="button" role="switch" aria-checked="false" data-liquid-toggle data-liquid="snap"><span class="track" aria-hidden="true"></span>Liquid cursor</button>
+    </footer>
+  </div>
+</div>
+<p class="sr-only" id="live" aria-live="polite"></p>
+
+<script>
+/*!
+ * Liquid engine: an iPadOS (Magic Keyboard era) pointer after Apple's "Design for the iPadOS pointer":
+ * a 19px glassy dot that becomes a line-height text beam over text, a highlight that sits behind the label
+ * of controls without a background, a lift (scale, shadow, specular light) for controls with one,
+ * magnetism with generous hit margins, gentle parallax, idle fade. Plus reactive colour fields and
+ * Chromium backdrop refraction.
+ *
+ * Markup hooks
+ *   data-liquid="snap"   small controls (links, buttons, nav items): the cursor merges into them and they bobble
+ *   data-liquid="lift"   large surfaces (cards): they tilt toward the cursor; the page can read
+ *                        --lq-mx, --lq-my (pointer position, %) and --lq-spec (0..1) for a highlight
+ *   data-refract         glass that bends the content behind it (Chromium); "soft" or "strong" as the value
+ *   data-liquid-toggle   a button that turns the liquid cursor on and off (aria-checked is kept in sync)
+ *   data-field="0.06"    a background colour blob that drifts toward or away from the pointer and with scroll;
+ *                        the value is its depth (negative moves away). Put the CSS drift/morph animation on a
+ *                        child element, since the engine owns this element's transform. Works on touch via scroll.
+ * Theme hooks (CSS custom properties on :root)
+ *   --lq-dot    fill of the pointer dot and text beam   --lq-hl  fill of a control's highlight   --lq-press  pressed highlight
+ *   (--lq-ring and --lq-tint are still read by pages for their own glass)
+ * Off automatically on touch screens and when the viewer prefers reduced motion.
+ * Refraction technique after deepika-builds/liquid-glass (MIT).
+ */
+(function () {
+  "use strict";
+  if (window.Liquid) return;
+
+  var doc = document, root = doc.documentElement;
+  var reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  var finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+  };
+
+  // ---------- styles ----------
+  // Defaults use :where() so a page's own tokens always win.
+  var css = [
+    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-dot:rgba(60,60,67,.46);--lq-hl:rgba(60,60,67,.12);--lq-press:rgba(60,60,67,.22);--lq-blend:multiply;--lq-sheen:rgba(255,255,255,.55)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}}",
+    ":where(:root[data-theme=dark]){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}",
+    "body.lq-on,body.lq-on *{cursor:none!important}",
+    "#lq-ptr{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;opacity:0;width:19px;height:19px;border-radius:9.5px;transform-origin:50% 50%;" +
+      "background:var(--lq-dot);-webkit-backdrop-filter:blur(1.5px) saturate(170%);backdrop-filter:blur(1.5px) saturate(170%);" +
+      "box-shadow:inset 0 0 0 .5px rgba(255,255,255,.4),inset 0 1px 1px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.12);" +
+      "transition:opacity .35s ease,background-color .2s ease,box-shadow .25s ease}",
+    // highlight: a flat translucent shape that blends under the label, with a sheen that follows the pointer
+    "#lq-ptr.hl{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,50%),var(--lq-sheen),transparent 60%) ,var(--lq-hl);background-blend-mode:soft-light;mix-blend-mode:var(--lq-blend);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.hl.down{background:var(--lq-press)}",
+    // lift: the pointer becomes the specular light on top of a raised control
+    "#lq-ptr.lift{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.5),rgba(255,255,255,0) 55%);mix-blend-mode:soft-light;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.beam{border-radius:1.5px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "[data-liquid]{will-change:transform}",
+    ".lq-lifted{box-shadow:0 12px 26px -10px rgba(0,0,0,.38),0 3px 8px -2px rgba(0,0,0,.14)!important;position:relative;z-index:2}",
+    "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}"
+  ].join("\n");
+  var style = doc.createElement("style");
+  style.textContent = css;
+  doc.head.insertBefore(style, doc.head.firstChild);
+
+  // ---------- the pointer: one shape that is a dot, a text beam or a control's highlight ----------
+  var ptrEl = doc.createElement("div");
+  ptrEl.id = "lq-ptr"; ptrEl.setAttribute("aria-hidden", "true");
+  function mount() { doc.body.appendChild(ptrEl); }
+  if (doc.body) mount(); else doc.addEventListener("DOMContentLoaded", mount);
+
+  // ---------- refraction (Chromium) ----------
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var refractionOK = (function () {
+    var ua = navigator.userAgent;
+    if (/Firefox/.test(ua)) return false;
+    if (/Safari/.test(ua) && !/Chrome|Chromium|Edg/.test(ua)) return false;
+    return CSS.supports("backdrop-filter", "url(#x)");
+  })();
+  var defs = null, uid = 0, mapCache = {};
+  function ensureDefs() {
+    if (defs) return defs;
+    var svg = doc.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("width", "0"); svg.setAttribute("height", "0"); svg.setAttribute("aria-hidden", "true");
+    svg.style.position = "absolute";
+    defs = doc.createElementNS(SVG_NS, "defs"); svg.appendChild(defs); doc.body.appendChild(svg);
+    return defs;
+  }
+  function makeMap(w, h, radius, border, blurPx) {
+    w = Math.max(8, Math.round(w)); h = Math.max(8, Math.round(h));
+    var key = [w, h, Math.round(radius), border, blurPx].join("|");
+    if (mapCache[key]) return mapCache[key];
+    var c = doc.createElement("canvas"); c.width = w; c.height = h;
+    var ctx = c.getContext("2d");
+    var gx = ctx.createLinearGradient(0, 0, w, 0); gx.addColorStop(0, "#000"); gx.addColorStop(1, "#f00");
+    ctx.fillStyle = gx; ctx.fillRect(0, 0, w, h);
+    var gy = ctx.createLinearGradient(0, 0, 0, h); gy.addColorStop(0, "#000"); gy.addColorStop(1, "#00f");
+    ctx.globalCompositeOperation = "difference"; ctx.fillStyle = gy; ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    var inset = border * Math.min(w, h);
+    ctx.filter = "blur(" + blurPx + "px)"; ctx.fillStyle = "rgba(128,128,128,0.94)";
+    ctx.beginPath();
+    ctx.roundRect(inset, inset, w - inset * 2, h - inset * 2, Math.max(1, Math.min(radius, h / 2) - inset));
+    ctx.fill();
+    return (mapCache[key] = c.toDataURL());
+  }
+  function makeFilter(scale, chroma) {
+    var id = "lq-f" + (++uid);
+    var f = doc.createElementNS(SVG_NS, "filter");
+    f.setAttribute("id", id); f.setAttribute("x", "0"); f.setAttribute("y", "0");
+    f.setAttribute("width", "100%"); f.setAttribute("height", "100%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    var img = doc.createElementNS(SVG_NS, "feImage");
+    img.setAttribute("x", "0"); img.setAttribute("y", "0"); img.setAttribute("result", "map");
+    img.setAttribute("preserveAspectRatio", "none"); f.appendChild(img);
+    var keep = ["1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"];
+    for (var i = 0; i < 3; i++) {
+      var d = doc.createElementNS(SVG_NS, "feDisplacementMap");
+      d.setAttribute("in", "SourceGraphic"); d.setAttribute("in2", "map");
+      d.setAttribute("scale", String(scale + i * chroma));
+      d.setAttribute("xChannelSelector", "R"); d.setAttribute("yChannelSelector", "B");
+      d.setAttribute("result", "d" + i); f.appendChild(d);
+      var m = doc.createElementNS(SVG_NS, "feColorMatrix");
+      m.setAttribute("in", "d" + i); m.setAttribute("type", "matrix"); m.setAttribute("values", keep[i]);
+      m.setAttribute("result", "c" + i); f.appendChild(m);
+    }
+    var b1 = doc.createElementNS(SVG_NS, "feBlend");
+    b1.setAttribute("in", "c0"); b1.setAttribute("in2", "c1"); b1.setAttribute("mode", "screen"); b1.setAttribute("result", "c01"); f.appendChild(b1);
+    var b2 = doc.createElementNS(SVG_NS, "feBlend");
+    b2.setAttribute("in", "c01"); b2.setAttribute("in2", "c2"); b2.setAttribute("mode", "screen"); f.appendChild(b2);
+    ensureDefs().appendChild(f);
+    return { id: id, img: img };
+  }
+  function refract(el) {
+    if (!refractionOK || el.__lqRefract) return;
+    el.__lqRefract = true;
+    var strong = el.getAttribute("data-refract") === "strong";
+    var filt = makeFilter(strong ? -90 : -60, strong ? 5 : 3);
+    var base = getComputedStyle(el).backdropFilter;
+    var extra = base && base !== "none" ? base.replace(/blur\([^)]*\)/, "blur(3px)") : "blur(3px) saturate(170%)";
+    function fit() {
+      var w = el.offsetWidth, h = el.offsetHeight; if (!w || !h) return;
+      var r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      filt.img.setAttribute("href", makeMap(w, h, r, strong ? 0.2 : 0.16, Math.max(4, Math.min(12, h / 6))));
+      filt.img.setAttribute("width", String(w)); filt.img.setAttribute("height", String(h));
+    }
+    fit();
+    el.style.backdropFilter = "url(#" + filt.id + ") " + extra;
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(el);
+  }
+  function refractAll() { doc.querySelectorAll("[data-refract]").forEach(refract); }
+
+  // ---------- springs (fixed sub-steps keep stiff springs stable) ----------
+  function S(x) { return { x: x, v: 0 }; }
+  function step(s, target, k, c, dt) {
+    var n = Math.max(1, Math.ceil(dt * 480)), h = dt / n;
+    for (var i = 0; i < n; i++) { var a = -k * (s.x - target) - c * s.v; s.v += a * h; s.x += s.v * h; }
+  }
+
+  // ---------- state ----------
+  var liquidOn = store.get("lq-cursor") === "on"; // off until the visitor turns it on
+  function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
+  function applyMode() {
+    var on = active();
+    doc.body && doc.body.classList.toggle("lq-on", on);
+    doc.querySelectorAll("[data-liquid-toggle]").forEach(function (b) {
+      b.setAttribute("aria-checked", liquidOn ? "true" : "false");
+    });
+    if (!on) ptrEl.style.opacity = "0";
+  }
+
+  var ptr = { x: -200, y: -200, lx: -200, ly: -200, vx: 0, vy: 0, seen: false, moved: 0, down: false, typing: false };
+  // P: the pointer shape (centre x/y, width, height, radius, press scale)
+  var P = { x: S(-200), y: S(-200), w: S(18), h: S(18), r: S(9), s: S(1), o: S(0) };
+  var target = null, mode = null, targetRadius = 12, viaKeyboard = false, lifted = null;
+  var beam = null; // {top, h} of the text line under the pointer
+  var jelly = new Map();
+  function J(el) {
+    var j = jelly.get(el);
+    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false }; jelly.set(el, j); }
+    return j;
+  }
+  function alpha(c) { var m = /rgba?\(([^)]+)\)/.exec(c || ""); if (!m) return c && c !== "transparent" ? 1 : 0; var p = m[1].split(/[ ,\/]+/).filter(Boolean); return p.length > 3 ? parseFloat(p[3]) : 1; }
+  function hasBezel(el) {
+    var cs = getComputedStyle(el);
+    return alpha(cs.backgroundColor) > 0.06 || (cs.backgroundImage && cs.backgroundImage !== "none") ||
+      (parseFloat(cs.borderTopWidth) > 0 && alpha(cs.borderTopColor) > 0.08);
+  }
+  function isIcon(r) { return r.width <= 56 && r.height <= 56 && Math.abs(r.width - r.height) <= 18; }
+  // magnetism: controls keep a generous invisible margin, like iPadOS hit regions
+  function magnetAt(x, y) {
+    var best = null, bestD = 1e9;
+    doc.querySelectorAll('[data-liquid="snap"]').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+      var pad = Math.min(14, Math.max(6, Math.min(r.width, r.height) * 0.35));
+      var dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
+      if (d <= pad && d < bestD) { best = el; bestD = d; }
+    });
+    return best;
+  }
+  var magnet = false;
+  function enter(el, keyboard) {
+    if (target === el) return;
+    if (target) leave(target);
+    target = el; mode = el.getAttribute("data-liquid"); viaKeyboard = !!keyboard;
+    var j = J(el); j.on = true;
+    if (mode === "snap") {
+      var r = el.getBoundingClientRect();
+      var rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      if (hasBezel(el) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
+        mode = "icon"; lifted = el; el.classList.add("lq-lifted"); targetRadius = Math.min(rad, r.height / 2);
+      } else {                                   // highlight: a soft shape behind the label
+        var pad = Math.max(3, Math.min(8, Math.min(r.width, r.height) / 6));
+        targetRadius = Math.min(rad ? rad + pad : Math.min(12, r.height / 2 + pad), (r.height + pad * 2) / 2);
+        el.__lqPad = pad;
+      }
+      if (!reduceMotion.matches) j.s.v += mode === "icon" ? 1.1 : 0.6;
+    } else if (!reduceMotion.matches) j.s.v += 0.25;
+  }
+  function leave(el) {
+    var j = jelly.get(el); if (j) j.on = false;
+    if (lifted === el) { el.classList.remove("lq-lifted"); lifted = null; }
+    if (target === el) { target = null; mode = null; magnet = false; }
+  }
+  // iPadOS keeps a control highlighted until the pointer is clearly outside it
+  function stillInside(el, x, y) {
+    var r = el.getBoundingClientRect(), slack = magnet ? 14 : 8;
+    return x >= r.left - slack && x <= r.right + slack && y >= r.top - slack && y <= r.bottom + slack;
+  }
+  var NON_TEXT = /^(IMG|SVG|PATH|CANVAS|VIDEO|BUTTON|INPUT|SELECT|TEXTAREA|HTML|BODY)$/;
+  function textLineAt(x, y, node) {
+    if (!node || NON_TEXT.test(node.nodeName)) return null;
+    var r = null, n = null, off = 0;
+    if (doc.caretRangeFromPoint) { r = doc.caretRangeFromPoint(x, y); if (r) { n = r.startContainer; off = r.startOffset; } }
+    else if (doc.caretPositionFromPoint) { var cp = doc.caretPositionFromPoint(x, y); if (cp) { n = cp.offsetNode; off = cp.offset; } }
+    if (!n || n.nodeType !== 3 || !n.textContent.trim()) return null;
+    var len = n.textContent.length, a = Math.max(0, Math.min(off, len - 1));
+    var rg = doc.createRange(); rg.setStart(n, a); rg.setEnd(n, Math.min(len, a + 1));
+    var rect = rg.getBoundingClientRect();
+    if (!rect || !rect.height) return null;
+    if (y < rect.top - 2 || y > rect.bottom + 2 || x < rect.left - 14 || x > rect.right + 14) return null;
+    return { top: rect.top, h: rect.height };
+  }
+  var liftCard = null;
+  function updateHover(node) {
+    if (target && mode !== "lift" && !viaKeyboard && stillInside(target, ptr.x, ptr.y)) {
+      var deeper = node && node.closest ? node.closest('[data-liquid="snap"]') : null;
+      if (!deeper || deeper === target) { beam = null; return; }
+    }
+    var hit = node && node.closest ? node.closest("[data-liquid]") : null;
+    var snapHit = hit && hit.getAttribute("data-liquid") === "snap" ? hit : null;
+    var near = snapHit ? null : (active() ? magnetAt(ptr.x, ptr.y) : null);
+    if (near) { enter(near, false); magnet = true; }
+    else if (hit) { enter(hit, false); magnet = false; }
+    else if (target) leave(target);
+    var card = node && node.closest ? node.closest('[data-liquid="lift"]') : null;
+    if (liftCard && liftCard !== card && liftCard !== target) { var jo = jelly.get(liftCard); if (jo) jo.on = false; }
+    liftCard = card;
+    if (card) {
+      var jc = J(card); jc.on = true;
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--lq-mx", ((ptr.x - r.left) / r.width * 100).toFixed(1) + "%");
+      card.style.setProperty("--lq-my", ((ptr.y - r.top) / r.height * 100).toFixed(1) + "%");
+    }
+    beam = (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
+  }
+
+  doc.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
+    ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
+    if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
+    viaKeyboard = false;
+    updateHover(e.target);
+  }, { passive: true });
+  addEventListener("scroll", function () {
+    if (!ptr.seen || viaKeyboard) return;
+    updateHover(doc.elementFromPoint(ptr.x, ptr.y));
+  }, { passive: true });
+  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); });
+  doc.addEventListener("pointerdown", function (e) {
+    ptr.down = true; ptrEl.classList.add("down");
+    if (reduceMotion.matches) return;
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el) J(el).s.v -= 1.1;
+  });
+  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("down"); });
+  doc.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) ptr.typing = true; // hide while typing
+  });
+  doc.addEventListener("focusin", function (e) {
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el && el.matches(":focus-visible")) {
+      enter(el, true);
+      if (active() && !ptr.seen) { var r = el.getBoundingClientRect(); P.x.x = r.left + r.width / 2; P.y.x = r.top + r.height / 2; P.w.x = r.width; P.h.x = r.height; }
+    }
+  });
+  doc.addEventListener("focusout", function (e) {
+    if (viaKeyboard && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
+  });
+  // a click while the pointer is magnetized to a nearby control presses that control (iPadOS behaviour)
+  doc.addEventListener("click", function (e) {
+    if (!active() || !target || !magnet || viaKeyboard) return;
+    if (target.contains(e.target)) return;
+    if (e.target.closest && e.target.closest("a,button,input,select,textarea,label,[role=button],[data-liquid]")) return;
+    e.preventDefault(); e.stopPropagation();
+    var t = target; magnet = false; t.click();
+  }, true);
+  doc.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-liquid-toggle]") : null;
+    if (!t) return;
+    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode();
+    if (!liquidOn && lifted) { lifted.classList.remove("lq-lifted"); lifted = null; }
+  });
+  finePointer.addEventListener && finePointer.addEventListener("change", applyMode);
+  reduceMotion.addEventListener && reduceMotion.addEventListener("change", applyMode);
+
+  // ---------- frame ----------
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    var ivx = (ptr.x - ptr.lx) / Math.max(dt, 0.001), ivy = (ptr.y - ptr.ly) / Math.max(dt, 0.001);
+    ptr.vx += (ivx - ptr.vx) * 0.25; ptr.vy += (ivy - ptr.vy) * 0.25; ptr.lx = ptr.x; ptr.ly = ptr.y;
+    var on = active();
+    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+
+    // geometry of the pointer for this frame (centre-based)
+    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1;
+    if (showTarget && mode === "snap") {
+      var r = target.getBoundingClientRect(), mx = 0, my = 0;
+      if (!viaKeyboard) {
+        mx = Math.max(-1, Math.min(1, (ptr.x - (r.left + r.width / 2)) / (r.width / 2))) * Math.min(6, r.width * 0.06);
+        my = Math.max(-1, Math.min(1, (ptr.y - (r.top + r.height / 2)) / (r.height / 2))) * Math.min(4, r.height * 0.08);
+      }
+      var pd = target.__lqPad || 4;
+      cx = r.left + r.width / 2 + mx; cy = r.top + r.height / 2 + my;
+      tw = r.width + pd * 2; th = r.height + pd * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "hl";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - r.left + pd) / tw * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - r.top + pd) / th * 100)).toFixed(1) + "%");
+    } else if (showTarget && mode === "icon") {
+      // lift: the pointer melts into the raised control and becomes its specular light (same rect as the control)
+      var ri = target.getBoundingClientRect();
+      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lift";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100)).toFixed(1) + "%");
+    } else if (beam) {
+      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "beam";
+    } else {
+      cx = ptr.x; cy = ptr.y; tw = 19; th = 19; tr = 9.5; k = 1700; c = 82;
+    }
+    if (on && !viaKeyboard && (!ptr.seen || ptr.typing || (now - ptr.moved > 2500 && !showTarget))) vis = 0; // idle and typing fade
+    step(P.x, cx, k, c, dt); step(P.y, cy, k, c, dt);
+    step(P.w, tw, k * 0.6, c * 0.7, dt); step(P.h, th, k * 0.6, c * 0.7, dt); step(P.r, tr, k * 0.6, c * 0.7, dt);
+    step(P.s, ptr.down ? (cls ? 0.97 : 0.8) : 1, 700, 30, dt);
+    if (on) {
+      var w = Math.max(1.5, P.w.x), h = Math.max(1.5, P.h.x);
+      ptrEl.className = cls + (ptr.down ? " down" : "");
+      ptrEl.style.opacity = String(vis);
+      ptrEl.style.width = w.toFixed(2) + "px"; ptrEl.style.height = h.toFixed(2) + "px";
+      ptrEl.style.borderRadius = Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(2) + "px";
+      var stretch = "";
+      if (!cls) { // a little liquid squash while the dot travels fast
+        var amt = Math.min(Math.hypot(ptr.vx, ptr.vy) / 4200, 0.16);
+        if (amt > 0.01) { var ang = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI; stretch = " rotate(" + ang.toFixed(1) + "deg) scale(" + (1 + amt).toFixed(3) + "," + (1 - amt * 0.6).toFixed(3) + ") rotate(" + (-ang).toFixed(1) + "deg)"; }
+      }
+      ptrEl.style.transform = "translate3d(" + (P.x.x - w / 2).toFixed(2) + "px," + (P.y.x - h / 2).toFixed(2) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch;
+    }
+
+    // controls and cards: parallax toward the pointer, lift for icons, tilt for cards
+    jelly.forEach(function (j, el) {
+      var lm = el.getAttribute("data-liquid"), snap = lm === "snap";
+      var icon = snap && el === lifted;
+      var ts = 1, ttx = 0, tty = 0, trx = 0, tryy = 0, tspec = 0;
+      if (j.on && !reduceMotion.matches && on) {
+        var rr = el.getBoundingClientRect(), ccx = rr.left + rr.width / 2, ccy = rr.top + rr.height / 2;
+        var nx = Math.max(-1, Math.min(1, (ptr.x - ccx) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - ccy) / (rr.height / 2)));
+        if (icon) { ts = 1 + Math.min(0.12, 9 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
+        else if (snap) { ts = 1; if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
+        else { ts = 1.006; tspec = 1; }
+      } else if (j.on && !snap) { tspec = 1; }
+      step(j.s, ts, snap ? 420 : 260, snap ? 21 : 26, dt);
+      step(j.tx, ttx, 300, 26, dt); step(j.ty, tty, 300, 26, dt);
+      step(j.rx, trx, 180, 20, dt); step(j.ry, tryy, 180, 20, dt);
+      step(j.spec, tspec, 120, 22, dt);
+      if (!j.on && Math.abs(j.s.x - 1) < 5e-4 && Math.abs(j.s.v) < 1e-3 && Math.abs(j.tx.x) < 0.02 && Math.abs(j.ty.x) < 0.02 &&
+          Math.abs(j.rx.x) < 0.01 && Math.abs(j.ry.x) < 0.01 && j.spec.x < 0.01) {
+        el.style.transform = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
+      }
+      el.style.transform = (snap ? "" : "perspective(900px) rotateX(" + j.rx.x.toFixed(3) + "deg) rotateY(" + j.ry.x.toFixed(3) + "deg) ") +
+        "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
+      if (!snap) el.style.setProperty("--lq-spec", Math.max(0, Math.min(1, j.spec.x)).toFixed(3));
+    });
+    stepFields(dt);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- reactive colour fields ----------
+  var fields = [];
+  function collectFields() {
+    fields = Array.prototype.map.call(doc.querySelectorAll("[data-field]"), function (el) {
+      return { el: el, d: parseFloat(el.getAttribute("data-field")) || 0.05, x: S(0), y: S(0) };
+    });
+  }
+  function stepFields(dt) {
+    if (!fields.length || reduceMotion.matches) return;
+    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0;
+    fields.forEach(function (f) {
+      var px = ptr.seen ? (ptr.x - cx) : 0, py = ptr.seen ? (ptr.y - cy) : 0;
+      var tx = px * f.d, ty = py * f.d - sy * f.d * 0.6;
+      step(f.x, tx, 18, 7, dt); step(f.y, ty, 18, 7, dt);
+      f.el.style.transform = "translate3d(" + f.x.x.toFixed(1) + "px," + f.y.x.toFixed(1) + "px,0)";
+    });
+  }
+
+  function start() { applyMode(); refractAll(); collectFields(); requestAnimationFrame(frame); }
+  if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start); else start();
+
+  window.Liquid = { refresh: function () { refractAll(); collectFields(); }, spring: S, step: step, isOn: active };
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+  };
+  var live = document.getElementById("live");
+  function say(t) { if (live) { live.textContent = ""; setTimeout(function () { live.textContent = t; }, 30); } }
+
+  /* theme */
+  var themeBtn = document.getElementById("theme");
+  var dark = matchMedia("(prefers-color-scheme: dark)");
+  function isDark() {
+    var t = root.getAttribute("data-theme");
+    return t ? t === "dark" : dark.matches;
+  }
+  function syncTheme() {
+    var d = isDark();
+    themeBtn.setAttribute("aria-label", d ? "Switch to light theme" : "Switch to dark theme");
+    themeBtn.classList.toggle("is-dark", d);
+  }
+  var saved = store.get("lq-theme");
+  if (saved === "dark" || saved === "light") root.setAttribute("data-theme", saved);
+  syncTheme();
+  themeBtn.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.dataset.theme = next; store.set("lq-theme", next); syncTheme();
+  });
+  if (dark.addEventListener) dark.addEventListener("change", syncTheme);
+
+  /* expanding index rows: click / Enter / Space pins a row open; hover and focus only preview */
+  document.querySelectorAll(".row-btn").forEach(function (btn) {
+    var row = btn.closest(".row");
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") !== "true";
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      row.classList.toggle("open", open);
+      row.classList.toggle("no-peek", !open);
+    });
+    row.addEventListener("pointerleave", function () { row.classList.remove("no-peek"); });
+    btn.addEventListener("blur", function () { row.classList.remove("no-peek"); });
+  });
+
+  /* copy email */
+  var EMAIL = "fredwang1012@gmail.com";
+  function selectEmail() {
+    var el = document.getElementById("email-text");
+    var r = document.createRange(); r.selectNodeContents(el);
+    var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  document.querySelectorAll(".copy-email").forEach(function (btn) {
+    var label = btn.querySelector("span");
+    function done(t) {
+      label.textContent = t; say(t === "Copied" ? "Email copied to clipboard" : "Email selected, copy it with your keyboard");
+      clearTimeout(btn.__t); btn.__t = setTimeout(function () { label.textContent = "Copy email"; }, 2200);
+    }
+    btn.addEventListener("click", function () {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(EMAIL).then(function () { done("Copied"); }, function () { selectEmail(); done("Selected, press Ctrl+C"); });
+        } else { selectEmail(); done("Selected, press Ctrl+C"); }
+      } catch (_) { selectEmail(); done("Selected, press Ctrl+C"); }
+    });
+  });
+
+  /* views: #music and #books are pages of their own; every other hash is the home view */
+  var BASE_TITLE = document.title || "Frederick Wang - ML & Data Engineer";
+  var home = document.getElementById("top");
+  var views = { music: document.getElementById("music"), books: document.getElementById("books") };
+  var links = Array.prototype.slice.call(document.querySelectorAll(".bar nav a[data-section]"));
+  var viewLinks = Array.prototype.slice.call(document.querySelectorAll(".bar nav a[data-view]"));
+  var currentView = null;
+  function clearSections() { links.forEach(function (a) { a.removeAttribute("aria-current"); }); }
+  function route() {
+    var h = decodeURIComponent((location.hash || "").slice(1));
+    var v = views[h] ? h : null;
+    home.hidden = !!v;
+    Object.keys(views).forEach(function (k) { views[k].hidden = k !== v; });
+    viewLinks.forEach(function (a) {
+      if (a.getAttribute("data-view") === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    if (v) {
+      clearSections();
+      document.title = (v === "music" ? "Music" : "Books") + " · " + BASE_TITLE;
+      scrollTo(0, 0);
+      var h1 = views[v].querySelector("h1");
+      if (h1) h1.focus({ preventScroll: true });
+    } else {
+      document.title = BASE_TITLE;
+      var target = h && h !== "top" ? document.getElementById(h) : null;
+      if (currentView || target || h === "top") {
+        requestAnimationFrame(function () {
+          if (target) target.scrollIntoView(); else scrollTo(0, 0);
+        });
+      }
+    }
+    currentView = v;
+  }
+  addEventListener("hashchange", route);
+  route();
+
+  /* current section in the header (home view only) */
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (currentView) return;
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { if (a.getAttribute("data-section") === e.target.id) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    ["index", "experience", "contact"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  }
+})();
+</script>
   </body>
 </html>
