@@ -40,6 +40,7 @@
       img { max-width: 100%; }
       [hidden] { display: none !important; }
     </style>
+<script>(function(){var t=null;try{t=localStorage.getItem("lq-theme")}catch(e){}document.documentElement.dataset.theme=t==="dark"?"dark":"light"})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -48,9 +49,11 @@
   --bg:#eef2f9;
   --ink:#0b1220;
   --ink-2:#26314a;
-  --ink-3:#3a4560;
+  --ink-3:#323c55;
   --glass-hi:rgba(255,255,255,.62);
   --glass-lo:rgba(255,255,255,.28);
+  --card-hi:rgba(255,255,255,.54);
+  --card-lo:rgba(255,255,255,.22);
   --glass-edge:rgba(255,255,255,.72);
   --glass-inset:rgba(255,255,255,.95);
   --glass-inset-lo:rgba(255,255,255,.3);
@@ -87,6 +90,8 @@
     --ink-3:#b4bdd4;
     --glass-hi:rgba(255,255,255,.11);
     --glass-lo:rgba(255,255,255,.035);
+    --card-hi:rgba(255,255,255,.11);
+    --card-lo:rgba(255,255,255,.035);
     --glass-edge:rgba(255,255,255,.16);
     --glass-inset:rgba(255,255,255,.26);
     --glass-inset-lo:rgba(255,255,255,.05);
@@ -124,6 +129,8 @@
   --ink-3:#b4bdd4;
   --glass-hi:rgba(255,255,255,.11);
   --glass-lo:rgba(255,255,255,.035);
+  --card-hi:rgba(255,255,255,.11);
+  --card-lo:rgba(255,255,255,.035);
   --glass-edge:rgba(255,255,255,.16);
   --glass-inset:rgba(255,255,255,.26);
   --glass-inset-lo:rgba(255,255,255,.05);
@@ -166,27 +173,28 @@ h1,h2,h3{margin:0}
 
 /* ---------- colour field ---------- */
 .field{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
-.field > div{position:absolute;width:var(--s);height:var(--s)}
-.field span{display:block;width:100%;height:100%;background:var(--c);filter:blur(64px);border-radius:42% 58% 63% 37% / 41% 44% 56% 59%;
-  animation:drift var(--dd,30s) ease-in-out infinite alternate,morph var(--md,18s) ease-in-out infinite alternate;will-change:transform,border-radius}
+/* the engine moves each blob wrapper every frame, so give it its own layer up front (4 elements, kept on purpose) */
+.field > div{position:absolute;width:var(--s);height:var(--s);will-change:transform}
+/* Blobs are soft radial gradients painted once and moved on the compositor, instead of a 64px filter blur whose
+   morphing border-radius re-rasterised four ~800px blurred layers every frame. Drift and the shape "morph" are one
+   transform-only animation (translate + rotate + uneven scale) on a single layer per blob. */
+.field span{position:absolute;inset:-12%;display:block}
+.field span::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(closest-side at 46% 52%,var(--c) 0%,var(--c) 52%,color-mix(in srgb,var(--c) 78%,transparent) 66%,color-mix(in srgb,var(--c) 45%,transparent) 80%,color-mix(in srgb,var(--c) 14%,transparent) 92%,transparent 100%);
+  animation:flow var(--dd,30s) ease-in-out var(--dl,0s) infinite alternate}
 .f1{--s:min(58vmax,820px);--c:var(--b1);left:-14vmax;top:-16vmax}
-.f1 span{--dd:28s;--md:17s}
+.f1 span{--dd:28s}
 .f2{--s:min(52vmax,760px);--c:var(--b2);right:-12vmax;top:-8vmax}
-.f2 span{--dd:34s;--md:21s;animation-delay:-9s,-5s}
+.f2 span{--dd:34s;--dl:-9s}
 .f3{--s:min(56vmax,800px);--c:var(--b3);left:42vw;top:38vh}
-.f3 span{--dd:31s;--md:19s;animation-delay:-14s,-11s}
+.f3 span{--dd:31s;--dl:-14s}
 .f4{--s:min(54vmax,780px);--c:var(--b4);left:-12vmax;top:58vh}
-.f4 span{--dd:37s;--md:23s;animation-delay:-20s,-3s}
-@keyframes drift{
-  0%{transform:translate3d(0,0,0) rotate(0deg) scale(1)}
-  50%{transform:translate3d(6vmax,4vmax,0) rotate(40deg) scale(1.1)}
-  100%{transform:translate3d(-4vmax,7vmax,0) rotate(-25deg) scale(.94)}
-}
-@keyframes morph{
-  0%{border-radius:42% 58% 63% 37% / 41% 44% 56% 59%}
-  33%{border-radius:63% 37% 41% 59% / 58% 63% 37% 42%}
-  66%{border-radius:38% 62% 56% 44% / 67% 34% 66% 33%}
-  100%{border-radius:55% 45% 35% 65% / 45% 60% 40% 55%}
+.f4 span{--dd:37s;--dl:-20s}
+@keyframes flow{
+  0%{transform:translate3d(0,0,0) rotate(0deg) scale(1.06,.92)}
+  33%{transform:translate3d(4vmax,2.5vmax,0) rotate(28deg) scale(.98,1.12)}
+  66%{transform:translate3d(5vmax,5vmax,0) rotate(8deg) scale(1.16,.98)}
+  100%{transform:translate3d(-4vmax,7vmax,0) rotate(-25deg) scale(.92,1.04)}
 }
 
 /* ---------- page ---------- */
@@ -194,7 +202,7 @@ h1,h2,h3{margin:0}
 .inner{max-width:1248px;margin-inline:auto}
 
 /* glass recipe */
-.glass{background:linear-gradient(160deg,var(--glass-hi),var(--glass-lo));-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-inset),inset 0 -1px 0 var(--glass-inset-lo),0 20px 48px -8px var(--shadow)}
+.glass{background:linear-gradient(160deg,var(--card-hi),var(--card-lo));border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-inset),inset 0 -1px 0 var(--glass-inset-lo),0 20px 48px -8px var(--shadow)}
 
 /* ---------- nav ---------- */
 .nav{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 14px);z-index:50;margin:0 auto;width:fit-content;max-width:100%;display:flex;align-items:center;gap:4px;padding:6px;border-radius:999px;font-size:14px;font-weight:500;
@@ -213,9 +221,9 @@ h1,h2,h3{margin:0}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;gap:9px;min-height:48px;padding:0 24px;border-radius:999px;font:600 15px/1 Inter,-apple-system,system-ui,sans-serif;text-decoration:none;color:var(--ink);cursor:pointer;border:1px solid var(--glass-edge);
-  background:linear-gradient(160deg,var(--glass-hi),var(--glass-lo));-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:inset 0 1px 0 var(--glass-inset),0 6px 18px var(--shadow)}
+  background:linear-gradient(160deg,var(--glass-hi),var(--glass-lo));-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);box-shadow:inset 0 1px 0 var(--glass-inset),0 6px 18px var(--shadow)}
 .btn svg{width:18px;height:18px;flex:none}
-.btn.solid{background:var(--solid);color:var(--solid-ink);border-color:transparent;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 20px var(--solid-shadow)}
+.btn.solid{background:var(--solid);color:var(--solid-ink);border-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 20px var(--solid-shadow)}
 
 /* ---------- hero ---------- */
 .hero{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:48px;align-items:center;padding-block:104px 104px}
@@ -230,10 +238,11 @@ h1{font-size:clamp(44px,7.4vw,84px);line-height:1.02;font-weight:700;letter-spac
 
 .widgets{display:flex;flex-direction:column;gap:16px;min-width:0}
 .widget{border-radius:30px;padding:22px 24px;
-  background:linear-gradient(160deg,var(--glass-hi),var(--glass-lo));-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-inset),inset 0 -1px 0 var(--glass-inset-lo),0 18px 44px -6px var(--shadow)}
+  background:linear-gradient(160deg,var(--glass-hi),var(--glass-lo));-webkit-backdrop-filter:blur(12px) saturate(180%);backdrop-filter:blur(12px) saturate(180%);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-inset),inset 0 -1px 0 var(--glass-inset-lo),0 18px 44px -6px var(--shadow)}
 .w-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-2)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--ok-dot);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok-dot) 22%,transparent);animation:pulse 2.6s ease-in-out infinite}
-@keyframes pulse{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--ok-dot) 8%,transparent)}}
+.dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--ok-dot);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok-dot) 22%,transparent)}
+.dot::after{content:"";position:absolute;inset:-7px;border-radius:50%;background:color-mix(in srgb,var(--ok-dot) 14%,transparent);opacity:0;transform:scale(.6);animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:1;transform:scale(1)}}
 .now-title{margin-top:10px;font-size:21px;font-weight:600;letter-spacing:-.015em;line-height:1.3}
 .now-meta{margin-top:8px;font-size:14px;color:var(--ink-3)}
 .stats-w{display:grid;grid-template-columns:1fr 1fr;padding:0}
@@ -316,12 +325,14 @@ section{scroll-margin-top:90px}
 .mail-pill{margin-top:12px;display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:16px;padding:14px 14px 14px 32px;border-radius:999px;max-width:100%}
 .email{font-size:clamp(20px,2.4vw,28px);font-weight:600;letter-spacing:-.02em;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere;min-width:0}
 .links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:10px}
+/* these pills sit over the smooth field, where a live blur is invisible but re-runs every scroll frame */
+.links .btn{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(160deg,var(--glass-hi),var(--glass-hi) 40%,var(--glass-lo))}
 .off{max-width:620px;margin-top:14px;font-size:15px;line-height:1.6;color:var(--ink-3)}
 
 /* ---------- footer ---------- */
 footer{margin-top:96px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-3)}
 .switch{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 7px;border-radius:999px;font:600 13.5px/1 Inter,-apple-system,system-ui,sans-serif;color:var(--ink);cursor:pointer;border:1px solid var(--glass-edge);
-  background:linear-gradient(160deg,var(--glass-hi),var(--glass-lo));-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:inset 0 1px 0 var(--glass-inset),0 6px 18px var(--shadow)}
+  background:linear-gradient(160deg,var(--glass-hi),var(--glass-lo));box-shadow:inset 0 1px 0 var(--glass-inset),0 6px 18px var(--shadow)}
 .track{position:relative;width:46px;height:28px;border-radius:999px;background:rgba(120,130,150,.35);box-shadow:inset 0 1px 2px rgba(0,0,0,.15);transition:background .3s ease}
 .knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25),inset 0 -1px 1px rgba(0,0,0,.06);transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
 .switch[aria-checked="true"] .track{background:#22c55e}
@@ -339,10 +350,11 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
 @media (max-width:720px){
   .nav{font-size:13px;gap:1px;padding:5px}
   .nav a,.nav button{padding:0 9px}
-  .nav .mark{padding:0 4px}
+  .nav .mark{padding:0 5px}
   .nav .nav-name{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
   .nav .wide-only{display:none}
-  .nav .icon{width:38px;padding:0}
+  .nav .icon{width:40px;padding:0}
+  .go{min-height:40px}
   .hero{padding-block:52px 64px;gap:32px}
   .bento{grid-template-columns:minmax(0,1fr);gap:16px}
   .span-2,.span-3,.u-card,.p-card{grid-column:auto}
@@ -433,9 +445,14 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
   .fav-list li{min-height:0}
   .shelf{grid-template-columns:minmax(0,1fr)}
 }
+@media (max-width:720px), (hover: none){
+  /* phones: only the sticky nav keeps a live backdrop */
+  .btn,.widget{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .btn:not(.solid),.widget{background:linear-gradient(160deg,var(--glass-hi),var(--glass-hi) 40%,var(--glass-lo))}
+}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
-  .field span,.dot{animation:none}
+  .field span::before,.dot::after{animation:none}
   .knob,.track{transition:none}
 }
 </style>
@@ -453,7 +470,7 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
 <div class="page" id="top">
   <div class="inner">
     <nav class="nav" aria-label="Main" data-refract="soft">
-      <a class="mark" href="#top" data-liquid="snap"><img src="/frederick.jpg" alt=""><span class="nav-name">Frederick Wang</span></a>
+      <a class="mark" href="#top" data-liquid="snap"><img src="/frederick.jpg" width="30" height="30" alt="" decoding="async"><span class="nav-name">Frederick Wang</span></a>
       <a href="#work" data-liquid="snap">Work</a>
       <a href="#experience" data-liquid="snap">Experience</a>
       <a href="#music" data-nav-view="music" data-liquid="snap">Music</a>
@@ -472,7 +489,7 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
       <header class="hero">
         <div class="hero-main">
           <div class="who">
-            <div class="portrait"><img src="/frederick.jpg" alt="Portrait of Frederick Wang"></div>
+            <div class="portrait"><img src="/frederick.jpg" width="66" height="66" alt="Portrait of Frederick Wang" fetchpriority="high"></div>
             <p class="eyebrow">M.Sc. Applied Computing (AI) · University of Toronto</p>
           </div>
           <h1>Frederick Wang</h1>
@@ -573,7 +590,7 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
           </article>
 
           <article class="card glass span-2 p-card" data-liquid="lift">
-            <div class="figure"><img src="/patient-stratification.webp" width="1485" height="508" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right"></div>
+            <div class="figure"><img src="/patient-stratification.webp" width="1485" height="508" loading="lazy" decoding="async" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right"></div>
             <div class="wide-body">
               <div>
                 <div class="card-top"><span class="chip plain">UBC CPSC 440 · Apr 2026</span><a class="go" href="https://github.com/fredwang1012/patient-stratification" target="_blank" rel="noopener" data-liquid="snap">Code + report ↗</a></div>
@@ -593,7 +610,7 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
             <ul class="earlier">
               <li><a href="https://github.com/fredwang1012/greenlife" target="_blank" rel="noopener" data-liquid="snap"><span><b>GreenLife</b><small>RAG on AWS Bedrock · 2024</small></span><span class="chip gold">1st place</span></a></li>
               <li><a href="https://github.com/fredwang1012/great_expectations/tree/fredwang1012" target="_blank" rel="noopener" data-liquid="snap"><span><b>Great Expectations</b><small>SQL Server support, open source · 2025</small></span><span class="arrow" aria-hidden="true">↗</span></a></li>
-              <li><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap"><span><b>WealthComplex</b><small>Investment platform</small></span><span class="arrow" aria-hidden="true">↗</span></a></li>
+              <li><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap"><span><b>WealthComplex</b><small>Investment platform · 2024</small></span><span class="arrow" aria-hidden="true">↗</span></a></li>
             </ul>
           </article>
         </div>
@@ -824,22 +841,34 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
   // ---------- styles ----------
   // Defaults use :where() so a page's own tokens always win.
   var css = [
-    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-dot:rgba(60,60,67,.46);--lq-hl:rgba(60,60,67,.12);--lq-press:rgba(60,60,67,.22);--lq-blend:multiply;--lq-sheen:rgba(255,255,255,.55)}",
-    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}}",
-    ":where(:root[data-theme=dark]){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}",
+    // a droplet: clear body that refracts what is under it (Chromium), a sharp glint, a dark inner rim where light is
+    // trapped by total internal reflection, a caustic glow on the far side, and a soft offset shadow
+    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-water:rgba(255,255,255,.03);--lq-glint:rgba(255,255,255,.97);--lq-rimdark:rgba(14,24,48,.3);--lq-edge:rgba(255,255,255,.55);--lq-drop:rgba(12,22,52,.26);--lq-press:rgba(150,175,230,.18)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-water:rgba(255,255,255,.04);--lq-glint:rgba(255,255,255,.92);--lq-rimdark:rgba(0,0,0,.55);--lq-edge:rgba(255,255,255,.4);--lq-drop:rgba(0,0,0,.5);--lq-press:rgba(170,200,255,.16)}}",
+    ":where(:root[data-theme=dark]){--lq-water:rgba(255,255,255,.04);--lq-glint:rgba(255,255,255,.92);--lq-rimdark:rgba(0,0,0,.55);--lq-edge:rgba(255,255,255,.4);--lq-drop:rgba(0,0,0,.5);--lq-press:rgba(170,200,255,.16)}",
     "body.lq-on,body.lq-on *{cursor:none!important}",
-    "#lq-ptr{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;opacity:0;width:19px;height:19px;border-radius:9.5px;transform-origin:50% 50%;" +
-      "background:var(--lq-dot);-webkit-backdrop-filter:blur(1.5px) saturate(170%);backdrop-filter:blur(1.5px) saturate(170%);" +
-      "box-shadow:inset 0 0 0 .5px rgba(255,255,255,.4),inset 0 1px 1px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.12);" +
+    "#lq-ptr{position:fixed;left:0;top:0;margin:0;padding:0;border:0;box-sizing:border-box;z-index:2147483000;pointer-events:none;opacity:0;width:22px;height:22px;border-radius:11px;transform-origin:50% 50%;" +
+      "background:radial-gradient(circle at var(--lq-gx,31%) var(--lq-gy,27%),var(--lq-glint) 0 7%,rgba(255,255,255,0) 16%)," +
+        "radial-gradient(70% 50% at 40% 20%,rgba(255,255,255,.32),rgba(255,255,255,0) 70%)," +
+        "radial-gradient(50% 38% at 64% 82%,rgba(255,255,255,.55),rgba(255,255,255,0) 72%),var(--lq-water);" +
+      "-webkit-backdrop-filter:blur(.4px) saturate(135%) brightness(1.05);backdrop-filter:blur(.4px) saturate(135%) brightness(1.05);" +
+      "box-shadow:inset 0 0 4px 1px var(--lq-rimdark),inset 1px 1.5px 2px -1px rgba(0,0,0,.18),inset -2px -2.5px 3px -1.5px rgba(255,255,255,.75),2px 4px 8px -3px var(--lq-drop);" +
       "transition:opacity .35s ease,background-color .2s ease,box-shadow .25s ease}",
-    // highlight: a flat translucent shape that blends under the label, with a sheen that follows the pointer
-    "#lq-ptr.hl{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,50%),var(--lq-sheen),transparent 60%) ,var(--lq-hl);background-blend-mode:soft-light;mix-blend-mode:var(--lq-blend);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
-    "#lq-ptr.hl.down{background:var(--lq-press)}",
-    // lift: the pointer becomes the specular light on top of a raised control
-    "#lq-ptr.lift{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.5),rgba(255,255,255,0) 55%);mix-blend-mode:soft-light;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
-    "#lq-ptr.beam{border-radius:1.5px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
-    "[data-liquid]{will-change:transform}",
-    ".lq-lifted{box-shadow:0 12px 26px -10px rgba(0,0,0,.38),0 3px 8px -2px rgba(0,0,0,.14)!important;position:relative;z-index:2}",
+    // browsers without backdrop refraction get a faint spectral edge instead of true dispersion
+    "#lq-ptr::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:.28;" +
+      "background:conic-gradient(from 200deg,#ff8a8a,#ffd98a,#9dffa0,#7fe6ff,#9aa6ff,#ef9aff,#ff8a8a);" +
+      "-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}",
+    "#lq-ptr.lq-refr::before{display:none}",
+    // highlight and lift: the drop spreads into a liquid lens over the control and the light follows the pointer across it
+    "#lq-ptr.lq-hl,#lq-ptr.lq-lift{background:radial-gradient(40% 75% at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.2),rgba(255,255,255,0) 70%)," +
+        "linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,0) 34%,rgba(255,255,255,0) 72%,rgba(255,255,255,.16)),var(--lq-water);" +
+      "-webkit-backdrop-filter:saturate(130%) brightness(1.04);backdrop-filter:saturate(130%) brightness(1.04);" +
+      "box-shadow:inset 0 0 0 .5px var(--lq-edge),inset 0 0 4px .5px var(--lq-rimdark),inset 0 -2px 4px -2px rgba(255,255,255,.55),0 6px 16px -8px var(--lq-drop)}",
+    "#lq-ptr.lq-down{background-color:var(--lq-press)}",
+    "#lq-ptr.lq-beam{border-radius:1.5px;background:linear-gradient(90deg,rgba(255,255,255,.25),var(--lq-glint),rgba(255,255,255,.25));-webkit-backdrop-filter:saturate(150%);backdrop-filter:saturate(150%);box-shadow:inset 0 0 0 .5px var(--lq-rimdark),0 1px 4px -1px var(--lq-drop)}",
+    "#lq-ptr.lq-beam::before{display:none}",
+    ".lq-lifted{box-shadow:0 6px 14px -8px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.08)!important;position:relative;z-index:2}",
+    "body.lq-on .lq-hl-on{background-color:transparent!important;box-shadow:none!important}",
     "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}"
   ].join("\n");
   var style = doc.createElement("style");
@@ -929,9 +958,69 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
     }
     fit();
     el.style.backdropFilter = "url(#" + filt.id + ") " + extra;
-    if (window.ResizeObserver) new ResizeObserver(fit).observe(el);
+    var pending = false;
+    if (window.ResizeObserver) new ResizeObserver(function () { if (pending) return; pending = true; requestAnimationFrame(function () { pending = false; fit(); }); }).observe(el);
   }
   function refractAll() { doc.querySelectorAll("[data-refract]").forEach(refract); }
+
+  // The pointer is a droplet lens. Its height profile is a dome across the shape's short axis; at every pixel the
+  // surface tilt bends a vertical ray through water (n = 1.33), and the map shifts the backdrop by that bend. The
+  // centre stays still and the edge pulls hard inward, so the middle magnifies and the rim squeezes, as in a drop.
+  // Three passes with slightly different strength split red, green and blue: dispersion at the rim.
+  var dropMaps = {}, dropCount = 0, drop = null;
+  function dropMap(w, h, r, bez, T) {
+    w = Math.max(6, Math.round(w)); h = Math.max(6, Math.round(h)); r = Math.min(Math.round(r), Math.floor(Math.min(w, h) / 2));
+    var key = w + "x" + h + "x" + r + "x" + bez + "x" + T;
+    if (dropMaps[key]) return dropMaps[key];
+    if (++dropCount > 160) { dropMaps = {}; dropCount = 1; }
+    var c = doc.createElement("canvas"); c.width = w; c.height = h;
+    var ctx = c.getContext("2d"), img = ctx.createImageData(w, h), D = img.data;
+    var hx = w / 2, hy = h / 2, B = Math.min(hx, hy) * bez, N = 1.33, max = 0, vals = new Float32Array(w * h * 2);
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) {
+      var px = x + 0.5 - hx, py = y + 0.5 - hy, qx = Math.abs(px) - (hx - r), qy = Math.abs(py) - (hy - r);
+      var ox = Math.max(qx, 0), oy = Math.max(qy, 0), ol = Math.hypot(ox, oy);
+      var dist = r - (ol + Math.min(Math.max(qx, qy), 0));      // depth inside the shape
+      var nx, ny;                                                // outward normal
+      if (ol > 0) { nx = ox / ol; ny = oy / ol; } else if (qx > qy) { nx = 1; ny = 0; } else { nx = 0; ny = 1; }
+      nx *= px < 0 ? -1 : 1; ny *= py < 0 ? -1 : 1;
+      var i = (y * w + x) * 2;
+      if (dist <= 0) { vals[i] = 0; vals[i + 1] = 0; continue; }
+      var t = Math.min(dist / B, 1), u = Math.max(1 - t, 0);
+      var slope = T * u / Math.sqrt(Math.max(1 - u * u, 0.0025));  // d/dt of sqrt(1-(1-t)^2), scaled by thickness
+      var th = Math.atan(slope), bend = th - Math.asin(Math.sin(th) / N);
+      var mag = Math.min(B * Math.tan(bend), B * 0.85);
+      vals[i] = -nx * mag; vals[i + 1] = -ny * mag;              // sample from further in: magnify
+      if (mag > max) max = mag;
+    }
+    max = Math.max(max, 0.5);
+    for (var k = 0, j = 0; k < w * h; k++, j += 4) {
+      D[j] = Math.round(128 + 127 * vals[k * 2] / max); D[j + 1] = Math.round(128 + 127 * vals[k * 2 + 1] / max); D[j + 2] = 128; D[j + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    return (dropMaps[key] = { url: c.toDataURL(), max: max });
+  }
+  function dropFilter() {
+    if (drop) return drop;
+    var id = "lq-drop", f = doc.createElementNS(SVG_NS, "filter");
+    f.setAttribute("id", id); f.setAttribute("x", "0"); f.setAttribute("y", "0"); f.setAttribute("width", "100%"); f.setAttribute("height", "100%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    var img = doc.createElementNS(SVG_NS, "feImage");
+    img.setAttribute("x", "0"); img.setAttribute("y", "0"); img.setAttribute("result", "map"); img.setAttribute("preserveAspectRatio", "none"); f.appendChild(img);
+    var keep = ["1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"], ds = [];
+    for (var i = 0; i < 3; i++) {
+      var d = doc.createElementNS(SVG_NS, "feDisplacementMap");
+      d.setAttribute("in", "SourceGraphic"); d.setAttribute("in2", "map"); d.setAttribute("xChannelSelector", "R"); d.setAttribute("yChannelSelector", "G");
+      d.setAttribute("result", "d" + i); f.appendChild(d); ds.push(d);
+      var m = doc.createElementNS(SVG_NS, "feColorMatrix");
+      m.setAttribute("in", "d" + i); m.setAttribute("type", "matrix"); m.setAttribute("values", keep[i]); m.setAttribute("result", "c" + i); f.appendChild(m);
+    }
+    var b1 = doc.createElementNS(SVG_NS, "feBlend");
+    b1.setAttribute("in", "c0"); b1.setAttribute("in2", "c1"); b1.setAttribute("mode", "screen"); b1.setAttribute("result", "c01"); f.appendChild(b1);
+    var b2 = doc.createElementNS(SVG_NS, "feBlend");
+    b2.setAttribute("in", "c01"); b2.setAttribute("in2", "c2"); b2.setAttribute("mode", "screen"); f.appendChild(b2);
+    ensureDefs().appendChild(f);
+    return (drop = { id: id, img: img, d: ds });
+  }
 
   // ---------- springs (fixed sub-steps keep stiff springs stable) ----------
   function S(x) { return { x: x, v: 0 }; }
@@ -954,13 +1043,15 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
 
   var ptr = { x: -200, y: -200, lx: -200, ly: -200, vx: 0, vy: 0, seen: false, moved: 0, down: false, typing: false };
   // P: the pointer shape (centre x/y, width, height, radius, press scale)
-  var P = { x: S(-200), y: S(-200), w: S(18), h: S(18), r: S(9), s: S(1), o: S(0) };
+  var P = { x: S(-200), y: S(-200), w: S(22), h: S(22), r: S(11), s: S(1), o: S(0), wob: S(0) };
+  var wobAng = 0;
   var target = null, mode = null, targetRadius = 12, viaKeyboard = false, lifted = null;
   var beam = null; // {top, h} of the text line under the pointer
   var jelly = new Map();
   function J(el) {
     var j = jelly.get(el);
-    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false }; jelly.set(el, j); }
+    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false, rr: null }; jelly.set(el, j); el.style.willChange = "transform"; }
+    wake();
     return j;
   }
   function alpha(c) { var m = /rgba?\(([^)]+)\)/.exec(c || ""); if (!m) return c && c !== "transparent" ? 1 : 0; var p = m[1].split(/[ ,\/]+/).filter(Boolean); return p.length > 3 ? parseFloat(p[3]) : 1; }
@@ -971,11 +1062,16 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
   }
   function isIcon(r) { return r.width <= 56 && r.height <= 56 && Math.abs(r.width - r.height) <= 18; }
   // magnetism: controls keep a generous invisible margin, like iPadOS hit regions
+  var snaps = [];
+  function collectSnaps() {
+    snaps = Array.prototype.slice.call(doc.querySelectorAll('[data-liquid="snap"]'));
+    snaps.forEach(function (el) { if (el !== target && !el.matches(":hover")) el.__lqBezel = hasBezel(el); });
+  }
   function magnetAt(x, y) {
     var best = null, bestD = 1e9;
-    doc.querySelectorAll('[data-liquid="snap"]').forEach(function (el) {
+    snaps.forEach(function (el) {
       var r = el.getBoundingClientRect();
-      if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+      if (!r.width || r.bottom < 0 || r.top > innerHeight || r.right < x - 40 || r.left > x + 40 || r.bottom < y - 40 || r.top > y + 40) return;
       var pad = Math.min(14, Math.max(6, Math.min(r.width, r.height) * 0.35));
       var dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
       if (d <= pad && d < bestD) { best = el; bestD = d; }
@@ -991,19 +1087,23 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
     if (mode === "snap") {
       var r = el.getBoundingClientRect();
       var rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
-      if (hasBezel(el) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
+      if ((el.__lqBezel !== undefined ? el.__lqBezel : hasBezel(el)) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
         mode = "icon"; lifted = el; el.classList.add("lq-lifted"); targetRadius = Math.min(rad, r.height / 2);
       } else {                                   // highlight: a soft shape behind the label
-        var pad = Math.max(3, Math.min(8, Math.min(r.width, r.height) / 6));
-        targetRadius = Math.min(rad ? rad + pad : Math.min(12, r.height / 2 + pad), (r.height + pad * 2) / 2);
-        el.__lqPad = pad;
+        // iPadOS gives text a roomy highlight; controls that already have padding get only a hairline more
+        var cs = getComputedStyle(el), ownX = parseFloat(cs.paddingLeft) || 0, ownY = parseFloat(cs.paddingTop) || 0;
+        var padX = Math.max(2, Math.min(11, r.height * 0.55) - ownX), padY = Math.max(2, Math.min(6, r.height * 0.32) - ownY);
+        targetRadius = Math.min(rad ? rad + Math.min(padX, padY) : 10, (r.height + padY * 2) / 2);
+        el.__lqPad = [padX, padY]; el.classList.add("lq-hl-on");
       }
       if (!reduceMotion.matches) j.s.v += mode === "icon" ? 1.1 : 0.6;
     } else if (!reduceMotion.matches) j.s.v += 0.25;
   }
   function leave(el) {
+    if (!el) return;
     var j = jelly.get(el); if (j) j.on = false;
     if (lifted === el) { el.classList.remove("lq-lifted"); lifted = null; }
+    el.classList.remove("lq-hl-on");
     if (target === el) { target = null; mode = null; magnet = false; }
   }
   // iPadOS keeps a control highlighted until the pointer is clearly outside it
@@ -1049,25 +1149,30 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
     beam = (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
   }
 
+  // events only record what happened; hover work runs once per frame (pointermove can fire several times a frame)
+  var hoverNode = null, hoverDirty = false, idleTimer = 0;
   doc.addEventListener("pointermove", function (e) {
     if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
     ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
     if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
     viaKeyboard = false;
-    updateHover(e.target);
+    if (active()) { hoverNode = e.target; hoverDirty = true; clearTimeout(idleTimer); idleTimer = setTimeout(wake, 2600); }
+    wake();
   }, { passive: true });
   addEventListener("scroll", function () {
-    if (!ptr.seen || viaKeyboard) return;
-    updateHover(doc.elementFromPoint(ptr.x, ptr.y));
+    if (ptr.seen && !viaKeyboard && active()) { hoverNode = null; hoverDirty = true; }
+    wake();
   }, { passive: true });
-  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); });
+  addEventListener("resize", wake, { passive: true });
+  addEventListener("hashchange", function () { collectSnaps(); wake(); });
+  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); wake(); });
   doc.addEventListener("pointerdown", function (e) {
-    ptr.down = true; ptrEl.classList.add("down");
+    ptr.down = true; ptrEl.classList.add("lq-down"); wake();
     if (reduceMotion.matches) return;
     var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
     if (el) J(el).s.v -= 1.1;
   });
-  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("down"); });
+  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("lq-down"); wake(); });
   doc.addEventListener("keydown", function (e) {
     var t = e.target;
     if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) ptr.typing = true; // hide while typing
@@ -1075,12 +1180,12 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
   doc.addEventListener("focusin", function (e) {
     var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
     if (el && el.matches(":focus-visible")) {
-      enter(el, true);
+      enter(el, true); wake();
       if (active() && !ptr.seen) { var r = el.getBoundingClientRect(); P.x.x = r.left + r.width / 2; P.y.x = r.top + r.height / 2; P.w.x = r.width; P.h.x = r.height; }
     }
   });
   doc.addEventListener("focusout", function (e) {
-    if (viaKeyboard && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
+    if (viaKeyboard && target && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
   });
   // a click while the pointer is magnetized to a nearby control presses that control (iPadOS behaviour)
   doc.addEventListener("click", function (e) {
@@ -1093,89 +1198,129 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
   doc.addEventListener("click", function (e) {
     var t = e.target.closest ? e.target.closest("[data-liquid-toggle]") : null;
     if (!t) return;
-    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode();
+    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode(); wake();
     if (!liquidOn && lifted) { lifted.classList.remove("lq-lifted"); lifted = null; }
   });
-  finePointer.addEventListener && finePointer.addEventListener("change", applyMode);
-  reduceMotion.addEventListener && reduceMotion.addEventListener("change", applyMode);
+  finePointer.addEventListener && finePointer.addEventListener("change", function () { applyMode(); wake(); });
+  reduceMotion.addEventListener && reduceMotion.addEventListener("change", function () { applyMode(); wake(); });
 
-  // ---------- frame ----------
-  var last = performance.now();
+  // ---------- frame (runs only while something is moving; wake() restarts it) ----------
+  var last = performance.now(), running = false;
+  function wake() { if (running) return; running = true; last = performance.now(); requestAnimationFrame(frame); }
+  var W = {}; // last written values, so unchanged styles are never rewritten
+  function put(el, key, prop, val) { if (W[key] === val) return; W[key] = val; el.style[prop] = val; }
+  function moving(s, t) { return Math.abs(s.x - t) > 0.05 || Math.abs(s.v) > 0.05; }
   function frame(now) {
-    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    var dt = Math.min(0.1, (now - last) / 1000); last = now;
     var ivx = (ptr.x - ptr.lx) / Math.max(dt, 0.001), ivy = (ptr.y - ptr.ly) / Math.max(dt, 0.001);
     ptr.vx += (ivx - ptr.vx) * 0.25; ptr.vy += (ivy - ptr.vy) * 0.25; ptr.lx = ptr.x; ptr.ly = ptr.y;
-    var on = active();
-    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+    var on = active(), busy = false, fresh = now - ptr.moved < 250; // a resting pointer needs no frames
 
-    // geometry of the pointer for this frame (centre-based)
-    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1;
+    // --- reads ---
+    if (hoverDirty && on) { hoverDirty = false; updateHover(hoverNode || doc.elementFromPoint(ptr.x, ptr.y)); }
+    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+    var tRect = showTarget ? target.getBoundingClientRect() : null;
+    jelly.forEach(function (j, el) { j.rr = j.on && on && !reduceMotion.matches ? el.getBoundingClientRect() : null; });
+
+    // --- pointer geometry ---
+    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1, px = null, py = null;
     if (showTarget && mode === "snap") {
-      var r = target.getBoundingClientRect(), mx = 0, my = 0;
+      var r = tRect, mx = 0, my = 0, pa = target.__lqPad || [6, 4], pdx = pa[0], pdy = pa[1];
       if (!viaKeyboard) {
         mx = Math.max(-1, Math.min(1, (ptr.x - (r.left + r.width / 2)) / (r.width / 2))) * Math.min(6, r.width * 0.06);
         my = Math.max(-1, Math.min(1, (ptr.y - (r.top + r.height / 2)) / (r.height / 2))) * Math.min(4, r.height * 0.08);
       }
-      var pd = target.__lqPad || 4;
+      // the highlight leans toward the pointer, but never further than its own padding
+      mx = Math.max(-Math.max(0, pdx - 1.5), Math.min(Math.max(0, pdx - 1.5), mx)); my = Math.max(-Math.max(0, pdy - 1.5), Math.min(Math.max(0, pdy - 1.5), my));
       cx = r.left + r.width / 2 + mx; cy = r.top + r.height / 2 + my;
-      tw = r.width + pd * 2; th = r.height + pd * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "hl";
-      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - r.left + pd) / tw * 100)).toFixed(1) + "%");
-      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - r.top + pd) / th * 100)).toFixed(1) + "%");
+      tw = r.width + pdx * 2; th = r.height + pdy * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "lq-hl";
+      px = Math.max(0, Math.min(100, (ptr.x - r.left + pdx) / tw * 100)); py = Math.max(0, Math.min(100, (ptr.y - r.top + pdy) / th * 100));
     } else if (showTarget && mode === "icon") {
       // lift: the pointer melts into the raised control and becomes its specular light (same rect as the control)
-      var ri = target.getBoundingClientRect();
-      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lift";
-      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)).toFixed(1) + "%");
-      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100)).toFixed(1) + "%");
+      var ri = tRect;
+      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lq-lift";
+      px = Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)); py = Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100));
     } else if (beam) {
-      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "beam";
+      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "lq-beam";
     } else {
-      cx = ptr.x; cy = ptr.y; tw = 19; th = 19; tr = 9.5; k = 1700; c = 82;
+      cx = ptr.x; cy = ptr.y; tw = 22; th = 22; tr = 11; k = 1700; c = 82;
     }
     if (on && !viaKeyboard && (!ptr.seen || ptr.typing || (now - ptr.moved > 2500 && !showTarget))) vis = 0; // idle and typing fade
+    var ts = ptr.down ? (cls ? 0.97 : 0.8) : 1;
     step(P.x, cx, k, c, dt); step(P.y, cy, k, c, dt);
-    step(P.w, tw, k * 0.6, c * 0.7, dt); step(P.h, th, k * 0.6, c * 0.7, dt); step(P.r, tr, k * 0.6, c * 0.7, dt);
-    step(P.s, ptr.down ? (cls ? 0.97 : 0.8) : 1, 700, 30, dt);
+    // shape springs are a little underdamped, so the drop overshoots and settles like a gel when it merges
+    step(P.w, tw, k * 0.6, c * 0.55, dt); step(P.h, th, k * 0.6, c * 0.55, dt); step(P.r, tr, k * 0.6, c * 0.55, dt);
+    step(P.s, ts, 700, 30, dt);
+    // wobble: speed stretches the drop along its path; when it stops, the stretch rings out and settles
+    var spd = Math.hypot(ptr.vx, ptr.vy);
+    if (spd > 60) wobAng = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI;
+    step(P.wob, cls ? 0 : Math.min(spd / 4200, 0.18), 260, 7.5, dt);
+    if (on) busy = moving(P.x, cx) || moving(P.y, cy) || moving(P.w, tw) || moving(P.h, th) || moving(P.r, tr) || moving(P.s, ts) || Math.abs(P.wob.x) > 0.004 || Math.abs(P.wob.v) > 0.02 ||
+      Math.abs(ptr.vx) > 2 || Math.abs(ptr.vy) > 2 || (showTarget && !viaKeyboard && fresh);
+
+    // --- writes ---
     if (on) {
       var w = Math.max(1.5, P.w.x), h = Math.max(1.5, P.h.x);
-      ptrEl.className = cls + (ptr.down ? " down" : "");
-      ptrEl.style.opacity = String(vis);
-      ptrEl.style.width = w.toFixed(2) + "px"; ptrEl.style.height = h.toFixed(2) + "px";
-      ptrEl.style.borderRadius = Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(2) + "px";
-      var stretch = "";
-      if (!cls) { // a little liquid squash while the dot travels fast
-        var amt = Math.min(Math.hypot(ptr.vx, ptr.vy) / 4200, 0.16);
-        if (amt > 0.01) { var ang = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI; stretch = " rotate(" + ang.toFixed(1) + "deg) scale(" + (1 + amt).toFixed(3) + "," + (1 - amt * 0.6).toFixed(3) + ") rotate(" + (-ang).toFixed(1) + "deg)"; }
+      var cn = cls + (ptr.down ? " lq-down" : "") + (refractionOK ? " lq-refr" : "");
+      if (W.cls !== cn) { W.cls = cn; ptrEl.className = cn; }
+      put(ptrEl, "op", "opacity", String(vis));
+      put(ptrEl, "w", "width", w.toFixed(1) + "px"); put(ptrEl, "h", "height", h.toFixed(1) + "px");
+      put(ptrEl, "br", "borderRadius", Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(1) + "px");
+      if (px !== null) {
+        var pxs = px.toFixed(0) + "%", pys = py.toFixed(0) + "%";
+        if (W.px !== pxs) { W.px = pxs; ptrEl.style.setProperty("--lq-px", pxs); }
+        if (W.py !== pys) { W.py = pys; ptrEl.style.setProperty("--lq-py", pys); }
       }
-      ptrEl.style.transform = "translate3d(" + (P.x.x - w / 2).toFixed(2) + "px," + (P.y.x - h / 2).toFixed(2) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch;
+      var stretch = "", wb = P.wob.x;
+      if (Math.abs(wb) > 0.004) stretch = " rotate(" + wobAng.toFixed(0) + "deg) scale(" + (1 + wb).toFixed(3) + "," + (1 - wb * 0.6).toFixed(3) + ") rotate(" + (-wobAng).toFixed(0) + "deg)";
+      // the light: the glint drifts against the direction of travel
+      var gx = Math.max(18, Math.min(46, 31 - ptr.vx / 110)).toFixed(0) + "%", gy = Math.max(14, Math.min(42, 27 - ptr.vy / 110)).toFixed(0) + "%";
+      if (W.gx !== gx) { W.gx = gx; ptrEl.style.setProperty("--lq-gx", gx); }
+      if (W.gy !== gy) { W.gy = gy; ptrEl.style.setProperty("--lq-gy", gy); }
+      // the lens: one map per resting shape, stretched while the drop morphs, strength in proportion to its size
+      if (refractionOK) {
+        var lens = cls !== "lq-beam";
+        if (lens) {
+          var isDot = !cls, mk = Math.round(tw) + "x" + Math.round(th) + "x" + Math.round(tr) + (isDot ? "d" : "l");
+          if (W.mk !== mk) { W.mk = mk; var dm = isDot ? dropMap(tw, th, tr, 1, 1.05) : dropMap(tw, th, tr, 0.5, 0.55); dropFilter().img.setAttribute("href", dm.url); W.dmax = dm.max; W.dmin = Math.min(tw, th); W.chroma = isDot ? 0.08 : 0.035; W.sc = ""; }
+          var iw = w.toFixed(1), ih = h.toFixed(1);
+          if (W.iw !== iw) { W.iw = iw; drop.img.setAttribute("width", iw); }
+          if (W.ih !== ih) { W.ih = ih; drop.img.setAttribute("height", ih); }
+          var sc = (2 * W.dmax * Math.min(w, h) / Math.max(1, W.dmin)).toFixed(1);
+          if (W.sc !== sc) { W.sc = sc; for (var di = 0; di < 3; di++) drop.d[di].setAttribute("scale", (sc * (1 + di * W.chroma)).toFixed(2)); }
+        }
+        put(ptrEl, "bf", "backdropFilter", lens ? "url(#lq-drop) saturate(125%) brightness(1.04)" : "");
+      }
+      put(ptrEl, "tf", "transform", "translate3d(" + (P.x.x - w / 2).toFixed(1) + "px," + (P.y.x - h / 2).toFixed(1) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch);
     }
 
-    // controls and cards: parallax toward the pointer, lift for icons, tilt for cards
+    // controls and cards: parallax toward the pointer, lift for raised controls, a soft light on cards
     jelly.forEach(function (j, el) {
-      var lm = el.getAttribute("data-liquid"), snap = lm === "snap";
-      var icon = snap && el === lifted;
-      var ts = 1, ttx = 0, tty = 0, trx = 0, tryy = 0, tspec = 0;
-      if (j.on && !reduceMotion.matches && on) {
-        var rr = el.getBoundingClientRect(), ccx = rr.left + rr.width / 2, ccy = rr.top + rr.height / 2;
-        var nx = Math.max(-1, Math.min(1, (ptr.x - ccx) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - ccy) / (rr.height / 2)));
-        if (icon) { ts = 1 + Math.min(0.12, 9 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
-        else if (snap) { ts = 1; if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
-        else { ts = 1.006; tspec = 1; }
+      var snap = el.getAttribute("data-liquid") === "snap", icon = snap && el === lifted;
+      // a card holds still while one of its own links or buttons has the pointer, so the highlight never chases it
+      var holdStill = !snap && target && target !== el && el.contains(target);
+      var tsj = 1, ttx = 0, tty = 0, tspec = 0, rr = j.rr;
+      if (rr) {
+        var nx = Math.max(-1, Math.min(1, (ptr.x - (rr.left + rr.width / 2)) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - (rr.top + rr.height / 2)) / (rr.height / 2)));
+        if (icon) { tsj = 1 + Math.min(0.08, 5 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
+        else if (snap) { if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
+        else { tsj = holdStill ? 1 : 1.006; tspec = 1; }
       } else if (j.on && !snap) { tspec = 1; }
-      step(j.s, ts, snap ? 420 : 260, snap ? 21 : 26, dt);
+      step(j.s, tsj, snap ? 420 : 260, snap ? 21 : 26, dt);
       step(j.tx, ttx, 300, 26, dt); step(j.ty, tty, 300, 26, dt);
-      step(j.rx, trx, 180, 20, dt); step(j.ry, tryy, 180, 20, dt);
       step(j.spec, tspec, 120, 22, dt);
-      if (!j.on && Math.abs(j.s.x - 1) < 5e-4 && Math.abs(j.s.v) < 1e-3 && Math.abs(j.tx.x) < 0.02 && Math.abs(j.ty.x) < 0.02 &&
-          Math.abs(j.rx.x) < 0.01 && Math.abs(j.ry.x) < 0.01 && j.spec.x < 0.01) {
-        el.style.transform = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
+      var still = !moving(j.s, tsj) && !moving(j.tx, ttx) && !moving(j.ty, tty) && Math.abs(j.spec.x - tspec) < 0.01;
+      if (!j.on && still && Math.abs(j.s.x - 1) < 1e-3 && Math.abs(j.tx.x) < 0.05 && Math.abs(j.ty.x) < 0.05 && j.spec.x < 0.01) {
+        el.style.transform = ""; el.style.willChange = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
       }
-      el.style.transform = (snap ? "" : "perspective(900px) rotateX(" + j.rx.x.toFixed(3) + "deg) rotateY(" + j.ry.x.toFixed(3) + "deg) ") +
-        "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
-      if (!snap) el.style.setProperty("--lq-spec", Math.max(0, Math.min(1, j.spec.x)).toFixed(3));
+      if (!still || j.on) busy = busy || !still || (j.on && !!rr && fresh);
+      var tf = "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
+      if (j.lastTf !== tf) { j.lastTf = tf; el.style.transform = tf; }
+      if (!snap) { var sp = Math.max(0, Math.min(1, j.spec.x)).toFixed(2); if (j.lastSp !== sp) { j.lastSp = sp; el.style.setProperty("--lq-spec", sp); } }
     });
-    stepFields(dt);
-    requestAnimationFrame(frame);
+    if (stepFields(dt)) busy = true;
+    if (jelly.size && !busy) busy = Array.from(jelly.values()).some(function (j) { return !j.on; });
+    if (busy) requestAnimationFrame(frame); else running = false;
   }
 
   // ---------- reactive colour fields ----------
@@ -1186,20 +1331,28 @@ footer{margin-top:96px;display:flex;align-items:center;justify-content:space-bet
     });
   }
   function stepFields(dt) {
-    if (!fields.length || reduceMotion.matches) return;
-    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0;
+    if (!fields.length || reduceMotion.matches) return false;
+    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0, live = false;
     fields.forEach(function (f) {
       var px = ptr.seen ? (ptr.x - cx) : 0, py = ptr.seen ? (ptr.y - cy) : 0;
       var tx = px * f.d, ty = py * f.d - sy * f.d * 0.6;
       step(f.x, tx, 18, 7, dt); step(f.y, ty, 18, 7, dt);
-      f.el.style.transform = "translate3d(" + f.x.x.toFixed(1) + "px," + f.y.x.toFixed(1) + "px,0)";
+      if (Math.abs(f.x.x - tx) > 0.3 || Math.abs(f.y.x - ty) > 0.3 || Math.abs(f.x.v) > 0.3 || Math.abs(f.y.v) > 0.3) live = true;
+      var tf = "translate3d(" + f.x.x.toFixed(0) + "px," + f.y.x.toFixed(0) + "px,0)";
+      if (f.tf !== tf) { f.tf = tf; f.el.style.transform = tf; }
     });
+    return live;
   }
 
-  function start() { applyMode(); refractAll(); collectFields(); requestAnimationFrame(frame); }
+  function start() {
+    applyMode(); refractAll(); collectFields(); collectSnaps(); wake();
+    // a theme switch can change which controls have a visible bezel
+    if (window.MutationObserver) new MutationObserver(function () { requestAnimationFrame(collectSnaps); })
+      .observe(doc.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  }
   if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start); else start();
 
-  window.Liquid = { refresh: function () { refractAll(); collectFields(); }, spring: S, step: step, isOn: active };
+  window.Liquid = { refresh: function () { refractAll(); collectFields(); collectSnaps(); wake(); }, spring: S, step: step, isOn: active, wake: wake };
 })();
 </script>
 <script>
