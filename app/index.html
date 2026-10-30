@@ -417,7 +417,6 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   .switch{min-height:40px}
 }
 /* the liquid cursor never runs on touch screens, so its switch would do nothing there */
-@media (hover:none) and (pointer:coarse){.switch[data-liquid-toggle]{display:none}}
 h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
@@ -809,7 +808,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
     ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-water:rgba(255,255,255,.03);--lq-glint:rgba(255,255,255,.97);--lq-rimdark:rgba(14,24,48,.3);--lq-edge:rgba(255,255,255,.55);--lq-drop:rgba(12,22,52,.26);--lq-press:rgba(150,175,230,.18)}",
     "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-water:rgba(255,255,255,.04);--lq-glint:rgba(255,255,255,.92);--lq-rimdark:rgba(0,0,0,.55);--lq-edge:rgba(255,255,255,.4);--lq-drop:rgba(0,0,0,.5);--lq-press:rgba(170,200,255,.16)}}",
     ":where(:root[data-theme=dark]){--lq-water:rgba(255,255,255,.04);--lq-glint:rgba(255,255,255,.92);--lq-rimdark:rgba(0,0,0,.55);--lq-edge:rgba(255,255,255,.4);--lq-drop:rgba(0,0,0,.5);--lq-press:rgba(170,200,255,.16)}",
-    "body.lq-on,body.lq-on *{cursor:none!important}",
+    "body.lq-on:not(.lq-glassonly),body.lq-on:not(.lq-glassonly) *{cursor:none!important}",
     "#lq-ptr{position:fixed;left:0;top:0;margin:0;padding:0;border:0;box-sizing:border-box;z-index:2147483000;pointer-events:none;opacity:0;width:22px;height:22px;border-radius:11px;transform-origin:50% 50%;" +
       "background:radial-gradient(circle at var(--lq-gx,31%) var(--lq-gy,27%),var(--lq-glint) 0 7%,rgba(255,255,255,0) 16%)," +
         "radial-gradient(70% 50% at 40% 20%,rgba(255,255,255,.32),rgba(255,255,255,0) 70%)," +
@@ -834,7 +833,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
     "body.lq-on .lq-hl-on{background-color:transparent!important;box-shadow:none!important}",
     "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}",
     // touch screens never get the liquid cursor, so its switches (and any menu command for it) are hidden there
-    "@media (hover:none),(pointer:coarse){[data-liquid-toggle],[data-cmd=cursor]{display:none!important}}"
+    "@media (hover:none),(pointer:coarse){html:not(.lq-trackpad) [data-liquid-toggle],html:not(.lq-trackpad) [data-cmd=cursor]{display:none!important}}"
   ].join("\n");
   var style = doc.createElement("style");
   style.textContent = css;
@@ -995,11 +994,21 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
   }
 
   // ---------- state ----------
-  var liquidOn = store.get("lq-cursor-v2") !== "off"; // on unless the visitor has turned it off
-  function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
+  // Touch-first devices (iPad) report a trackpad or mouse as "mouse" pointer events. WebKit gives web pages no way to
+  // hide or reshape the iPad pointer (only its dot or text I-beam), so there the engine adds just the glass snap on
+  // controls under the system pointer: no droplet, no beam. It is off by default there and saved separately.
+  var trackpad = false, lastTouch = -1e9; // no touch yet (performance.now() starts near 0 on every load)
+  function touchFirst() { return !finePointer.matches; }
+  function prefKey() { return touchFirst() ? "lq-cursor-tp" : "lq-cursor-v2"; }
+  function readPref() { return touchFirst() ? store.get("lq-cursor-tp") === "on" : store.get("lq-cursor-v2") !== "off"; }
+  function glassOnly() { return touchFirst() && trackpad; }
+  var liquidOn = readPref(); // desktop: on unless turned off; iPad trackpad: off unless turned on
+  function active() { return liquidOn && !reduceMotion.matches && (finePointer.matches || trackpad); }
   function applyMode() {
     var on = active();
+    doc.documentElement.classList.toggle("lq-trackpad", glassOnly());
     doc.body && doc.body.classList.toggle("lq-on", on);
+    doc.body && doc.body.classList.toggle("lq-glassonly", on && glassOnly());
     doc.querySelectorAll("[data-liquid-toggle]").forEach(function (b) {
       b.setAttribute("aria-checked", liquidOn ? "true" : "false");
     });
@@ -1111,13 +1120,22 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
       card.style.setProperty("--lq-mx", ((ptr.x - r.left) / r.width * 100).toFixed(1) + "%");
       card.style.setProperty("--lq-my", ((ptr.y - r.top) / r.height * 100).toFixed(1) + "%");
     }
-    beam = (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
+    beam = !glassOnly() && (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
   }
 
   // events only record what happened; hover work runs once per frame (pointermove can fire several times a frame)
   var hoverNode = null, hoverDirty = false, idleTimer = 0;
+  addEventListener("touchstart", function () {
+    lastTouch = performance.now();
+    if (glassOnly() && ptr.seen) { ptr.seen = false; if (target) leave(target); wake(); } // a finger takes over from the trackpad
+  }, { passive: true, capture: true });
   doc.addEventListener("pointermove", function (e) {
-    if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
+    if (e.pointerType !== "mouse" && (e.pointerType !== "pen" || touchFirst())) return; // on iPad, Pencil hover is not a trackpad
+    if (touchFirst() && !trackpad) {
+      // a real trackpad or mouse: buttons up and not the mouse events a tap can synthesize
+      if (e.buttons || performance.now() - lastTouch < 1000) return;
+      trackpad = true; liquidOn = readPref(); applyMode();
+    }
     ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
     if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
     viaKeyboard = false;
@@ -1144,7 +1162,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
   });
   doc.addEventListener("focusin", function (e) {
     var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
-    if (el && el.matches(":focus-visible")) {
+    if (el && el.matches(":focus-visible") && performance.now() - lastTouch > 800) { // a finger tap's focus is not keyboard focus
       enter(el, true); wake();
       if (active() && !ptr.seen) { var r = el.getBoundingClientRect(); P.x.x = r.left + r.width / 2; P.y.x = r.top + r.height / 2; P.w.x = r.width; P.h.x = r.height; }
     }
@@ -1163,10 +1181,10 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
   doc.addEventListener("click", function (e) {
     var t = e.target.closest ? e.target.closest("[data-liquid-toggle]") : null;
     if (!t) return;
-    liquidOn = !liquidOn; store.set("lq-cursor-v2", liquidOn ? "on" : "off"); applyMode(); wake();
+    liquidOn = !liquidOn; store.set(prefKey(), liquidOn ? "on" : "off"); applyMode(); wake();
     if (!liquidOn && lifted) { lifted.classList.remove("lq-lifted"); lifted = null; }
   });
-  finePointer.addEventListener && finePointer.addEventListener("change", function () { applyMode(); wake(); });
+  finePointer.addEventListener && finePointer.addEventListener("change", function () { liquidOn = readPref(); applyMode(); wake(); });
   reduceMotion.addEventListener && reduceMotion.addEventListener("change", function () { applyMode(); wake(); });
 
   // ---------- frame (runs only while something is moving; wake() restarts it) ----------
@@ -1211,6 +1229,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
       cx = ptr.x; cy = ptr.y; tw = 22; th = 22; tr = 11; k = 1700; c = 82;
     }
     if (on && !viaKeyboard && (!ptr.seen || ptr.typing || (now - ptr.moved > 2500 && !showTarget))) vis = 0; // idle and typing fade
+    if (on && glassOnly() && !showTarget) vis = 0; // iPad: the system pointer is the dot; only the glass snap is drawn
     var ts = ptr.down ? (cls ? 0.97 : 0.8) : 1;
     step(P.x, cx, k, c, dt); step(P.y, cy, k, c, dt);
     // shape springs are a little underdamped, so the drop overshoots and settles like a gel when it merges
