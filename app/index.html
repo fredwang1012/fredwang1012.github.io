@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Frederick Wang - ML &amp; Data Engineer</title>
     <link rel="icon" type="image/png" href="/icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>Frederick Wang - ML & Data Engineer</title>
     <meta name="title" content="Frederick Wang - ML & Data Engineer" />
     <meta name="description" content="M.Sc. Applied Computing (AI) student at the University of Toronto and UBC CS & Statistics graduate, working on machine learning, world models, and data engineering." />
     <meta name="keywords" content="Frederick Wang, University of Toronto, UBC, Machine Learning, Data Engineering, World Models, PyTorch, Databricks, MCP, RAG" />
@@ -29,10 +29,1144 @@
     <!-- Additional SEO -->
     <link rel="canonical" href="https://fredwang1012.github.io/" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#2563eb" />
+    <script>
+      // old routes from the previous site
+      (function () { var p = location.pathname.replace(/\/+$/, ""); if (p === "/music" || p === "/books") location.replace("/#" + p.slice(1)); })();
+    </script>
+    <style>
+      /* the same base the design was built on */
+      :root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+      body { margin: 0; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+      img { max-width: 100%; }
+      [hidden] { display: none !important; }
+    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: colour fields drift slowly under the page; every control sits on a layer of liquid glass above them.
+   Glass is reserved for navigation and controls, content cards are frosted, and the cursor itself is a drop of glass. */
+:root {
+  --ground: #edf0f5;
+  --ink: #10141c;
+  --ink-2: #414b5d;
+  --ink-3: #586174;
+  --accent: #1d56c9;
+  --glass: rgba(255, 255, 255, 0.40);
+  --glass-strong: rgba(255, 255, 255, 0.66);
+  --rim: rgba(255, 255, 255, 0.80);
+  --edge: rgba(16, 20, 28, 0.10);
+  --shadow: rgba(26, 36, 62, 0.14);
+  --field-1: #86b4ff;
+  --field-2: #96e3cf;
+  --field-3: #ffcaa2;
+  --field-4: #c9bcff;
+  --field-opacity: 0.75;
+  --ok: #0c6b4b;
+  --ok-bg: rgba(16, 185, 129, 0.16);
+  --gold: #8a4b0b;
+  --gold-bg: rgba(245, 166, 35, 0.18);
+  --solid: #10141c;
+  --on-solid: #ffffff;
+  --lens-tint: rgba(255, 255, 255, 0.10);
+  --lens-ring: rgba(16, 20, 28, 0.28);
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0a0c11; --ink: #eef1f6; --ink-2: #b8c0ce; --ink-3: #959fb1; --accent: #93b8ff;
+    --glass: rgba(255, 255, 255, 0.055); --glass-strong: rgba(255, 255, 255, 0.11); --rim: rgba(255, 255, 255, 0.24);
+    --edge: rgba(0, 0, 0, 0.45); --shadow: rgba(0, 0, 0, 0.5);
+    --field-1: #2a4f9e; --field-2: #1d5a55; --field-3: #6b3a24; --field-4: #4b3590; --field-opacity: 0.42;
+    --ok: #74e3b9; --ok-bg: rgba(16, 185, 129, 0.16); --gold: #f6c56d; --gold-bg: rgba(245, 166, 35, 0.14);
+    --solid: #eef1f6; --on-solid: #0a0c11; --lens-tint: rgba(255, 255, 255, 0.05); --lens-ring: rgba(255, 255, 255, 0.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0a0c11; --ink: #eef1f6; --ink-2: #b8c0ce; --ink-3: #959fb1; --accent: #93b8ff;
+  --glass: rgba(255, 255, 255, 0.055); --glass-strong: rgba(255, 255, 255, 0.11); --rim: rgba(255, 255, 255, 0.24);
+  --edge: rgba(0, 0, 0, 0.45); --shadow: rgba(0, 0, 0, 0.5);
+  --field-1: #2a4f9e; --field-2: #1d5a55; --field-3: #6b3a24; --field-4: #4b3590; --field-opacity: 0.42;
+  --ok: #74e3b9; --ok-bg: rgba(16, 185, 129, 0.16); --gold: #f6c56d; --gold-bg: rgba(245, 166, 35, 0.14);
+  --solid: #eef1f6; --on-solid: #0a0c11; --lens-tint: rgba(255, 255, 255, 0.05); --lens-ring: rgba(255, 255, 255, 0.35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+h1, h2, h3 { text-wrap: balance; }
+em.serif { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
+
+/* ---------- colour fields: wrappers follow the pointer and scroll (engine), spans drift and morph (CSS) ---------- */
+.fields { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.fields > div { position: absolute; width: 46vmax; height: 46vmax; will-change: transform; }
+.fields > div:nth-child(1) { left: -10vmax; top: -12vmax; }
+.fields > div:nth-child(2) { right: -14vmax; top: 18vh; }
+.fields > div:nth-child(3) { left: 8vw; bottom: -18vmax; }
+.fields > div:nth-child(4) { right: 12vw; bottom: -10vmax; width: 34vmax; height: 34vmax; }
+.fields span { position: absolute; inset: 0; filter: blur(60px); opacity: var(--field-opacity); will-change: transform, border-radius; border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; }
+.fields > div:nth-child(1) span { background: var(--field-1); animation: drift-a 38s ease-in-out infinite alternate, morph 17s ease-in-out infinite; }
+.fields > div:nth-child(2) span { background: var(--field-2); animation: drift-b 44s ease-in-out infinite alternate, morph 21s ease-in-out infinite reverse; }
+.fields > div:nth-child(3) span { background: var(--field-3); animation: drift-c 50s ease-in-out infinite alternate, morph 19s ease-in-out infinite; }
+.fields > div:nth-child(4) span { background: var(--field-4); animation: drift-a 56s ease-in-out infinite alternate-reverse, morph 23s ease-in-out infinite reverse; }
+.fields::after {
+  content: ""; position: absolute; inset: 0; opacity: 0.08; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+@keyframes drift-a { to { transform: translate3d(12vw, 10vh, 0) scale(1.08); } }
+@keyframes drift-b { to { transform: translate3d(-14vw, 16vh, 0) scale(0.92); } }
+@keyframes drift-c { to { transform: translate3d(18vw, -12vh, 0) scale(1.1); } }
+@keyframes morph {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; }
+  33% { border-radius: 63% 37% 41% 59% / 58% 35% 65% 42%; }
+  66% { border-radius: 36% 64% 52% 48% / 38% 62% 38% 62%; }
+}
+
+/* ---------- glass materials ---------- */
+.glass {
+  background: linear-gradient(160deg, var(--glass-strong), var(--glass));
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 var(--rim),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    0 0 0 1px var(--edge),
+    0 18px 44px -18px var(--shadow);
+}
+
+.page { position: relative; z-index: 1; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1160px; margin: 0 auto; }
+
+/* ---------- nav ---------- */
+.nav {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 14px); z-index: 20;
+  margin: 14px auto 0; width: fit-content; max-width: 100%;
+  display: flex; align-items: center; gap: 2px; padding: 6px;
+  border-radius: 999px; font-size: 14px; font-weight: 500;
+}
+.nav .mark {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 8px; border-radius: 999px;
+  font-weight: 600; text-decoration: none; letter-spacing: -0.01em; white-space: nowrap;
+}
+.nav .mark img { width: 26px; height: 26px; border-radius: 999px; object-fit: cover; }
+.nav-items { position: relative; display: flex; gap: 2px; }
+.nav-items a {
+  position: relative; z-index: 1; padding: 9px 14px; border-radius: 999px; text-decoration: none;
+  color: var(--ink-2); white-space: nowrap; transition: color 0.25s ease;
+}
+.nav-items a[aria-current="true"], .nav-items a[aria-current="page"] { color: var(--ink); }
+.nav-pill {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 0; border-radius: 999px; z-index: 0;
+  background: var(--glass-strong);
+  box-shadow: inset 0 1px 0 var(--rim), 0 0 0 1px var(--edge), 0 4px 12px -4px var(--shadow);
+}
+.nav .tools { display: flex; gap: 2px; margin-left: 4px; }
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 999px; border: 0; background: transparent; color: var(--ink);
+  display: inline-flex; align-items: center; justify-content: center; font: inherit;
+}
+.icon-btn svg { width: 18px; height: 18px; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 20px; border-radius: 999px;
+  border: 0; font: 500 15px/1 var(--font-sans); text-decoration: none; color: var(--ink); white-space: nowrap;
+}
+.btn.solid { background: var(--solid); color: var(--on-solid); box-shadow: 0 10px 24px -10px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.18); }
+.btn svg { width: 16px; height: 16px; }
+
+/* jelly: transforms are written by script; this keeps them on the compositor */
+[data-liquid] { will-change: transform; transform-origin: center; }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 48px; align-items: center; padding-block: 96px 88px; }
+.eyebrow { font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px; }
+.hero h1 { margin: 0; font-size: clamp(48px, 8vw, 104px); line-height: 0.96; font-weight: 600; letter-spacing: -0.055em; }
+.hero h1 em.serif { letter-spacing: -0.02em; }
+.lede { margin: 26px 0 0; max-width: 34ch; font-size: clamp(19px, 2vw, 23px); line-height: 1.45; color: var(--ink-2); letter-spacing: -0.01em; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.now { border-radius: 30px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.now .portrait { position: relative; border-radius: 22px; overflow: hidden; aspect-ratio: 4 / 3.4; max-width: 100%; }
+.now .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.now .row { display: flex; gap: 12px; align-items: flex-start; padding: 6px 8px 4px; }
+.dot { width: 8px; height: 8px; border-radius: 99px; background: #10b981; box-shadow: 0 0 0 4px var(--ok-bg); margin-top: 8px; flex: none; }
+.now .label { font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
+.now .what { margin: 2px 0 0; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; }
+
+/* ---------- sections ---------- */
+section { scroll-margin-top: 96px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+.section-head h2 { margin: 0; font-size: clamp(34px, 4.6vw, 54px); font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
+.section-head p { margin: 0; color: var(--ink-3); font-size: 15px; }
+
+/* ---------- work grid ---------- */
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.card {
+  position: relative; border-radius: 28px; padding: 26px; display: flex; flex-direction: column; gap: 12px;
+  min-width: 0; text-decoration: none; color: inherit; overflow: hidden;
+  --lq-mx: 50%; --lq-my: 0%; --lq-spec: 0;
+}
+.card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(420px circle at var(--lq-mx) var(--lq-my), rgba(255, 255, 255, 0.38), transparent 45%);
+  opacity: var(--lq-spec); mix-blend-mode: soft-light;
+}
+.span-7 { grid-column: span 7; } .span-5 { grid-column: span 5; } .span-4 { grid-column: span 4; } .span-8 { grid-column: span 8; } .span-12 { grid-column: span 12; }
+.card.wide { flex-direction: row; align-items: stretch; gap: 22px; }
+.card.wide .figure { flex: 0 0 46%; display: flex; align-items: center; }
+.card.wide .figure img { height: 100%; min-height: 180px; }
+.wide-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.earlier.row3 { flex-direction: row; flex-wrap: wrap; }
+.earlier.row3 li { flex: 1 1 240px; min-width: 0; }
+.card h3 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.2; }
+.card.big h3 { font-size: 28px; }
+.card p { margin: 0; color: var(--ink-2); font-size: 15px; }
+.meta { margin-top: auto; padding-top: 6px; font: 400 12px/1.5 var(--font-mono); color: var(--ink-3); }
+.chip { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--font-sans); padding: 6px 10px; border-radius: 999px; }
+.chip.ok { color: var(--ok); background: var(--ok-bg); }
+.chip.ok::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: currentColor; }
+.chip.gold { color: var(--gold); background: var(--gold-bg); }
+.chip.plain { color: var(--ink-2); background: var(--glass-strong); }
+.card-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.go {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; font-size: 13px; font-weight: 500;
+  text-decoration: none; color: var(--ink); background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--rim), 0 0 0 1px var(--edge);
+}
+.figure { border-radius: 18px; overflow: hidden; background: #ffffff; box-shadow: inset 0 0 0 1px rgba(16, 20, 28, 0.06); }
+.figure img { display: block; width: 100%; height: 230px; object-fit: contain; max-width: 100%; }
+.figcap { font-size: 13px !important; color: var(--ink-3) !important; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { border-radius: 16px; padding: 12px 14px; background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--rim); }
+.stat b { display: block; font-size: 24px; font-weight: 600; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--ink-3); }
+.steps { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.steps li { display: flex; gap: 12px; align-items: center; padding: 11px 14px; border-radius: 14px; background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--rim); font-size: 14px; font-weight: 500; }
+.steps li span { font: 500 12px/1 var(--font-mono); color: var(--ink-3); }
+.earlier { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.earlier a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; text-decoration: none; background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--rim); }
+.earlier b { font-weight: 600; font-size: 15px; }
+.earlier small { color: var(--ink-3); font-size: 12px; }
+
+/* ---------- experience ---------- */
+.timeline { border-radius: 30px; padding: 8px 30px; }
+.role { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 24px; padding: 24px 0; }
+.role + .role { border-top: 1px solid var(--edge); }
+.role time { font: 400 13px/1.6 var(--font-mono); color: var(--ink-3); padding-top: 3px; }
+.role h3 { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+.role h3 small { font-weight: 500; color: var(--ink-3); font-size: 15px; }
+.role p { margin: 6px 0 0; color: var(--ink-2); font-size: 15px; max-width: 64ch; }
+.wins { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.wins span { font-size: 13px; font-weight: 500; padding: 6px 11px; border-radius: 999px; background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--rim); }
+
+/* ---------- about / contact ---------- */
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.panel { border-radius: 30px; padding: 30px; }
+.panel h3 { margin: 0 0 10px; font-size: 22px; letter-spacing: -0.025em; }
+.panel p { margin: 0; color: var(--ink-2); max-width: 52ch; }
+.panel .links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.email { font-size: clamp(22px, 3.2vw, 34px); font-weight: 600; letter-spacing: -0.035em; margin: 6px 0 18px; user-select: all; overflow-wrap: anywhere; }
+
+footer { padding-block: 72px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; color: var(--ink-3); font-size: 13px; }
+footer .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
+.switch { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; border: 0; font: 500 13px/1 var(--font-sans); color: var(--ink); background: transparent; }
+.switch .knob { width: 28px; height: 16px; border-radius: 99px; background: var(--edge); position: relative; transition: background 0.2s; }
+.switch .knob::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 99px; background: #fff; transition: transform 0.25s cubic-bezier(.3,1.4,.5,1); box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+.switch[aria-checked="true"] .knob { background: #10b981; }
+.switch[aria-checked="true"] .knob::after { transform: translateX(12px); }
+
+/* liquid cursor tokens (engine) */
+:root { --lq-ring: rgba(16, 20, 28, 0.55); --lq-tint: rgba(255, 255, 255, 0.16); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --lq-ring: rgba(255, 255, 255, 0.7); --lq-tint: rgba(255, 255, 255, 0.10); } }
+:root[data-theme="dark"] { --lq-ring: rgba(255, 255, 255, 0.7); --lq-tint: rgba(255, 255, 255, 0.10); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- cursor toggle ---------- */
+.cursor-btn .slash { opacity: 0; transition: opacity 0.2s; }
+.cursor-btn[aria-checked="false"] { opacity: 0.55; }
+.cursor-btn[aria-checked="false"] .slash { opacity: 1; }
+@media (hover: none) { .cursor-btn { display: none; } }
+
+/* ---------- music & books ---------- */
+.mini { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.mini li { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.mini li > span:first-child:not(.chip) { width: 22px; font: 500 12px/1 var(--font-mono); color: var(--ink-3); flex: none; }
+.mini a { padding: 8px 10px; margin-left: -10px; border-radius: 12px; text-decoration: none; min-width: 0; }
+.mini.books li { padding: 6px 0; color: var(--ink-2); flex-wrap: wrap; }
+.mini.books b { color: var(--ink); font-weight: 600; }
+.view { padding-block: 72px 24px; }
+.view h1 { margin: 18px 0 0; font-size: clamp(48px, 8vw, 96px); line-height: 0.96; font-weight: 600; letter-spacing: -0.055em; outline: none; }
+.view-lede { margin: 14px 0 40px; font-size: clamp(20px, 2.4vw, 28px); color: var(--ink-2); }
+.view-h2 { margin: 36px 0 12px; font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.back { display: inline-flex; padding: 8px 14px; margin-left: -14px; border-radius: 999px; text-decoration: none; color: var(--ink-2); font-weight: 500; }
+.tracks { list-style: none; margin: 0; padding: 6px 22px; border-radius: 26px; }
+.tracks li { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 0; }
+.tracks li + li { border-top: 1px solid var(--edge); }
+.rank { font-family: var(--font-serif); font-style: italic; font-size: 34px; line-height: 1; color: var(--ink-3); }
+.track { font-size: 18px; color: var(--ink-2); min-width: 0; }
+.track b { display: block; color: var(--ink); font-weight: 600; letter-spacing: -0.015em; }
+.shelves { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.shelf { border-radius: 26px; padding: 6px 24px 18px; min-width: 0; }
+.shelf ul { list-style: none; margin: 0; padding: 0; columns: 1; }
+.shelf li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px solid var(--edge); }
+.shelf li:first-child { border-top: 0; }
+.shelf li b { font-weight: 600; min-width: 0; }
+.shelf li span { color: var(--ink-3); text-align: right; flex: none; max-width: 45%; }
+.now-reading b { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 30px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 920px) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 64px 56px; }
+  .span-7, .span-5, .span-4, .span-8 { grid-column: span 12; }
+  .card.wide { flex-direction: column; }
+  .card.wide .figure img { height: 200px; }
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .shelves { grid-template-columns: minmax(0, 1fr); }
+  .nav-items a.hide-md { display: none; }
+}
+@media (max-width: 640px) {
+  .nav .mark span, .nav-items a.hide-sm { display: none; }
+  .nav .mark { padding: 6px; }
+  .nav-items a { padding: 9px 11px; }
+  .role { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .tracks li { grid-template-columns: 32px minmax(0, 1fr); }
+  .tracks li .go { grid-column: 2; justify-self: start; }
+  .tracks { padding: 4px 16px; }
+  .timeline { padding: 4px 20px; }
+  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .stat b { font-size: 19px; }
+  .card { padding: 20px; }
+  .figure img { height: 170px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fields span { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+<div class="fields" aria-hidden="true"><div data-field="0.07"><span></span></div><div data-field="-0.05"><span></span></div><div data-field="0.04"><span></span></div><div data-field="-0.08"><span></span></div></div>
+
+<div class="page">
+  <nav class="nav glass" id="nav" aria-label="Sections" data-refract="soft">
+    <a class="mark" href="#top" data-liquid="snap"><img src="/frederick.jpg" alt=""><span>Frederick Wang</span></a>
+    <div class="nav-items" id="nav-items">
+      <span class="nav-pill" id="nav-pill" aria-hidden="true"></span>
+      <a href="#work" data-liquid="snap" data-section="work">Work</a>
+      <a href="#experience" data-liquid="snap" data-section="experience">Experience</a>
+      <a href="#about" data-liquid="snap" data-section="about" class="hide-sm">About</a>
+      <a href="#contact" data-liquid="snap" data-section="contact">Contact</a>
+      <a href="#music" data-liquid="snap" data-view="music" class="hide-md">Music</a>
+      <a href="#books" data-liquid="snap" data-view="books" class="hide-md">Books</a>
+    </div>
+    <div class="tools">
+      
+      <button class="icon-btn" id="theme" type="button" data-liquid="snap" aria-label="Switch to dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="wrap" id="top">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">M.Sc. Applied Computing (AI) · University of Toronto</p>
+        <h1>Frederick <em class="serif">Wang</em></h1>
+        <p class="lede">I build machine learning for driving, forecasting and health, <em class="serif">and the systems that carry it into production.</em></p>
+        <div class="actions">
+          <a class="btn solid" href="/resume.pdf" target="_blank" rel="noopener" data-liquid="snap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+            Résumé
+          </a>
+          <a class="btn glass" href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-liquid="snap">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.84c.85 0 1.7.11 2.5.34 1.9-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+            GitHub
+          </a>
+          <button class="btn glass copy-email" type="button" data-liquid="snap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <span>Copy email</span>
+          </button>
+        </div>
+      </div>
+      <aside class="now glass" aria-label="What I am doing now">
+        <div class="portrait"><img src="/frederick.jpg" alt="Portrait of Frederick Wang"></div>
+        <div class="row">
+          <span class="dot" aria-hidden="true"></span>
+          <div><p class="label">Now</p><p class="what">Recoverability-aware world models for safe driving</p></div>
+        </div>
+      </aside>
+    </header>
+
+    <section id="work" aria-labelledby="work-h">
+      <div class="section-head">
+        <h2 id="work-h">Selected work</h2>
+        <p>Ten projects · six ongoing</p>
+      </div>
+      <div class="grid">
+        <article class="card glass big span-7" data-liquid="lift">
+          <div class="card-top"><span class="chip ok">Ongoing · Oct 2026</span><span class="meta" style="margin:0;padding:0">Autonomy · UofT</span></div>
+          <h3>Recoverability-Aware World Models</h3>
+          <p>Prediction-only world models can call a scene safe after the point of no return. This objective keeps whether the car can still recover, then distils it into a driving policy.</p>
+          <ol class="steps">
+            <li><span>01</span>Mine unrecoverable scenes in headless CARLA</li>
+            <li><span>02</span>Generate counterfactual variants with NVIDIA Cosmos</li>
+            <li><span>03</span>Train a recoverability-aware world model</li>
+            <li><span>04</span>Distil it into a DAgger-trained driving policy</li>
+          </ol>
+          <p class="meta">PyTorch · CARLA · NVIDIA Cosmos · imitation learning</p>
+        </article>
+
+        <article class="card glass big span-5" data-liquid="lift">
+          <div class="card-top"><span class="chip ok">Ongoing · Oct 2026</span><a class="go" href="https://github.com/fredwang1012/talkback" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a></div>
+          <h3>Talkback</h3>
+          <p>Books read aloud by a full expressive cast. Stop anywhere and ask a character a question out loud: they answer in their own voice, using only what you have read so far, so nothing is spoiled.</p>
+          <div class="stats">
+            <div class="stat"><b>20</b><span>voiced emotions</span></div>
+            <div class="stat"><b>191</b><span>features tracked</span></div>
+            <div class="stat"><b>~1,750</b><span>tests</span></div>
+          </div>
+          <p class="meta">React · FastAPI · Higgs Audio TTS · realtime voice · lip-sync</p>
+        </article>
+
+        <article class="card glass span-4" data-liquid="lift">
+          <div class="card-top"><span class="chip ok">Ongoing</span><a class="go" href="https://github.com/fredwang1012/text2sql-memory" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a></div>
+          <h3>text2sql-memory</h3>
+          <p>Text-to-SQL that retrieves business logic, not just schema: glossary terms, metric definitions and join paths, tested against a schema-only baseline on BIRD.</p>
+          <p class="meta">Python · Claude API · BM25 + embeddings</p>
+        </article>
+
+        <article class="card glass span-4" data-liquid="lift">
+          <div class="card-top"><span class="chip ok">Ongoing</span><a class="go" href="https://github.com/fredwang1012/arxiv-paper-rag" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a></div>
+          <h3>arXiv Paper RAG</h3>
+          <p>Answers about a reading list of papers, every claim cited to the exact paper and section, and every quote checked against the passage it came from.</p>
+          <p class="meta">Python · Claude API · FastAPI · LaTeX parsing</p>
+        </article>
+
+        <article class="card glass span-4" data-liquid="lift">
+          <div class="card-top"><span class="chip ok">Ongoing</span><a class="go" href="https://github.com/fredwang1012/semantic-pdf-reader" target="_blank" rel="noopener" data-liquid="snap">GitHub ↗</a></div>
+          <h3>Semantic PDF Reader</h3>
+          <p>Search a PDF by meaning. It jumps to the page and highlights the passage, in one document or a whole library, and nothing leaves your machine.</p>
+          <p class="meta">React · pdf.js · FastAPI · PyMuPDF</p>
+        </article>
+
+        <article class="card glass span-4" data-liquid="lift">
+          <div class="card-top"><span class="chip ok">Ongoing</span><span class="meta" style="margin:0;padding:0">Forecasting · 2026</span></div>
+          <h3>Undercurrent</h3>
+          <p>Chronos-2 with covariates against a hierarchical Bayesian driver model, combined by Bayesian Predictive Synthesis and scored on CRPS and calibration.</p>
+          <p class="meta">Python · Chronos-2 · Bayesian modelling</p>
+        </article>
+
+        <article class="card glass span-8 wide" data-liquid="lift">
+          <div class="figure"><img src="/patient-stratification.webp" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right"></div>
+          <div class="wide-body">
+            <div class="card-top">
+              <span class="chip plain">UBC CPSC 440 · Apr 2026</span>
+              <a class="go" href="https://github.com/fredwang1012/patient-stratification" target="_blank" rel="noopener" data-liquid="snap">Code + report ↗</a>
+            </div>
+            <h3>Unsupervised Patient Stratification</h3>
+            <p>A VAE compresses checkup labs and Chinese free-text reports; K-Means on its latent space finds seven clinical phenotypes without labels. Silhouette 0.267 across 234K visits.</p>
+          </div>
+        </article>
+
+        <article class="card glass span-12" data-liquid="lift">
+          <div class="card-top"><span class="chip plain">Earlier</span></div>
+          <ul class="earlier row3">
+            <li><a href="https://github.com/fredwang1012/greenlife" target="_blank" rel="noopener" data-liquid="snap"><span><b>GreenLife</b><br><small>RAG on AWS Bedrock · 2024</small></span><span class="chip gold">1st place</span></a></li>
+            <li><a href="https://github.com/fredwang1012/great_expectations/tree/fredwang1012" target="_blank" rel="noopener" data-liquid="snap"><span><b>Great Expectations</b><br><small>SQL Server support, open source · 2025</small></span><span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap"><span><b>WealthComplex</b><br><small>Investment platform</small></span><span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" aria-labelledby="exp-h" style="margin-top: 120px">
+      <div class="section-head"><h2 id="exp-h">Experience</h2><p>Newest first</p></div>
+      <div class="timeline glass">
+        <div class="role">
+          <time>Sep 2026 – now</time>
+          <div><h3>Teaching Assistant <small>· University of Toronto</small></h3><p>CSC207 tutorials and labs on Java, object-oriented design and Git-based teamwork.</p></div>
+        </div>
+        <div class="role">
+          <time>May – Dec 2025</time>
+          <div>
+            <h3>Data Engineer Intern <small>· British Columbia Investment Management</small></h3>
+            <p>Won the internal hackathon with a schedule-optimization algorithm and led it to production. Shipped an MCP server on Databricks Apps connecting Claude to Unity Catalog, and a RAG knowledge base over unstructured data.</p>
+            <div class="wins"><span>1st place hackathon</span><span>+25% efficiency</span><span>$20M projected value</span><span>−50% analysis time</span></div>
+          </div>
+        </div>
+        <div class="role">
+          <time>Sep 2024 – Apr 2026</time>
+          <div><h3>Teaching Assistant <small>· UBC CS &amp; Statistics</small></h3><p>Led ML tutorials in R, mentored 100+ students, and co-facilitated 400-level database lectures.</p></div>
+        </div>
+        <div class="role">
+          <time>Jan – Aug 2024</time>
+          <div><h3>Data Analyst Intern <small>· Providence Research</small></h3><p>Built supervised models in R predicting ankle-surgery outcomes from patient risk factors.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="listening" aria-labelledby="listen-h" style="margin-top: 120px">
+      <div class="section-head"><h2 id="listen-h">Music &amp; books</h2><p>Off the clock</p></div>
+      <div class="split">
+        <div class="panel glass" data-liquid="lift">
+          <h3>Favourite piano works</h3>
+          <ol class="mini">
+            <li><span>1</span><a href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap">Rachmaninov · Piano Concerto No. 3 ↗</a></li>
+            <li><span>2</span><a href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap">Rachmaninov · Piano Concerto No. 2 ↗</a></li>
+            <li><span>3</span><a href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap">Liszt · Sonetto 104 del Petrarca ↗</a></li>
+            <li><span>♪</span><a href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap">My playing: Kreisler · Liebesleid ↗</a></li>
+          </ol>
+          <div class="links"><a class="btn glass" href="#music" data-liquid="snap">See all music →</a></div>
+        </div>
+        <div class="panel glass" data-liquid="lift">
+          <h3>Reading</h3>
+          <ul class="mini books">
+            <li><span class="chip ok">Now</span><b>Dune</b> · Frank Herbert</li>
+            <li><span class="chip plain">Favourite</span><b>The Brothers Karamazov</b> · Dostoevsky</li>
+            <li><span class="chip plain">Favourite</span><b>The Idiot</b> · Dostoevsky</li>
+            <li><span class="chip plain">Favourite</span><b>1984</b> · Orwell</li>
+          </ul>
+          <div class="links"><a class="btn glass" href="#books" data-liquid="snap">See all books →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" aria-labelledby="about-h" style="margin-top: 120px">
+      <div class="split">
+        <div class="panel glass" id="contact">
+          <h3 id="about-h">Get in touch</h3>
+          <p>The fastest way to reach me is email.</p>
+          <p class="email" id="email-text">fredwang1012@gmail.com</p>
+          <div class="links">
+            <button class="btn solid copy-email" type="button" data-liquid="snap"><span>Copy email</span></button>
+            <a class="btn glass" href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-liquid="snap">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="panel glass">
+          <h3>Off the clock</h3>
+          <p>Piano (lately Rachmaninov), skiing, soccer, badminton, and classic literature. B.Sc. in Computer Science and Statistics from UBC, Dean's List 2022–2026.</p>
+          <div class="links">
+            <a class="btn glass" href="#music" data-liquid="snap">Music</a>
+            <a class="btn glass" href="#books" data-liquid="snap">Books</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="wrap view" id="view-music" aria-labelledby="music-h" hidden>
+    <a class="back" href="#top" data-liquid="snap">← Home</a>
+    <h1 id="music-h" tabindex="-1">Music</h1>
+    <p class="view-lede"><em class="serif">A window into my passion for music.</em></p>
+    <h2 class="view-h2">My personal ranking of favourite piano works</h2>
+    <ol class="tracks glass">
+      <li><span class="rank">1</span><span class="track"><b>Rachmaninov</b> Piano Concerto No. 3 in D minor, Op. 30</span><a class="go" href="https://www.youtube.com/watch?v=GvKQKnIVy1I&amp;t=30s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+      <li><span class="rank">2</span><span class="track"><b>Rachmaninov</b> Piano Concerto No. 2 in C minor, Op. 18</span><a class="go" href="https://www.youtube.com/watch?v=e-x01ddG0x4&amp;t=16s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+      <li><span class="rank">3</span><span class="track"><b>Liszt</b> Tre sonetti di Petrarca, S. 270 (Sonetto 104)</span><a class="go" href="https://www.youtube.com/watch?v=qtqmnnZhjfU&amp;t=9s" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+    </ol>
+    <h2 class="view-h2">My playing</h2>
+    <ol class="tracks glass">
+      <li><span class="rank">♪</span><span class="track"><b>Kreisler</b> Liebesleid (arr. Rachmaninov)</span><a class="go" href="https://www.youtube.com/shorts/G9iXslJz-vE" target="_blank" rel="noopener" data-liquid="snap">Listen on YouTube ↗</a></li>
+    </ol>
+  </section>
+
+  <section class="wrap view" id="view-books" aria-labelledby="books-h" hidden>
+    <a class="back" href="#top" data-liquid="snap">← Home</a>
+    <h1 id="books-h" tabindex="-1">Books</h1>
+    <p class="view-lede"><em class="serif">Record of my journey through literature.</em></p>
+    <div class="shelves">
+      <div class="shelf glass now-reading"><h2 class="view-h2">Currently reading</h2><ul><li><b>Dune</b><span>Frank Herbert</span></li></ul></div>
+      <div class="shelf glass"><h2 class="view-h2">Favourites</h2><ul>
+        <li><b>The Brothers Karamazov</b><span>Fyodor Dostoevsky</span></li>
+        <li><b>The Idiot</b><span>Fyodor Dostoevsky</span></li>
+        <li><b>1984</b><span>George Orwell</span></li>
+      </ul></div>
+      <div class="shelf glass"><h2 class="view-h2">Read</h2><ul>
+        <li><b>A Day in the Life of Ivan Denisovich</b><span>Aleksandr Solzhenitsyn</span></li>
+        <li><b>White Nights</b><span>Fyodor Dostoevsky</span></li>
+        <li><b>The Great Gatsby</b><span>F. Scott Fitzgerald</span></li>
+        <li><b>Animal Farm</b><span>George Orwell</span></li>
+        <li><b>The Emperor of All Maladies</b><span>Siddhartha Mukherjee</span></li>
+        <li><b>The Three-Body Problem</b><span>Liu Cixin</span></li>
+        <li><b>The Dark Forest</b><span>Liu Cixin</span></li>
+        <li><b>Death’s End</b><span>Liu Cixin</span></li>
+        <li><b>Kokoro</b><span>Natsume Sōseki</span></li>
+        <li><b>The Setting Sun</b><span>Osamu Dazai</span></li>
+        <li><b>No Longer Human</b><span>Osamu Dazai</span></li>
+        <li><b>Norwegian Wood</b><span>Haruki Murakami</span></li>
+        <li><b>Crime and Punishment</b><span>Fyodor Dostoevsky</span></li>
+      </ul></div>
+      <div class="shelf glass"><h2 class="view-h2">To read</h2><ul>
+        <li><b>Meditations</b><span>Marcus Aurelius</span></li>
+        <li><b>Flatland: A Romance of Many Dimensions</b><span>Edwin A. Abbott</span></li>
+        <li><b>Faust</b><span>Johann Wolfgang von Goethe</span></li>
+        <li><b>Dune series</b><span>Frank Herbert</span></li>
+        <li><b>The Iliad</b><span>Homer</span></li>
+        <li><b>The Metamorphosis</b><span>Franz Kafka</span></li>
+        <li><b>A Song of Ice and Fire</b><span>George R.R. Martin</span></li>
+        <li><b>I Am a Cat</b><span>Natsume Sōseki</span></li>
+        <li><b>Beyond Good and Evil</b><span>Friedrich Nietzsche</span></li>
+        <li><b>The Song of the Cell</b><span>Siddhartha Mukherjee</span></li>
+        <li><b>One Hundred Years of Solitude</b><span>Gabriel García Márquez</span></li>
+        <li><b>The Republic</b><span>Plato</span></li>
+        <li><b>Cancer Ward</b><span>Aleksandr Solzhenitsyn</span></li>
+        <li><b>The Gulag Archipelago</b><span>Aleksandr Solzhenitsyn</span></li>
+        <li><b>War and Peace</b><span>Leo Tolstoy</span></li>
+        <li><b>Lord of the Flies</b><span>William Golding</span></li>
+      </ul></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <footer>
+      <span>© 2026 Frederick Wang</span>
+      <div class="toggles">
+        <button class="switch glass" id="cursor-toggle" type="button" role="switch" aria-checked="false" data-liquid="snap" data-liquid-toggle><span class="knob" aria-hidden="true"></span>Liquid cursor</button>
+      </div>
+    </footer>
+  </div>
+</div>
+<p class="sr-only" id="live" aria-live="polite"></p>
+
+<script>
+/*!
+ * Liquid engine: an iPadOS (Magic Keyboard era) pointer after Apple's "Design for the iPadOS pointer":
+ * a 19px glassy dot that becomes a line-height text beam over text, a highlight that sits behind the label
+ * of controls without a background, a lift (scale, shadow, specular light) for controls with one,
+ * magnetism with generous hit margins, gentle parallax, idle fade. Plus reactive colour fields and
+ * Chromium backdrop refraction.
+ *
+ * Markup hooks
+ *   data-liquid="snap"   small controls (links, buttons, nav items): the cursor merges into them and they bobble
+ *   data-liquid="lift"   large surfaces (cards): they tilt toward the cursor; the page can read
+ *                        --lq-mx, --lq-my (pointer position, %) and --lq-spec (0..1) for a highlight
+ *   data-refract         glass that bends the content behind it (Chromium); "soft" or "strong" as the value
+ *   data-liquid-toggle   a button that turns the liquid cursor on and off (aria-checked is kept in sync)
+ *   data-field="0.06"    a background colour blob that drifts toward or away from the pointer and with scroll;
+ *                        the value is its depth (negative moves away). Put the CSS drift/morph animation on a
+ *                        child element, since the engine owns this element's transform. Works on touch via scroll.
+ * Theme hooks (CSS custom properties on :root)
+ *   --lq-dot    fill of the pointer dot and text beam   --lq-hl  fill of a control's highlight   --lq-press  pressed highlight
+ *   (--lq-ring and --lq-tint are still read by pages for their own glass)
+ * Off automatically on touch screens and when the viewer prefers reduced motion.
+ * Refraction technique after deepika-builds/liquid-glass (MIT).
+ */
+(function () {
+  "use strict";
+  if (window.Liquid) return;
+
+  var doc = document, root = doc.documentElement;
+  var reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  var finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+  };
+
+  // ---------- styles ----------
+  // Defaults use :where() so a page's own tokens always win.
+  var css = [
+    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-dot:rgba(60,60,67,.46);--lq-hl:rgba(60,60,67,.12);--lq-press:rgba(60,60,67,.22);--lq-blend:multiply;--lq-sheen:rgba(255,255,255,.55)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}}",
+    ":where(:root[data-theme=dark]){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}",
+    "body.lq-on,body.lq-on *{cursor:none!important}",
+    "#lq-ptr{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;opacity:0;width:19px;height:19px;border-radius:9.5px;transform-origin:50% 50%;" +
+      "background:var(--lq-dot);-webkit-backdrop-filter:blur(1.5px) saturate(170%);backdrop-filter:blur(1.5px) saturate(170%);" +
+      "box-shadow:inset 0 0 0 .5px rgba(255,255,255,.4),inset 0 1px 1px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.12);" +
+      "transition:opacity .35s ease,background-color .2s ease,box-shadow .25s ease}",
+    // highlight: a flat translucent shape that blends under the label, with a sheen that follows the pointer
+    "#lq-ptr.hl{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,50%),var(--lq-sheen),transparent 60%) ,var(--lq-hl);background-blend-mode:soft-light;mix-blend-mode:var(--lq-blend);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.hl.down{background:var(--lq-press)}",
+    // lift: the pointer becomes the specular light on top of a raised control
+    "#lq-ptr.lift{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.5),rgba(255,255,255,0) 55%);mix-blend-mode:soft-light;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "#lq-ptr.beam{border-radius:1.5px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
+    "[data-liquid]{will-change:transform}",
+    ".lq-lifted{box-shadow:0 12px 26px -10px rgba(0,0,0,.38),0 3px 8px -2px rgba(0,0,0,.14)!important;position:relative;z-index:2}",
+    "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}"
+  ].join("\n");
+  var style = doc.createElement("style");
+  style.textContent = css;
+  doc.head.insertBefore(style, doc.head.firstChild);
+
+  // ---------- the pointer: one shape that is a dot, a text beam or a control's highlight ----------
+  var ptrEl = doc.createElement("div");
+  ptrEl.id = "lq-ptr"; ptrEl.setAttribute("aria-hidden", "true");
+  function mount() { doc.body.appendChild(ptrEl); }
+  if (doc.body) mount(); else doc.addEventListener("DOMContentLoaded", mount);
+
+  // ---------- refraction (Chromium) ----------
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var refractionOK = (function () {
+    var ua = navigator.userAgent;
+    if (/Firefox/.test(ua)) return false;
+    if (/Safari/.test(ua) && !/Chrome|Chromium|Edg/.test(ua)) return false;
+    return CSS.supports("backdrop-filter", "url(#x)");
+  })();
+  var defs = null, uid = 0, mapCache = {};
+  function ensureDefs() {
+    if (defs) return defs;
+    var svg = doc.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("width", "0"); svg.setAttribute("height", "0"); svg.setAttribute("aria-hidden", "true");
+    svg.style.position = "absolute";
+    defs = doc.createElementNS(SVG_NS, "defs"); svg.appendChild(defs); doc.body.appendChild(svg);
+    return defs;
+  }
+  function makeMap(w, h, radius, border, blurPx) {
+    w = Math.max(8, Math.round(w)); h = Math.max(8, Math.round(h));
+    var key = [w, h, Math.round(radius), border, blurPx].join("|");
+    if (mapCache[key]) return mapCache[key];
+    var c = doc.createElement("canvas"); c.width = w; c.height = h;
+    var ctx = c.getContext("2d");
+    var gx = ctx.createLinearGradient(0, 0, w, 0); gx.addColorStop(0, "#000"); gx.addColorStop(1, "#f00");
+    ctx.fillStyle = gx; ctx.fillRect(0, 0, w, h);
+    var gy = ctx.createLinearGradient(0, 0, 0, h); gy.addColorStop(0, "#000"); gy.addColorStop(1, "#00f");
+    ctx.globalCompositeOperation = "difference"; ctx.fillStyle = gy; ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    var inset = border * Math.min(w, h);
+    ctx.filter = "blur(" + blurPx + "px)"; ctx.fillStyle = "rgba(128,128,128,0.94)";
+    ctx.beginPath();
+    ctx.roundRect(inset, inset, w - inset * 2, h - inset * 2, Math.max(1, Math.min(radius, h / 2) - inset));
+    ctx.fill();
+    return (mapCache[key] = c.toDataURL());
+  }
+  function makeFilter(scale, chroma) {
+    var id = "lq-f" + (++uid);
+    var f = doc.createElementNS(SVG_NS, "filter");
+    f.setAttribute("id", id); f.setAttribute("x", "0"); f.setAttribute("y", "0");
+    f.setAttribute("width", "100%"); f.setAttribute("height", "100%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    var img = doc.createElementNS(SVG_NS, "feImage");
+    img.setAttribute("x", "0"); img.setAttribute("y", "0"); img.setAttribute("result", "map");
+    img.setAttribute("preserveAspectRatio", "none"); f.appendChild(img);
+    var keep = ["1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"];
+    for (var i = 0; i < 3; i++) {
+      var d = doc.createElementNS(SVG_NS, "feDisplacementMap");
+      d.setAttribute("in", "SourceGraphic"); d.setAttribute("in2", "map");
+      d.setAttribute("scale", String(scale + i * chroma));
+      d.setAttribute("xChannelSelector", "R"); d.setAttribute("yChannelSelector", "B");
+      d.setAttribute("result", "d" + i); f.appendChild(d);
+      var m = doc.createElementNS(SVG_NS, "feColorMatrix");
+      m.setAttribute("in", "d" + i); m.setAttribute("type", "matrix"); m.setAttribute("values", keep[i]);
+      m.setAttribute("result", "c" + i); f.appendChild(m);
+    }
+    var b1 = doc.createElementNS(SVG_NS, "feBlend");
+    b1.setAttribute("in", "c0"); b1.setAttribute("in2", "c1"); b1.setAttribute("mode", "screen"); b1.setAttribute("result", "c01"); f.appendChild(b1);
+    var b2 = doc.createElementNS(SVG_NS, "feBlend");
+    b2.setAttribute("in", "c01"); b2.setAttribute("in2", "c2"); b2.setAttribute("mode", "screen"); f.appendChild(b2);
+    ensureDefs().appendChild(f);
+    return { id: id, img: img };
+  }
+  function refract(el) {
+    if (!refractionOK || el.__lqRefract) return;
+    el.__lqRefract = true;
+    var strong = el.getAttribute("data-refract") === "strong";
+    var filt = makeFilter(strong ? -90 : -60, strong ? 5 : 3);
+    var base = getComputedStyle(el).backdropFilter;
+    var extra = base && base !== "none" ? base.replace(/blur\([^)]*\)/, "blur(3px)") : "blur(3px) saturate(170%)";
+    function fit() {
+      var w = el.offsetWidth, h = el.offsetHeight; if (!w || !h) return;
+      var r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      filt.img.setAttribute("href", makeMap(w, h, r, strong ? 0.2 : 0.16, Math.max(4, Math.min(12, h / 6))));
+      filt.img.setAttribute("width", String(w)); filt.img.setAttribute("height", String(h));
+    }
+    fit();
+    el.style.backdropFilter = "url(#" + filt.id + ") " + extra;
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(el);
+  }
+  function refractAll() { doc.querySelectorAll("[data-refract]").forEach(refract); }
+
+  // ---------- springs (fixed sub-steps keep stiff springs stable) ----------
+  function S(x) { return { x: x, v: 0 }; }
+  function step(s, target, k, c, dt) {
+    var n = Math.max(1, Math.ceil(dt * 480)), h = dt / n;
+    for (var i = 0; i < n; i++) { var a = -k * (s.x - target) - c * s.v; s.v += a * h; s.x += s.v * h; }
+  }
+
+  // ---------- state ----------
+  var liquidOn = store.get("lq-cursor") === "on"; // off until the visitor turns it on
+  function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
+  function applyMode() {
+    var on = active();
+    doc.body && doc.body.classList.toggle("lq-on", on);
+    doc.querySelectorAll("[data-liquid-toggle]").forEach(function (b) {
+      b.setAttribute("aria-checked", liquidOn ? "true" : "false");
+    });
+    if (!on) ptrEl.style.opacity = "0";
+  }
+
+  var ptr = { x: -200, y: -200, lx: -200, ly: -200, vx: 0, vy: 0, seen: false, moved: 0, down: false, typing: false };
+  // P: the pointer shape (centre x/y, width, height, radius, press scale)
+  var P = { x: S(-200), y: S(-200), w: S(18), h: S(18), r: S(9), s: S(1), o: S(0) };
+  var target = null, mode = null, targetRadius = 12, viaKeyboard = false, lifted = null;
+  var beam = null; // {top, h} of the text line under the pointer
+  var jelly = new Map();
+  function J(el) {
+    var j = jelly.get(el);
+    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false }; jelly.set(el, j); }
+    return j;
+  }
+  function alpha(c) { var m = /rgba?\(([^)]+)\)/.exec(c || ""); if (!m) return c && c !== "transparent" ? 1 : 0; var p = m[1].split(/[ ,\/]+/).filter(Boolean); return p.length > 3 ? parseFloat(p[3]) : 1; }
+  function hasBezel(el) {
+    var cs = getComputedStyle(el);
+    return alpha(cs.backgroundColor) > 0.06 || (cs.backgroundImage && cs.backgroundImage !== "none") ||
+      (parseFloat(cs.borderTopWidth) > 0 && alpha(cs.borderTopColor) > 0.08);
+  }
+  function isIcon(r) { return r.width <= 56 && r.height <= 56 && Math.abs(r.width - r.height) <= 18; }
+  // magnetism: controls keep a generous invisible margin, like iPadOS hit regions
+  function magnetAt(x, y) {
+    var best = null, bestD = 1e9;
+    doc.querySelectorAll('[data-liquid="snap"]').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+      var pad = Math.min(14, Math.max(6, Math.min(r.width, r.height) * 0.35));
+      var dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
+      if (d <= pad && d < bestD) { best = el; bestD = d; }
+    });
+    return best;
+  }
+  var magnet = false;
+  function enter(el, keyboard) {
+    if (target === el) return;
+    if (target) leave(target);
+    target = el; mode = el.getAttribute("data-liquid"); viaKeyboard = !!keyboard;
+    var j = J(el); j.on = true;
+    if (mode === "snap") {
+      var r = el.getBoundingClientRect();
+      var rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      if (hasBezel(el) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
+        mode = "icon"; lifted = el; el.classList.add("lq-lifted"); targetRadius = Math.min(rad, r.height / 2);
+      } else {                                   // highlight: a soft shape behind the label
+        var pad = Math.max(3, Math.min(8, Math.min(r.width, r.height) / 6));
+        targetRadius = Math.min(rad ? rad + pad : Math.min(12, r.height / 2 + pad), (r.height + pad * 2) / 2);
+        el.__lqPad = pad;
+      }
+      if (!reduceMotion.matches) j.s.v += mode === "icon" ? 1.1 : 0.6;
+    } else if (!reduceMotion.matches) j.s.v += 0.25;
+  }
+  function leave(el) {
+    var j = jelly.get(el); if (j) j.on = false;
+    if (lifted === el) { el.classList.remove("lq-lifted"); lifted = null; }
+    if (target === el) { target = null; mode = null; magnet = false; }
+  }
+  // iPadOS keeps a control highlighted until the pointer is clearly outside it
+  function stillInside(el, x, y) {
+    var r = el.getBoundingClientRect(), slack = magnet ? 14 : 8;
+    return x >= r.left - slack && x <= r.right + slack && y >= r.top - slack && y <= r.bottom + slack;
+  }
+  var NON_TEXT = /^(IMG|SVG|PATH|CANVAS|VIDEO|BUTTON|INPUT|SELECT|TEXTAREA|HTML|BODY)$/;
+  function textLineAt(x, y, node) {
+    if (!node || NON_TEXT.test(node.nodeName)) return null;
+    var r = null, n = null, off = 0;
+    if (doc.caretRangeFromPoint) { r = doc.caretRangeFromPoint(x, y); if (r) { n = r.startContainer; off = r.startOffset; } }
+    else if (doc.caretPositionFromPoint) { var cp = doc.caretPositionFromPoint(x, y); if (cp) { n = cp.offsetNode; off = cp.offset; } }
+    if (!n || n.nodeType !== 3 || !n.textContent.trim()) return null;
+    var len = n.textContent.length, a = Math.max(0, Math.min(off, len - 1));
+    var rg = doc.createRange(); rg.setStart(n, a); rg.setEnd(n, Math.min(len, a + 1));
+    var rect = rg.getBoundingClientRect();
+    if (!rect || !rect.height) return null;
+    if (y < rect.top - 2 || y > rect.bottom + 2 || x < rect.left - 14 || x > rect.right + 14) return null;
+    return { top: rect.top, h: rect.height };
+  }
+  var liftCard = null;
+  function updateHover(node) {
+    if (target && mode !== "lift" && !viaKeyboard && stillInside(target, ptr.x, ptr.y)) {
+      var deeper = node && node.closest ? node.closest('[data-liquid="snap"]') : null;
+      if (!deeper || deeper === target) { beam = null; return; }
+    }
+    var hit = node && node.closest ? node.closest("[data-liquid]") : null;
+    var snapHit = hit && hit.getAttribute("data-liquid") === "snap" ? hit : null;
+    var near = snapHit ? null : (active() ? magnetAt(ptr.x, ptr.y) : null);
+    if (near) { enter(near, false); magnet = true; }
+    else if (hit) { enter(hit, false); magnet = false; }
+    else if (target) leave(target);
+    var card = node && node.closest ? node.closest('[data-liquid="lift"]') : null;
+    if (liftCard && liftCard !== card && liftCard !== target) { var jo = jelly.get(liftCard); if (jo) jo.on = false; }
+    liftCard = card;
+    if (card) {
+      var jc = J(card); jc.on = true;
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--lq-mx", ((ptr.x - r.left) / r.width * 100).toFixed(1) + "%");
+      card.style.setProperty("--lq-my", ((ptr.y - r.top) / r.height * 100).toFixed(1) + "%");
+    }
+    beam = (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
+  }
+
+  doc.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
+    ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
+    if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
+    viaKeyboard = false;
+    updateHover(e.target);
+  }, { passive: true });
+  addEventListener("scroll", function () {
+    if (!ptr.seen || viaKeyboard) return;
+    updateHover(doc.elementFromPoint(ptr.x, ptr.y));
+  }, { passive: true });
+  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); });
+  doc.addEventListener("pointerdown", function (e) {
+    ptr.down = true; ptrEl.classList.add("down");
+    if (reduceMotion.matches) return;
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el) J(el).s.v -= 1.1;
+  });
+  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("down"); });
+  doc.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) ptr.typing = true; // hide while typing
+  });
+  doc.addEventListener("focusin", function (e) {
+    var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
+    if (el && el.matches(":focus-visible")) {
+      enter(el, true);
+      if (active() && !ptr.seen) { var r = el.getBoundingClientRect(); P.x.x = r.left + r.width / 2; P.y.x = r.top + r.height / 2; P.w.x = r.width; P.h.x = r.height; }
+    }
+  });
+  doc.addEventListener("focusout", function (e) {
+    if (viaKeyboard && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
+  });
+  // a click while the pointer is magnetized to a nearby control presses that control (iPadOS behaviour)
+  doc.addEventListener("click", function (e) {
+    if (!active() || !target || !magnet || viaKeyboard) return;
+    if (target.contains(e.target)) return;
+    if (e.target.closest && e.target.closest("a,button,input,select,textarea,label,[role=button],[data-liquid]")) return;
+    e.preventDefault(); e.stopPropagation();
+    var t = target; magnet = false; t.click();
+  }, true);
+  doc.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-liquid-toggle]") : null;
+    if (!t) return;
+    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode();
+    if (!liquidOn && lifted) { lifted.classList.remove("lq-lifted"); lifted = null; }
+  });
+  finePointer.addEventListener && finePointer.addEventListener("change", applyMode);
+  reduceMotion.addEventListener && reduceMotion.addEventListener("change", applyMode);
+
+  // ---------- frame ----------
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    var ivx = (ptr.x - ptr.lx) / Math.max(dt, 0.001), ivy = (ptr.y - ptr.ly) / Math.max(dt, 0.001);
+    ptr.vx += (ivx - ptr.vx) * 0.25; ptr.vy += (ivy - ptr.vy) * 0.25; ptr.lx = ptr.x; ptr.ly = ptr.y;
+    var on = active();
+    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+
+    // geometry of the pointer for this frame (centre-based)
+    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1;
+    if (showTarget && mode === "snap") {
+      var r = target.getBoundingClientRect(), mx = 0, my = 0;
+      if (!viaKeyboard) {
+        mx = Math.max(-1, Math.min(1, (ptr.x - (r.left + r.width / 2)) / (r.width / 2))) * Math.min(6, r.width * 0.06);
+        my = Math.max(-1, Math.min(1, (ptr.y - (r.top + r.height / 2)) / (r.height / 2))) * Math.min(4, r.height * 0.08);
+      }
+      var pd = target.__lqPad || 4;
+      cx = r.left + r.width / 2 + mx; cy = r.top + r.height / 2 + my;
+      tw = r.width + pd * 2; th = r.height + pd * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "hl";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - r.left + pd) / tw * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - r.top + pd) / th * 100)).toFixed(1) + "%");
+    } else if (showTarget && mode === "icon") {
+      // lift: the pointer melts into the raised control and becomes its specular light (same rect as the control)
+      var ri = target.getBoundingClientRect();
+      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lift";
+      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)).toFixed(1) + "%");
+      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100)).toFixed(1) + "%");
+    } else if (beam) {
+      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "beam";
+    } else {
+      cx = ptr.x; cy = ptr.y; tw = 19; th = 19; tr = 9.5; k = 1700; c = 82;
+    }
+    if (on && !viaKeyboard && (!ptr.seen || ptr.typing || (now - ptr.moved > 2500 && !showTarget))) vis = 0; // idle and typing fade
+    step(P.x, cx, k, c, dt); step(P.y, cy, k, c, dt);
+    step(P.w, tw, k * 0.6, c * 0.7, dt); step(P.h, th, k * 0.6, c * 0.7, dt); step(P.r, tr, k * 0.6, c * 0.7, dt);
+    step(P.s, ptr.down ? (cls ? 0.97 : 0.8) : 1, 700, 30, dt);
+    if (on) {
+      var w = Math.max(1.5, P.w.x), h = Math.max(1.5, P.h.x);
+      ptrEl.className = cls + (ptr.down ? " down" : "");
+      ptrEl.style.opacity = String(vis);
+      ptrEl.style.width = w.toFixed(2) + "px"; ptrEl.style.height = h.toFixed(2) + "px";
+      ptrEl.style.borderRadius = Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(2) + "px";
+      var stretch = "";
+      if (!cls) { // a little liquid squash while the dot travels fast
+        var amt = Math.min(Math.hypot(ptr.vx, ptr.vy) / 4200, 0.16);
+        if (amt > 0.01) { var ang = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI; stretch = " rotate(" + ang.toFixed(1) + "deg) scale(" + (1 + amt).toFixed(3) + "," + (1 - amt * 0.6).toFixed(3) + ") rotate(" + (-ang).toFixed(1) + "deg)"; }
+      }
+      ptrEl.style.transform = "translate3d(" + (P.x.x - w / 2).toFixed(2) + "px," + (P.y.x - h / 2).toFixed(2) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch;
+    }
+
+    // controls and cards: parallax toward the pointer, lift for icons, tilt for cards
+    jelly.forEach(function (j, el) {
+      var lm = el.getAttribute("data-liquid"), snap = lm === "snap";
+      var icon = snap && el === lifted;
+      var ts = 1, ttx = 0, tty = 0, trx = 0, tryy = 0, tspec = 0;
+      if (j.on && !reduceMotion.matches && on) {
+        var rr = el.getBoundingClientRect(), ccx = rr.left + rr.width / 2, ccy = rr.top + rr.height / 2;
+        var nx = Math.max(-1, Math.min(1, (ptr.x - ccx) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - ccy) / (rr.height / 2)));
+        if (icon) { ts = 1 + Math.min(0.12, 9 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
+        else if (snap) { ts = 1; if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
+        else { ts = 1.006; tspec = 1; }
+      } else if (j.on && !snap) { tspec = 1; }
+      step(j.s, ts, snap ? 420 : 260, snap ? 21 : 26, dt);
+      step(j.tx, ttx, 300, 26, dt); step(j.ty, tty, 300, 26, dt);
+      step(j.rx, trx, 180, 20, dt); step(j.ry, tryy, 180, 20, dt);
+      step(j.spec, tspec, 120, 22, dt);
+      if (!j.on && Math.abs(j.s.x - 1) < 5e-4 && Math.abs(j.s.v) < 1e-3 && Math.abs(j.tx.x) < 0.02 && Math.abs(j.ty.x) < 0.02 &&
+          Math.abs(j.rx.x) < 0.01 && Math.abs(j.ry.x) < 0.01 && j.spec.x < 0.01) {
+        el.style.transform = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
+      }
+      el.style.transform = (snap ? "" : "perspective(900px) rotateX(" + j.rx.x.toFixed(3) + "deg) rotateY(" + j.ry.x.toFixed(3) + "deg) ") +
+        "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
+      if (!snap) el.style.setProperty("--lq-spec", Math.max(0, Math.min(1, j.spec.x)).toFixed(3));
+    });
+    stepFields(dt);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- reactive colour fields ----------
+  var fields = [];
+  function collectFields() {
+    fields = Array.prototype.map.call(doc.querySelectorAll("[data-field]"), function (el) {
+      return { el: el, d: parseFloat(el.getAttribute("data-field")) || 0.05, x: S(0), y: S(0) };
+    });
+  }
+  function stepFields(dt) {
+    if (!fields.length || reduceMotion.matches) return;
+    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0;
+    fields.forEach(function (f) {
+      var px = ptr.seen ? (ptr.x - cx) : 0, py = ptr.seen ? (ptr.y - cy) : 0;
+      var tx = px * f.d, ty = py * f.d - sy * f.d * 0.6;
+      step(f.x, tx, 18, 7, dt); step(f.y, ty, 18, 7, dt);
+      f.el.style.transform = "translate3d(" + f.x.x.toFixed(1) + "px," + f.y.x.toFixed(1) + "px,0)";
+    });
+  }
+
+  function start() { applyMode(); refractAll(); collectFields(); requestAnimationFrame(frame); }
+  if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start); else start();
+
+  window.Liquid = { refresh: function () { refractAll(); collectFields(); }, spring: S, step: step, isOn: active };
+})();
+
+</script>
+<script>
+(function () {
+  "use strict";
+  const root = document.documentElement;
+  const live = document.getElementById("live");
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} },
+  };
+
+  /* theme */
+  const themeBtn = document.getElementById("theme");
+  function isDark() {
+    const t = root.getAttribute("data-theme");
+    return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function syncThemeLabel() { themeBtn.setAttribute("aria-label", isDark() ? "Switch to light theme" : "Switch to dark theme"); }
+  const savedTheme = store.get("lq-theme");
+  if (savedTheme === "dark" || savedTheme === "light") root.setAttribute("data-theme", savedTheme);
+  syncThemeLabel();
+  themeBtn.addEventListener("click", function () {
+    const next = isDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next); store.set("lq-theme", next); syncThemeLabel();
+  });
+
+  /* copy email */
+  const EMAIL = "fredwang1012@gmail.com";
+  function selectEmail() {
+    const el = document.getElementById("email-text");
+    const r = document.createRange(); r.selectNodeContents(el);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    el.scrollIntoView({ block: "center" });
+  }
+  document.querySelectorAll(".copy-email").forEach(function (btn) {
+    const label = btn.querySelector("span");
+    btn.addEventListener("click", function () {
+      const done = function (msg) { label.textContent = msg; live.textContent = msg; setTimeout(function () { label.textContent = "Copy email"; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).then(function () { done("Copied"); }, function () { selectEmail(); done("Selected, press ⌘C"); });
+      } else { selectEmail(); done("Selected, press ⌘C"); }
+    });
+  });
+
+  /* views: #music and #books are pages of their own; every other hash is the home page */
+  const home = document.getElementById("top");
+  const views = { music: document.getElementById("view-music"), books: document.getElementById("view-books") };
+  const baseTitle = "Frederick Wang - ML & Data Engineer";
+  function route() {
+    const h = location.hash.replace("#", "");
+    const v = views[h];
+    home.hidden = !!v;
+    Object.keys(views).forEach(function (k) { views[k].hidden = k !== h; });
+    document.querySelectorAll("[data-view]").forEach(function (a) {
+      if (a.dataset.view === h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    if (v) {
+      document.title = (h === "music" ? "Music" : "Books") + " · " + baseTitle;
+      window.scrollTo(0, 0);
+      const h1 = v.querySelector("h1"); if (h1) h1.focus({ preventScroll: true });
+    } else {
+      document.title = baseTitle;
+      if (h) { const t = document.getElementById(h); if (t) t.scrollIntoView(); } else if (route.started) window.scrollTo(0, 0);
+    }
+    route.started = true;
+    if (window.Liquid) Liquid.refresh();
+    updateActive && updateActive();
+  }
+  addEventListener("hashchange", route);
+
+  /* nav pill: the leading edge springs faster than the trailing edge, so it stretches as it slides */
+  const pill = document.getElementById("nav-pill");
+  const navLinks = Array.from(document.querySelectorAll("#nav-items a[data-section]"));
+  const sections = navLinks.map(function (a) { return document.getElementById(a.dataset.section); });
+  const pillL = Liquid.spring(0), pillR = Liquid.spring(0);
+  let pillTarget = null, pillShown = false;
+  function updateActive() {
+    let current = null; const mid = innerHeight * 0.35;
+    sections.forEach(function (sec, i) { if (!sec) return; const r = sec.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) current = navLinks[i]; });
+    navLinks.forEach(function (a) { a.setAttribute("aria-current", a === current ? "true" : "false"); });
+    const hv = location.hash.replace("#", "");
+    if (hv === "music" || hv === "books") current = document.querySelector('#nav-items a[data-view="' + hv + '"]');
+    pillTarget = current;
+  }
+  addEventListener("scroll", updateActive, { passive: true });
+  updateActive();
+  route();
+  let last = performance.now();
+  function tick(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (pillTarget) {
+      const pr = pillTarget.getBoundingClientRect(), nr = pillTarget.parentElement.getBoundingClientRect();
+      const l = pr.left - nr.left, r = pr.right - nr.left;
+      if (!pillShown) { pillL.x = l; pillR.x = r; pillShown = true; }
+      const right = r > pillR.x;
+      Liquid.step(pillL, l, right ? 170 : 420, right ? 22 : 34, dt);
+      Liquid.step(pillR, r, right ? 420 : 170, right ? 34 : 22, dt);
+      pill.style.opacity = "1";
+      pill.style.transform = "translateX(" + pillL.x.toFixed(2) + "px)";
+      pill.style.width = Math.max(0, pillR.x - pillL.x).toFixed(2) + "px";
+    } else { pill.style.opacity = "0"; pillShown = false; }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
   </body>
 </html>
