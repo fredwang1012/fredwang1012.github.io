@@ -1444,15 +1444,24 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
     snaps.forEach(function (el) { if (el !== target && !el.matches(":hover")) el.__lqBezel = hasBezel(el); });
   }
   function magnetAt(x, y) {
-    var best = null, bestD = 1e9;
+    var near = [];
     snaps.forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (!r.width || r.bottom < 0 || r.top > innerHeight || r.right < x - 40 || r.left > x + 40 || r.bottom < y - 40 || r.top > y + 40) return;
       var pad = Math.min(14, Math.max(6, Math.min(r.width, r.height) * 0.35));
       var dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
-      if (d <= pad && d < bestD) { best = el; bestD = d; }
+      if (d <= pad) near.push({ el: el, r: r, d: d });
     });
-    return best;
+    near.sort(function (a, b) { return a.d - b.d; });
+    // only a control the pointer could actually reach: not inert, and on top at its centre (a dialog, menu or sticky
+    // bar covering it wins; the centre is inside even a pill's rounded corners)
+    for (var i = 0; i < near.length; i++) {
+      var c = near[i], el = c.el;
+      if (el.disabled || el.getAttribute("aria-disabled") === "true" || el.closest("[inert]")) continue;
+      var hit = doc.elementFromPoint(c.r.left + c.r.width / 2, c.r.top + c.r.height / 2);
+      if (hit && (hit === el || el.contains(hit))) return el;
+    }
+    return null;
   }
   var magnet = false;
   function enter(el, keyboard) {
@@ -1503,11 +1512,13 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
   }
   var liftCard = null;
   function updateHover(node) {
+    if (target && target.closest && target.closest("[inert]")) leave(target); // covered by a dialog since it was entered
     if (target && mode !== "lift" && !viaKeyboard && stillInside(target, ptr.x, ptr.y)) {
       var deeper = node && node.closest ? node.closest('[data-liquid="snap"]') : null;
       if (!deeper || deeper === target) { beam = null; return; }
     }
     var hit = node && node.closest ? node.closest("[data-liquid]") : null;
+    if (hit && (hit.disabled || hit.getAttribute("aria-disabled") === "true")) hit = null; // a disabled control doesn't light up
     var snapHit = hit && hit.getAttribute("data-liquid") === "snap" ? hit : null;
     var near = snapHit ? null : (active() ? magnetAt(ptr.x, ptr.y) : null);
     if (near) { enter(near, false); magnet = true; }
@@ -1531,6 +1542,8 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
     lastTouch = performance.now();
     if (glassOnly() && ptr.seen) { ptr.seen = false; if (target) leave(target); wake(); } // a finger takes over from the trackpad
   }, { passive: true, capture: true });
+  // a long finger scroll: time from when the finger moves or lifts, not only when it lands
+  ["touchmove", "touchend", "touchcancel"].forEach(function (t) { addEventListener(t, function () { lastTouch = performance.now(); }, { passive: true, capture: true }); });
   doc.addEventListener("pointermove", function (e) {
     if (e.pointerType !== "mouse" && (e.pointerType !== "pen" || touchFirst())) return; // on iPad, Pencil hover is not a trackpad
     if (touchFirst() && !trackpad) {
@@ -1615,7 +1628,7 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
     var cx, cy, tw, th, tr, k, c, cls = "", vis = 1, px = null, py = null;
     if (showTarget && mode === "snap") {
       var r = tRect, mx = 0, my = 0, pa = target.__lqPad || [6, 4], pdx = pa[0], pdy = pa[1];
-      if (!viaKeyboard) {
+      if (!viaKeyboard && !glassOnly()) { // on iPad the highlight sits still, like the system's own
         mx = Math.max(-1, Math.min(1, (ptr.x - (r.left + r.width / 2)) / (r.width / 2))) * Math.min(6, r.width * 0.06);
         my = Math.max(-1, Math.min(1, (ptr.y - (r.top + r.height / 2)) / (r.height / 2))) * Math.min(4, r.height * 0.08);
       }
@@ -1692,8 +1705,8 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
       var tsj = 1, ttx = 0, tty = 0, tspec = 0, rr = j.rr;
       if (rr) {
         var nx = Math.max(-1, Math.min(1, (ptr.x - (rr.left + rr.width / 2)) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - (rr.top + rr.height / 2)) / (rr.height / 2)));
-        if (icon) { tsj = 1 + Math.min(0.08, 5 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
-        else if (snap) { if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
+        if (icon) { tsj = 1 + Math.min(0.08, 5 / Math.max(rr.width, rr.height)); if (!viaKeyboard && !glassOnly()) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
+        else if (snap) { if (!viaKeyboard && !glassOnly()) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
         else { tsj = holdStill ? 1 : 1.006; tspec = 1; }
       } else if (j.on && !snap) { tspec = 1; }
       step(j.s, tsj, snap ? 420 : 260, snap ? 21 : 26, dt);
@@ -1742,7 +1755,8 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
   }
   if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start); else start();
 
-  window.Liquid = { refresh: function () { refractAll(); collectFields(); collectSnaps(); wake(); }, spring: S, step: step, isOn: active, wake: wake };
+  // refresh after the page changes under a still pointer (a dialog opening, a view switching): re-check what is under it
+  window.Liquid = { refresh: function () { refractAll(); collectFields(); collectSnaps(); if (ptr.seen) { hoverNode = null; hoverDirty = true; } wake(); }, spring: S, step: step, isOn: active, wake: wake };
 })();
 </script>
 <script>
