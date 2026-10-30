@@ -638,7 +638,10 @@ abbr[title]{ text-decoration: none; cursor: help; }
 .view .sec-label:first-of-type{ margin-top: 0; }
 
 /* contact */
-.contact{ display: flex; flex-direction: column; gap: 14px; padding-top: 10px; }
+.contact{ display: flex; flex-direction: column; gap: 14px; padding-top: 10px; border-radius: 12px; }
+/* arrival glow when a link lands on #contact (it is the last section, so it cannot scroll to the top) */
+.contact.arrive{ animation: arrive 1.8s ease-out .35s both; }
+@keyframes arrive{ 0%{ background: transparent; box-shadow: 0 0 0 0 transparent; } 25%{ background: var(--amber-10); box-shadow: 0 0 0 16px var(--amber-10); } 100%{ background: transparent; box-shadow: 0 0 0 16px transparent; } }
 .contact .lead{ font-size: 15px; color: var(--muted); }
 .email{ font-size: clamp(26px, 4.2vw, 46px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
 .email .at{ color: var(--amber); }
@@ -788,7 +791,7 @@ abbr[title]{ text-decoration: none; cursor: help; }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .blob > span, .pulse::after, .pipe::after, .wave .ans{ animation: none !important; }
+  .blob > span, .pulse::after, .pipe::after, .wave .ans, .contact.arrive{ animation: none !important; }
   .secnav a .ln, .secnav a .ln::after, .tab-pill, .switch .track-s::after, .seeall .ar{ transition: none !important; }
 }
 </style>
@@ -827,8 +830,8 @@ abbr[title]{ text-decoration: none; cursor: help; }
           <a href="#work" data-liquid="snap" data-section="work"><span class="n">01</span><span class="ln" aria-hidden="true"></span>Work</a>
           <a href="#experience" data-liquid="snap" data-section="experience"><span class="n">02</span><span class="ln" aria-hidden="true"></span>Experience</a>
           <a href="#about" data-liquid="snap" data-section="about"><span class="n">03</span><span class="ln" aria-hidden="true"></span>About</a>
-          <a href="#music" data-liquid="snap" data-section="music-preview" data-view="music"><span class="n">04</span><span class="ln" aria-hidden="true"></span>Music</a>
-          <a href="#books" data-liquid="snap" data-section="books-preview" data-view="books"><span class="n">05</span><span class="ln" aria-hidden="true"></span>Books</a>
+          <a href="#music-preview" data-liquid="snap" data-section="music-preview"><span class="n">04</span><span class="ln" aria-hidden="true"></span>Music</a>
+          <a href="#books-preview" data-liquid="snap" data-section="books-preview"><span class="n">05</span><span class="ln" aria-hidden="true"></span>Books</a>
           <a href="#contact" data-liquid="snap" data-section="contact"><span class="n">06</span><span class="ln" aria-hidden="true"></span>Contact</a>
         </nav>
 
@@ -849,8 +852,8 @@ abbr[title]{ text-decoration: none; cursor: help; }
         <a href="#work" data-liquid="snap" data-section="work"><span class="n">01</span>Work</a>
         <a href="#experience" data-liquid="snap" data-section="experience"><span class="n">02</span>Experience</a>
         <a href="#about" data-liquid="snap" data-section="about"><span class="n">03</span>About</a>
-        <a href="#music" data-liquid="snap" data-section="music-preview" data-view="music"><span class="n">04</span>Music</a>
-        <a href="#books" data-liquid="snap" data-section="books-preview" data-view="books"><span class="n">05</span>Books</a>
+        <a href="#music-preview" data-liquid="snap" data-section="music-preview"><span class="n">04</span>Music</a>
+        <a href="#books-preview" data-liquid="snap" data-section="books-preview"><span class="n">05</span>Books</a>
         <a href="#contact" data-liquid="snap" data-section="contact"><span class="n">06</span>Contact</a>
       </div>
       <div class="tools">
@@ -1840,10 +1843,9 @@ abbr[title]{ text-decoration: none; cursor: help; }
     Object.keys(views).forEach(function (k) { views[k].hidden = k !== next; });
     if (next) {
       doc.title = (next === "music" ? "Music" : "Books") + " · " + BASE_TITLE;
-      var idx = railLinks.findIndex(function (a) { return a.dataset.view === next; });
       setP(-1, "0");
       remeasure();
-      setCurrent(idx, "page");
+      setCurrent(-1, "");
       window.scrollTo({ top: 0, behavior: "instant" });
       var h1 = views[next].querySelector("h1");
       if (h1) h1.focus({ preventScroll: true });
@@ -1860,7 +1862,23 @@ abbr[title]{ text-decoration: none; cursor: help; }
     }
     if (window.Liquid && Liquid.refresh) Liquid.refresh();
   }
-  addEventListener("hashchange", function () { route(false); });
+  /* contact is the last section, so a link to it cannot bring it to the top: mark the arrival instead */
+  var contactCard = doc.querySelector("#contact .contact");
+  function arrive() {
+    if (!contactCard) return;
+    contactCard.classList.remove("arrive"); void contactCard.offsetWidth; contactCard.classList.add("arrive");
+  }
+  if (contactCard) contactCard.addEventListener("animationend", function (e) { if (e.animationName === "arrive") contactCard.classList.remove("arrive"); });
+  addEventListener("hashchange", function () { route(false); if (location.hash === "#contact") arrive(); });
+  doc.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href="#contact"]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (location.hash !== "#contact") return; // the hashchange handles it
+    e.preventDefault();
+    var t = doc.getElementById("contact");
+    if (t) t.scrollIntoView({ behavior: reduce.matches ? "auto" : "smooth", block: "start" });
+    arrive();
+  });
   route(true);
   if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function () { remeasure(); placePill(false); queue(); });
 
