@@ -1253,7 +1253,7 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
   }
 
   // ---------- state ----------
-  var liquidOn = store.get("lq-cursor") === "on"; // off until the visitor turns it on
+  var liquidOn = store.get("lq-cursor") !== "off"; // on unless the visitor has turned it off
   function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
   function applyMode() {
     var on = active();
