@@ -358,6 +358,9 @@ h2{margin:0;font-size:clamp(32px, 4vw, 44px);font-weight:600;letter-spacing:-.03
 
 /* ---------- footer ---------- */
 footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
+#contact .talk{border-radius:14px}
+#contact .talk.arrive{animation:arrive 1.8s ease-out .35s both}
+@keyframes arrive{0%{background:transparent;box-shadow:0 0 0 0 transparent}25%{background:var(--accent-soft);box-shadow:0 0 0 16px var(--accent-soft)}100%{background:transparent;box-shadow:0 0 0 16px transparent}}
 .talk{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
 .talk-l{display:flex;align-items:center;gap:18px;min-width:0}
 .avatar{width:60px;height:60px;border-radius:999px;object-fit:cover;border:1px solid var(--line-3);flex:none}
@@ -463,6 +466,7 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
   .running .dot::after{display:none}
   .chev,.track,.track::after,.cursor-btn .slash{transition:none}
   html{scroll-behavior:auto}
+  #contact .talk.arrive{animation:none}
 }
 </style>
 <script>try{var lqT=localStorage.getItem("lq-theme");if(lqT==="light"||lqT==="dark")document.documentElement.dataset.theme=lqT;}catch(e){}</script>
@@ -487,8 +491,8 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
       <button class="nav-search" type="button" data-liquid="snap" data-focus-palette aria-label="Search the site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><kbd class="kbd-label">⌘K</kbd></button>
       <a href="#work" class="hide-sm" data-liquid="snap">Work</a>
       <a href="#changelog" class="hide-sm" data-liquid="snap">Experience</a>
-      <a href="#music" class="opt-nav" data-view-link="music" data-liquid="snap">Music</a>
-      <a href="#books" class="opt-nav" data-view-link="books" data-liquid="snap">Books</a>
+      <a href="#music-preview" class="opt-nav" data-liquid="snap">Music</a>
+      <a href="#books-preview" class="opt-nav" data-liquid="snap">Books</a>
       <a href="/resume.pdf" class="cta" target="_blank" rel="noopener" data-liquid="snap">Résumé</a>
     </nav>
     <div class="tools">
@@ -544,8 +548,8 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
             <a class="opt" role="option" aria-selected="false" id="opt-gh" tabindex="-1" href="https://github.com/fredwang1012" target="_blank" rel="noopener" data-k="github code repos" data-liquid="snap"><span class="ico ln" aria-hidden="true">↗</span><span class="opt-t">GitHub</span><span class="opt-m">github.com/fredwang1012</span><span class="ret" aria-hidden="true">↵</span></a>
             <a class="opt" role="option" aria-selected="false" id="opt-li" tabindex="-1" href="https://www.linkedin.com/in/frederick-wang/" target="_blank" rel="noopener" data-k="linkedin profile" data-liquid="snap"><span class="ico ln" aria-hidden="true">↗</span><span class="opt-t">LinkedIn</span><span class="opt-m">in/frederick-wang</span><span class="ret" aria-hidden="true">↵</span></a>
             <a class="opt" role="option" aria-selected="false" id="opt-em" tabindex="-1" href="#contact" data-copy="email" data-k="email contact mail fredwang1012@gmail.com copy" data-liquid="snap"><span class="ico ln" aria-hidden="true">@</span><span class="opt-t">Copy email</span><span class="opt-m" data-copy-meta>fredwang1012@gmail.com</span><span class="ret" aria-hidden="true">↵</span></a>
-            <a class="opt" role="option" aria-selected="false" id="opt-mu" tabindex="-1" href="#music" data-k="music piano rachmaninov liszt kreisler youtube" data-liquid="snap"><span class="ico">MU</span><span class="opt-t">Music</span><span class="opt-m">favourite piano works · my playing</span><span class="ret" aria-hidden="true">↵</span></a>
-            <a class="opt" role="option" aria-selected="false" id="opt-bk" tabindex="-1" href="#books" data-k="books reading literature dune dostoevsky orwell" data-liquid="snap"><span class="ico">BK</span><span class="opt-t">Books</span><span class="opt-m">reading · favourites · read · to read</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-mu" tabindex="-1" href="#music-preview" data-k="music piano rachmaninov liszt kreisler youtube" data-liquid="snap"><span class="ico">MU</span><span class="opt-t">Music</span><span class="opt-m">favourite piano works · my playing</span><span class="ret" aria-hidden="true">↵</span></a>
+            <a class="opt" role="option" aria-selected="false" id="opt-bk" tabindex="-1" href="#books-preview" data-k="books reading literature dune dostoevsky orwell" data-liquid="snap"><span class="ico">BK</span><span class="opt-t">Books</span><span class="opt-m">reading · favourites · read · to read</span><span class="ret" aria-hidden="true">↵</span></a>
           </div>
           <div class="grp" role="group" aria-labelledby="g-cmd">
             <p class="grp-h" id="g-cmd" role="presentation">Commands</p>
@@ -865,7 +869,7 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
         <p class="count">4 pieces · 33 books</p>
       </div>
       <div class="previews">
-        <article class="pcard" aria-labelledby="pm-h">
+        <article class="pcard" id="music-preview" aria-labelledby="pm-h">
           <div class="pcard-h"><h3 id="pm-h">Music</h3><p>favourite piano works</p></div>
           <p class="grp-label">My ranking</p>
           <ol class="tlist">
@@ -879,7 +883,7 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
           </ul>
           <a class="see-all" href="#music" data-liquid="snap">See all music →</a>
         </article>
-        <article class="pcard" aria-labelledby="pb-h">
+        <article class="pcard" id="books-preview" aria-labelledby="pb-h">
           <div class="pcard-h"><h3 id="pb-h">Books</h3><p>reading log</p></div>
           <p class="grp-label">Currently reading</p>
           <ul class="tlist">
@@ -1664,9 +1668,6 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
     var prev = current;
     current = v;
     Object.keys(views).forEach(function (k) { if (views[k]) views[k].hidden = k !== v; });
-    doc.querySelectorAll("[data-view-link]").forEach(function (a) {
-      if (a.getAttribute("data-view-link") === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
-    });
     doc.title = v === "home" ? BASE_TITLE : (v === "music" ? "Music" : "Books") + " · " + BASE_TITLE;
     if (v !== "home") {
       scrollTo(0, 0);
@@ -1675,7 +1676,8 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
       return;
     }
     var target = h && h !== "top" ? doc.getElementById(h) : null;
-    if (target && views.home.contains(target)) {
+    // home targets, plus #contact (the footer sits outside every view)
+    if (target && !views.music.contains(target) && !views.books.contains(target)) {
       var btn = target.classList.contains("run") ? target.querySelector(".row[aria-controls]") : null;
       if (btn) setOpen(btn, true);
       if (prev !== "home" || initial) target.scrollIntoView({ block: "start" });
@@ -1683,7 +1685,22 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
       scrollTo(0, 0);
     }
   }
-  addEventListener("hashchange", function () { route(false); });
+  // contact is the last block, so it can't reach the top: a soft glow says "you're here" instead
+  var contact = doc.getElementById("contact");
+  var contactCard = contact && contact.querySelector(".talk");
+  function arrive(el) { if (!el) return; el.classList.remove("arrive"); void el.offsetWidth; el.classList.add("arrive"); }
+  addEventListener("hashchange", function () {
+    route(false);
+    if (location.hash === "#contact") arrive(contactCard);
+  });
+  doc.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest ? e.target.closest('a[href="#contact"]') : null;
+    if (!a || location.hash !== "#contact" || !contact) return;
+    e.preventDefault();
+    contact.scrollIntoView({ block: "start" });
+    arrive(contactCard);
+  });
 
   // ---------- copy email ----------
   function selectEmail() {
@@ -1858,6 +1875,186 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
   doc.addEventListener("DOMContentLoaded", function () { setTimeout(syncCursorMeta, 0); });
   if (location.hash) route(true);
 })();
+</script>
+<style id="rv-theme">#rv{--rv-font:var(--sans);--rv-tfont:var(--mono);--rv-tsize:12px;--rv-tweight:500;--rv-tcase:uppercase;--rv-tspace:.1em;--rv-radius:14px;--rv-bradius:999px;--rv-bh:36px;--rv-pradius:4px;--rv-sheet:var(--glass);--rv-ink:var(--text);--rv-sub:var(--muted);--rv-edge:var(--glass-line);--rv-hi:var(--glass-hi);--rv-btn:var(--tint-2);--rv-btn-hover:var(--tint-3);--rv-accent:var(--cta-bg);--rv-accent-ink:var(--on-cta);--rv-well:var(--surface);--rv-shadow:0 40px 90px -30px var(--glass-shadow),0 0 0 1px var(--line-2)}#rv .rv-sheet{background:var(--rv-sheet)}</style>
+<script>/*! Resume viewer
+ * Opens résumé links (any a[href$="resume.pdf"]) in an in-page sheet instead of a new tab.
+ * Pages are drawn with pdf.js, loaded from cdnjs only when the viewer is first needed.
+ * Cmd/Ctrl/Shift/middle-click keep the browser's normal behaviour.
+ */
+(function () {
+  "use strict";
+  var doc = document, PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+  var css = [
+    ":where(:root){--rv-scrim:rgba(18,22,32,.32);--rv-sheet:rgba(250,250,252,.78);--rv-ink:#1c1c1e;--rv-sub:#5b5e66;--rv-edge:rgba(0,0,0,.08);--rv-hi:rgba(255,255,255,.85);--rv-btn:rgba(255,255,255,.7);--rv-btn-hover:rgba(255,255,255,.95);--rv-accent:#1d5fd1;--rv-accent-ink:#fff;--rv-well:rgba(120,126,140,.12);--rv-shadow:0 30px 80px -20px rgba(10,16,32,.45),0 2px 6px rgba(10,16,32,.12)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}}",
+    ":where(:root[data-theme=dark]){--rv-scrim:rgba(0,0,0,.5);--rv-sheet:rgba(28,30,36,.78);--rv-ink:#f2f2f5;--rv-sub:#a3a7b1;--rv-edge:rgba(255,255,255,.1);--rv-hi:rgba(255,255,255,.12);--rv-btn:rgba(255,255,255,.08);--rv-btn-hover:rgba(255,255,255,.16);--rv-accent:#7fb0ff;--rv-accent-ink:#0b1424;--rv-well:rgba(0,0,0,.25);--rv-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}",
+    // sits just under the liquid pointer, so the cursor keeps working inside it
+    "#rv{position:fixed;inset:0;z-index:2147482000;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:var(--rv-scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .22s ease;font:14px/1.4 var(--rv-font,-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif);color:var(--rv-ink)}",
+    "#rv[hidden]{display:none}",
+    "#rv.open{opacity:1}",
+    "#rv .rv-sheet{position:relative;display:flex;flex-direction:column;width:min(900px,100%);height:min(1100px,100%);border-radius:var(--rv-radius,22px);overflow:hidden;background:var(--rv-sheet);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);border:1px solid var(--rv-edge);box-shadow:inset 0 1px 0 var(--rv-hi),var(--rv-shadow);transform:translateY(14px) scale(.975);transition:transform .38s cubic-bezier(.2,1.3,.4,1)}",
+    "#rv.open .rv-sheet{transform:none}",
+    "#rv .rv-bar{display:flex;align-items:center;gap:8px;padding:10px 10px 10px 18px;border-bottom:1px solid var(--rv-edge)}",
+    "#rv .rv-title{flex:1;min-width:0;font-family:var(--rv-tfont,inherit);font-weight:var(--rv-tweight,600);font-size:var(--rv-tsize,15px);text-transform:var(--rv-tcase,none);letter-spacing:var(--rv-tspace,0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
+    "#rv .rv-title span{font-weight:400;color:var(--rv-sub)}",
+    "#rv .rv-btn{display:inline-flex;align-items:center;gap:7px;height:var(--rv-bh,38px);padding:0 14px;border-radius:var(--rv-bradius,999px);border:1px solid var(--rv-edge);background:var(--rv-btn);color:var(--rv-ink);font:inherit;font-weight:500;text-decoration:none;cursor:pointer;white-space:nowrap;box-shadow:inset 0 1px 0 var(--rv-hi)}",
+    "#rv .rv-btn:hover{background:var(--rv-btn-hover)}",
+    "#rv .rv-btn svg{width:16px;height:16px;flex:none}",
+    "#rv .rv-btn.rv-primary{background:var(--rv-accent);border-color:transparent;color:var(--rv-accent-ink);box-shadow:none}",
+    "#rv .rv-btn.rv-primary:hover{filter:brightness(1.08)}",
+    "#rv .rv-btn.rv-icon{width:var(--rv-bh,38px);padding:0;justify-content:center}",
+    "#rv .rv-btn:focus-visible{outline:2px solid var(--rv-accent);outline-offset:2px}",
+    "#rv .rv-body{flex:1;overflow:auto;overscroll-behavior:contain;background:var(--rv-well);padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px;-webkit-overflow-scrolling:touch}",
+    "#rv canvas{display:block;width:100%;max-width:820px;height:auto;background:#fff;border-radius:var(--rv-pradius,6px);box-shadow:0 8px 24px -10px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.05)}",
+    "#rv .rv-msg{margin:auto;color:var(--rv-sub);text-align:center;padding:24px}",
+    "#rv .rv-msg a{color:var(--rv-accent)}",
+    "#rv .rv-spin{width:22px;height:22px;margin:0 auto 10px;border-radius:50%;border:2px solid var(--rv-edge);border-top-color:var(--rv-accent);animation:rv-spin .8s linear infinite}",
+    "@keyframes rv-spin{to{transform:rotate(360deg)}}",
+    "@media (max-width:560px){#rv{padding:0}#rv .rv-sheet{width:100%;height:100%;border-radius:0;border:0}#rv .rv-bar{padding-top:max(10px,env(safe-area-inset-top))}#rv .rv-btn .rv-label{display:none}#rv .rv-btn{width:var(--rv-bh,38px);padding:0;justify-content:center}#rv .rv-body{padding:10px;gap:10px}}",
+    "@media (prefers-reduced-motion:reduce){#rv,#rv .rv-sheet{transition:none}#rv .rv-spin{animation:none}}",
+    "html.rv-lock,html.rv-lock body{overflow:hidden}"
+  ].join("\n");
+  var ICON = {
+    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>',
+    open: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+  };
+
+  var root = null, body, dl, openA, closeB, lastFocus = null, href = "", lib = null, libP = null, data = null, blobUrl = "", renderId = 0, rTimer = 0;
+
+  function build() {
+    if (root) return;
+    var st = doc.createElement("style"); st.textContent = css; doc.head.appendChild(st);
+    root = doc.createElement("div");
+    root.id = "rv"; root.hidden = true;
+    root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Résumé");
+    root.innerHTML =
+      '<div class="rv-sheet">' +
+        '<div class="rv-bar">' +
+          '<div class="rv-title">Résumé <span>· Frederick Wang</span></div>' +
+          '<a class="rv-btn rv-primary rv-dl" data-liquid="snap" download="Frederick-Wang-Resume.pdf" aria-label="Download PDF">' + ICON.down + '<span class="rv-label">Download</span></a>' +
+          '<a class="rv-btn rv-open" data-liquid="snap" target="_blank" rel="noopener" aria-label="Open in a new tab">' + ICON.open + '<span class="rv-label">Open</span></a>' +
+          '<button type="button" class="rv-btn rv-icon rv-close" data-liquid="snap" aria-label="Close">' + ICON.close + '</button>' +
+        '</div>' +
+        '<div class="rv-body" tabindex="0" aria-label="Résumé pages"></div>' +
+      '</div>';
+    doc.body.appendChild(root);
+    body = root.querySelector(".rv-body"); dl = root.querySelector(".rv-dl"); openA = root.querySelector(".rv-open"); closeB = root.querySelector(".rv-close");
+    closeB.addEventListener("click", close);
+    root.addEventListener("mousedown", function (e) { if (e.target === root) close(); });
+    root.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); close(); return; }
+      if (e.key !== "Tab") return;
+      var f = Array.prototype.filter.call(root.querySelectorAll("a[href],button,[tabindex='0']"), function (n) { return n.offsetParent; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    addEventListener("resize", function () { if (root.hidden || !data) return; clearTimeout(rTimer); rTimer = setTimeout(render, 160); });
+  }
+
+  function loadLib() {
+    if (libP) return libP;
+    libP = new Promise(function (res, rej) {
+      if (window.pdfjsLib) return res(window.pdfjsLib);
+      var s = doc.createElement("script"); s.src = PDFJS + "pdf.min.js"; s.async = true;
+      s.onload = function () { var L = window.pdfjsLib; if (!L) return rej(new Error("pdf.js")); L.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js"; res(L); };
+      s.onerror = function () { libP = null; rej(new Error("pdf.js")); };
+      doc.head.appendChild(s);
+    });
+    return libP;
+  }
+
+  // the file: same-origin copy first (the published site and preview both ship one), then the link itself
+  function fetchPdf(link) {
+    var tries = [];
+    try { var u = new URL(link, location.href); if (u.origin !== location.origin) tries.push("resume.pdf"); } catch (_) {}
+    tries.push(link);
+    var i = 0;
+    return (function next() {
+      if (i >= tries.length) return Promise.reject(new Error("fetch"));
+      var url = tries[i++];
+      return fetch(url).then(function (r) {
+        if (!r.ok || !/pdf|octet/.test(r.headers.get("content-type") || "pdf")) throw new Error(r.status);
+        return r.arrayBuffer();
+      }).catch(next);
+    })();
+  }
+
+  function message(html) { body.innerHTML = '<div class="rv-msg">' + html + "</div>"; }
+
+  function render() {
+    var id = ++renderId;
+    return lib.getDocument({ data: data.slice(0) }).promise.then(function (pdf) {
+      var width = Math.min(820, body.clientWidth - (innerWidth <= 560 ? 20 : 36)), dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      var frag = doc.createDocumentFragment(), canvases = [], chain = Promise.resolve();
+      for (var n = 1; n <= pdf.numPages; n++) (function (n) {
+        chain = chain.then(function () {
+          if (id !== renderId) return;
+          return pdf.getPage(n).then(function (page) {
+            var v = page.getViewport({ scale: 1 }), scale = width / v.width, vp = page.getViewport({ scale: scale * dpr });
+            var c = doc.createElement("canvas"); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+            c.setAttribute("role", "img"); c.setAttribute("aria-label", "Résumé page " + n + " of " + pdf.numPages);
+            canvases.push(c);
+            return page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+          });
+        });
+      })(n);
+      return chain.then(function () {
+        if (id !== renderId) return;
+        canvases.forEach(function (c) { frag.appendChild(c); });
+        body.innerHTML = ""; body.appendChild(frag);
+        if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh();
+      });
+    });
+  }
+
+  function open(link) {
+    build();
+    href = link;
+    openA.href = link; dl.href = blobUrl || link;
+    lastFocus = doc.activeElement;
+    root.hidden = false; void root.offsetWidth; root.classList.add("open");
+    doc.documentElement.classList.add("rv-lock");
+    Array.prototype.forEach.call(doc.body.children, function (n) { if (n !== root && n.id !== "lq-ptr" && !n.inert) { n.inert = true; n.__rvInert = true; } });
+    closeB.focus({ preventScroll: true });
+    if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh();
+    if (data && lib) return;
+    message('<div class="rv-spin"></div>Loading résumé…');
+    Promise.all([loadLib(), data ? Promise.resolve(data) : fetchPdf(link)]).then(function (r) {
+      lib = r[0]; data = r[1];
+      if (!blobUrl) { blobUrl = URL.createObjectURL(new Blob([data], { type: "application/pdf" })); dl.href = blobUrl; }
+      return render();
+    }).catch(function () {
+      message('The preview couldn’t load here. <a href="' + link + '" target="_blank" rel="noopener">Open the PDF</a> instead.');
+    });
+  }
+
+  function close() {
+    if (!root || root.hidden) return;
+    root.classList.remove("open");
+    doc.documentElement.classList.remove("rv-lock");
+    Array.prototype.forEach.call(doc.body.children, function (n) { if (n.__rvInert) { n.inert = false; n.__rvInert = false; } });
+    var done = function () { root.hidden = true; if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh(); };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) done(); else setTimeout(done, 220);
+    if (lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (_) {}
+  }
+
+  function isResume(a) { return a && a.getAttribute && /resume\.pdf(?:[?#].*)?$/i.test(a.getAttribute("href") || ""); }
+  // warm up while the pointer is on its way to the link
+  doc.addEventListener("pointerover", function (e) { var a = e.target.closest && e.target.closest("a[href]"); if (isResume(a)) loadLib().catch(function () {}); }, { passive: true });
+  doc.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!isResume(a) || (root && root.contains(a))) return;
+    e.preventDefault();
+    open(a.getAttribute("href"));
+  });
+  window.ResumeViewer = { open: open, close: close };
+})();
+/*! end resume viewer */
 </script>
   </body>
 </html>
