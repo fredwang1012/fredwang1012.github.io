@@ -1491,7 +1491,9 @@ footer{margin-top:136px;border-top:1px solid var(--line);padding-top:64px}
     "#lq-ptr.lq-beam::before{display:none}",
     ".lq-lifted{box-shadow:0 6px 14px -8px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.08)!important;position:relative;z-index:2}",
     "body.lq-on .lq-hl-on{background-color:transparent!important;box-shadow:none!important}",
-    "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}"
+    "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}",
+    // touch screens never get the liquid cursor, so its switches (and any menu command for it) are hidden there
+    "@media (hover:none),(pointer:coarse){[data-liquid-toggle],[data-cmd=cursor]{display:none!important}}"
   ].join("\n");
   var style = doc.createElement("style");
   style.textContent = css;
