@@ -1123,7 +1123,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
   }
 
   // ---------- state ----------
-  var liquidOn = store.get("lq-cursor") === "on"; // off until the visitor turns it on
+  var liquidOn = store.get("lq-cursor") !== "off"; // on unless the visitor has turned it off
   function active() { return liquidOn && finePointer.matches && !reduceMotion.matches; }
   function applyMode() {
     var on = active();
