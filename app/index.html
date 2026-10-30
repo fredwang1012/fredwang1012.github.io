@@ -40,9 +40,11 @@
       img { max-width: 100%; }
       [hidden] { display: none !important; }
     </style>
+<script>(function(){var t=null;try{t=localStorage.getItem("lq-theme")}catch(e){}document.documentElement.dataset.theme=t==="dark"?"dark":"light"})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("lq-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
 :root{
   --bg:#fafafa; --ink:#171717; --muted:#4d4d4d; --line:#ebebeb; --line-hi:#a8a8a8;
@@ -96,16 +98,17 @@ img{max-width:100%;display:block}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- reactive colour mesh (fixed, behind everything) ---------- */
-.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;transition:opacity .2s linear}
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .mesh>div{position:absolute;width:var(--s);height:var(--s);will-change:transform}
-.mesh span{display:block;width:100%;height:100%;background:var(--c);opacity:var(--mesh-o);filter:blur(64px);border-radius:46% 54% 58% 42%/48% 44% 56% 52%;animation:drift var(--d,26s) ease-in-out infinite alternate,morph var(--m,18s) ease-in-out infinite alternate}
+/* Each blob is a soft radial gradient (no filter: blur), drawn at half size and scaled up 2x, so the GPU never
+   re-blurs a large layer and the backdrop of the header only has cheap content to sample. */
+.mesh span{position:absolute;left:7.75%;top:10%;width:84.5%;height:80%;scale:2;opacity:var(--mesh-o);background:radial-gradient(closest-side,var(--c) 32%,color-mix(in srgb,var(--c) 84%,transparent) 46%,color-mix(in srgb,var(--c) 50%,transparent) 59%,color-mix(in srgb,var(--c) 16%,transparent) 73%,color-mix(in srgb,var(--c) 2%,transparent) 86%,transparent);animation:drift var(--d,26s) ease-in-out infinite alternate}
 .mesh .m1{--s:min(36vmax,560px);left:calc(14% - 140px);top:44vh;--c:var(--c-blue)}
-.mesh .m2{--s:min(32vmax,500px);left:calc(36% - 120px);top:54vh;--c:var(--c-cyan);--d:31s;--m:22s}
-.mesh .m3{--s:min(34vmax,520px);left:calc(58% - 120px);top:48vh;--c:var(--c-violet);--d:24s;--m:16s}
-.mesh .m4{--s:min(30vmax,460px);left:calc(80% - 120px);top:38vh;--c:var(--c-amber);--d:28s;--m:20s}
-.mesh .m2 span{animation-delay:-7s,-4s}.mesh .m3 span{animation-delay:-12s,-9s}.mesh .m4 span{animation-delay:-3s,-11s}
-@keyframes drift{0%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(6%,-5%,0) rotate(14deg)}100%{transform:translate3d(-5%,4%,0) rotate(-10deg)}}
-@keyframes morph{0%{border-radius:46% 54% 58% 42%/48% 44% 56% 52%}50%{border-radius:58% 42% 40% 60%/40% 58% 42% 60%}100%{border-radius:40% 60% 52% 48%/60% 40% 60% 40%}}
+.mesh .m2{--s:min(32vmax,500px);left:calc(36% - 120px);top:54vh;--c:var(--c-cyan);--d:31s}
+.mesh .m3{--s:min(34vmax,520px);left:calc(58% - 120px);top:48vh;--c:var(--c-violet);--d:24s}
+.mesh .m4{--s:min(30vmax,460px);left:calc(80% - 120px);top:38vh;--c:var(--c-amber);--d:28s}
+.mesh .m2 span{animation-delay:-7s}.mesh .m3 span{animation-delay:-12s}.mesh .m4 span{animation-delay:-3s}
+@keyframes drift{0%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(6%,-5%,0) rotate(14deg) scale(1.06)}100%{transform:translate3d(-5%,4%,0) rotate(-10deg) scale(.95)}}
 
 /* ---------- outer wrapper ---------- */
 .site{position:relative;z-index:1;padding-left:var(--gut-l);padding-right:var(--gut-r);padding-block:0 0;min-height:100vh}
@@ -142,7 +145,7 @@ h1{font-size:clamp(40px,6.6vw,80px);line-height:1.02;font-weight:600;letter-spac
 
 /* ---------- number strip ---------- */
 .strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.stat{padding:28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);min-width:0}
+.stat{padding:28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);min-width:0}
 .stat b{display:block;font-size:36px;font-weight:600;letter-spacing:-.04em;line-height:1.15}
 .stat span{display:block;margin-top:6px;font-size:14px;color:var(--muted)}
 
@@ -156,7 +159,7 @@ section.block{margin-top:120px}
 
 /* ---------- the shared-edge grid ---------- */
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.cell{position:relative;min-width:0;padding:32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);display:flex;flex-direction:column;gap:14px}
+.cell{position:relative;min-width:0;padding:32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:14px}
 .cell.span-2{grid-column:span 2}
 .cell.span-3{grid-column:1 / -1}
 .cell>*{position:relative;z-index:1}
@@ -213,7 +216,7 @@ section.block{margin-top:120px}
 /* ---------- experience ---------- */
 .exp{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:48px}
 .exp h2 .sub{display:block;margin-top:12px;font-size:13px;letter-spacing:0;font-weight:400;color:var(--muted)}
-.table{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);min-width:0}
+.table{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);min-width:0}
 .row{position:relative;display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;padding:22px 28px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0}
 .row>*{position:relative;z-index:1}
@@ -253,8 +256,17 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   .exp{grid-template-columns:minmax(0,1fr);gap:28px}
   .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* section tabs: the header's text links move to a second row once they no longer fit beside the buttons */
+.tabs{display:none}
 @media (max-width:860px){
+  html{scroll-padding-top:124px}
   .nav a.t,.nav .sep{display:none}
+  .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:1216px;margin-inline:auto;border-top:1px solid var(--line)}
+  .tabs a{display:flex;align-items:center;justify-content:center;min-width:0;min-height:44px;padding:0 6px;font-size:14px;color:var(--muted);text-decoration:none;white-space:nowrap;border-radius:0}
+  .tabs a+a{border-left:1px solid var(--line)}
+  .tabs a:hover{color:var(--ink)}
+  .tabs a[aria-current="page"]{color:var(--ink);background:var(--line)}
+  .tabs a:focus-visible{outline-offset:-2px}
 }
 @media (max-width:639px){
   .bar-in{height:56px}
@@ -272,6 +284,7 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   footer{margin-top:88px}
   .nav .hide-sm{display:none}
   .lg-only{display:none} .sm-only{display:inline}
+  html{scroll-padding-top:116px}
 }
 
 /* header cursor toggle */
@@ -301,7 +314,7 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
 .shelf.three li{padding:14px 16px;border-right:1px solid var(--line);min-width:0}
 .shelf.three li:last-child{border-right:0}
 .grid-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.grid-list li{min-width:0;padding:18px 22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);transition:background .2s}
+.grid-list li{min-width:0;padding:18px 22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);transition:background .2s}
 .grid-list li:hover{background:var(--surface-solid)}
 .shelf-h{margin-top:72px}
 .view-hero{position:relative;border-left:1px solid var(--line);border-right:1px solid var(--line);padding:72px 48px 88px;margin-bottom:56px;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
@@ -323,6 +336,16 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   .big-n{font-size:44px}
   .shelf-h{margin-top:56px}
 }
+@media (max-width:639px),(pointer:coarse){
+  .btn,.logo{min-height:40px}
+  .bar .icon-btn{width:40px}
+  .go,.trk-row .go{min-height:40px}
+  .quiet,.foot-r a{display:inline-flex;align-items:center;min-height:40px}
+  .switch{min-height:40px}
+}
+/* the liquid cursor never runs on touch screens, so its switch would do nothing there */
+@media (hover:none) and (pointer:coarse){.switch[data-liquid-toggle]{display:none}}
+h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .mesh span,.status.building i::after{animation:none}
@@ -358,6 +381,12 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
         
       </nav>
     </div>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#work" data-liquid="snap">Work</a>
+      <a href="#experience" data-liquid="snap">Experience</a>
+      <a href="#music" data-liquid="snap" data-view-link="music">Music</a>
+      <a href="#books" data-liquid="snap" data-view-link="books">Books</a>
+    </nav>
   </header>
 
   <main class="wrap">
@@ -455,7 +484,7 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
         <article class="cell span-2" data-liquid="lift">
           <div class="meta mono"><span>Clinical ML · UBC CPSC 440 · Apr 2026</span><span class="status ready"><i aria-hidden="true"></i>Ready</span></div>
           <h3>Unsupervised Patient Stratification</h3>
-          <img class="umap" src="/patient-stratification.webp" width="1485" height="508" loading="lazy" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right">
+          <img class="umap" src="/patient-stratification.webp" width="1485" height="508" loading="lazy" decoding="async" alt="UMAP of the VAE latent space: phenotype clusters for hearing loss, liver fibrosis, hypothyroidism and others on the left, a large baseline cluster on the right">
           <p class="d">A VAE compresses checkup labs and Chinese free-text reports; K-Means on its latent space finds seven clinical phenotypes without labels. Silhouette 0.267 across 234K visits.</p>
           <div class="foot"><a class="go" href="https://github.com/fredwang1012/patient-stratification" target="_blank" rel="noopener" data-liquid="snap">Code + report ↗</a></div>
         </article>
@@ -465,7 +494,7 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
           <ul class="also">
             <li><a href="https://github.com/fredwang1012/greenlife" target="_blank" rel="noopener" data-liquid="snap"><span><b>GreenLife</b><small class="mono">RAG on AWS Bedrock · 2024</small></span><span class="tag mono">1st place</span></a></li>
             <li><a href="https://github.com/fredwang1012/great_expectations/tree/fredwang1012" target="_blank" rel="noopener" data-liquid="snap"><span><b>Great Expectations</b><small class="mono">SQL Server support, open source · 2025</small></span><span class="arr" aria-hidden="true">↗</span></a></li>
-            <li><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap"><span><b>WealthComplex</b><small class="mono">Investment platform</small></span><span class="arr" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://github.com/fredwang1012/wealthcomplex" target="_blank" rel="noopener" data-liquid="snap"><span><b>WealthComplex</b><small class="mono">Investment platform · 2024</small></span><span class="arr" aria-hidden="true">↗</span></a></li>
           </ul>
         </div>
       </div>
@@ -514,7 +543,7 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
       <div class="sec-head"><div><h2 id="contact-h">Get in touch</h2><span class="sub mono">The fastest way to reach me is email</span></div></div>
       <div class="contact">
         <div class="cell" data-liquid="lift">
-          <div class="who"><img src="/frederick.jpg" width="52" height="52" alt="Frederick Wang"><div><h3>Frederick Wang</h3><p class="d" style="font-size:14px">M.Sc. Applied Computing (AI), University of Toronto</p></div></div>
+          <div class="who"><img src="/frederick.jpg" width="52" height="52" loading="lazy" decoding="async" alt="Frederick Wang"><div><h3>Frederick Wang</h3><p class="d" style="font-size:14px">M.Sc. Applied Computing (AI), University of Toronto</p></div></div>
           <p class="email mono" id="email-text">fredwang1012@gmail.com</p>
           <div class="links">
             <button class="btn solid copy-email" type="button" data-liquid="snap"><span>Copy email</span></button>
@@ -647,22 +676,34 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   // ---------- styles ----------
   // Defaults use :where() so a page's own tokens always win.
   var css = [
-    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-dot:rgba(60,60,67,.46);--lq-hl:rgba(60,60,67,.12);--lq-press:rgba(60,60,67,.22);--lq-blend:multiply;--lq-sheen:rgba(255,255,255,.55)}",
-    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}}",
-    ":where(:root[data-theme=dark]){--lq-dot:rgba(235,235,245,.52);--lq-hl:rgba(235,235,245,.14);--lq-press:rgba(235,235,245,.24);--lq-blend:screen;--lq-sheen:rgba(255,255,255,.35)}",
+    // a droplet: clear body that refracts what is under it (Chromium), a sharp glint, a dark inner rim where light is
+    // trapped by total internal reflection, a caustic glow on the far side, and a soft offset shadow
+    ":where(:root){--lq-ring:rgba(16,20,28,.55);--lq-tint:rgba(255,255,255,.16);--lq-water:rgba(255,255,255,.03);--lq-glint:rgba(255,255,255,.97);--lq-rimdark:rgba(14,24,48,.3);--lq-edge:rgba(255,255,255,.55);--lq-drop:rgba(12,22,52,.26);--lq-press:rgba(150,175,230,.18)}",
+    "@media (prefers-color-scheme:dark){:where(:root:not([data-theme=light])){--lq-water:rgba(255,255,255,.04);--lq-glint:rgba(255,255,255,.92);--lq-rimdark:rgba(0,0,0,.55);--lq-edge:rgba(255,255,255,.4);--lq-drop:rgba(0,0,0,.5);--lq-press:rgba(170,200,255,.16)}}",
+    ":where(:root[data-theme=dark]){--lq-water:rgba(255,255,255,.04);--lq-glint:rgba(255,255,255,.92);--lq-rimdark:rgba(0,0,0,.55);--lq-edge:rgba(255,255,255,.4);--lq-drop:rgba(0,0,0,.5);--lq-press:rgba(170,200,255,.16)}",
     "body.lq-on,body.lq-on *{cursor:none!important}",
-    "#lq-ptr{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;opacity:0;width:19px;height:19px;border-radius:9.5px;transform-origin:50% 50%;" +
-      "background:var(--lq-dot);-webkit-backdrop-filter:blur(1.5px) saturate(170%);backdrop-filter:blur(1.5px) saturate(170%);" +
-      "box-shadow:inset 0 0 0 .5px rgba(255,255,255,.4),inset 0 1px 1px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.12);" +
+    "#lq-ptr{position:fixed;left:0;top:0;margin:0;padding:0;border:0;box-sizing:border-box;z-index:2147483000;pointer-events:none;opacity:0;width:22px;height:22px;border-radius:11px;transform-origin:50% 50%;" +
+      "background:radial-gradient(circle at var(--lq-gx,31%) var(--lq-gy,27%),var(--lq-glint) 0 7%,rgba(255,255,255,0) 16%)," +
+        "radial-gradient(70% 50% at 40% 20%,rgba(255,255,255,.32),rgba(255,255,255,0) 70%)," +
+        "radial-gradient(50% 38% at 64% 82%,rgba(255,255,255,.55),rgba(255,255,255,0) 72%),var(--lq-water);" +
+      "-webkit-backdrop-filter:blur(.4px) saturate(135%) brightness(1.05);backdrop-filter:blur(.4px) saturate(135%) brightness(1.05);" +
+      "box-shadow:inset 0 0 4px 1px var(--lq-rimdark),inset 1px 1.5px 2px -1px rgba(0,0,0,.18),inset -2px -2.5px 3px -1.5px rgba(255,255,255,.75),2px 4px 8px -3px var(--lq-drop);" +
       "transition:opacity .35s ease,background-color .2s ease,box-shadow .25s ease}",
-    // highlight: a flat translucent shape that blends under the label, with a sheen that follows the pointer
-    "#lq-ptr.hl{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,50%),var(--lq-sheen),transparent 60%) ,var(--lq-hl);background-blend-mode:soft-light;mix-blend-mode:var(--lq-blend);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
-    "#lq-ptr.hl.down{background:var(--lq-press)}",
-    // lift: the pointer becomes the specular light on top of a raised control
-    "#lq-ptr.lift{background:radial-gradient(circle at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.5),rgba(255,255,255,0) 55%);mix-blend-mode:soft-light;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
-    "#lq-ptr.beam{border-radius:1.5px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}",
-    "[data-liquid]{will-change:transform}",
-    ".lq-lifted{box-shadow:0 12px 26px -10px rgba(0,0,0,.38),0 3px 8px -2px rgba(0,0,0,.14)!important;position:relative;z-index:2}",
+    // browsers without backdrop refraction get a faint spectral edge instead of true dispersion
+    "#lq-ptr::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:.28;" +
+      "background:conic-gradient(from 200deg,#ff8a8a,#ffd98a,#9dffa0,#7fe6ff,#9aa6ff,#ef9aff,#ff8a8a);" +
+      "-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}",
+    "#lq-ptr.lq-refr::before{display:none}",
+    // highlight and lift: the drop spreads into a liquid lens over the control and the light follows the pointer across it
+    "#lq-ptr.lq-hl,#lq-ptr.lq-lift{background:radial-gradient(40% 75% at var(--lq-px,50%) var(--lq-py,30%),rgba(255,255,255,.2),rgba(255,255,255,0) 70%)," +
+        "linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,0) 34%,rgba(255,255,255,0) 72%,rgba(255,255,255,.16)),var(--lq-water);" +
+      "-webkit-backdrop-filter:saturate(130%) brightness(1.04);backdrop-filter:saturate(130%) brightness(1.04);" +
+      "box-shadow:inset 0 0 0 .5px var(--lq-edge),inset 0 0 4px .5px var(--lq-rimdark),inset 0 -2px 4px -2px rgba(255,255,255,.55),0 6px 16px -8px var(--lq-drop)}",
+    "#lq-ptr.lq-down{background-color:var(--lq-press)}",
+    "#lq-ptr.lq-beam{border-radius:1.5px;background:linear-gradient(90deg,rgba(255,255,255,.25),var(--lq-glint),rgba(255,255,255,.25));-webkit-backdrop-filter:saturate(150%);backdrop-filter:saturate(150%);box-shadow:inset 0 0 0 .5px var(--lq-rimdark),0 1px 4px -1px var(--lq-drop)}",
+    "#lq-ptr.lq-beam::before{display:none}",
+    ".lq-lifted{box-shadow:0 6px 14px -8px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.08)!important;position:relative;z-index:2}",
+    "body.lq-on .lq-hl-on{background-color:transparent!important;box-shadow:none!important}",
     "body.lq-on [data-liquid]:focus-visible{outline-color:transparent!important}"
   ].join("\n");
   var style = doc.createElement("style");
@@ -752,9 +793,69 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
     }
     fit();
     el.style.backdropFilter = "url(#" + filt.id + ") " + extra;
-    if (window.ResizeObserver) new ResizeObserver(fit).observe(el);
+    var pending = false;
+    if (window.ResizeObserver) new ResizeObserver(function () { if (pending) return; pending = true; requestAnimationFrame(function () { pending = false; fit(); }); }).observe(el);
   }
   function refractAll() { doc.querySelectorAll("[data-refract]").forEach(refract); }
+
+  // The pointer is a droplet lens. Its height profile is a dome across the shape's short axis; at every pixel the
+  // surface tilt bends a vertical ray through water (n = 1.33), and the map shifts the backdrop by that bend. The
+  // centre stays still and the edge pulls hard inward, so the middle magnifies and the rim squeezes, as in a drop.
+  // Three passes with slightly different strength split red, green and blue: dispersion at the rim.
+  var dropMaps = {}, dropCount = 0, drop = null;
+  function dropMap(w, h, r, bez, T) {
+    w = Math.max(6, Math.round(w)); h = Math.max(6, Math.round(h)); r = Math.min(Math.round(r), Math.floor(Math.min(w, h) / 2));
+    var key = w + "x" + h + "x" + r + "x" + bez + "x" + T;
+    if (dropMaps[key]) return dropMaps[key];
+    if (++dropCount > 160) { dropMaps = {}; dropCount = 1; }
+    var c = doc.createElement("canvas"); c.width = w; c.height = h;
+    var ctx = c.getContext("2d"), img = ctx.createImageData(w, h), D = img.data;
+    var hx = w / 2, hy = h / 2, B = Math.min(hx, hy) * bez, N = 1.33, max = 0, vals = new Float32Array(w * h * 2);
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) {
+      var px = x + 0.5 - hx, py = y + 0.5 - hy, qx = Math.abs(px) - (hx - r), qy = Math.abs(py) - (hy - r);
+      var ox = Math.max(qx, 0), oy = Math.max(qy, 0), ol = Math.hypot(ox, oy);
+      var dist = r - (ol + Math.min(Math.max(qx, qy), 0));      // depth inside the shape
+      var nx, ny;                                                // outward normal
+      if (ol > 0) { nx = ox / ol; ny = oy / ol; } else if (qx > qy) { nx = 1; ny = 0; } else { nx = 0; ny = 1; }
+      nx *= px < 0 ? -1 : 1; ny *= py < 0 ? -1 : 1;
+      var i = (y * w + x) * 2;
+      if (dist <= 0) { vals[i] = 0; vals[i + 1] = 0; continue; }
+      var t = Math.min(dist / B, 1), u = Math.max(1 - t, 0);
+      var slope = T * u / Math.sqrt(Math.max(1 - u * u, 0.0025));  // d/dt of sqrt(1-(1-t)^2), scaled by thickness
+      var th = Math.atan(slope), bend = th - Math.asin(Math.sin(th) / N);
+      var mag = Math.min(B * Math.tan(bend), B * 0.85);
+      vals[i] = -nx * mag; vals[i + 1] = -ny * mag;              // sample from further in: magnify
+      if (mag > max) max = mag;
+    }
+    max = Math.max(max, 0.5);
+    for (var k = 0, j = 0; k < w * h; k++, j += 4) {
+      D[j] = Math.round(128 + 127 * vals[k * 2] / max); D[j + 1] = Math.round(128 + 127 * vals[k * 2 + 1] / max); D[j + 2] = 128; D[j + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    return (dropMaps[key] = { url: c.toDataURL(), max: max });
+  }
+  function dropFilter() {
+    if (drop) return drop;
+    var id = "lq-drop", f = doc.createElementNS(SVG_NS, "filter");
+    f.setAttribute("id", id); f.setAttribute("x", "0"); f.setAttribute("y", "0"); f.setAttribute("width", "100%"); f.setAttribute("height", "100%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    var img = doc.createElementNS(SVG_NS, "feImage");
+    img.setAttribute("x", "0"); img.setAttribute("y", "0"); img.setAttribute("result", "map"); img.setAttribute("preserveAspectRatio", "none"); f.appendChild(img);
+    var keep = ["1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0", "0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"], ds = [];
+    for (var i = 0; i < 3; i++) {
+      var d = doc.createElementNS(SVG_NS, "feDisplacementMap");
+      d.setAttribute("in", "SourceGraphic"); d.setAttribute("in2", "map"); d.setAttribute("xChannelSelector", "R"); d.setAttribute("yChannelSelector", "G");
+      d.setAttribute("result", "d" + i); f.appendChild(d); ds.push(d);
+      var m = doc.createElementNS(SVG_NS, "feColorMatrix");
+      m.setAttribute("in", "d" + i); m.setAttribute("type", "matrix"); m.setAttribute("values", keep[i]); m.setAttribute("result", "c" + i); f.appendChild(m);
+    }
+    var b1 = doc.createElementNS(SVG_NS, "feBlend");
+    b1.setAttribute("in", "c0"); b1.setAttribute("in2", "c1"); b1.setAttribute("mode", "screen"); b1.setAttribute("result", "c01"); f.appendChild(b1);
+    var b2 = doc.createElementNS(SVG_NS, "feBlend");
+    b2.setAttribute("in", "c01"); b2.setAttribute("in2", "c2"); b2.setAttribute("mode", "screen"); f.appendChild(b2);
+    ensureDefs().appendChild(f);
+    return (drop = { id: id, img: img, d: ds });
+  }
 
   // ---------- springs (fixed sub-steps keep stiff springs stable) ----------
   function S(x) { return { x: x, v: 0 }; }
@@ -777,13 +878,15 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
 
   var ptr = { x: -200, y: -200, lx: -200, ly: -200, vx: 0, vy: 0, seen: false, moved: 0, down: false, typing: false };
   // P: the pointer shape (centre x/y, width, height, radius, press scale)
-  var P = { x: S(-200), y: S(-200), w: S(18), h: S(18), r: S(9), s: S(1), o: S(0) };
+  var P = { x: S(-200), y: S(-200), w: S(22), h: S(22), r: S(11), s: S(1), o: S(0), wob: S(0) };
+  var wobAng = 0;
   var target = null, mode = null, targetRadius = 12, viaKeyboard = false, lifted = null;
   var beam = null; // {top, h} of the text line under the pointer
   var jelly = new Map();
   function J(el) {
     var j = jelly.get(el);
-    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false }; jelly.set(el, j); }
+    if (!j) { j = { el: el, s: S(1), tx: S(0), ty: S(0), rx: S(0), ry: S(0), spec: S(0), on: false, rr: null }; jelly.set(el, j); el.style.willChange = "transform"; }
+    wake();
     return j;
   }
   function alpha(c) { var m = /rgba?\(([^)]+)\)/.exec(c || ""); if (!m) return c && c !== "transparent" ? 1 : 0; var p = m[1].split(/[ ,\/]+/).filter(Boolean); return p.length > 3 ? parseFloat(p[3]) : 1; }
@@ -794,11 +897,16 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   }
   function isIcon(r) { return r.width <= 56 && r.height <= 56 && Math.abs(r.width - r.height) <= 18; }
   // magnetism: controls keep a generous invisible margin, like iPadOS hit regions
+  var snaps = [];
+  function collectSnaps() {
+    snaps = Array.prototype.slice.call(doc.querySelectorAll('[data-liquid="snap"]'));
+    snaps.forEach(function (el) { if (el !== target && !el.matches(":hover")) el.__lqBezel = hasBezel(el); });
+  }
   function magnetAt(x, y) {
     var best = null, bestD = 1e9;
-    doc.querySelectorAll('[data-liquid="snap"]').forEach(function (el) {
+    snaps.forEach(function (el) {
       var r = el.getBoundingClientRect();
-      if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+      if (!r.width || r.bottom < 0 || r.top > innerHeight || r.right < x - 40 || r.left > x + 40 || r.bottom < y - 40 || r.top > y + 40) return;
       var pad = Math.min(14, Math.max(6, Math.min(r.width, r.height) * 0.35));
       var dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
       if (d <= pad && d < bestD) { best = el; bestD = d; }
@@ -814,19 +922,23 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
     if (mode === "snap") {
       var r = el.getBoundingClientRect();
       var rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
-      if (hasBezel(el) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
+      if ((el.__lqBezel !== undefined ? el.__lqBezel : hasBezel(el)) || isIcon(r)) {           // lift: raise the control, the pointer becomes its light
         mode = "icon"; lifted = el; el.classList.add("lq-lifted"); targetRadius = Math.min(rad, r.height / 2);
       } else {                                   // highlight: a soft shape behind the label
-        var pad = Math.max(3, Math.min(8, Math.min(r.width, r.height) / 6));
-        targetRadius = Math.min(rad ? rad + pad : Math.min(12, r.height / 2 + pad), (r.height + pad * 2) / 2);
-        el.__lqPad = pad;
+        // iPadOS gives text a roomy highlight; controls that already have padding get only a hairline more
+        var cs = getComputedStyle(el), ownX = parseFloat(cs.paddingLeft) || 0, ownY = parseFloat(cs.paddingTop) || 0;
+        var padX = Math.max(2, Math.min(11, r.height * 0.55) - ownX), padY = Math.max(2, Math.min(6, r.height * 0.32) - ownY);
+        targetRadius = Math.min(rad ? rad + Math.min(padX, padY) : 10, (r.height + padY * 2) / 2);
+        el.__lqPad = [padX, padY]; el.classList.add("lq-hl-on");
       }
       if (!reduceMotion.matches) j.s.v += mode === "icon" ? 1.1 : 0.6;
     } else if (!reduceMotion.matches) j.s.v += 0.25;
   }
   function leave(el) {
+    if (!el) return;
     var j = jelly.get(el); if (j) j.on = false;
     if (lifted === el) { el.classList.remove("lq-lifted"); lifted = null; }
+    el.classList.remove("lq-hl-on");
     if (target === el) { target = null; mode = null; magnet = false; }
   }
   // iPadOS keeps a control highlighted until the pointer is clearly outside it
@@ -872,25 +984,30 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
     beam = (!target || mode === "lift") ? textLineAt(ptr.x, ptr.y, node) : null;
   }
 
+  // events only record what happened; hover work runs once per frame (pointermove can fire several times a frame)
+  var hoverNode = null, hoverDirty = false, idleTimer = 0;
   doc.addEventListener("pointermove", function (e) {
     if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
     ptr.x = e.clientX; ptr.y = e.clientY; ptr.moved = performance.now(); ptr.typing = false;
     if (!ptr.seen) { ptr.seen = true; P.x.x = ptr.x; P.y.x = ptr.y; ptr.lx = ptr.x; ptr.ly = ptr.y; }
     viaKeyboard = false;
-    updateHover(e.target);
+    if (active()) { hoverNode = e.target; hoverDirty = true; clearTimeout(idleTimer); idleTimer = setTimeout(wake, 2600); }
+    wake();
   }, { passive: true });
   addEventListener("scroll", function () {
-    if (!ptr.seen || viaKeyboard) return;
-    updateHover(doc.elementFromPoint(ptr.x, ptr.y));
+    if (ptr.seen && !viaKeyboard && active()) { hoverNode = null; hoverDirty = true; }
+    wake();
   }, { passive: true });
-  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); });
+  addEventListener("resize", wake, { passive: true });
+  addEventListener("hashchange", function () { collectSnaps(); wake(); });
+  doc.addEventListener("pointerleave", function () { ptr.seen = false; if (target) leave(target); wake(); });
   doc.addEventListener("pointerdown", function (e) {
-    ptr.down = true; ptrEl.classList.add("down");
+    ptr.down = true; ptrEl.classList.add("lq-down"); wake();
     if (reduceMotion.matches) return;
     var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
     if (el) J(el).s.v -= 1.1;
   });
-  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("down"); });
+  doc.addEventListener("pointerup", function () { ptr.down = false; ptrEl.classList.remove("lq-down"); wake(); });
   doc.addEventListener("keydown", function (e) {
     var t = e.target;
     if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) ptr.typing = true; // hide while typing
@@ -898,12 +1015,12 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   doc.addEventListener("focusin", function (e) {
     var el = e.target.closest ? e.target.closest('[data-liquid="snap"]') : null;
     if (el && el.matches(":focus-visible")) {
-      enter(el, true);
+      enter(el, true); wake();
       if (active() && !ptr.seen) { var r = el.getBoundingClientRect(); P.x.x = r.left + r.width / 2; P.y.x = r.top + r.height / 2; P.w.x = r.width; P.h.x = r.height; }
     }
   });
   doc.addEventListener("focusout", function (e) {
-    if (viaKeyboard && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
+    if (viaKeyboard && target && e.target.closest && target === e.target.closest("[data-liquid]")) leave(target);
   });
   // a click while the pointer is magnetized to a nearby control presses that control (iPadOS behaviour)
   doc.addEventListener("click", function (e) {
@@ -916,89 +1033,129 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   doc.addEventListener("click", function (e) {
     var t = e.target.closest ? e.target.closest("[data-liquid-toggle]") : null;
     if (!t) return;
-    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode();
+    liquidOn = !liquidOn; store.set("lq-cursor", liquidOn ? "on" : "off"); applyMode(); wake();
     if (!liquidOn && lifted) { lifted.classList.remove("lq-lifted"); lifted = null; }
   });
-  finePointer.addEventListener && finePointer.addEventListener("change", applyMode);
-  reduceMotion.addEventListener && reduceMotion.addEventListener("change", applyMode);
+  finePointer.addEventListener && finePointer.addEventListener("change", function () { applyMode(); wake(); });
+  reduceMotion.addEventListener && reduceMotion.addEventListener("change", function () { applyMode(); wake(); });
 
-  // ---------- frame ----------
-  var last = performance.now();
+  // ---------- frame (runs only while something is moving; wake() restarts it) ----------
+  var last = performance.now(), running = false;
+  function wake() { if (running) return; running = true; last = performance.now(); requestAnimationFrame(frame); }
+  var W = {}; // last written values, so unchanged styles are never rewritten
+  function put(el, key, prop, val) { if (W[key] === val) return; W[key] = val; el.style[prop] = val; }
+  function moving(s, t) { return Math.abs(s.x - t) > 0.05 || Math.abs(s.v) > 0.05; }
   function frame(now) {
-    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    var dt = Math.min(0.1, (now - last) / 1000); last = now;
     var ivx = (ptr.x - ptr.lx) / Math.max(dt, 0.001), ivy = (ptr.y - ptr.ly) / Math.max(dt, 0.001);
     ptr.vx += (ivx - ptr.vx) * 0.25; ptr.vy += (ivy - ptr.vy) * 0.25; ptr.lx = ptr.x; ptr.ly = ptr.y;
-    var on = active();
-    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+    var on = active(), busy = false, fresh = now - ptr.moved < 250; // a resting pointer needs no frames
 
-    // geometry of the pointer for this frame (centre-based)
-    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1;
+    // --- reads ---
+    if (hoverDirty && on) { hoverDirty = false; updateHover(hoverNode || doc.elementFromPoint(ptr.x, ptr.y)); }
+    var showTarget = on && target && (mode === "snap" || mode === "icon") && (ptr.seen || viaKeyboard);
+    var tRect = showTarget ? target.getBoundingClientRect() : null;
+    jelly.forEach(function (j, el) { j.rr = j.on && on && !reduceMotion.matches ? el.getBoundingClientRect() : null; });
+
+    // --- pointer geometry ---
+    var cx, cy, tw, th, tr, k, c, cls = "", vis = 1, px = null, py = null;
     if (showTarget && mode === "snap") {
-      var r = target.getBoundingClientRect(), mx = 0, my = 0;
+      var r = tRect, mx = 0, my = 0, pa = target.__lqPad || [6, 4], pdx = pa[0], pdy = pa[1];
       if (!viaKeyboard) {
         mx = Math.max(-1, Math.min(1, (ptr.x - (r.left + r.width / 2)) / (r.width / 2))) * Math.min(6, r.width * 0.06);
         my = Math.max(-1, Math.min(1, (ptr.y - (r.top + r.height / 2)) / (r.height / 2))) * Math.min(4, r.height * 0.08);
       }
-      var pd = target.__lqPad || 4;
+      // the highlight leans toward the pointer, but never further than its own padding
+      mx = Math.max(-Math.max(0, pdx - 1.5), Math.min(Math.max(0, pdx - 1.5), mx)); my = Math.max(-Math.max(0, pdy - 1.5), Math.min(Math.max(0, pdy - 1.5), my));
       cx = r.left + r.width / 2 + mx; cy = r.top + r.height / 2 + my;
-      tw = r.width + pd * 2; th = r.height + pd * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "hl";
-      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - r.left + pd) / tw * 100)).toFixed(1) + "%");
-      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - r.top + pd) / th * 100)).toFixed(1) + "%");
+      tw = r.width + pdx * 2; th = r.height + pdy * 2; tr = Math.min(targetRadius, th / 2); k = 560; c = 42; cls = "lq-hl";
+      px = Math.max(0, Math.min(100, (ptr.x - r.left + pdx) / tw * 100)); py = Math.max(0, Math.min(100, (ptr.y - r.top + pdy) / th * 100));
     } else if (showTarget && mode === "icon") {
       // lift: the pointer melts into the raised control and becomes its specular light (same rect as the control)
-      var ri = target.getBoundingClientRect();
-      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lift";
-      ptrEl.style.setProperty("--lq-px", Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)).toFixed(1) + "%");
-      ptrEl.style.setProperty("--lq-py", Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100)).toFixed(1) + "%");
+      var ri = tRect;
+      cx = ri.left + ri.width / 2; cy = ri.top + ri.height / 2; tw = ri.width; th = ri.height; tr = targetRadius; k = 700; c = 46; cls = "lq-lift";
+      px = Math.max(0, Math.min(100, (ptr.x - ri.left) / ri.width * 100)); py = Math.max(0, Math.min(100, (ptr.y - ri.top) / ri.height * 100));
     } else if (beam) {
-      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "beam";
+      cx = ptr.x; cy = beam.top + beam.h / 2; tw = 2.5; th = Math.max(12, beam.h * 0.92); tr = 1.25; k = 1500; c = 78; cls = "lq-beam";
     } else {
-      cx = ptr.x; cy = ptr.y; tw = 19; th = 19; tr = 9.5; k = 1700; c = 82;
+      cx = ptr.x; cy = ptr.y; tw = 22; th = 22; tr = 11; k = 1700; c = 82;
     }
     if (on && !viaKeyboard && (!ptr.seen || ptr.typing || (now - ptr.moved > 2500 && !showTarget))) vis = 0; // idle and typing fade
+    var ts = ptr.down ? (cls ? 0.97 : 0.8) : 1;
     step(P.x, cx, k, c, dt); step(P.y, cy, k, c, dt);
-    step(P.w, tw, k * 0.6, c * 0.7, dt); step(P.h, th, k * 0.6, c * 0.7, dt); step(P.r, tr, k * 0.6, c * 0.7, dt);
-    step(P.s, ptr.down ? (cls ? 0.97 : 0.8) : 1, 700, 30, dt);
+    // shape springs are a little underdamped, so the drop overshoots and settles like a gel when it merges
+    step(P.w, tw, k * 0.6, c * 0.55, dt); step(P.h, th, k * 0.6, c * 0.55, dt); step(P.r, tr, k * 0.6, c * 0.55, dt);
+    step(P.s, ts, 700, 30, dt);
+    // wobble: speed stretches the drop along its path; when it stops, the stretch rings out and settles
+    var spd = Math.hypot(ptr.vx, ptr.vy);
+    if (spd > 60) wobAng = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI;
+    step(P.wob, cls ? 0 : Math.min(spd / 4200, 0.18), 260, 7.5, dt);
+    if (on) busy = moving(P.x, cx) || moving(P.y, cy) || moving(P.w, tw) || moving(P.h, th) || moving(P.r, tr) || moving(P.s, ts) || Math.abs(P.wob.x) > 0.004 || Math.abs(P.wob.v) > 0.02 ||
+      Math.abs(ptr.vx) > 2 || Math.abs(ptr.vy) > 2 || (showTarget && !viaKeyboard && fresh);
+
+    // --- writes ---
     if (on) {
       var w = Math.max(1.5, P.w.x), h = Math.max(1.5, P.h.x);
-      ptrEl.className = cls + (ptr.down ? " down" : "");
-      ptrEl.style.opacity = String(vis);
-      ptrEl.style.width = w.toFixed(2) + "px"; ptrEl.style.height = h.toFixed(2) + "px";
-      ptrEl.style.borderRadius = Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(2) + "px";
-      var stretch = "";
-      if (!cls) { // a little liquid squash while the dot travels fast
-        var amt = Math.min(Math.hypot(ptr.vx, ptr.vy) / 4200, 0.16);
-        if (amt > 0.01) { var ang = Math.atan2(ptr.vy, ptr.vx) * 180 / Math.PI; stretch = " rotate(" + ang.toFixed(1) + "deg) scale(" + (1 + amt).toFixed(3) + "," + (1 - amt * 0.6).toFixed(3) + ") rotate(" + (-ang).toFixed(1) + "deg)"; }
+      var cn = cls + (ptr.down ? " lq-down" : "") + (refractionOK ? " lq-refr" : "");
+      if (W.cls !== cn) { W.cls = cn; ptrEl.className = cn; }
+      put(ptrEl, "op", "opacity", String(vis));
+      put(ptrEl, "w", "width", w.toFixed(1) + "px"); put(ptrEl, "h", "height", h.toFixed(1) + "px");
+      put(ptrEl, "br", "borderRadius", Math.max(1, Math.min(P.r.x, w / 2, h / 2)).toFixed(1) + "px");
+      if (px !== null) {
+        var pxs = px.toFixed(0) + "%", pys = py.toFixed(0) + "%";
+        if (W.px !== pxs) { W.px = pxs; ptrEl.style.setProperty("--lq-px", pxs); }
+        if (W.py !== pys) { W.py = pys; ptrEl.style.setProperty("--lq-py", pys); }
       }
-      ptrEl.style.transform = "translate3d(" + (P.x.x - w / 2).toFixed(2) + "px," + (P.y.x - h / 2).toFixed(2) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch;
+      var stretch = "", wb = P.wob.x;
+      if (Math.abs(wb) > 0.004) stretch = " rotate(" + wobAng.toFixed(0) + "deg) scale(" + (1 + wb).toFixed(3) + "," + (1 - wb * 0.6).toFixed(3) + ") rotate(" + (-wobAng).toFixed(0) + "deg)";
+      // the light: the glint drifts against the direction of travel
+      var gx = Math.max(18, Math.min(46, 31 - ptr.vx / 110)).toFixed(0) + "%", gy = Math.max(14, Math.min(42, 27 - ptr.vy / 110)).toFixed(0) + "%";
+      if (W.gx !== gx) { W.gx = gx; ptrEl.style.setProperty("--lq-gx", gx); }
+      if (W.gy !== gy) { W.gy = gy; ptrEl.style.setProperty("--lq-gy", gy); }
+      // the lens: one map per resting shape, stretched while the drop morphs, strength in proportion to its size
+      if (refractionOK) {
+        var lens = cls !== "lq-beam";
+        if (lens) {
+          var isDot = !cls, mk = Math.round(tw) + "x" + Math.round(th) + "x" + Math.round(tr) + (isDot ? "d" : "l");
+          if (W.mk !== mk) { W.mk = mk; var dm = isDot ? dropMap(tw, th, tr, 1, 1.05) : dropMap(tw, th, tr, 0.5, 0.55); dropFilter().img.setAttribute("href", dm.url); W.dmax = dm.max; W.dmin = Math.min(tw, th); W.chroma = isDot ? 0.08 : 0.035; W.sc = ""; }
+          var iw = w.toFixed(1), ih = h.toFixed(1);
+          if (W.iw !== iw) { W.iw = iw; drop.img.setAttribute("width", iw); }
+          if (W.ih !== ih) { W.ih = ih; drop.img.setAttribute("height", ih); }
+          var sc = (2 * W.dmax * Math.min(w, h) / Math.max(1, W.dmin)).toFixed(1);
+          if (W.sc !== sc) { W.sc = sc; for (var di = 0; di < 3; di++) drop.d[di].setAttribute("scale", (sc * (1 + di * W.chroma)).toFixed(2)); }
+        }
+        put(ptrEl, "bf", "backdropFilter", lens ? "url(#lq-drop) saturate(125%) brightness(1.04)" : "");
+      }
+      put(ptrEl, "tf", "transform", "translate3d(" + (P.x.x - w / 2).toFixed(1) + "px," + (P.y.x - h / 2).toFixed(1) + "px,0) scale(" + P.s.x.toFixed(3) + ")" + stretch);
     }
 
-    // controls and cards: parallax toward the pointer, lift for icons, tilt for cards
+    // controls and cards: parallax toward the pointer, lift for raised controls, a soft light on cards
     jelly.forEach(function (j, el) {
-      var lm = el.getAttribute("data-liquid"), snap = lm === "snap";
-      var icon = snap && el === lifted;
-      var ts = 1, ttx = 0, tty = 0, trx = 0, tryy = 0, tspec = 0;
-      if (j.on && !reduceMotion.matches && on) {
-        var rr = el.getBoundingClientRect(), ccx = rr.left + rr.width / 2, ccy = rr.top + rr.height / 2;
-        var nx = Math.max(-1, Math.min(1, (ptr.x - ccx) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - ccy) / (rr.height / 2)));
-        if (icon) { ts = 1 + Math.min(0.12, 9 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
-        else if (snap) { ts = 1; if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
-        else { ts = 1.006; tspec = 1; }
+      var snap = el.getAttribute("data-liquid") === "snap", icon = snap && el === lifted;
+      // a card holds still while one of its own links or buttons has the pointer, so the highlight never chases it
+      var holdStill = !snap && target && target !== el && el.contains(target);
+      var tsj = 1, ttx = 0, tty = 0, tspec = 0, rr = j.rr;
+      if (rr) {
+        var nx = Math.max(-1, Math.min(1, (ptr.x - (rr.left + rr.width / 2)) / (rr.width / 2))), ny = Math.max(-1, Math.min(1, (ptr.y - (rr.top + rr.height / 2)) / (rr.height / 2)));
+        if (icon) { tsj = 1 + Math.min(0.08, 5 / Math.max(rr.width, rr.height)); if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(3, rr.height * 0.06); } }
+        else if (snap) { if (!viaKeyboard) { ttx = nx * Math.min(4, rr.width * 0.05); tty = ny * Math.min(2.5, rr.height * 0.06); } }
+        else { tsj = holdStill ? 1 : 1.006; tspec = 1; }
       } else if (j.on && !snap) { tspec = 1; }
-      step(j.s, ts, snap ? 420 : 260, snap ? 21 : 26, dt);
+      step(j.s, tsj, snap ? 420 : 260, snap ? 21 : 26, dt);
       step(j.tx, ttx, 300, 26, dt); step(j.ty, tty, 300, 26, dt);
-      step(j.rx, trx, 180, 20, dt); step(j.ry, tryy, 180, 20, dt);
       step(j.spec, tspec, 120, 22, dt);
-      if (!j.on && Math.abs(j.s.x - 1) < 5e-4 && Math.abs(j.s.v) < 1e-3 && Math.abs(j.tx.x) < 0.02 && Math.abs(j.ty.x) < 0.02 &&
-          Math.abs(j.rx.x) < 0.01 && Math.abs(j.ry.x) < 0.01 && j.spec.x < 0.01) {
-        el.style.transform = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
+      var still = !moving(j.s, tsj) && !moving(j.tx, ttx) && !moving(j.ty, tty) && Math.abs(j.spec.x - tspec) < 0.01;
+      if (!j.on && still && Math.abs(j.s.x - 1) < 1e-3 && Math.abs(j.tx.x) < 0.05 && Math.abs(j.ty.x) < 0.05 && j.spec.x < 0.01) {
+        el.style.transform = ""; el.style.willChange = ""; if (!snap) el.style.setProperty("--lq-spec", "0"); jelly.delete(el); return;
       }
-      el.style.transform = (snap ? "" : "perspective(900px) rotateX(" + j.rx.x.toFixed(3) + "deg) rotateY(" + j.ry.x.toFixed(3) + "deg) ") +
-        "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
-      if (!snap) el.style.setProperty("--lq-spec", Math.max(0, Math.min(1, j.spec.x)).toFixed(3));
+      if (!still || j.on) busy = busy || !still || (j.on && !!rr && fresh);
+      var tf = "translate3d(" + j.tx.x.toFixed(2) + "px," + j.ty.x.toFixed(2) + "px,0) scale(" + j.s.x.toFixed(4) + ")";
+      if (j.lastTf !== tf) { j.lastTf = tf; el.style.transform = tf; }
+      if (!snap) { var sp = Math.max(0, Math.min(1, j.spec.x)).toFixed(2); if (j.lastSp !== sp) { j.lastSp = sp; el.style.setProperty("--lq-spec", sp); } }
     });
-    stepFields(dt);
-    requestAnimationFrame(frame);
+    if (stepFields(dt)) busy = true;
+    if (jelly.size && !busy) busy = Array.from(jelly.values()).some(function (j) { return !j.on; });
+    if (busy) requestAnimationFrame(frame); else running = false;
   }
 
   // ---------- reactive colour fields ----------
@@ -1009,20 +1166,28 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
     });
   }
   function stepFields(dt) {
-    if (!fields.length || reduceMotion.matches) return;
-    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0;
+    if (!fields.length || reduceMotion.matches) return false;
+    var cx = innerWidth / 2, cy = innerHeight / 2, sy = scrollY || 0, live = false;
     fields.forEach(function (f) {
       var px = ptr.seen ? (ptr.x - cx) : 0, py = ptr.seen ? (ptr.y - cy) : 0;
       var tx = px * f.d, ty = py * f.d - sy * f.d * 0.6;
       step(f.x, tx, 18, 7, dt); step(f.y, ty, 18, 7, dt);
-      f.el.style.transform = "translate3d(" + f.x.x.toFixed(1) + "px," + f.y.x.toFixed(1) + "px,0)";
+      if (Math.abs(f.x.x - tx) > 0.3 || Math.abs(f.y.x - ty) > 0.3 || Math.abs(f.x.v) > 0.3 || Math.abs(f.y.v) > 0.3) live = true;
+      var tf = "translate3d(" + f.x.x.toFixed(0) + "px," + f.y.x.toFixed(0) + "px,0)";
+      if (f.tf !== tf) { f.tf = tf; f.el.style.transform = tf; }
     });
+    return live;
   }
 
-  function start() { applyMode(); refractAll(); collectFields(); requestAnimationFrame(frame); }
+  function start() {
+    applyMode(); refractAll(); collectFields(); collectSnaps(); wake();
+    // a theme switch can change which controls have a visible bezel
+    if (window.MutationObserver) new MutationObserver(function () { requestAnimationFrame(collectSnaps); })
+      .observe(doc.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  }
   if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start); else start();
 
-  window.Liquid = { refresh: function () { refractAll(); collectFields(); }, spring: S, step: step, isOn: active };
+  window.Liquid = { refresh: function () { refractAll(); collectFields(); collectSnaps(); wake(); }, spring: S, step: step, isOn: active, wake: wake };
 })();
 </script>
 <script>
@@ -1076,6 +1241,10 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
       if (target && !initial) target.scrollIntoView();
       else if (target && initial) setTimeout(function () { target.scrollIntoView(); }, 0);
       else if (was) toTop();
+      if (was) {                                   // the link that was clicked is now hidden: land on a heading
+        var hd = (target && target.querySelector("h1,h2")) || document.getElementById("hero-h");
+        if (hd) { if (!hd.hasAttribute("tabindex")) hd.setAttribute("tabindex", "-1"); try { hd.focus({ preventScroll: true }); } catch (_) { hd.focus(); } }
+      }
     } else if (hash === "top") { /* native anchor scroll handles it */ }
   }
   addEventListener("hashchange", function () { route(false); });
@@ -1097,8 +1266,12 @@ footer{margin-top:120px;padding:32px 0 calc(56px + env(safe-area-inset-bottom,0p
   });
 
   /* the mesh glows brightest behind the hero, then settles to a faint tint behind the frosted grid */
-  var mesh = document.querySelector(".mesh"), ticking = false;
-  function fade() { ticking = false; var k = Math.min(1, (scrollY || 0) / 1100); mesh.style.opacity = (1 - k * 0.5).toFixed(3); }
+  var mesh = document.querySelector(".mesh"), ticking = false, lastO = "";
+  function fade() {
+    ticking = false;
+    var o = (1 - Math.min(1, (scrollY || 0) / 1100) * 0.5).toFixed(2);
+    if (o !== lastO) { lastO = o; mesh.style.opacity = o; }
+  }
   addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(fade); } }, { passive: true });
   fade();
 })();
