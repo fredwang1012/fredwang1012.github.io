@@ -32,7 +32,7 @@ export default function PersonalWebsite() {
     <ErrorBoundary>
       <div className="font-sans scroll-smooth">
         <Header />
-        <Hero />
+        <Hero onResumeOpen={() => setResumeOpen(true)} />
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
         <About />
         <Projects />

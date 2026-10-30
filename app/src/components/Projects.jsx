@@ -23,7 +23,7 @@ export default function Projects() {
               viewport={{ once: true }}
               className="rounded-2xl shadow-lg bg-white overflow-hidden flex flex-col"
             >
-              {proj.image ? (
+              {proj.image && (
                 <img
                   src={proj.image}
                   alt={proj.title}
@@ -32,12 +32,14 @@ export default function Projects() {
                   }`}
                   loading="lazy"
                 />
-              ) : (
-                <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-                  In&nbsp;Progress
-                </div>
               )}
               <div className="p-6 flex flex-col flex-1">
+                {proj.status && (
+                  <span className="self-start inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full mb-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                    {proj.status}
+                  </span>
+                )}
                 <h3 className="text-2xl font-semibold mb-2">{proj.title}</h3>
                 <p className="flex-1 text-gray-700">{proj.description}</p>
                 <div className="flex flex-wrap gap-2 mt-4">
@@ -50,8 +52,8 @@ export default function Projects() {
                     </span>
                   ))}
                 </div>
-                <div className="mt-6">
-                  {proj.link ? (
+                {proj.link && (
+                  <div className="mt-6">
                     <a
                       href={proj.link}
                       className="text-blue-600 font-medium hover:underline"
@@ -60,12 +62,8 @@ export default function Projects() {
                     >
                       Details →
                     </a>
-                  ) : (
-                    <span className="text-gray-400 font-medium">
-                      Details →
-                    </span>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}

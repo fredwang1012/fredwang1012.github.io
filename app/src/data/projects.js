@@ -2,14 +2,16 @@ export const projects = [
   {
     title: "Recoverability-Aware World Models",
     description:
-      "World-model training objective that preserves whether a vehicle can still recover after a decision, distilled into a DAgger-trained driving policy. Includes a headless CARLA pipeline that mines unrecoverable scenes, with NVIDIA Cosmos counterfactuals (in progress).",
+      "World-model training objective that preserves whether a vehicle can still recover after a decision, distilled into a DAgger-trained driving policy. Includes a headless CARLA pipeline that mines unrecoverable scenes, with NVIDIA Cosmos counterfactuals.",
     tech: ["PyTorch", "CARLA", "NVIDIA Cosmos", "Imitation Learning"],
+    status: "Ongoing",
   },
   {
     title: "Undercurrent",
     description:
-      "Foundation-model commodity forecasting: benchmarking Chronos-2 with covariates against a hierarchical Bayesian driver model combined via Bayesian Predictive Synthesis, scored on CRPS and calibration (in progress).",
+      "Foundation-model commodity forecasting: benchmarking Chronos-2 with covariates against a hierarchical Bayesian driver model combined via Bayesian Predictive Synthesis, scored on CRPS and calibration.",
     tech: ["Python", "Chronos-2", "Bayesian Modelling", "Time-Series"],
+    status: "Ongoing",
   },
   {
     title: "Unsupervised Patient Stratification",
