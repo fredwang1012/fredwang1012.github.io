@@ -9,3 +9,9 @@
 
 # cf CLI local cache
 .cloudflare/
+
+# avatar bake: raw audio/video cache, spend log, cloned voice id
+tools/avatar/.cache/
+tools/avatar/.local.json
+__pycache__/
+.venv/
