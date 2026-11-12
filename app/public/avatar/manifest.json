@@ -1,0 +1,1533 @@
+{
+  "clips": [
+    {
+      "id": "greeting",
+      "kind": "fallback",
+      "role": "greeting",
+      "question": "Say hello",
+      "paraphrases": [],
+      "keywords": [],
+      "answer": "Hi, I'm Frederick. Well, an AI version of me. These are short recorded answers about my work, my projects and my background. Pick a question below, or type your own.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 11.0,
+      "bytes": 0,
+      "sources": [],
+      "key": null
+    },
+    {
+      "id": "norecord",
+      "kind": "fallback",
+      "role": "norecord",
+      "question": "A question I have no clip for",
+      "paraphrases": [],
+      "keywords": [],
+      "answer": "I don't have that one recorded. My résumé and my email are linked right below, and I'm happy to answer by email.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 7.47,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Résumé",
+          "href": "/resume.pdf"
+        },
+        {
+          "label": "Email me",
+          "href": "mailto:fredwang1012@gmail.com"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "offtopic",
+      "kind": "fallback",
+      "role": "offtopic",
+      "question": "Something that is not about my work",
+      "paraphrases": [],
+      "keywords": [],
+      "answer": "I can only talk about my work and background. Try asking about a project, a job, my studies, or how to reach me.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 7.47,
+      "bytes": 0,
+      "sources": [],
+      "key": null
+    },
+    {
+      "id": "intro",
+      "kind": "answer",
+      "category": "About me",
+      "suggested": true,
+      "question": "Who are you?",
+      "paraphrases": [
+        "Tell me about yourself",
+        "Can you introduce yourself?",
+        "Give me a quick introduction",
+        "What's your background?"
+      ],
+      "keywords": [
+        "yourself",
+        "introduce",
+        "introduction"
+      ],
+      "answer": "Frederick Wang, or rather an AI version of me. I'm doing a master's in Applied Computing at the University of Toronto, after a bachelor's in Computer Science and Statistics at the University of British Columbia. I like building machine learning models and the systems that get them into the real world. Most recently I was a data engineer intern, connecting Claude to Unity Catalog.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.47,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Top of the page",
+          "href": "#top"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "current",
+      "kind": "answer",
+      "category": "About me",
+      "suggested": true,
+      "question": "What are you working on right now?",
+      "paraphrases": [
+        "What are you doing these days?",
+        "What are you currently working on?",
+        "What's keeping you busy at the moment?"
+      ],
+      "keywords": [
+        "currently",
+        "now",
+        "lately"
+      ],
+      "answer": "These days it's mostly my master's at the University of Toronto. On the research side, I'm working on recoverability-aware world models for safe driving. I'm also part of a team of four on Undercurrent, where we're forecasting commodity prices with Unilever Horizon3 Labs. And I'm a teaching assistant for CSC207, leading weekly tutorials and labs.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.2,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1 Selected work",
+          "href": "#work"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "strengths",
+      "kind": "answer",
+      "category": "About me",
+      "suggested": false,
+      "question": "What are you best at?",
+      "paraphrases": [
+        "What are your strengths?",
+        "What kind of engineer are you?",
+        "What do you bring to a team?",
+        "Why should we hire you?"
+      ],
+      "keywords": [
+        "strengths",
+        "best",
+        "hire"
+      ],
+      "answer": "Most of my work is building machine learning systems that hold up in production: agents, retrieval and evaluation, plus the data engineering underneath them. At BCI, I shipped an MCP server connecting Claude to Unity Catalog, which cut ad hoc analysis time by 50 percent. In my projects, I put a lot into careful evaluation and say plainly when something hasn't been measured yet.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.33,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Résumé",
+          "href": "/resume.pdf"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "avatar",
+      "kind": "answer",
+      "category": "About me",
+      "suggested": false,
+      "question": "Are you real? How does this avatar work?",
+      "paraphrases": [
+        "Is this an AI?",
+        "Am I talking to a real person?",
+        "How was this video made?",
+        "Is this a deepfake of you?",
+        "Is this a recording or generated on the fly?"
+      ],
+      "keywords": [
+        "avatar",
+        "real",
+        "ai",
+        "deepfake",
+        "recorded",
+        "recording",
+        "fake",
+        "generated"
+      ],
+      "answer": "Not quite: this is an AI version of me, not a live video and not me typing. The answers were written ahead of time from my résumé and project notes, then voiced with text-to-speech and lip-synced from one photo with Higgs Avatar, the same kind of pipeline as Talkback. Nothing is generated while you watch, and nothing you type leaves your browser.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.2,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.2 Talkback",
+          "href": "#p-tb"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "projects",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": true,
+      "question": "What projects have you built?",
+      "paraphrases": [
+        "Show me your projects",
+        "What have you made?",
+        "Give me an overview of your work",
+        "What are your side projects?"
+      ],
+      "keywords": [
+        "projects",
+        "portfolio"
+      ],
+      "answer": "The site lists ten projects, and six of them are still ongoing. Lately I've been working on recoverability-aware world models for safe driving, a text-to-SQL layer that remembers business logic, and citation-grounded retrieval over arXiv papers. I also led a team of three on Talkback, where we built audiobooks you can talk back to, asking characters questions out loud.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 24.73,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1 Selected work",
+          "href": "#work"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "world-models",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What is the recoverability-aware world models project?",
+      "paraphrases": [
+        "Tell me about your world models research",
+        "What are you doing with self-driving and CARLA?",
+        "What does recoverability mean for a driving model?",
+        "What is your autonomous driving project?"
+      ],
+      "keywords": [
+        "world",
+        "recoverability",
+        "carla",
+        "cosmos",
+        "driving",
+        "autonomous",
+        "dagger"
+      ],
+      "answer": "It's my ongoing research at the University of Toronto on safe driving. A prediction-only world model can call a scene safe after the point of no return, so I'm building one that tracks whether the car can still recover, then distilling it into a driving policy. I mine unrecoverable scenes in CARLA and generate counterfactual variants with NVIDIA Cosmos. There are no public results or code yet.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.4,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.1 World models",
+          "href": "#p-wm"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "talkback",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": true,
+      "question": "What is Talkback?",
+      "paraphrases": [
+        "Tell me about Talkback",
+        "What is the audiobook app where you talk to characters?",
+        "Explain the voice-interactive audiobooks project"
+      ],
+      "keywords": [
+        "talkback",
+        "audiobook",
+        "audiobooks"
+      ],
+      "answer": "Talkback is an audiobook app where a full expressive cast reads aloud, and you can stop anywhere to ask a character a question. They answer in their own voice using only what you've read so far, so nothing is spoiled. We were a team of three, which I led, and my part was the voice loop and the lip-synced avatars.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 20.93,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.2 Talkback",
+          "href": "#p-tb"
+        },
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/talkback"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "talkback-role",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What was your part in Talkback?",
+      "paraphrases": [
+        "What did you personally build in Talkback?",
+        "Was Talkback a team project?",
+        "Who worked on Talkback with you?",
+        "What was your role on the Talkback team?"
+      ],
+      "keywords": [
+        "talkback",
+        "team",
+        "role",
+        "part",
+        "personally"
+      ],
+      "answer": "Talkback was a team project with three of us, and I led it. We built and deployed it as a React and FastAPI app. My own part was the voice loop: real-time speech with barge-in, so you can talk over a character to interrupt, voice commands like asking it to slow down or go back a bit, emotion-tagged text-to-speech, and the lip-synced avatars.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 22.87,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.2 Talkback",
+          "href": "#p-tb"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "talkback-spoilers",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "How does Talkback avoid spoilers?",
+      "paraphrases": [
+        "How do the characters only know what I've read so far?",
+        "How does spoiler-safe retrieval work?",
+        "How did you stop the model leaking the ending of a book?"
+      ],
+      "keywords": [
+        "spoiler",
+        "spoilers",
+        "spoiled",
+        "leak",
+        "ending"
+      ],
+      "answer": "A character never gets text you haven't reached. Our server only hands it the passages and summaries up to your current position, and characters you haven't met yet stay locked. We enforce that rule in the backend with unit tests, and retrieval runs on Vertex AI Vector Search over only the passages already read. We measured spoiler leaks with an LLM judge evaluation.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 24.6,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.2 Talkback",
+          "href": "#p-tb"
+        },
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/talkback"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "talkback-bargein",
+      "kind": "answer",
+      "category": "How did you…",
+      "suggested": false,
+      "question": "How did you let people interrupt a character mid-answer?",
+      "paraphrases": [
+        "How does barge-in work in Talkback?",
+        "How does the hands-free voice mode know when I've finished speaking?",
+        "How did you build the real-time voice loop?",
+        "How do you handle turn detection?"
+      ],
+      "keywords": [
+        "interrupt",
+        "barge",
+        "bargein",
+        "handsfree",
+        "realtime",
+        "turn"
+      ],
+      "answer": "The voice loop was my part of Talkback, which our team of three built. Higgs Realtime handles turn detection, so you can talk over a character to interrupt. You can use push-to-talk, or hands-free, where the model decides when your question has ended. Hands-free works best with headphones, since laptop speakers can trigger a barge-in.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 22.4,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.2 Talkback",
+          "href": "#p-tb"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "talkback-lipsync",
+      "kind": "answer",
+      "category": "How did you…",
+      "suggested": false,
+      "question": "How do the lip-synced faces work?",
+      "paraphrases": [
+        "How did you make the talking avatars in Talkback?",
+        "How does the lip-sync video stream?",
+        "How do you animate a face from a photo?"
+      ],
+      "keywords": [
+        "lip",
+        "lipsync",
+        "faces",
+        "face",
+        "animate",
+        "stream"
+      ],
+      "answer": "In Talkback, the faces are lip-synced with Higgs Avatar, and building them was part of my own work on the team. The video streams as fragmented MP4, so playback starts before the render finishes. Any voice can drive any face, even one made from a photo or webcam. iOS Safari lacks MediaSource, so there the clips render first. This avatar uses the same kind of pipeline.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 24.67,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.2 Talkback",
+          "href": "#p-tb"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "text2sql",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": true,
+      "question": "What is text2sql-memory?",
+      "paraphrases": [
+        "Tell me about your text-to-SQL project",
+        "What is business logic memory for text-to-SQL?",
+        "How do you get a model to write correct SQL for a business?"
+      ],
+      "keywords": [
+        "text2sql",
+        "sql",
+        "business",
+        "logic",
+        "memory"
+      ],
+      "answer": "It's a text-to-SQL layer that retrieves business logic, not just schema, because a schema says what a column is called, not what it means. Metric definitions, join paths and verified examples live in a versioned store, and the model names the items it relied on. It hasn't been run against a real model yet, so there are no accuracy numbers.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 22.73,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.3 text2sql-memory",
+          "href": "#p-t2s"
+        },
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/text2sql-memory"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "text2sql-eval",
+      "kind": "answer",
+      "category": "How did you…",
+      "suggested": false,
+      "question": "How did you evaluate text-to-SQL without leaking answers?",
+      "paraphrases": [
+        "How is your BIRD evaluation leakage-safe?",
+        "What baselines and statistical tests did you use for text-to-SQL?",
+        "What are the results of text2sql-memory on BIRD?",
+        "How accurate is your text-to-SQL system?"
+      ],
+      "keywords": [
+        "bird",
+        "leakage",
+        "baseline",
+        "baselines",
+        "mcnemar",
+        "bootstrap",
+        "accuracy",
+        "results"
+      ],
+      "answer": "For BIRD, I split questions into seed and evaluation sets by a hash of their ID, so knowledge is only written from seed questions, and a test fails if any item cites an evaluation question. Baselines are schema-only and flat RAG, compared with paired bootstrap confidence intervals and a McNemar test. The comparison hasn't been run against a real model yet, so there are no accuracy numbers.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.13,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.3 text2sql-memory",
+          "href": "#p-t2s"
+        },
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/text2sql-memory"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "text2sql-learning",
+      "kind": "answer",
+      "category": "How did you…",
+      "suggested": false,
+      "question": "How does text2sql-memory learn from corrections?",
+      "paraphrases": [
+        "How do user corrections become rules?",
+        "How does the system improve when someone says the SQL is wrong?",
+        "What stops one bad correction from breaking the knowledge store?"
+      ],
+      "keywords": [
+        "corrections",
+        "correction",
+        "learn",
+        "learning",
+        "rules",
+        "feedback",
+        "draft"
+      ],
+      "answer": "When someone corrects an answer, the system distils that correction into at most three general rules, which start out as drafts. A correction never edits an existing rule, so one bad correction can't overwrite knowledge that already works. A draft is promoted to reviewed only once two answers citing it are marked good, and only a person can certify it.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.6,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.3 text2sql-memory",
+          "href": "#p-t2s"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "arxiv-rag",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What is the arXiv paper RAG project?",
+      "paraphrases": [
+        "Tell me about the question answering system over research papers",
+        "How does your paper RAG cite its sources?",
+        "What is citation-grounded retrieval?"
+      ],
+      "keywords": [
+        "arxiv",
+        "papers",
+        "paper",
+        "citation",
+        "latex"
+      ],
+      "answer": "It's a question answering tool over a fixed reading list of arXiv papers, where every claim cites the exact paper and section. Papers are parsed from their LaTeX source, chunked by section, and searched with BM25 plus optional e5 embeddings. The model must quote what it cites, and any quote missing from that passage is flagged, though that doesn't prove the passage supports the claim.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.8,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.4 arXiv Paper RAG",
+          "href": "#p-rag"
+        },
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/arxiv-paper-rag"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "citations-checked",
+      "kind": "answer",
+      "category": "How did you…",
+      "suggested": false,
+      "question": "How do you check that a citation is real?",
+      "paraphrases": [
+        "How do you stop the model from hallucinating quotes?",
+        "How do you defend a RAG system against prompt injection?",
+        "How are answers machine-checked against the cited passage?"
+      ],
+      "keywords": [
+        "hallucinate",
+        "hallucinating",
+        "hallucination",
+        "injection",
+        "quote",
+        "quotes",
+        "checked",
+        "verify",
+        "untrusted"
+      ],
+      "answer": "In my arXiv Paper RAG project, the model must quote the passage it cites, and code checks that the quote appears there. A quote that isn't found gets flagged, as does a citation marker with no matching citation. Retrieved text is treated as untrusted, so the model is told not to follow instructions inside it. The honest limit: this proves the quote exists, not that the passage supports the claim.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.6,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.4 arXiv Paper RAG",
+          "href": "#p-rag"
+        },
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/arxiv-paper-rag"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "pdf-reader",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What is the semantic PDF reader?",
+      "paraphrases": [
+        "Tell me about the PDF search tool",
+        "How do you search a PDF by meaning?",
+        "How does the reader highlight the passage on the page?"
+      ],
+      "keywords": [
+        "pdf",
+        "reader",
+        "semantic",
+        "highlight",
+        "highlights"
+      ],
+      "answer": "It's a PDF reader where you search by meaning instead of exact words: type a question, and it jumps to the page and highlights the passage, in one document or a whole library. PyMuPDF reads each line with its position, search combines BM25 with multilingual embeddings, and the viewer draws the hit over the page. Everything runs locally, and its evaluation numbers aren't published yet.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.8,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.5 Semantic PDF Reader",
+          "href": "#p-pdf"
+        },
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/semantic-pdf-reader"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "retrieval-eval",
+      "kind": "answer",
+      "category": "How did you…",
+      "suggested": false,
+      "question": "How do you evaluate retrieval quality?",
+      "paraphrases": [
+        "What retrieval metrics do you use?",
+        "What recall and MRR did your search get?",
+        "Do you use a reranker, and does hybrid search help?",
+        "How do you know your RAG retrieval is good?"
+      ],
+      "keywords": [
+        "recall",
+        "mrr",
+        "reranker",
+        "reranking",
+        "rerank",
+        "metrics",
+        "hybrid",
+        "bm25",
+        "embeddings"
+      ],
+      "answer": "With labelled questions and rank-based metrics. On my arXiv Paper RAG, hybrid search with BM25 and embeddings found the right section in the top three for ninety-four percent of thirty-two questions, with a mean reciprocal rank of zero point seven nine. The labels are a draft, so treat those as provisional. My Semantic PDF Reader tests a reranker, but those numbers aren't published yet.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.93,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.4 arXiv Paper RAG",
+          "href": "#p-rag"
+        },
+        {
+          "label": "§1.5 Semantic PDF Reader",
+          "href": "#p-pdf"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "undercurrent",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What is Undercurrent?",
+      "paraphrases": [
+        "Tell me about the commodity forecasting project with Unilever",
+        "What are you doing with Chronos-2?",
+        "How do you compare a foundation model with a Bayesian model for forecasting?"
+      ],
+      "keywords": [
+        "undercurrent",
+        "unilever",
+        "commodity",
+        "forecasting",
+        "forecast",
+        "chronos",
+        "bayesian",
+        "crps"
+      ],
+      "answer": "Undercurrent is a commodity forecasting project with Unilever Horizon3 Labs, and we're a team of four. The question is whether a time-series foundation model beats a domain model on commodity prices, so we benchmark zero-shot Chronos-2 against a hierarchical Bayesian driver model. We also fuse both with Bayesian Predictive Synthesis and score leakage-safe probabilistic forecasts on CRPS and calibration. There's no public code or results to share.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 30.0,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.6 Undercurrent",
+          "href": "#p-uc"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "patient-stratification",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What was the patient stratification project?",
+      "paraphrases": [
+        "Tell me about the VAE project on health checkups",
+        "How did you find clinical phenotypes without labels?",
+        "What did you do with unsupervised learning on medical data?"
+      ],
+      "keywords": [
+        "patient",
+        "stratification",
+        "vae",
+        "phenotypes",
+        "clustering",
+        "unsupervised",
+        "checkups",
+        "kmeans"
+      ],
+      "answer": "It was a two-person course project at UBC in April 2026, built on routine health checkup data that mixes structured lab values with free-text organ reports. We used a variational autoencoder to compress those sparse features into a small latent space, then ran K-Means on it. That recovered clinical phenotypes like sensorineural hearing loss, liver fibrosis and hypothyroidism, with no labels at all.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.73,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1.7 Patient stratification",
+          "href": "#p-ps"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "finance-mcp",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What is the personal finance MCP server?",
+      "paraphrases": [
+        "Tell me about personal-finance-mcp",
+        "How do you let Claude read your investment accounts safely?",
+        "Have you built an MCP server for your own use?"
+      ],
+      "keywords": [
+        "finance",
+        "plaid",
+        "investment",
+        "accounts",
+        "wealthsimple"
+      ],
+      "answer": "It's a read-only MCP server that lets Claude answer questions about my own investment accounts. The data comes from Plaid, none of its five tools can move money, and credentials stay in my operating system's credential store. It runs locally for Claude Desktop and Claude Code, or on a small server behind a sign-in that only admits my own account.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.2,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/personal-finance-mcp"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "playlist-sorter",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What is the YouTube playlist sorter?",
+      "paraphrases": [
+        "Tell me about youtube-playlist-sorter",
+        "How do you sort new videos into playlists automatically?",
+        "What is the flow chart of channels and filters?"
+      ],
+      "keywords": [
+        "youtube",
+        "playlist",
+        "playlists",
+        "sorter",
+        "videos",
+        "channels"
+      ],
+      "answer": "It's a tool where you draw a flow chart of channels, filters and playlists, and a daily job runs it. New videos from the channels I follow get filtered by what they're about and land in the right YouTube playlist. The graph is a YAML file, and every run can be previewed with a dry run first. Next I'm planning a visual editor and language-model routing.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.6,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Code on GitHub",
+          "href": "https://github.com/fredwang1012/youtube-playlist-sorter"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "earlier-projects",
+      "kind": "answer",
+      "category": "Projects",
+      "suggested": false,
+      "question": "What are GreenLife, WealthComplex and the Great Expectations work?",
+      "paraphrases": [
+        "Tell me about GreenLife",
+        "What did you contribute to Great Expectations?",
+        "What is WealthComplex?",
+        "What were your earlier projects?"
+      ],
+      "keywords": [
+        "greenlife",
+        "wealthcomplex",
+        "expectations",
+        "bedrock",
+        "earlier",
+        "sustainability"
+      ],
+      "answer": "Those are three earlier projects. GreenLife, from 2024, is RAG on AWS Bedrock over Canadian sustainability incentives, and it won first place. WealthComplex, also from 2024, is an investment-management platform. For Great Expectations, the open-source data-quality library, I patched SQL Server and Databricks dialect gaps like regex, identifier quoting and views in my fork during my BCI internship.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.67,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1 Selected work",
+          "href": "#work"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "experience",
+      "kind": "answer",
+      "category": "Experience",
+      "suggested": true,
+      "question": "What is your work experience?",
+      "paraphrases": [
+        "Where have you worked?",
+        "Walk me through your jobs",
+        "What internships have you done?",
+        "Summarise your career so far"
+      ],
+      "keywords": [
+        "experience",
+        "jobs",
+        "internships",
+        "career",
+        "worked"
+      ],
+      "answer": "Most recently I was a data engineer intern at British Columbia Investment Management Corporation, where I shipped an MCP server connecting Claude to Unity Catalog and cut ad hoc analysis time by 50 percent. Before that, I trained models in R to predict ankle-surgery outcomes as a data analyst intern at Providence Research. I've also been a teaching assistant at UBC, and now at the University of Toronto.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 27.07,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "bci",
+      "kind": "answer",
+      "category": "Experience",
+      "suggested": false,
+      "question": "What did you do at BCI?",
+      "paraphrases": [
+        "Tell me about your data engineering internship",
+        "What did you work on at British Columbia Investment Management?",
+        "What was your most recent internship?"
+      ],
+      "keywords": [
+        "bci",
+        "british",
+        "columbia",
+        "investment"
+      ],
+      "answer": "From May to December 2025, I was a data engineer intern at BCI. I shipped an MCP server that gives Claude governed access to Unity Catalog, so analysts can query data in plain English, which cut ad hoc analysis time by 50 percent. I also won first place in an internal hackathon with a scheduling optimizer and then led its production deployment.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.07,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "bci-mcp",
+      "kind": "answer",
+      "category": "Experience",
+      "suggested": true,
+      "question": "Tell me about the MCP server you built at BCI.",
+      "paraphrases": [
+        "How did you connect Claude to Unity Catalog?",
+        "What is the Databricks MCP server?",
+        "How do analysts query data in plain English?",
+        "How did you cut ad hoc analysis time?"
+      ],
+      "keywords": [
+        "mcp",
+        "unity",
+        "catalog",
+        "claude",
+        "analysts"
+      ],
+      "answer": "During my data engineering internship at British Columbia Investment Management Corporation, I shipped a production MCP server on Databricks Apps that gives Claude governed access to Unity Catalog. That lets analysts across the company query data in plain English instead of writing everything by hand. It cut ad hoc analysis time by 50 percent.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.0,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "bci-optimizer",
+      "kind": "answer",
+      "category": "Experience",
+      "suggested": false,
+      "question": "What was the hackathon you won at BCI?",
+      "paraphrases": [
+        "Tell me about the scheduling optimizer",
+        "What is the schedule optimization algorithm?",
+        "How did a hackathon project end up in production?"
+      ],
+      "keywords": [
+        "hackathon",
+        "scheduling",
+        "schedule",
+        "optimizer",
+        "optimization",
+        "won"
+      ],
+      "answer": "The winning project at BCI's internal hackathon was a scheduling optimizer that improved efficiency by 25 percent and took first place. Afterwards, I led its production deployment for one of BCI's portfolio companies, where it's projected to unlock 20 million dollars in value. The algorithm details aren't something I can cover here, so feel free to email me. The address is linked below the video.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.6,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "bci-rag",
+      "kind": "answer",
+      "category": "Experience",
+      "suggested": false,
+      "question": "What was the RAG knowledge base at BCI?",
+      "paraphrases": [
+        "Have you built RAG in production?",
+        "What did you do with Databricks Vector Search?",
+        "How did you serve the knowledge base over internal documents?"
+      ],
+      "keywords": [
+        "knowledge",
+        "base",
+        "vector",
+        "mlflow",
+        "internal",
+        "documents"
+      ],
+      "answer": "At BCI, during my data engineer internship, I developed a RAG knowledge base over the company's internal documents. Retrieval ran on Databricks Vector Search, and the whole thing was served through MLflow Model Serving. That's as much detail as I can share about it here, but if you'd like to know more, my email is linked below the video.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 22.6,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "ta",
+      "kind": "answer",
+      "category": "Experience",
+      "suggested": false,
+      "question": "What do you teach as a teaching assistant?",
+      "paraphrases": [
+        "Tell me about your TA work",
+        "What is CSC207?",
+        "Do you have teaching or mentoring experience?",
+        "What did you teach at UBC?"
+      ],
+      "keywords": [
+        "ta",
+        "teaching",
+        "teach",
+        "tutorials",
+        "csc207",
+        "mentoring",
+        "mentor",
+        "students"
+      ],
+      "answer": "At the University of Toronto, I lead weekly tutorials and labs for CSC207, covering Java, object-oriented design and Git-based team development. Before that, at UBC from 2024 to 2026, I led machine-learning tutorials in R and mentored more than a hundred students across four terms. I also co-facilitated four-hundred-level database lectures on query optimization, concurrency control and crash recovery.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.93,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "providence",
+      "kind": "answer",
+      "category": "Experience",
+      "suggested": false,
+      "question": "What did you do at Providence Research?",
+      "paraphrases": [
+        "Tell me about your data analyst internship",
+        "What was the ankle surgery outcomes work?",
+        "Have you worked with healthcare data?"
+      ],
+      "keywords": [
+        "providence",
+        "analyst",
+        "ankle",
+        "surgery",
+        "healthcare",
+        "dashboards",
+        "powerbi"
+      ],
+      "answer": "From January to August 2024, I was a data analyst intern at Providence Research. I trained supervised machine learning models in R to predict ankle-surgery outcomes from patient risk factors, and ran comparative cohort analyses that informed surgeons' choice between procedure types. I also replaced manually regenerated R reports with interactive Power BI dashboards and maintained the research databases.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 27.07,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "education",
+      "kind": "answer",
+      "category": "Education",
+      "suggested": true,
+      "question": "Where did you study?",
+      "paraphrases": [
+        "What is your education?",
+        "Which university did you go to?",
+        "What degrees do you have?",
+        "Where did you go to school?"
+      ],
+      "keywords": [
+        "education",
+        "university",
+        "degree",
+        "degrees",
+        "school",
+        "study",
+        "studied",
+        "ubc"
+      ],
+      "answer": "Right now I'm doing a master's in Applied Computing at the University of Toronto, with a concentration in AI. Before that, I did my bachelor's in Computer Science and Statistics at the University of British Columbia, from 2021 to 2026. I was on the Dean's List there from 2022 to 2026.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 19.0,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§5 Contact, Education note",
+          "href": "#contact"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "masters",
+      "kind": "answer",
+      "category": "Education",
+      "suggested": false,
+      "question": "What are you studying in your master's?",
+      "paraphrases": [
+        "What courses are you taking at the University of Toronto?",
+        "What is the Applied Computing program?",
+        "What is your master's concentration?"
+      ],
+      "keywords": [
+        "masters",
+        "master",
+        "msc",
+        "courses",
+        "coursework",
+        "toronto",
+        "uoft",
+        "applied",
+        "computing",
+        "concentration"
+      ],
+      "answer": "It's a master's in Applied Computing at the University of Toronto, with a concentration in artificial intelligence, which I started in September 2026. My coursework includes Neural Networks, Deep Learning, Imitation Learning for Robotics and Computational Linguistics. Alongside classes, I'm working on recoverability-aware world models for safe driving, which uses imitation learning too.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.93,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§5 Contact, Education note",
+          "href": "#contact"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "awards",
+      "kind": "answer",
+      "category": "Education",
+      "suggested": false,
+      "question": "What awards or scholarships have you received?",
+      "paraphrases": [
+        "Were you on the Dean's List?",
+        "Have you won any scholarships?",
+        "What honours do you have?"
+      ],
+      "keywords": [
+        "awards",
+        "award",
+        "scholarship",
+        "scholarships",
+        "dean",
+        "honours",
+        "honors"
+      ],
+      "answer": "Yes, I was on the Dean's List at UBC from 2022 to 2026. In 2022 I also received the Trek Excellence Scholarship and the J. Fred Muir Scholarship. Outside of classes, a scheduling optimizer took first place in an internal hackathon during my internship at BCI, and GreenLife, a 2024 RAG project, also won first place.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 21.07,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Résumé",
+          "href": "/resume.pdf"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "skills",
+      "kind": "answer",
+      "category": "Skills",
+      "suggested": true,
+      "question": "What is your tech stack?",
+      "paraphrases": [
+        "What programming languages do you know?",
+        "What tools and frameworks do you use?",
+        "What are your technical skills?"
+      ],
+      "keywords": [
+        "stack",
+        "languages",
+        "skills",
+        "tools",
+        "frameworks",
+        "python",
+        "typescript",
+        "java"
+      ],
+      "answer": "Mostly Python and SQL, plus TypeScript, JavaScript, Java, C plus plus, C and R. For models and services I use PyTorch, FastAPI, React and Docker, with Databricks and Spark on the data side. A lot of my recent work is agents and retrieval: the Claude API, MCP servers, hybrid search with BM25 and embeddings, and text-to-SQL. The full list is on the résumé.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.73,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Résumé",
+          "href": "/resume.pdf"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "skills-agents",
+      "kind": "answer",
+      "category": "Skills",
+      "suggested": false,
+      "question": "What is your experience with agents, RAG and MCP?",
+      "paraphrases": [
+        "Have you built LLM agents?",
+        "What do you know about retrieval-augmented generation?",
+        "How much have you worked with the Claude API?",
+        "What LLM applications have you shipped?"
+      ],
+      "keywords": [
+        "agents",
+        "agent",
+        "rag",
+        "llm",
+        "llms",
+        "retrieval",
+        "genai"
+      ],
+      "answer": "At BCI, I shipped a production MCP server that gives Claude governed access to Unity Catalog, cutting ad hoc analysis time by 50 percent, and built a RAG knowledge base on Databricks Vector Search. Since then I've built a citation-grounded RAG over arXiv papers with machine-checked quotes, a text-to-SQL layer that retrieves business logic, and a read-only MCP server for my own investment accounts.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.67,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1 Selected work",
+          "href": "#work"
+        },
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "skills-ml",
+      "kind": "answer",
+      "category": "Skills",
+      "suggested": false,
+      "question": "What is your machine learning experience?",
+      "paraphrases": [
+        "Have you trained models in PyTorch?",
+        "What ML research have you done?",
+        "Do you have deep learning experience?"
+      ],
+      "keywords": [
+        "machine",
+        "ml",
+        "pytorch",
+        "deep",
+        "trained",
+        "training",
+        "research"
+      ],
+      "answer": "A fair amount, mostly in PyTorch and R. At Providence Research I trained supervised models in R that predict ankle-surgery outcomes, and in a two-person UBC course project we used a variational autoencoder in PyTorch to recover clinical phenotypes with no labels. Right now I'm working on recoverability-aware world models for safe driving in CARLA, though there are no results to share yet.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 26.07,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§1 Selected work",
+          "href": "#work"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "skills-data",
+      "kind": "answer",
+      "category": "Skills",
+      "suggested": false,
+      "question": "What is your data engineering experience?",
+      "paraphrases": [
+        "Have you worked with Databricks and Spark?",
+        "What do you know about data pipelines and data quality?",
+        "How strong is your SQL?"
+      ],
+      "keywords": [
+        "data",
+        "engineering",
+        "databricks",
+        "spark",
+        "pipelines",
+        "quality"
+      ],
+      "answer": "Most of it comes from my 2025 data engineering internship at British Columbia Investment Management Corporation. There I shipped an MCP server on Databricks Apps that lets Claude query Unity Catalog in plain English, cutting ad hoc analysis time by 50 percent. I also patched SQL Server and Databricks dialect gaps in a fork of Great Expectations, the open-source data-quality library.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.67,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§2 Experience",
+          "href": "#experience"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "looking-for",
+      "kind": "answer",
+      "category": "Hiring",
+      "suggested": true,
+      "question": "What kind of role are you looking for?",
+      "paraphrases": [
+        "Are you open to new opportunities?",
+        "What do you want to do next?",
+        "Are you available for an internship or a full-time job?",
+        "What roles interest you?"
+      ],
+      "keywords": [
+        "looking",
+        "role",
+        "roles",
+        "opportunities",
+        "available",
+        "availability",
+        "position",
+        "next"
+      ],
+      "answer": "Mostly work where a model has to hold up in production: machine learning engineering, agents and retrieval systems, and the data engineering underneath them. My site calls me a machine learning and data engineer, and my résumé leads with agents, retrieval and evaluation. For details like role type, timing, location or work authorisation, please email me; the link is below the video.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 25.67,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§5 Contact",
+          "href": "#contact"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "contact",
+      "kind": "answer",
+      "category": "Hiring",
+      "suggested": true,
+      "question": "How can I contact you?",
+      "paraphrases": [
+        "What is your email address?",
+        "How do I get in touch?",
+        "Are you on LinkedIn or GitHub?",
+        "How can I reach you?"
+      ],
+      "keywords": [
+        "contact",
+        "email",
+        "linkedin",
+        "github",
+        "reach",
+        "touch",
+        "message"
+      ],
+      "answer": "Email is the best way to reach me, and the address is linked below the video. I'm also on LinkedIn and GitHub, and those links are there too. If you'd like more background first, the Résumé link on this site opens my résumé, and you can download it as a PDF.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 17.2,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§5 Contact",
+          "href": "#contact"
+        },
+        {
+          "label": "Email me",
+          "href": "mailto:fredwang1012@gmail.com"
+        },
+        {
+          "label": "LinkedIn",
+          "href": "https://www.linkedin.com/in/frederick-wang/"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/fredwang1012"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "resume",
+      "kind": "answer",
+      "category": "Hiring",
+      "suggested": false,
+      "question": "Can I see your résumé?",
+      "paraphrases": [
+        "Where can I download your CV?",
+        "Do you have a resume?",
+        "Send me your résumé"
+      ],
+      "keywords": [
+        "resume",
+        "cv",
+        "download"
+      ],
+      "answer": "Yes, it's right here on the site. The Résumé link opens it, and you can download it as a PDF from there. If anything I say here ever disagrees with the résumé, trust the résumé. And if you'd like to talk about it, my email is linked below the video.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 16.6,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Résumé",
+          "href": "/resume.pdf"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "hobbies",
+      "kind": "answer",
+      "category": "Outside work",
+      "suggested": false,
+      "question": "What do you do outside of work?",
+      "paraphrases": [
+        "What are your hobbies?",
+        "What do you do for fun?",
+        "Do you play any sports or instruments?"
+      ],
+      "keywords": [
+        "hobbies",
+        "hobby",
+        "fun",
+        "sports",
+        "ski",
+        "skiing",
+        "soccer",
+        "badminton"
+      ],
+      "answer": "Mostly piano, and lately that means a lot of Rachmaninov. There's a recording on this site of me playing Kreisler's Liebesleid in his arrangement. I also ski, play soccer and badminton, and read classic literature. Dostoevsky is a favourite, and right now I'm reading Dune by Frank Herbert.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 19.33,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "§5 Contact",
+          "href": "#contact"
+        }
+      ],
+      "key": null
+    },
+    {
+      "id": "music-books",
+      "kind": "answer",
+      "category": "Outside work",
+      "suggested": false,
+      "question": "What music do you play, and what are you reading?",
+      "paraphrases": [
+        "What are your favourite piano pieces?",
+        "What books do you like?",
+        "Do you play piano?",
+        "What is your favourite book?"
+      ],
+      "keywords": [
+        "music",
+        "piano",
+        "rachmaninov",
+        "books",
+        "book",
+        "reading",
+        "read",
+        "novels",
+        "literature"
+      ],
+      "answer": "Piano, mostly Rachmaninov lately. My favourite pieces are his Third Piano Concerto, then his Second, then Liszt's Petrarch Sonnet 104, and there's a recording of me playing Kreisler's Liebesleid on this site. Right now I'm reading Dune by Frank Herbert, and my favourite books are The Brothers Karamazov and The Idiot by Dostoevsky, and Orwell's 1984.",
+      "cues": [],
+      "file": null,
+      "poster": null,
+      "duration": 23.4,
+      "bytes": 0,
+      "sources": [
+        {
+          "label": "Appendix A, Music",
+          "href": "#music"
+        },
+        {
+          "label": "Appendix B, Books",
+          "href": "#books"
+        }
+      ],
+      "key": null
+    }
+  ],
+  "placeholders": true,
+  "version": 1,
+  "voice": "preset",
+  "portrait": "/frederick.jpg",
+  "total_bytes": 0,
+  "generated": "2026-11-12T22:43:23+00:00"
+}
