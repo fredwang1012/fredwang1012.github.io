@@ -380,7 +380,7 @@
     });
     srcEl.addEventListener("click", follow);
     // someone is about to ask: open the live session now, so the first answer does not wait for it
-    input.addEventListener("focus", function () { if (live.on) liveOpen().then(function (ws) { try { ws.send('{"type":"warm"}'); } catch (_) {} }, function () {}); });
+    input.addEventListener("focus", function () { if (live.on && live.generates) liveOpen().then(function (ws) { try { ws.send('{"type":"warm"}'); } catch (_) {} }, function () {}); });
   }
 
   function note(text, busy) { noteEl.textContent = text || ""; noteEl.hidden = !text; noteEl.classList.toggle("busy", !!(text && busy)); }

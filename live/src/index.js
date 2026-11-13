@@ -192,7 +192,7 @@ async function session(socket, request, env) {
       answerKey(q, env).then((key) => forgetAnswer(env, key)).then((ok) => send({ type: "forgot", ok }), () => send({ type: "forgot", ok: false }));
       return;
     }
-    if (msg && msg.type === "warm") { connect().catch(() => {}); return; }   // open the voice session ahead of the first question
+    if (msg && msg.type === "warm") { if (mayUseModel()) connect().catch(() => {}); return; }   // open the voice session ahead of the first question
     if (!msg || msg.type !== "ask") return;   // a question is the only other thing a visitor can send
     handle(msg).catch(() => { busy = false; send({ type: "error", code: "failed", message: "Something went wrong on my side. Try again." }); });
   });
@@ -257,8 +257,12 @@ async function session(socket, request, env) {
     }
   }
 
+  /** Whether this session may reach the model at all: the owner filling the store, or a visitor when that is switched on. */
+  function mayUseModel() { return filling || env.LIVE_FOR_VISITORS === "1"; }
+
   /** Open the realtime connection once per session and tell it who it is. */
   async function connect() {
+    if (!mayUseModel()) throw new Error("the model is not available to visitors");   // every path to the model passes here
     if (boson) return boson;
     const model = env.REALTIME_MODEL || "higgs-realtime-1.5-preview";
     const resp = await fetch(`${BOSON}/v1/realtime?model=${encodeURIComponent(model)}`, {
