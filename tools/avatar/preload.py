@@ -74,7 +74,7 @@ def main() -> int:
     if not url or not token:
         sys.exit("needs live.url in config.json and PRELOAD_TOKEN in the environment")
     origin = "https://fredwang1012.github.io"
-    made = kept = failed = 0
+    made = kept = failed = unfilmed = 0
     seconds = 0.0
     ws = None
 
@@ -94,7 +94,7 @@ def main() -> int:
                 ws = ws or open_session()
                 t0 = time.time()
                 ws.send(json.dumps({"type": "ask", "text": text}))
-                said, was_kept, size, end = "", False, 0, None
+                said, was_kept, size, end, filmed = "", False, 0, None, False
                 while end is None:
                     m = ws.recv(timeout=180)
                     if isinstance(m, (bytes, bytearray)):
@@ -104,10 +104,17 @@ def main() -> int:
                     if e["type"] == "said":
                         said, was_kept = e["text"], bool(e.get("kept"))
                         seconds += 0 if was_kept else float(e.get("seconds") or 0)
+                    elif e["type"] == "video":
+                        filmed = True
                     elif e["type"] in ("done", "error", "limit"):
                         end = e
                 if end["type"] != "done" or not size:
                     raise RuntimeError(end.get("message") or end["type"])
+                if not filmed:  # the renderer was busy: the service sent the voice alone, which it does not keep
+                    unfilmed += 1
+                    print(f"[{n}/{len(todo)}] voice only, not kept (run again later)  {text}", flush=True)
+                    time.sleep(10)
+                    break
                 kept += was_kept
                 made += not was_kept
                 print(f"[{n}/{len(todo)}] {'kept' if was_kept else 'made'} {time.time() - t0:5.1f}s {size // 1024:5d} KB  {text}\n      {said}", flush=True)
@@ -123,8 +130,8 @@ def main() -> int:
                     print(f"[{n}/{len(todo)}] FAILED ({type(e).__name__}: {str(e)[:120]})  {text}", flush=True)
                 else:
                     time.sleep(8)
-    print(f"\nmade {made}, already in the store {kept}, failed {failed}; about {seconds / 60:.1f} min of new video (${seconds / 60 * 0.09:.2f} at $0.09/min)")
-    return 1 if failed else 0
+    print(f"\nmade {made}, already in the store {kept}, voice only {unfilmed}, failed {failed}; about {seconds / 60:.1f} min of new video (${seconds / 60 * 0.09:.2f} at $0.09/min)")
+    return 1 if failed or unfilmed else 0
 
 
 if __name__ == "__main__":
