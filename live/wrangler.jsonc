@@ -1,0 +1,37 @@
+{
+  // The live half of the avatar: a small Worker that holds the Boson key, answers a visitor's question with Boson's
+  // realtime model in the cloned voice, and streams back the lip-synced video. The page itself stays on GitHub Pages.
+  "$schema": "https://unpkg.com/wrangler@4/config-schema.json",
+  "name": "fredwang-avatar-live",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "observability": { "enabled": true },
+  "rules": [
+    { "type": "Text", "globs": ["**/*.md"], "fallthrough": true },
+    { "type": "Data", "globs": ["**/*.jpg"], "fallthrough": true }
+  ],
+  // USAGE: the day's counters. ANSWERS: every answer already given, kept so a repeated question costs nothing.
+  "kv_namespaces": [{ "binding": "USAGE" }, { "binding": "ANSWERS" }],
+  "vars": {
+    // pages allowed to open a session, comma separated: the site, and the copy of it Cloudflare serves
+    "ALLOWED_ORIGINS": "https://fredwang1012.github.io,https://fredwang1012.fredwang1012.workers.dev",
+    // "1": the model answers a visitor's new question there and then, unchecked. Anything else: a visitor gets
+    // only answers that have been read and approved (tools/avatar/review_store.py), and the model is used only
+    // by the owner's preload. Read on 2026-11-13: 19 of 169 model answers had a detail wrong or overstated.
+    "LIVE_FOR_VISITORS": "0",
+    "REALTIME_MODEL": "higgs-realtime-1.5-preview",
+    // the shelf the kept answers are filed on; a new name starts an empty one
+    "STORE_SHELF": "YiGRBjf",
+    "VIDEO_SIZE": "640x640",
+    // spending limits: seconds of rendered video per day for everyone together, questions per visitor per day,
+    // questions per open session
+    "DAILY_SECONDS": "300",
+    // a higher allowance while there is credit that would otherwise expire unused
+    "BOOST_UNTIL": "2026-11-17",
+    "BOOST_DAILY_SECONDS": "6000",
+    "DAILY_ASKS_PER_VISITOR": "25",
+    "ASKS_PER_SESSION": "12"
+  }
+  // secrets, set with `wrangler secret put`: BOSON_API_KEY, BOSON_VOICE, VISITOR_SALT, and PRELOAD_TOKEN while
+  // filling the answer store
+}

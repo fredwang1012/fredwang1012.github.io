@@ -1,0 +1,47 @@
+{
+  "answers": {
+    "model": "claude-opus-5-5",
+    "effort": "medium",
+    "min_sentences": 2,
+    "max_sentences": 4,
+    "max_chars": 480
+  },
+  "tts": {
+    "model": "higgs-tts-3",
+    "voice": "marcus",
+    "voice_kind": "preset",
+    "normalize": true,
+    "usd_per_1k_chars": 0.015,
+    "est_chars_per_second": 15
+  },
+  "avatar": {
+    "model": "higgs-avatar",
+    "size": "640x640",
+    "portrait": "tools/avatar/portrait.jpg",
+    "portrait_note": "portrait.jpg is a 1280x1280 crop of a studio headshot: front-facing, even light.",
+    "usd_per_minute": {
+      "640x640": 0.09,
+      "480x640": 0.07,
+      "640x480": 0.07
+    },
+    "max_seconds": 58,
+    "still": "/avatar/me.webp"
+  },
+  "output": {
+    "dir": "app/public/avatar",
+    "transcode": true,
+    "height": 640,
+    "crf": 23,
+    "audio_kbps": 96,
+    "poster_quality": 2
+  },
+  "live": {
+    "url": "wss://fredwang-avatar-live.fredwang1012.workers.dev/talk",
+    "openers": [
+      "Let me think about that.",
+      "Sure, one second.",
+      "Okay, give me a second.",
+      "Good question. One second."
+    ]
+  }
+}

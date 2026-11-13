@@ -366,6 +366,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
 .hero .sub{font-size:19px;line-height:1.6;color:var(--ink-3)}
 .hero .links{font-family:var(--sans);font-size:15px;display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
 .hero .c-side{padding-top:104px}
+/* avatar launchers: the portrait and a margin note. The sheet itself is /avatar/widget.js, fetched on first open */
+.av-launch{position:relative;display:block;width:-moz-fit-content;width:fit-content;padding:0;border:0;background:none;color:inherit;font:inherit;line-height:0;border-radius:4px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.av-launch img{display:block}
+.av-launch .av-badge{position:absolute;left:0;right:0;bottom:7px;width:max-content;margin-inline:auto;display:inline-flex;align-items:center;gap:5px;padding:5px 9px 5px 7px;border-radius:999px;font:500 11.5px/1 var(--sans);white-space:nowrap;color:#1b1b1b;background:rgba(255,255,255,.84);-webkit-backdrop-filter:blur(8px) saturate(150%);backdrop-filter:blur(8px) saturate(150%);box-shadow:0 2px 8px -2px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.9)}
+.av-launch .av-badge svg{width:9px;height:9px;flex:none}
+.av-launch:hover .av-badge{background:#fff}
+.note.av-ask{margin-top:12px}
+.note.av-ask .textbtn{align-self:flex-start;text-align:left}
 .textbtn{font:inherit;color:var(--link);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
 .textbtn:hover{color:var(--link-hover)}
 
@@ -626,7 +634,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
 
     <header class="hero row">
       <div class="portrait">
-        <img src="/frederick.jpg" alt="Portrait of Frederick Wang" width="120" height="150" fetchpriority="high">
+        <button class="av-launch" type="button" data-avatar-open aria-haspopup="dialog">
+          <img src="/frederick.jpg" alt="Portrait of Frederick Wang" width="120" height="150" fetchpriority="high">
+          <span class="av-badge" data-liquid="snap"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1.2v7.6a.5.5 0 0 0 .77.42l5.9-3.8a.5.5 0 0 0 0-.84l-5.9-3.8A.5.5 0 0 0 2 1.2Z" fill="currentColor"/></svg><span>Ask <span class="sr-only">an AI version of </span>me</span></span>
+        </button>
       </div>
       <div class="c-main">
         <h1>Frederick Wang</h1>
@@ -639,12 +650,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
           <button class="textbtn copy-email" type="button" data-liquid="snap">Copy email</button>
         </p>
       </div>
-      <aside class="c-side" aria-label="Currently">
+      <aside class="c-side" aria-label="Currently, and ask me">
         <div class="note">
           <p class="kicker">Currently</p>
           <p>Recoverability-aware world models for safe driving (CARLA, NVIDIA Cosmos).</p>
           <p>Undercurrent: foundation-model commodity forecasting with Unilever H3L Labs.</p>
           <p>TA for CSC207 at UofT.</p>
+        </div>
+        <div class="note av-ask">
+          <p class="kicker">Ask me</p>
+          <p>An AI version of me answers questions about my work, in short recorded videos.</p>
+          <button class="textbtn" type="button" data-avatar-open data-liquid="snap" aria-haspopup="dialog">Ask a question →</button>
         </div>
       </aside>
     </header>
@@ -2008,6 +2024,39 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
   window.ResumeViewer = { open: open, close: close, isResume: isResume, href: realHref, wire: wire };
 })();
 /*! end resume viewer */
+</script>
+<script>/*! Avatar launcher
+ * Buttons marked data-avatar-open open "an AI version of me": a sheet of recorded video answers.
+ * Nothing for it is on the page until then. The sheet, its question list and its videos are fetched from /avatar/
+ * on the first open, the way the résumé viewer fetches pdf.js.
+ */
+(function () {
+  "use strict";
+  var doc = document, lib = null;
+  function load() {
+    if (lib) return lib;
+    lib = new Promise(function (res, rej) {
+      if (window.AvatarWidget) return res(window.AvatarWidget);
+      var s = doc.createElement("script"); s.src = "/avatar/widget.js"; s.async = true;
+      s.onload = function () { if (window.AvatarWidget) res(window.AvatarWidget); else rej(new Error("avatar")); };
+      s.onerror = function () { lib = null; rej(new Error("avatar")); };
+      doc.head.appendChild(s);
+    });
+    return lib;
+  }
+  function open(from) {
+    load().then(function (w) { w.open(from); }, function () {
+      var live = doc.getElementById("live");
+      if (live) live.textContent = "The video answers could not load. Please use the email address under Contact instead.";
+    });
+  }
+  doc.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-avatar-open]");
+    if (b) { e.preventDefault(); open(b); }
+  });
+  if (location.hash === "#ask") open(null);   // a shareable link straight to the sheet; no sound plays until a click
+})();
+/*! end avatar launcher */
 </script>
   </body>
 </html>
