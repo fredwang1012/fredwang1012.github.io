@@ -24,7 +24,11 @@ const MIN_REST_MS = 1500;           // a tail shorter than this is not worth a s
 const SESSION_MS = 10 * 60 * 1000;  // a connection is closed after this long
 const MAX_STORED_VIDEO = 20 * 1024 * 1024;        // one answer; a KV value may be 25 MB
 const MAX_STORE_BYTES = 850 * 1024 * 1024;        // all answers together; the free plan stores 1 GB
-const MAX_FILL_BYTES = 600 * 1024 * 1024;         // how much of that the preload may use: the rest is for visitors' own questions
+const MAX_FILL_BYTES = 600 * 1024 * 1024;
+// A re-recording in the expressive delivery is slower than the realtime voice, most of all over lists of names
+// (13 of 342 were refused at 0.58 s a word on 2026-11-13). Each take has been heard and checked against its words
+// before it is sent, so the pace check only has to catch a broken file here.
+const PUT_SLOWEST = 0.75;         // how much of that the preload may use: the rest is for visitors' own questions
 
 // The notes file is written for people too: only the facts go to the model, not the editing notes around them.
 const END = NOTES.indexOf("## Page anchors");
@@ -298,7 +302,7 @@ async function session(socket, request, env) {
     const said = typeof msg.said === "string" ? msg.said : "";
     const seconds = Number(msg.seconds), want = Number(msg.bytes);
     const style = /^[a-z-]{1,24}$/.test(String(msg.style || "")) ? String(msg.style) : "";
-    if (!q || !standsAlone(q) || !(want > 0 && want <= MAX_STORED_VIDEO) || !plausibleSpeech(said, seconds)) {
+    if (!q || !standsAlone(q) || !(want > 0 && want <= MAX_STORED_VIDEO) || !plausibleSpeech(said, seconds, PUT_SLOWEST)) {
       return send({ type: "put_ready", ok: false, why: "not a valid recording" });
     }
     const key = await answerKey(q, env);

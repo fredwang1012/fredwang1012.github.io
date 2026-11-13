@@ -58,6 +58,9 @@ test("speech that runs long or short for its words is not kept", () => {
   const words = (n) => Array.from({ length: n }, () => "word").join(" ");
   for (const [n, s] of [[71, 31.4], [24, 9.3], [28, 7.5], [28, 13.5]]) assert.equal(plausibleSpeech(words(n), s), true, `${n} words in ${s}s`);
   for (const [n, s] of [[73, 43.6], [64, 42.1], [30, 86], [40, 2], [2, 1], [20, 0]]) assert.equal(plausibleSpeech(words(n), s), false, `${n} words in ${s}s`);
+  assert.equal(plausibleSpeech(words(30), 20), false, "a slow take at the usual pace limit");
+  assert.equal(plausibleSpeech(words(30), 20, 0.75), true, "the same take under a looser limit");
+  assert.equal(plausibleSpeech(words(30), 86, 0.75), false, "a broken take is refused at any limit");
 });
 
 test("a question with anything its store name would drop is never kept or reused", () => {
