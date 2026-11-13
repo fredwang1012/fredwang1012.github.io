@@ -38,6 +38,10 @@ function portrait() {
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
+// LIVE_FOR_VISITORS: "0" a visitor gets only checked answers; "1" a checked answer when there is one, else the model;
+// "always" the model answers every question, and a checked answer (or the page's recorded clip) stands in when it
+// cannot: Boson unreachable or out of credit, or a limit reached.
+const generates = (env) => env.LIVE_FOR_VISITORS === "1" || env.LIVE_FOR_VISITORS === "always";
 const int = (v, fallback) => { const n = parseInt(v, 10); return Number.isFinite(n) ? n : fallback; };
 
 async function visitorKey(request, env) {
@@ -55,13 +59,15 @@ async function secondsLeft(env) {
 
 async function addSeconds(env, seconds) {
   const key = "s:" + today();
-  const used = int(await env.USAGE.get(key), 0);  // read then write: two answers at once can undercount by one answer
-  await env.USAGE.put(key, String(used + Math.ceil(seconds)), { expirationTtl: 3 * 86400 });
+  try {
+    const used = int(await env.USAGE.get(key), 0);  // read then write: two answers at once can undercount by one answer
+    await env.USAGE.put(key, String(used + Math.ceil(seconds)), { expirationTtl: 3 * 86400 });
+  } catch (_) { /* over the day's KV writes: the answer was given, it just goes uncounted */ }
 }
 
 async function countAsk(env, key) {
   const n = int(await env.USAGE.get(key), 0) + 1;
-  await env.USAGE.put(key, String(n), { expirationTtl: 2 * 86400 });
+  try { await env.USAGE.put(key, String(n), { expirationTtl: 2 * 86400 }); } catch (_) { /* uncounted, as above */ }
   return n;
 }
 
@@ -151,14 +157,14 @@ export default {
     if (url.pathname === "/health") {
       const ok = allowedOrigin(origin, env);
       // generates: whether a visitor's question may be answered by the model there and then (see LIVE_FOR_VISITORS)
-      const generates = env.LIVE_FOR_VISITORS === "1";
-      const live = generates ? !!env.BOSON_API_KEY && !!env.BOSON_VOICE && (await secondsLeft(env)) > 0 : true;
-      return Response.json({ ok: true, live, generates }, { headers: ok ? cors(origin) : { "Cache-Control": "no-store" } });
+      const gen = generates(env);
+      const live = gen ? !!env.BOSON_API_KEY && !!env.BOSON_VOICE && (await secondsLeft(env)) > 0 : true;
+      return Response.json({ ok: true, live, generates: gen }, { headers: ok ? cors(origin) : { "Cache-Control": "no-store" } });
     }
     if (url.pathname !== "/talk") return new Response("Not found", { status: 404 });
     if (request.headers.get("Upgrade") !== "websocket") return new Response("Expected a WebSocket", { status: 426 });
     if (!allowedOrigin(origin, env)) return new Response("Forbidden", { status: 403 });
-    if (env.LIVE_FOR_VISITORS === "1" && (!env.BOSON_API_KEY || !env.BOSON_VOICE)) return new Response("Not configured", { status: 503 });
+    if (generates(env) && (!env.BOSON_API_KEY || !env.BOSON_VOICE)) return new Response("Not configured", { status: 503 });
 
     const pair = new WebSocketPair(), client = pair[0], server = pair[1];
     server.accept();
@@ -221,7 +227,7 @@ async function session(socket, request, env) {
     const question = cleanQuestion(msg.text);
     if (!question) return send({ type: "error", code: "bad_question", message: "Ask one question, up to 300 characters." });
     if (busy) return send({ type: "error", code: "busy", message: "I'm still answering the last one." });
-    if (!filling && env.LIVE_FOR_VISITORS === "1" && Date.now() - last < MIN_GAP_MS) return send({ type: "error", code: "too_fast", message: "One moment, then ask again." });   // looking an answer up costs nothing, so needs no pause
+    if (!filling && generates(env) && Date.now() - last < MIN_GAP_MS) return send({ type: "error", code: "too_fast", message: "One moment, then ask again." });   // looking an answer up costs nothing, so needs no pause
     const t0 = Date.now();
     // an answer already on the shelf: no model, no render, no cost, so it does not count against any limit
     const alone = standsAlone(question), key = alone ? await answerKey(question, env) : null;
@@ -229,30 +235,18 @@ async function session(socket, request, env) {
     // is given whatever is there
     const inStore = key && !(filling && msg.fresh) ? await storedAnswer(env, key) : null;
     const kept = inStore && !inStore.failed && (filling || await approved(env, key, inStore.text)) ? inStore : null;
-    if (kept) {
-      busy = true;
-      try {
-        if (!filling) history.push({ q: question, a: kept.text });
-        send({ type: "text", delta: kept.text });
-        send({ type: "said", text: kept.text, seconds: kept.seconds, kept: true, ms: Date.now() - t0 });
-        send({ type: "video", mime: "video/mp4", seconds: kept.seconds, kept: true });
-        for (let at = 0; at < kept.video.length && open; at += 65536) send(kept.video.subarray(at, at + 65536));
-        send({ type: "video_end" });
-        send({ type: "done", kept: true, ms: Date.now() - t0 });
-      } finally { busy = false; last = Date.now(); }
-      return;
-    }
-    // Unless LIVE_FOR_VISITORS is "1", the model never answers a visitor: about one answer in nine it makes has a
-    // detail wrong, and here it would be said in my voice with nobody having read it. A visitor gets a checked
-    // answer or none; with none, the page plays the closest recorded clip instead.
-    if (!filling && env.LIVE_FOR_VISITORS !== "1") {
+    const always = !filling && env.LIVE_FOR_VISITORS === "always";
+    if (kept && !always) return serveKept(kept);
+    if (!filling && !generates(env)) {
       if (++looks > 80) return send({ type: "limit", message: "That's all for this session." });
       return send({ type: "none" });
     }
     if (!filling) {
-      if (++asks > int(env.ASKS_PER_SESSION, 12)) return send({ type: "limit", message: "That's all the live answers for this session." });
-      if ((await secondsLeft(env)) <= 0) return send({ type: "limit", message: "The live answers are used up for today." });
-      if ((await countAsk(env, visitor)) > int(env.DAILY_ASKS_PER_VISITOR, 25)) return send({ type: "limit", message: "That's all the live answers for today." });
+      let over = null;
+      if (++asks > int(env.ASKS_PER_SESSION, 12)) over = "That's all the live answers for this session.";
+      else if ((await secondsLeft(env)) <= 0) over = "The live answers are used up for today.";
+      else if ((await countAsk(env, visitor)) > int(env.DAILY_ASKS_PER_VISITOR, 25)) over = "That's all the live answers for today.";
+      if (over) return kept ? serveKept(kept) : send({ type: "limit", message: over });
     }
     busy = true; last = Date.now();
     // kept only when nothing came before it in this session (the answer must not lean on an earlier one), and
@@ -260,8 +254,13 @@ async function session(socket, request, env) {
     const keep = key && !history.length && !inStore ? [] : null;
     try {
       let opening = null;   // the render of the first part, started while the rest is still being spoken
-      const spoken = await speak(question, env.SPLIT_ANSWERS === "1" ? (pcm) => { opening = render(pcm); } : null);
-      if (!spoken) { if (opening) opening.then((r) => r && r.body && r.body.cancel()).catch(() => {}); return; }
+      // with a checked answer to fall back on, a failure is not shown to the visitor: they get that answer instead
+      const spoken = await speak(question, env.SPLIT_ANSWERS === "1" ? (pcm) => { opening = render(pcm); } : null, !!kept);
+      if (!spoken) {
+        if (opening) opening.then((r) => r && r.body && r.body.cancel()).catch(() => {});
+        if (kept) { busy = false; return serveKept(kept); }
+        return;
+      }
       if (!filling) history.push({ q: question, a: spoken.text });   // while filling the store every question is a first question
       send({ type: "said", text: spoken.text, seconds: +spoken.seconds.toFixed(2), ms: Date.now() - t0 });
       if (!filling) await addSeconds(env, spoken.seconds);
@@ -273,6 +272,20 @@ async function session(socket, request, env) {
       }
     } finally {
       busy = false; last = Date.now();
+    }
+
+    // An answer already on the shelf: no model, no render, no cost, so it does not count against any limit.
+    function serveKept(kept) {
+      busy = true;
+      try {
+        if (!filling) history.push({ q: question, a: kept.text });
+        send({ type: "text", delta: kept.text });
+        send({ type: "said", text: kept.text, seconds: kept.seconds, kept: true, ms: Date.now() - t0 });
+        send({ type: "video", mime: "video/mp4", seconds: kept.seconds, kept: true });
+        for (let at = 0; at < kept.video.length && open; at += 65536) send(kept.video.subarray(at, at + 65536));
+        send({ type: "video_end" });
+        send({ type: "done", kept: true, ms: Date.now() - t0 });
+      } finally { busy = false; last = Date.now(); }
     }
   }
 
@@ -309,7 +322,7 @@ async function session(socket, request, env) {
   }
 
   /** Whether this session may reach the model at all: the owner filling the store, or a visitor when that is switched on. */
-  function mayUseModel() { return filling || env.LIVE_FOR_VISITORS === "1"; }
+  function mayUseModel() { return filling || generates(env); }
 
   /** Open the realtime connection once per session and tell it who it is. */
   async function connect() {
@@ -335,10 +348,10 @@ async function session(socket, request, env) {
   }
 
   /** One spoken answer: the words go to the visitor as they come; the audio is kept for the lip-sync. */
-  async function speak(question, onOpening) {
+  async function speak(question, onOpening, quiet) {
     let ws;
     try { ws = await connect(); } catch (_) {
-      send({ type: "error", code: "unavailable", message: "The live voice isn't reachable right now." });
+      if (!quiet) send({ type: "error", code: "unavailable", message: "The live voice isn't reachable right now." });
       return null;
     }
     return new Promise((resolve) => {
@@ -358,7 +371,7 @@ async function session(socket, request, env) {
         ws.removeEventListener("message", onMessage); ws.removeEventListener("close", onClose);
         resolve(result);
       };
-      const fail = (code, message) => { send({ type: "error", code, message }); finish(null); };
+      const fail = (code, message) => { if (!quiet) send({ type: "error", code, message }); finish(null); };
       const guard = setTimeout(() => fail("timeout", "That took too long. Try again."), 60000);
       const onClose = () => { boson = null; fail("unavailable", "The live voice dropped. Try again."); };
       const onMessage = (ev) => {
