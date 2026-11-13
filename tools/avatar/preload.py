@@ -29,7 +29,8 @@ REFERS_BACK = re.compile(r"\b(more|that|it|its|this|these|those|them|they|one|on
 
 
 def _folded(question: str) -> str:
-    return "".join(c for c in unicodedata.normalize("NFKD", question) if not "\u0300" <= c <= "\u036f")
+    text = "".join(c for c in unicodedata.normalize("NFKD", question) if not "\u0300" <= c <= "\u036f")
+    return text.replace("\u2018", "'").replace("\u2019", "'")
 
 
 def store_name(question: str) -> str:
@@ -40,7 +41,7 @@ def store_name(question: str) -> str:
 def stands_alone(question: str) -> bool:
     """The same rule as standsAlone in live/src/lib.js: the service keeps the answer only to such a question."""
     name = store_name(question)
-    in_full = re.fullmatch(r"[\x20-\x7e]*", _folded(question)) is not None
+    in_full = re.fullmatch(r"[A-Za-z0-9 ?.,'-]*", _folded(question)) is not None
     return in_full and len(name.split()) >= 3 and not REFERS_BACK.search(name)
 
 

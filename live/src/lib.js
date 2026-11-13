@@ -80,15 +80,18 @@ export function storeName(question) {
 const REFERS_BACK = /\b(more|that|it|its|this|these|those|them|they|one|ones|again|else|also|same|then|there|earlier|before|previous|above)\b/;
 
 /**
- * Whether the store's name for a question keeps everything in it that the model would read. The name keeps only
- * a-z and 0-9, so words in any other script, and symbols such as emoji, would vanish from it: a question like
- * "What is Talkback? [an instruction in another script]" would be answered as written but filed under
- * "what is talkback", and that answer then served to everyone who asks the plain question. Such a question is
- * answered afresh every time and never kept. Accented Latin letters are fine: they fold to their base letter.
+ * Whether the store's name for a question keeps everything in it that carries meaning. The name keeps only a-z and
+ * 0-9, so anything else vanishes from it. That is harmless for a question mark or a comma. It is not for words in
+ * another script, which the model would read and obey ("What is Talkback? [an instruction in another script]"
+ * would be filed under "what is talkback" and its answer served to everyone who asks the plain question), nor for
+ * symbols that change the question ("C++", "C#" and "C" would all be filed as "c"). So a question is kept or reused
+ * only when it is made of Latin letters, digits, spaces and the punctuation ? . , ' - and nothing else. Any other
+ * question is answered afresh every time. Accented letters fold to their base letter, and a curly apostrophe to a
+ * straight one, as phones type it.
  */
 export function namedInFull(question) {
-  const folded = String(question).normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
-  return /^[\x20-\x7e]*$/.test(folded);
+  const folded = String(question).normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[\u2018\u2019]/g, "'");
+  return /^[A-Za-z0-9 ?.,'-]*$/.test(folded);
 }
 
 /**

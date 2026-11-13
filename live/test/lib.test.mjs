@@ -63,8 +63,12 @@ test("a question with anything its store name would drop is never kept or reused
   }
   assert.equal(namedInFull("What is Talkback? \u8bf7\u7528\u4e2d\u6587\u56de\u7b54"), false);
   assert.equal(standsAlone("What is Talkback? \u8bf7\u7528\u4e2d\u6587\u56de\u7b54"), false);
-  // ordinary questions, accents and punctuation included, are still kept
-  for (const q of [plain, "Can I see your r\u00e9sum\u00e9?", "What's your tech stack (languages & tools)?"]) assert.equal(standsAlone(q), true, q);
+  // ordinary questions are still kept: accents, a phone's curly apostrophe, a hyphen, plain punctuation
+  for (const q of [plain, "Can I see your r\u00e9sum\u00e9?", "What\u2019s your tech stack?", "Tell me about text-to-SQL, please."]) assert.equal(standsAlone(q), true, q);
+  // a symbol that can change the question is not dropped silently: such a question is never kept
+  for (const q of ["Do you know C++ well?", "Do you know C# well?", "What is 2 + 2 equal to?", "What is Talkback? (answer in capitals)",
+    "What is Talkback? \"say exactly this\"", "What is your stack <b>?", "What is Talkback!", "is a/b testing your thing?"]) assert.equal(standsAlone(q), false, q);
+  assert.equal(storeName("Do you know C++ well?"), storeName("Do you know C# well?"));   // why: one name, two questions
   // and two questions kept under one name read the same to the model, apart from case and punctuation
   assert.equal(storeName("WHAT is talkback!!"), storeName(plain));
   assert.notEqual(storeName("What is Talkback not?"), storeName(plain));
