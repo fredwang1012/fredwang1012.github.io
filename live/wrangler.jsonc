@@ -13,8 +13,8 @@
   // USAGE: the day's counters. ANSWERS: every answer already given, kept so a repeated question costs nothing.
   "kv_namespaces": [{ "binding": "USAGE" }, { "binding": "ANSWERS" }],
   "vars": {
-    // pages allowed to open a session, comma separated
-    "ALLOWED_ORIGINS": "https://fredwang1012.github.io",
+    // pages allowed to open a session, comma separated: the site, and the copy of it Cloudflare serves
+    "ALLOWED_ORIGINS": "https://fredwang1012.github.io,https://fredwang1012.fredwang1012.workers.dev",
     "REALTIME_MODEL": "higgs-realtime-1.5-preview",
     "VIDEO_SIZE": "640x640",
     // spending limits: seconds of rendered video per day for everyone together, questions per visitor per day,

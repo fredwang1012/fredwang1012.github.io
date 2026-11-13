@@ -543,7 +543,8 @@
   // A video that plays while it is still arriving. Chunks wait here until the browser can take them; a browser
   // without MediaSource (older iPhones) gets the whole clip once it has all arrived.
   // seconds: how long the whole answer runs, which the service knows before the first frame is made
-  function streamPlayer(seconds) {
+  // kept: an answer given before, sent from the service's store; it arrives far faster than it plays
+  function streamPlayer(seconds, kept) {
     var MS = window.ManagedMediaSource || window.MediaSource, ms = null, sb = null, url = null;
     var queue = [], all = [], parts = [], head = new Uint8Array(0), mime = null, ended = false, stopped = false, started = false, direct = !MS;
     function codec(bytes) {   // the H.264 profile and level, read from the stream's own header ("avcC")
@@ -573,6 +574,7 @@
       if (!firstAt) firstAt = Date.now();
       var waited = (Date.now() - firstAt) / 1000, rate = waited > 0 ? Math.min(1, have / waited) : 0;
       var total = seconds > 0 ? seconds : have;
+      if (kept && have >= 0.5) { begin(); return; }   // nothing is being rendered: there is no slow half to wait out
       if (ended || have >= total - 0.3 || (waited >= 1.5 && have >= Math.max(1.5, total * (1 - rate) * 1.15 + 1))) begin();
     }
     function pump() {
@@ -701,7 +703,7 @@
       turn.text = m.text; aEl.textContent = m.text;
       if (m.kept) { clearTimeout(turn.opener); note(""); } else note("Putting my voice and face to it\u2026 a few seconds.", true);
     }
-    else if (m.type === "video") { turn.kind = "video"; clearTimeout(turn.opener); live.player = streamPlayer(m.seconds); }
+    else if (m.type === "video") { turn.kind = "video"; clearTimeout(turn.opener); live.player = streamPlayer(m.seconds, !!m.kept); }
     else if (m.type === "video_cut") { if (live.player) live.player.cut(); }
     else if (m.type === "video_end") { if (live.player) live.player.end(); announce(turn.text); }
     else if (m.type === "audio") { turn.kind = "audio"; turn.chunks = []; }
