@@ -52,7 +52,13 @@ test("speech is cut in the nearest pause, never mid-word", () => {
   assert.equal(quietCut(new Uint8Array(10), 4) % 2, 0);   // too short to search: still a whole sample
 });
 
-import { dailySeconds, namedInFull, standsAlone, storeName } from "../src/lib.js";
+import { dailySeconds, namedInFull, plausibleSpeech, standsAlone, storeName } from "../src/lib.js";
+
+test("speech that runs long or short for its words is not kept", () => {
+  const words = (n) => Array.from({ length: n }, () => "word").join(" ");
+  for (const [n, s] of [[71, 31.4], [24, 9.3], [28, 7.5], [28, 13.5]]) assert.equal(plausibleSpeech(words(n), s), true, `${n} words in ${s}s`);
+  for (const [n, s] of [[73, 43.6], [64, 42.1], [30, 86], [40, 2], [2, 1], [20, 0]]) assert.equal(plausibleSpeech(words(n), s), false, `${n} words in ${s}s`);
+});
 
 test("a question with anything its store name would drop is never kept or reused", () => {
   // the attack: words the model reads but the store's name does not carry

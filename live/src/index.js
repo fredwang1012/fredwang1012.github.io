@@ -7,7 +7,7 @@
 // Why it is a Worker and not a call from the page: the Boson key, the voice id and the instructions never leave this
 // file's side of the connection. The browser can send one thing, a question. It cannot choose the voice, the
 // instructions or the text that is spoken, so the cloned voice only ever says what the model answered under rules.md.
-import { RATE, allowedOrigin, base64, cleanQuestion, concat, dailySeconds, quietCut, standsAlone, storeName, unbase64, userTurn, wav } from "./lib.js";
+import { RATE, allowedOrigin, base64, cleanQuestion, concat, dailySeconds, plausibleSpeech, quietCut, standsAlone, storeName, unbase64, userTurn, wav } from "./lib.js";
 import RULES from "./rules.md";
 import NOTES from "../../tools/avatar/knowledge.md";
 import PORTRAIT from "../../tools/avatar/portrait.jpg";
@@ -93,12 +93,25 @@ async function storeAnswer(env, key, question, spoken, chunks, limit) {
   try {
     const video = concat(chunks);
     if (!video.length || video.length > MAX_STORED_VIDEO) return "size";
+    if (!plausibleSpeech(spoken.text, spoken.seconds)) return "stumbled";   // the speech ran long or short for its words
     const used = int(await env.USAGE.get("stored"), 0);
     if (used + video.length > limit) return "full";
     await env.ANSWERS.put(key, video, { metadata: { text: spoken.text.slice(0, 600), seconds: +spoken.seconds.toFixed(2), q: question.slice(0, 120), at: today() } });
     await env.USAGE.put("stored", String(used + video.length));
     return "kept";
   } catch (_) { return "failed"; }   // over the day's writes, or the store is unreachable: the answer was still given
+}
+
+/** Remove a kept answer (the preload does this when it hears that one is wrong). */
+async function forgetAnswer(env, key) {
+  try {
+    const hit = await env.ANSWERS.getWithMetadata(key, "arrayBuffer");
+    if (!hit || !hit.value) return false;
+    await env.ANSWERS.delete(key);
+    const used = int(await env.USAGE.get("stored"), 0);
+    await env.USAGE.put("stored", String(Math.max(0, used - hit.value.byteLength)));
+    return true;
+  } catch (_) { return false; }
 }
 
 function cors(origin) {
@@ -144,6 +157,12 @@ async function session(socket, request, env) {
     let msg;
     try { msg = JSON.parse(typeof ev.data === "string" ? ev.data : ""); } catch (_) { return; }
     if (msg && msg.type === "fill") { filling = !!env.PRELOAD_TOKEN && msg.token === env.PRELOAD_TOKEN; send({ type: "fill", ok: filling }); return; }
+    if (msg && msg.type === "forget") {   // only while filling: the owner removing an answer that came out wrong
+      const q = filling ? cleanQuestion(msg.text) : null;
+      if (!q || !standsAlone(q)) { send({ type: "forgot", ok: false }); return; }
+      answerKey(q, env).then((key) => forgetAnswer(env, key)).then((ok) => send({ type: "forgot", ok }), () => send({ type: "forgot", ok: false }));
+      return;
+    }
     if (msg && msg.type === "warm") { connect().catch(() => {}); return; }   // open the voice session ahead of the first question
     if (!msg || msg.type !== "ask") return;   // a question is the only other thing a visitor can send
     handle(msg).catch(() => { busy = false; send({ type: "error", code: "failed", message: "Something went wrong on my side. Try again." }); });

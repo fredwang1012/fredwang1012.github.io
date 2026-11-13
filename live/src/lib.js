@@ -103,6 +103,19 @@ export function standsAlone(question) {
   return namedInFull(question) && name.split(" ").length >= 3 && !REFERS_BACK.test(name);
 }
 
+/**
+ * Whether speech of this length is plausible for these words. The voice model sometimes stumbles, repeating a
+ * phrase or adding filler, which the transcript does not show but the clock does: the audio runs long for its words.
+ * Measured on 2026-11-13: sound answers took 0.27 to 0.52 s a word, stumbled ones 0.60 and 0.66. An answer outside
+ * the range is still played to whoever asked, but it is not kept for anyone else.
+ */
+export function plausibleSpeech(text, seconds) {
+  const count = String(text).trim().split(/\s+/).filter(Boolean).length;
+  if (count < 3 || !(seconds > 0)) return false;
+  const each = seconds / count;
+  return each >= 0.2 && each <= 0.58;
+}
+
 /** The video seconds allowed today: the higher allowance up to and including BOOST_UNTIL (YYYY-MM-DD), then the usual one. */
 export function dailySeconds(env, today) {
   const number = (v, fallback) => { const n = parseInt(v, 10); return Number.isFinite(n) ? n : fallback; };
