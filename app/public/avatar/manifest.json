@@ -14,24 +14,24 @@
           "text": "Hi, I'm Frederick."
         },
         {
-          "t": 1.31,
+          "t": 1.41,
           "text": "Well, an AI version of me."
         },
         {
-          "t": 3.2,
+          "t": 3.45,
           "text": "Ask me about my work, my projects or my background."
         },
         {
-          "t": 6.9,
+          "t": 7.45,
           "text": "Pick a question below, or type your own."
         }
       ],
       "file": "clips/greeting.mp4",
       "poster": "clips/greeting.jpg",
-      "duration": 9.81,
-      "bytes": 446688,
+      "duration": 10.58,
+      "bytes": 489622,
       "sources": [],
-      "key": "ff35fa07c9f71de0"
+      "key": "3017840233e4245a"
     },
     {
       "id": "norecord",
@@ -54,7 +54,7 @@
       "file": "clips/norecord.mp4",
       "poster": "clips/norecord.jpg",
       "duration": 7.55,
-      "bytes": 346608,
+      "bytes": 349871,
       "sources": [
         {
           "label": "Résumé",
@@ -65,7 +65,7 @@
           "href": "mailto:fredwang1012@gmail.com"
         }
       ],
-      "key": "346e22c349cffa4f"
+      "key": "e9f9f18be36812d6"
     },
     {
       "id": "offtopic",
@@ -81,16 +81,16 @@
           "text": "I can only talk about my work and background."
         },
         {
-          "t": 3.06,
+          "t": 2.77,
           "text": "Try asking about a project, a job, my studies, or how to reach me."
         }
       ],
       "file": "clips/offtopic.mp4",
       "poster": "clips/offtopic.jpg",
-      "duration": 7.55,
-      "bytes": 373662,
+      "duration": 6.83,
+      "bytes": 348386,
       "sources": [],
-      "key": "12d63a1c18b12d78"
+      "key": "b7b95a802c960b36"
     },
     {
       "id": "intro",
@@ -137,14 +137,14 @@
       "file": "clips/intro.mp4",
       "poster": "clips/intro.jpg",
       "duration": 23.3,
-      "bytes": 1126026,
+      "bytes": 1131873,
       "sources": [
         {
           "label": "Top of the page",
           "href": "#top"
         }
       ],
-      "key": "adc780b0b340e642"
+      "key": "581116b7e5d5586a"
     },
     {
       "id": "current",
@@ -175,29 +175,29 @@
           "text": "These days it's mostly my master's at the University of Toronto."
         },
         {
-          "t": 4.57,
+          "t": 4.29,
           "text": "On the research side, I'm co-developing recoverability-aware world models for safe driving."
         },
         {
-          "t": 11.06,
+          "t": 10.38,
           "text": "I'm also part of a team of four on Undercurrent, where we're forecasting commodity prices with Unilever Horizon3 Labs."
         },
         {
-          "t": 19.48,
+          "t": 18.28,
           "text": "And I'm a teaching assistant for CSC207, leading weekly tutorials and labs."
         }
       ],
       "file": "clips/current.mp4",
       "poster": "clips/current.jpg",
-      "duration": 24.83,
-      "bytes": 1224183,
+      "duration": 23.3,
+      "bytes": 1134559,
       "sources": [
         {
           "label": "§1 Selected work",
           "href": "#work"
         }
       ],
-      "key": "881e9f96602bac5c"
+      "key": "5ec56ce75c3934aa"
     },
     {
       "id": "strengths",
@@ -229,25 +229,25 @@
           "text": "Most of my work is building machine learning systems that hold up in production: agents, retrieval and evaluation, plus the data engineering underneath them."
         },
         {
-          "t": 10.94,
+          "t": 11.24,
           "text": "At BCI, I shipped an MCP server connecting Claude to Unity Catalog, which cut ad hoc analysis time by 50 percent."
         },
         {
-          "t": 18.81,
+          "t": 19.32,
           "text": "In my projects, I put a lot into careful evaluation and say plainly when something hasn't been measured yet."
         }
       ],
       "file": "clips/strengths.mp4",
       "poster": "clips/strengths.jpg",
-      "duration": 26.33,
-      "bytes": 1261583,
+      "duration": 27.05,
+      "bytes": 1310808,
       "sources": [
         {
           "label": "Résumé",
           "href": "/resume.pdf"
         }
       ],
-      "key": "d004fe2a560ee418"
+      "key": "3a89d08518de5722"
     },
     {
       "id": "avatar",
@@ -285,25 +285,25 @@
           "text": "Not quite: this is an AI version of me, not a live call and not me typing."
         },
         {
-          "t": 5.09,
+          "t": 5.42,
           "text": "A language model answers from my résumé and project notes, the voice is a clone of my own, and the face is lip-synced from one photo with Higgs Avatar, the same kind of pipeline as Talkback."
         },
         {
-          "t": 18.15,
+          "t": 19.34,
           "text": "It can get things wrong, so if it and my résumé disagree, trust the résumé."
         }
       ],
       "file": "clips/avatar.mp4",
       "poster": "clips/avatar.jpg",
-      "duration": 23.3,
-      "bytes": 1177815,
+      "duration": 24.83,
+      "bytes": 1225028,
       "sources": [
         {
           "label": "§1.2 Talkback",
           "href": "#p-tb"
         }
       ],
-      "key": "a8318f62db9d2d67"
+      "key": "2a5037d0189a831c"
     },
     {
       "id": "projects",
@@ -345,14 +345,14 @@
       "file": "clips/projects.mp4",
       "poster": "clips/projects.jpg",
       "duration": 26.33,
-      "bytes": 1288878,
+      "bytes": 1276814,
       "sources": [
         {
           "label": "§1 Selected work",
           "href": "#work"
         }
       ],
-      "key": "d2ced4f8cc4eca77"
+      "key": "d5084ada046425f7"
     },
     {
       "id": "world-models",
@@ -388,29 +388,29 @@
           "text": "It's ongoing research at the University of Toronto on safe driving, which I'm co-developing."
         },
         {
-          "t": 5.8,
+          "t": 5.46,
           "text": "A prediction-only world model can call a scene safe after the point of no return, so we're building one that tracks whether the car can still recover, then distilling it into a driving policy."
         },
         {
-          "t": 17.89,
+          "t": 16.87,
           "text": "We mine unrecoverable scenes in CARLA and generate counterfactual variants with NVIDIA Cosmos."
         },
         {
-          "t": 23.81,
+          "t": 22.45,
           "text": "There are no public results or code yet."
         }
       ],
       "file": "clips/world-models.mp4",
       "poster": "clips/world-models.jpg",
-      "duration": 26.33,
-      "bytes": 1246656,
+      "duration": 24.83,
+      "bytes": 1216270,
       "sources": [
         {
           "label": "§1.1 World models",
           "href": "#p-wm"
         }
       ],
-      "key": "54411323edbc7a2c"
+      "key": "91ff96fa5c54136a"
     },
     {
       "id": "talkback",
@@ -452,7 +452,7 @@
       "file": "clips/talkback.mp4",
       "poster": "clips/talkback.jpg",
       "duration": 18.82,
-      "bytes": 954903,
+      "bytes": 918514,
       "sources": [
         {
           "label": "§1.2 Talkback",
@@ -463,7 +463,7 @@
           "href": "https://github.com/fredwang1012/talkback"
         }
       ],
-      "key": "a6e638a2d5eda790"
+      "key": "75bbc47d659660f3"
     },
     {
       "id": "talkback-role",
@@ -497,25 +497,25 @@
           "text": "Talkback was a team project with three of us, and I led it."
         },
         {
-          "t": 4.56,
+          "t": 4.42,
           "text": "We built and deployed it as a React and FastAPI app."
         },
         {
-          "t": 8.57,
+          "t": 8.32,
           "text": "My own part was the voice loop: real-time speech with barge-in, so you can talk over a character to interrupt, voice commands like asking it to slow down or go back a bit, emotion-tagged text-to-speech, and the lip-synced avatars."
         }
       ],
       "file": "clips/talkback-role.mp4",
       "poster": "clips/talkback-role.jpg",
-      "duration": 26.33,
-      "bytes": 1277274,
+      "duration": 25.56,
+      "bytes": 1242070,
       "sources": [
         {
           "label": "§1.2 Talkback",
           "href": "#p-tb"
         }
       ],
-      "key": "e83d1d95d6c183a9"
+      "key": "80bc1ef434e31567"
     },
     {
       "id": "talkback-spoilers",
@@ -548,22 +548,22 @@
           "text": "A character never gets text you haven't reached."
         },
         {
-          "t": 2.86,
+          "t": 3.06,
           "text": "Our server only hands it the passages and summaries up to your current position, and characters you haven't met yet stay locked."
         },
         {
-          "t": 10.48,
+          "t": 11.2,
           "text": "We enforce that rule in the backend with unit tests, and retrieval runs on Vertex AI Vector Search over only the passages already read."
         },
         {
-          "t": 18.52,
+          "t": 19.8,
           "text": "We measured spoiler leaks with an LLM judge evaluation."
         }
       ],
       "file": "clips/talkback-spoilers.mp4",
       "poster": "clips/talkback-spoilers.jpg",
-      "duration": 21.8,
-      "bytes": 1054314,
+      "duration": 23.3,
+      "bytes": 1143673,
       "sources": [
         {
           "label": "§1.2 Talkback",
@@ -574,7 +574,7 @@
           "href": "https://github.com/fredwang1012/talkback"
         }
       ],
-      "key": "95daaa724423bac5"
+      "key": "bb3aa9ce2d7b8114"
     },
     {
       "id": "talkback-bargein",
@@ -624,14 +624,14 @@
       "file": "clips/talkback-bargein.mp4",
       "poster": "clips/talkback-bargein.jpg",
       "duration": 20.31,
-      "bytes": 975802,
+      "bytes": 988535,
       "sources": [
         {
           "label": "§1.2 Talkback",
           "href": "#p-tb"
         }
       ],
-      "key": "5e818feafa2fb66a"
+      "key": "37247452c35426ad"
     },
     {
       "id": "talkback-lipsync",
@@ -665,29 +665,29 @@
           "text": "In Talkback, the faces are lip-synced with Higgs Avatar, and building them was part of my own work on the team."
         },
         {
-          "t": 7.73,
+          "t": 7.96,
           "text": "The video streams as fragmented MP4, so playback starts before the render finishes."
         },
         {
-          "t": 13.51,
+          "t": 13.92,
           "text": "Any voice can drive any face, even one made from a photo or webcam. iOS Safari lacks MediaSource, so there the clips render first."
         },
         {
-          "t": 22.57,
+          "t": 23.25,
           "text": "This avatar uses the same kind of pipeline."
         }
       ],
       "file": "clips/talkback-lipsync.mp4",
       "poster": "clips/talkback-lipsync.jpg",
-      "duration": 25.56,
-      "bytes": 1251312,
+      "duration": 26.33,
+      "bytes": 1279090,
       "sources": [
         {
           "label": "§1.2 Talkback",
           "href": "#p-tb"
         }
       ],
-      "key": "034f7d4c44963f41"
+      "key": "e174f306099c120b"
     },
     {
       "id": "text2sql",
@@ -720,18 +720,18 @@
           "text": "It's a text-to-SQL layer that retrieves business logic, not just schema, because a schema says what a column is called, not what it means."
         },
         {
-          "t": 8.24,
+          "t": 8.81,
           "text": "Metric definitions, join paths and verified examples live in a versioned store, and the model names the items it relied on."
         },
         {
-          "t": 15.59,
+          "t": 16.66,
           "text": "A first comparison has been run on a small local model, and the write-up with the numbers isn't out yet."
         }
       ],
       "file": "clips/text2sql.mp4",
       "poster": "clips/text2sql.jpg",
-      "duration": 21.8,
-      "bytes": 1065885,
+      "duration": 23.3,
+      "bytes": 1131294,
       "sources": [
         {
           "label": "§1.3 text2sql-memory",
@@ -742,7 +742,7 @@
           "href": "https://github.com/fredwang1012/text2sql-memory"
         }
       ],
-      "key": "41b62a9d33d33756"
+      "key": "eda29c2e7617b5d4"
     },
     {
       "id": "text2sql-eval",
@@ -779,18 +779,18 @@
           "text": "For BIRD, I split questions into seed and evaluation sets by a hash of their ID, so knowledge is only written from seed questions, and a test fails if any item cites an evaluation question."
         },
         {
-          "t": 12.68,
+          "t": 12.32,
           "text": "Baselines are schema-only and flat RAG, compared with paired bootstrap confidence intervals and a McNemar test."
         },
         {
-          "t": 20.13,
+          "t": 19.55,
           "text": "A first run on a small local model is done, and the numbers aren't published yet."
         }
       ],
       "file": "clips/text2sql-eval.mp4",
       "poster": "clips/text2sql-eval.jpg",
-      "duration": 25.56,
-      "bytes": 1240973,
+      "duration": 24.83,
+      "bytes": 1212558,
       "sources": [
         {
           "label": "§1.3 text2sql-memory",
@@ -801,7 +801,7 @@
           "href": "https://github.com/fredwang1012/text2sql-memory"
         }
       ],
-      "key": "3005a31c2aeaa08c"
+      "key": "b68ad3b559adb9ac"
     },
     {
       "id": "text2sql-learning",
@@ -836,25 +836,25 @@
           "text": "When someone corrects an answer, the system distils that correction into at most three general rules, which start out as drafts."
         },
         {
-          "t": 8.21,
+          "t": 7.93,
           "text": "A correction never edits an existing rule, so one bad correction can't overwrite knowledge that already works."
         },
         {
-          "t": 15.26,
+          "t": 14.74,
           "text": "A draft is promoted to reviewed only once two answers citing it are marked good, and only a person can certify it."
         }
       ],
       "file": "clips/text2sql-learning.mp4",
       "poster": "clips/text2sql-learning.jpg",
-      "duration": 22.57,
-      "bytes": 1127084,
+      "duration": 21.8,
+      "bytes": 1055061,
       "sources": [
         {
           "label": "§1.3 text2sql-memory",
           "href": "#p-t2s"
         }
       ],
-      "key": "8013168335a47cc5"
+      "key": "f0abef16c35344dd"
     },
     {
       "id": "arxiv-rag",
@@ -887,18 +887,18 @@
           "text": "It's a question answering tool over a fixed reading list of arXiv papers, where every claim cites the exact paper and section."
         },
         {
-          "t": 8.37,
+          "t": 7.87,
           "text": "Papers are parsed from their LaTeX source, chunked by section, and searched with BM25 plus optional e5 embeddings."
         },
         {
-          "t": 15.93,
+          "t": 15.0,
           "text": "The model must quote what it cites, and any quote missing from that passage is flagged, though that doesn't prove the passage supports the claim."
         }
       ],
       "file": "clips/arxiv-rag.mp4",
       "poster": "clips/arxiv-rag.jpg",
-      "duration": 25.56,
-      "bytes": 1266923,
+      "duration": 24.06,
+      "bytes": 1185305,
       "sources": [
         {
           "label": "§1.4 arXiv Paper RAG",
@@ -909,7 +909,7 @@
           "href": "https://github.com/fredwang1012/arxiv-paper-rag"
         }
       ],
-      "key": "e1237bf642afd5e5"
+      "key": "193b28637237b67e"
     },
     {
       "id": "citations-checked",
@@ -946,22 +946,22 @@
           "text": "In my arXiv Paper RAG project, the model must quote the passage it cites, and code checks that the quote appears there."
         },
         {
-          "t": 7.23,
+          "t": 7.68,
           "text": "A quote that isn't found gets flagged, as does a citation marker with no matching citation."
         },
         {
-          "t": 12.76,
+          "t": 13.55,
           "text": "Retrieved text is treated as untrusted, so the model is told not to follow instructions inside it."
         },
         {
-          "t": 18.71,
+          "t": 19.88,
           "text": "The honest limit: this proves the quote exists, not that the passage supports the claim."
         }
       ],
       "file": "clips/citations-checked.mp4",
       "poster": "clips/citations-checked.jpg",
-      "duration": 24.06,
-      "bytes": 1175404,
+      "duration": 25.56,
+      "bytes": 1239722,
       "sources": [
         {
           "label": "§1.4 arXiv Paper RAG",
@@ -972,7 +972,7 @@
           "href": "https://github.com/fredwang1012/arxiv-paper-rag"
         }
       ],
-      "key": "35445a16c0618b67"
+      "key": "a6d22422dfe07aa8"
     },
     {
       "id": "pdf-reader",
@@ -1005,18 +1005,18 @@
           "text": "It's a PDF reader where you search by meaning instead of exact words: type a question, and it jumps to the page and highlights the passage, in one document or a whole library."
         },
         {
-          "t": 11.62,
+          "t": 11.29,
           "text": "PyMuPDF reads each line with its position, search combines BM25 with multilingual embeddings, and the viewer draws the hit over the page."
         },
         {
-          "t": 20.71,
+          "t": 20.12,
           "text": "Everything runs locally, and its evaluation numbers aren't published yet."
         }
       ],
       "file": "clips/pdf-reader.mp4",
       "poster": "clips/pdf-reader.jpg",
-      "duration": 25.56,
-      "bytes": 1241037,
+      "duration": 24.83,
+      "bytes": 1245409,
       "sources": [
         {
           "label": "§1.5 Semantic PDF Reader",
@@ -1027,7 +1027,7 @@
           "href": "https://github.com/fredwang1012/semantic-pdf-reader"
         }
       ],
-      "key": "7c3eddd049fe3af6"
+      "key": "6e60ddeb7faa5947"
     },
     {
       "id": "retrieval-eval",
@@ -1065,22 +1065,22 @@
           "text": "With labelled questions and rank-based metrics."
         },
         {
-          "t": 3.21,
+          "t": 3.32,
           "text": "On my arXiv Paper RAG, hybrid search with BM25 and embeddings found the right section in the top three for 94 percent of 32 questions, with a mean reciprocal rank of 0.79."
         },
         {
-          "t": 14.9,
+          "t": 15.38,
           "text": "The labels are a draft, so treat those as provisional."
         },
         {
-          "t": 18.59,
+          "t": 19.19,
           "text": "My Semantic PDF Reader tests a reranker, but those numbers aren't published yet."
         }
       ],
       "file": "clips/retrieval-eval.mp4",
       "poster": "clips/retrieval-eval.jpg",
-      "duration": 24.06,
-      "bytes": 1184477,
+      "duration": 24.83,
+      "bytes": 1228253,
       "sources": [
         {
           "label": "§1.4 arXiv Paper RAG",
@@ -1091,7 +1091,7 @@
           "href": "#p-pdf"
         }
       ],
-      "key": "bd7e9c781c18f976"
+      "key": "8a421cb33c9dd823"
     },
     {
       "id": "undercurrent",
@@ -1127,29 +1127,29 @@
           "text": "Undercurrent is a commodity forecasting project with Unilever Horizon3 Labs, and we're a team of four."
         },
         {
-          "t": 6.69,
+          "t": 6.35,
           "text": "The question is whether a time-series foundation model beats a domain model on commodity prices, so we benchmark zero-shot Chronos-2 against a hierarchical Bayesian driver model."
         },
         {
-          "t": 18.36,
+          "t": 17.43,
           "text": "We also fuse both with Bayesian Predictive Synthesis and score leakage-safe probabilistic forecasts on CRPS and calibration."
         },
         {
-          "t": 26.49,
+          "t": 25.14,
           "text": "There's no public code or results to share."
         }
       ],
       "file": "clips/undercurrent.mp4",
       "poster": "clips/undercurrent.jpg",
-      "duration": 29.31,
-      "bytes": 1430862,
+      "duration": 27.82,
+      "bytes": 1347121,
       "sources": [
         {
           "label": "§1.6 Undercurrent",
           "href": "#p-uc"
         }
       ],
-      "key": "241bf380c873c7d8"
+      "key": "72a8d2a0f7ba2215"
     },
     {
       "id": "patient-stratification",
@@ -1185,25 +1185,25 @@
           "text": "It was a two-person course project at UBC in early 2026, built on routine health checkup data that mixes structured lab values with free-text organ reports."
         },
         {
-          "t": 10.73,
+          "t": 11.02,
           "text": "We used a variational autoencoder to compress more than 18,000 sparse features into a 32-dimensional latent space, then ran K-Means on it."
         },
         {
-          "t": 20.23,
+          "t": 20.76,
           "text": "That recovered seven clinical phenotypes, like sensorineural hearing loss, liver fibrosis and hypothyroidism, with no labels at all."
         }
       ],
       "file": "clips/patient-stratification.mp4",
       "poster": "clips/patient-stratification.jpg",
-      "duration": 29.31,
-      "bytes": 1442093,
+      "duration": 30.08,
+      "bytes": 1436633,
       "sources": [
         {
           "label": "§1.7 Patient stratification",
           "href": "#p-ps"
         }
       ],
-      "key": "db69199fdc9b89af"
+      "key": "de4e228212857be5"
     },
     {
       "id": "finance-mcp",
@@ -1236,25 +1236,25 @@
           "text": "It's a read-only MCP server that lets Claude answer questions about my own investment accounts."
         },
         {
-          "t": 5.99,
+          "t": 6.4,
           "text": "The data comes from Plaid, none of its five tools can move money, and credentials stay in my operating system's credential store."
         },
         {
-          "t": 14.11,
+          "t": 15.08,
           "text": "It runs locally for Claude Desktop and Claude Code, or on a small server behind a sign-in that only admits my own account."
         }
       ],
       "file": "clips/finance-mcp.mp4",
       "poster": "clips/finance-mcp.jpg",
-      "duration": 21.8,
-      "bytes": 1074850,
+      "duration": 23.3,
+      "bytes": 1131178,
       "sources": [
         {
           "label": "Code on GitHub",
           "href": "https://github.com/fredwang1012/personal-finance-mcp"
         }
       ],
-      "key": "853c5b675ab8fcc6"
+      "key": "b2f63300eedcc512"
     },
     {
       "id": "playlist-sorter",
@@ -1288,29 +1288,29 @@
           "text": "It's a tool where you draw a flow chart of channels, filters and playlists, and a daily job runs it."
         },
         {
-          "t": 6.21,
+          "t": 6.43,
           "text": "New videos from the channels I follow get filtered by what they're about and land in the right YouTube playlist."
         },
         {
-          "t": 13.17,
+          "t": 13.63,
           "text": "The graph is a YAML file, and every run can be previewed with a dry run first."
         },
         {
-          "t": 18.01,
+          "t": 18.65,
           "text": "Next I'm planning a visual editor and language-model routing."
         }
       ],
       "file": "clips/playlist-sorter.mp4",
       "poster": "clips/playlist-sorter.jpg",
-      "duration": 21.8,
-      "bytes": 1057651,
+      "duration": 22.57,
+      "bytes": 1142279,
       "sources": [
         {
           "label": "Code on GitHub",
           "href": "https://github.com/fredwang1012/youtube-playlist-sorter"
         }
       ],
-      "key": "cbec4ad6bb635f79"
+      "key": "88bc7b900947d505"
     },
     {
       "id": "earlier-projects",
@@ -1345,29 +1345,29 @@
           "text": "Those are three earlier projects."
         },
         {
-          "t": 2.54,
+          "t": 2.46,
           "text": "GreenLife, from 2024, is RAG on AWS Bedrock over Canadian sustainability incentives, and it won first place."
         },
         {
-          "t": 10.84,
+          "t": 10.5,
           "text": "WealthComplex, also from 2024, is an investment-management platform."
         },
         {
-          "t": 16.07,
+          "t": 15.57,
           "text": "For Great Expectations, the open-source data-quality library, I added SQL Server support during my BCI internship."
         }
       ],
       "file": "clips/earlier-projects.mp4",
       "poster": "clips/earlier-projects.jpg",
-      "duration": 24.83,
-      "bytes": 1224916,
+      "duration": 24.06,
+      "bytes": 1156106,
       "sources": [
         {
           "label": "§1 Selected work",
           "href": "#work"
         }
       ],
-      "key": "fe649b3a2f9648db"
+      "key": "ed8110f2e1f94556"
     },
     {
       "id": "experience",
@@ -1401,25 +1401,25 @@
           "text": "Most recently I was a data engineer intern at British Columbia Investment Management Corporation, where I shipped an MCP server connecting Claude to Unity Catalog and cut ad hoc analysis time by 50 percent."
         },
         {
-          "t": 14.19,
+          "t": 13.43,
           "text": "Before that, I trained models in R to predict ankle-surgery outcomes as a data analyst intern at Providence Research."
         },
         {
-          "t": 22.24,
+          "t": 21.05,
           "text": "I've also been a teaching assistant at UBC, and now at the University of Toronto."
         }
       ],
       "file": "clips/experience.mp4",
       "poster": "clips/experience.jpg",
-      "duration": 27.82,
-      "bytes": 1345755,
+      "duration": 26.33,
+      "bytes": 1281054,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "b86a8eb886966cfd"
+      "key": "5c8514d8ecb22d45"
     },
     {
       "id": "bci",
@@ -1451,25 +1451,25 @@
           "text": "From May to December 2025, I was a data engineer intern at BCI."
         },
         {
-          "t": 4.95,
+          "t": 4.55,
           "text": "I shipped an MCP server that gives Claude governed access to Unity Catalog, so analysts can query data in plain English, which cut ad hoc analysis time by 50 percent."
         },
         {
-          "t": 18.01,
+          "t": 16.53,
           "text": "I also won first place in an internal hackathon with a scheduling optimizer and then led its production deployment."
         }
       ],
       "file": "clips/bci.mp4",
       "poster": "clips/bci.jpg",
-      "duration": 27.05,
-      "bytes": 1326552,
+      "duration": 24.83,
+      "bytes": 1211418,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "d3b31321a72ca28c"
+      "key": "f906c5518bbab81d"
     },
     {
       "id": "bci-mcp",
@@ -1514,14 +1514,14 @@
       "file": "clips/bci-mcp.mp4",
       "poster": "clips/bci-mcp.jpg",
       "duration": 21.8,
-      "bytes": 1076568,
+      "bytes": 1070389,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "2eb4b8be1f2456ad"
+      "key": "9c0936db05ca055b"
     },
     {
       "id": "bci-optimizer",
@@ -1570,14 +1570,14 @@
       "file": "clips/bci-optimizer.mp4",
       "poster": "clips/bci-optimizer.jpg",
       "duration": 26.33,
-      "bytes": 1281797,
+      "bytes": 1296211,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "fbedc0b3555e3747"
+      "key": "e624f5450be18170"
     },
     {
       "id": "bci-rag",
@@ -1611,21 +1611,21 @@
           "text": "At BCI, during my data engineer internship, I architected a RAG knowledge base so people could query unstructured enterprise data in natural language."
         },
         {
-          "t": 9.37,
+          "t": 8.96,
           "text": "That's as much detail as I can share about it here, but if you'd like to know more, my email is linked right below."
         }
       ],
       "file": "clips/bci-rag.mp4",
       "poster": "clips/bci-rag.jpg",
-      "duration": 16.55,
-      "bytes": 814445,
+      "duration": 15.83,
+      "bytes": 776476,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "e55eba9a3987ba4f"
+      "key": "31ff858532f3e7cc"
     },
     {
       "id": "ta",
@@ -1662,25 +1662,25 @@
           "text": "At the University of Toronto, I lead weekly tutorials and labs for CSC207, covering Java, object-oriented design and Git-based team development."
         },
         {
-          "t": 11.31,
+          "t": 10.77,
           "text": "Before that, at UBC from 2024 to 2026, I led machine-learning tutorials in R and mentored more than a hundred students across four terms."
         },
         {
-          "t": 22.07,
+          "t": 21.03,
           "text": "I also co-facilitated four-hundred-level database lectures on query optimization, concurrency control and crash recovery."
         }
       ],
       "file": "clips/ta.mp4",
       "poster": "clips/ta.jpg",
-      "duration": 31.57,
-      "bytes": 1526901,
+      "duration": 30.08,
+      "bytes": 1460604,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "57bf1969a28ad914"
+      "key": "6da289bfb0dcd592"
     },
     {
       "id": "providence",
@@ -1715,25 +1715,25 @@
           "text": "From January to August 2024, I was a data analyst intern at Providence Research."
         },
         {
-          "t": 5.51,
+          "t": 5.21,
           "text": "I trained supervised machine learning models in R to predict ankle-surgery outcomes from patient risk factors, and ran comparative cohort analyses that informed surgeons' choice between procedure types."
         },
         {
-          "t": 19.42,
+          "t": 18.38,
           "text": "I also replaced manually regenerated R reports with interactive Power BI dashboards and maintained the research databases."
         }
       ],
       "file": "clips/providence.mp4",
       "poster": "clips/providence.jpg",
-      "duration": 27.82,
-      "bytes": 1351439,
+      "duration": 26.33,
+      "bytes": 1284786,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "d8acfb65550e5e6f"
+      "key": "bd9082946a3c0a72"
     },
     {
       "id": "education",
@@ -1770,25 +1770,25 @@
           "text": "Right now I'm doing a master's in Applied Computing at the University of Toronto, with a concentration in AI."
         },
         {
-          "t": 8.97,
+          "t": 7.54,
           "text": "Before that, I did my bachelor's in Computer Science and Statistics at the University of British Columbia, from 2021 to 2026."
         },
         {
-          "t": 19.27,
+          "t": 16.19,
           "text": "I was on the Dean's List there from 2022 to 2026."
         }
       ],
       "file": "clips/education.mp4",
       "poster": "clips/education.jpg",
-      "duration": 23.3,
-      "bytes": 1101222,
+      "duration": 19.58,
+      "bytes": 960034,
       "sources": [
         {
           "label": "§5 Contact, Education note",
           "href": "#contact"
         }
       ],
-      "key": "9d2a185f7c1ac84f"
+      "key": "ba49e1618eb825d8"
     },
     {
       "id": "masters",
@@ -1826,25 +1826,25 @@
           "text": "It's a master's in Applied Computing at the University of Toronto, with a concentration in artificial intelligence, which I started in September 2026."
         },
         {
-          "t": 9.55,
+          "t": 9.83,
           "text": "My coursework includes Neural Networks, Deep Learning, Imitation Learning for Robotics and Computational Linguistics."
         },
         {
-          "t": 17.0,
+          "t": 17.5,
           "text": "Alongside classes, I'm co-developing recoverability-aware world models for safe driving, which uses imitation learning too."
         }
       ],
       "file": "clips/masters.mp4",
       "poster": "clips/masters.jpg",
-      "duration": 24.83,
-      "bytes": 1220121,
+      "duration": 25.56,
+      "bytes": 1253718,
       "sources": [
         {
           "label": "§5 Contact, Education note",
           "href": "#contact"
         }
       ],
-      "key": "48f3b1848552f879"
+      "key": "628cdc2e72cb3ea6"
     },
     {
       "id": "awards",
@@ -1879,25 +1879,25 @@
           "text": "I was on the Dean's List at UBC from 2022 to 2026, and in 2022 I received the Trek Excellence Scholarship and the J."
         },
         {
-          "t": 9.06,
+          "t": 8.5,
           "text": "Fred Muir Scholarship."
         },
         {
-          "t": 10.78,
+          "t": 10.11,
           "text": "Outside of classes, a scheduling optimizer took first place in an internal hackathon during my internship at BCI, and GreenLife, a 2024 RAG project, also won first place."
         }
       ],
       "file": "clips/awards.mp4",
       "poster": "clips/awards.jpg",
-      "duration": 24.06,
-      "bytes": 1167170,
+      "duration": 22.57,
+      "bytes": 1091263,
       "sources": [
         {
           "label": "Résumé",
           "href": "/resume.pdf"
         }
       ],
-      "key": "d15eeb277a3aab9e"
+      "key": "89a316c8d75a1785"
     },
     {
       "id": "skills",
@@ -1933,29 +1933,29 @@
           "text": "Mostly Python and SQL, plus TypeScript, JavaScript, Java, R, C plus plus and C."
         },
         {
-          "t": 6.25,
+          "t": 6.44,
           "text": "For machine learning I use PyTorch, scikit-learn and Hugging Face, with Spark and Databricks on the data side."
         },
         {
-          "t": 14.96,
+          "t": 15.41,
           "text": "A lot of my recent work is agents and retrieval: the Claude API, MCP, RAG, hybrid search and reranking."
         },
         {
-          "t": 23.11,
+          "t": 23.8,
           "text": "The full list is on the résumé."
         }
       ],
       "file": "clips/skills.mp4",
       "poster": "clips/skills.jpg",
-      "duration": 25.56,
-      "bytes": 1250893,
+      "duration": 26.33,
+      "bytes": 1275180,
       "sources": [
         {
           "label": "Résumé",
           "href": "/resume.pdf"
         }
       ],
-      "key": "8e59937b2c2bf93f"
+      "key": "16ddb313e3629e6b"
     },
     {
       "id": "skills-agents",
@@ -1991,14 +1991,14 @@
           "text": "At BCI, I shipped a production MCP server that gives Claude governed access to Unity Catalog, cutting ad hoc analysis time by 50 percent, and architected a RAG knowledge base over unstructured enterprise data."
         },
         {
-          "t": 14.51,
+          "t": 15.3,
           "text": "Since then I've built a citation-grounded RAG over arXiv papers with machine-checked quotes, a text-to-SQL layer that retrieves business logic, and a read-only MCP server for my own investment accounts."
         }
       ],
       "file": "clips/skills-agents.mp4",
       "poster": "clips/skills-agents.jpg",
-      "duration": 28.54,
-      "bytes": 1395418,
+      "duration": 30.08,
+      "bytes": 1459915,
       "sources": [
         {
           "label": "§1 Selected work",
@@ -2009,7 +2009,7 @@
           "href": "#experience"
         }
       ],
-      "key": "422342cfa0f213ee"
+      "key": "c72a39fcb17fee20"
     },
     {
       "id": "skills-ml",
@@ -2044,25 +2044,25 @@
           "text": "A fair amount, mostly in PyTorch and R."
         },
         {
-          "t": 2.85,
+          "t": 2.56,
           "text": "At Providence Research I built supervised models in R that predict ankle-surgery outcomes, and in a two-person UBC course project we used a variational autoencoder in PyTorch to recover clinical phenotypes with no labels."
         },
         {
-          "t": 19.03,
+          "t": 17.04,
           "text": "Right now I'm co-developing recoverability-aware world models for safe driving in CARLA, though there are no results to share yet."
         }
       ],
       "file": "clips/skills-ml.mp4",
       "poster": "clips/skills-ml.jpg",
-      "duration": 28.54,
-      "bytes": 1361632,
+      "duration": 25.56,
+      "bytes": 1257139,
       "sources": [
         {
           "label": "§1 Selected work",
           "href": "#work"
         }
       ],
-      "key": "6bc6ba100d61ec73"
+      "key": "3ec3c22d9a567d3e"
     },
     {
       "id": "skills-data",
@@ -2096,25 +2096,25 @@
           "text": "Most of it comes from my 2025 data engineering internship at British Columbia Investment Management Corporation."
         },
         {
-          "t": 7.1,
+          "t": 7.32,
           "text": "There I shipped an MCP server on Databricks Apps that lets Claude query Unity Catalog in plain English, cutting ad hoc analysis time by 50 percent."
         },
         {
-          "t": 16.43,
+          "t": 16.92,
           "text": "I also added SQL Server Managed Instance support to Great Expectations, the open-source data-quality library, for data validation on Databricks."
         }
       ],
       "file": "clips/skills-data.mp4",
       "poster": "clips/skills-data.jpg",
-      "duration": 25.56,
-      "bytes": 1235158,
+      "duration": 26.33,
+      "bytes": 1276914,
       "sources": [
         {
           "label": "§2 Experience",
           "href": "#experience"
         }
       ],
-      "key": "57727c3bdefbe11f"
+      "key": "c25ef2c1a2c20e78"
     },
     {
       "id": "looking-for",
@@ -2154,29 +2154,29 @@
           "text": "I'm looking for AI and machine learning engineering roles."
         },
         {
-          "t": 3.85,
+          "t": 3.73,
           "text": "I'm also open to data science, data engineering, software engineering and forward deployed engineering."
         },
         {
-          "t": 10.7,
+          "t": 10.35,
           "text": "Really, any kind of engineering that has to do with data, AI, machine learning or software."
         },
         {
-          "t": 16.75,
+          "t": 16.2,
           "text": "For timing and location, please email me; the address is linked right below."
         }
       ],
       "file": "clips/looking-for.mp4",
       "poster": "clips/looking-for.jpg",
-      "duration": 21.8,
-      "bytes": 1077402,
+      "duration": 21.08,
+      "bytes": 1028611,
       "sources": [
         {
           "label": "§5 Contact",
           "href": "#contact"
         }
       ],
-      "key": "0dbbc2b6595e1a5c"
+      "key": "78ad8491d64a0be5"
     },
     {
       "id": "contact",
@@ -2212,18 +2212,18 @@
           "text": "Email is the best way to reach me, and the address is linked right below."
         },
         {
-          "t": 4.24,
+          "t": 4.66,
           "text": "I'm also on LinkedIn and GitHub, and those links are on this page too."
         },
         {
-          "t": 8.31,
+          "t": 9.14,
           "text": "If you'd like more background first, the Résumé link on this site opens my résumé, and you can download it as a PDF."
         }
       ],
       "file": "clips/contact.mp4",
       "poster": "clips/contact.jpg",
-      "duration": 15.06,
-      "bytes": 720624,
+      "duration": 16.55,
+      "bytes": 821945,
       "sources": [
         {
           "label": "§5 Contact",
@@ -2242,7 +2242,7 @@
           "href": "https://github.com/fredwang1012"
         }
       ],
-      "key": "3c475b09df550b91"
+      "key": "435cca9f4b39395a"
     },
     {
       "id": "resume",
@@ -2273,29 +2273,29 @@
           "text": "Yes, it's right here on the site."
         },
         {
-          "t": 1.95,
+          "t": 2.16,
           "text": "The Résumé link opens it, and you can download it as a PDF from there."
         },
         {
-          "t": 6.08,
+          "t": 6.74,
           "text": "If anything I say here ever disagrees with the résumé, trust the résumé."
         },
         {
-          "t": 10.33,
+          "t": 11.45,
           "text": "And if you'd like to talk about it, my email is linked right below."
         }
       ],
       "file": "clips/resume.mp4",
       "poster": "clips/resume.jpg",
-      "duration": 14.29,
-      "bytes": 697866,
+      "duration": 15.83,
+      "bytes": 760665,
       "sources": [
         {
           "label": "Résumé",
           "href": "/resume.pdf"
         }
       ],
-      "key": "7b5519ade8657f95"
+      "key": "0f77a77aa5f4303e"
     },
     {
       "id": "hobbies",
@@ -2331,29 +2331,29 @@
           "text": "Mostly piano, and lately that means a lot of Rachmaninov."
         },
         {
-          "t": 3.77,
+          "t": 4.35,
           "text": "This site links to a recording of me playing Kreisler's Liebesleid, in Rachmaninov's arrangement."
         },
         {
-          "t": 10.19,
+          "t": 11.74,
           "text": "I also ski, play soccer and badminton, and read classic literature."
         },
         {
-          "t": 14.62,
+          "t": 16.85,
           "text": "Dostoevsky is a favourite, and right now I'm reading Dune by Frank Herbert."
         }
       ],
       "file": "clips/hobbies.mp4",
       "poster": "clips/hobbies.jpg",
-      "duration": 19.58,
-      "bytes": 949218,
+      "duration": 22.57,
+      "bytes": 1084239,
       "sources": [
         {
           "label": "§5 Contact",
           "href": "#contact"
         }
       ],
-      "key": "f0636d5275b01d6b"
+      "key": "9c70dfa7f2bdcced"
     },
     {
       "id": "music-books",
@@ -2391,18 +2391,18 @@
           "text": "Piano, mostly Rachmaninov lately."
         },
         {
-          "t": 2.5,
+          "t": 2.65,
           "text": "My favourite pieces are his Third Piano Concerto, then his Second, then Liszt's Petrarch Sonnet 104, and this site links to a recording of me playing Kreisler's Liebesleid."
         },
         {
-          "t": 15.56,
+          "t": 16.44,
           "text": "Right now I'm reading Dune by Frank Herbert, and my favourite books are The Brothers Karamazov and The Idiot by Dostoevsky, and Orwell's 1984."
         }
       ],
       "file": "clips/music-books.mp4",
       "poster": "clips/music-books.jpg",
-      "duration": 26.33,
-      "bytes": 1227420,
+      "duration": 27.82,
+      "bytes": 1332432,
       "sources": [
         {
           "label": "Appendix A, Music",
@@ -2413,34 +2413,34 @@
           "href": "#books"
         }
       ],
-      "key": "9293228ed0bb9bd2"
+      "key": "9869961e12bb7e0b"
     }
   ],
   "placeholders": true,
   "version": 1,
   "voice": "cloned",
   "portrait": "/avatar/me.webp",
-  "total_bytes": 50665460,
-  "generated": "2026-11-13T06:23:32+00:00",
+  "total_bytes": 50549025,
+  "generated": "2026-11-13T08:25:57+00:00",
   "live": {
     "url": "wss://fredwang-avatar-live.fredwang1012.workers.dev/talk"
   },
   "openers": [
     {
       "file": "openers/o1.mp4",
-      "key": "e47b5743d8"
+      "key": "3bf8585324"
     },
     {
       "file": "openers/o2.mp4",
-      "key": "f2433a7484"
+      "key": "985f63dcd9"
     },
     {
       "file": "openers/o3.mp4",
-      "key": "29c7489e10"
+      "key": "9971fd87b9"
     },
     {
       "file": "openers/o4.mp4",
-      "key": "6312247f4a"
+      "key": "9609b00e12"
     }
   ]
 }

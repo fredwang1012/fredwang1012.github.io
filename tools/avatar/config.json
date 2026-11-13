@@ -12,7 +12,8 @@
     "voice_kind": "preset",
     "normalize": true,
     "usd_per_1k_chars": 0.015,
-    "est_chars_per_second": 15
+    "est_chars_per_second": 15,
+    "delivery": "<|prosody:expressive_high|>"
   },
   "avatar": {
     "model": "higgs-avatar",

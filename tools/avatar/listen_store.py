@@ -35,6 +35,7 @@ def main() -> int:
     ap.add_argument("--boson-env", required=True, help="a .env file holding BOSON_API_KEY, for the speech-to-text")
     ap.add_argument("--out", default=str(HERE / ".cache" / "stumbled.txt"), help="where to write the questions that failed")
     ap.add_argument("--limit", type=int, help="listen to at most N answers")
+    ap.add_argument("--skip", help="a file of questions (one per line) already listened to, to leave out")
     args = ap.parse_args()
     key = None
     for line in Path(args.boson_env).read_text(encoding="utf-8").splitlines():
@@ -51,6 +52,9 @@ def main() -> int:
     name = review_store.shelf()
     ok = set(review_store.approved(name))
     rows = [r for r in review_store.kept(name) if r["id"] in ok]
+    if args.skip:   # questions already listened to in an earlier run
+        done = {line.strip().lower() for line in Path(args.skip).read_text(encoding="utf-8").splitlines() if line.strip()}
+        rows = [r for r in rows if r["q"].lower() not in done]
     if args.limit:
         rows = rows[:args.limit]
     work = HERE / ".cache" / "check"
