@@ -527,9 +527,10 @@
       };
       ws.onclose = function () {
         clearTimeout(timer);
-        if (live.ws === ws) live.ws = null;
+        var mine = live.ws === ws;   // false once liveClose has let this socket go: its turn is no longer the page's
+        if (mine) live.ws = null;
         if (!ready) reject(new Error("closed"));
-        else if (live.turn && !live.turn.done) liveFail("The live voice dropped.");
+        else if (mine && live.turn && !live.turn.done) liveFail("The live voice dropped.");
       };
       ws.onerror = function () {};
     });
@@ -540,7 +541,7 @@
     if (live.player) { live.player.stop(); live.player = null; }
     if (live.audio) { try { live.audio.pause(); } catch (_) {} live.audio = null; }
     if (live.ws) { try { live.ws.close(); } catch (_) {} live.ws = null; }
-    if (live.turn) clearTimeout(live.turn.guard);
+    if (live.turn) { clearTimeout(live.turn.guard); clearTimeout(live.turn.opener); }
     live.turn = null; setBusy(false);
   }
   function setBusy(on) {
@@ -648,7 +649,13 @@
   // opts.clip: the recorded clip to play if the service has no checked answer for `text` either
   function askLive(text, opts) {
     opts = opts || {};
-    if (live.turn && !live.turn.done) return;
+    if (live.turn && !live.turn.done) {
+      // The last answer is still arriving. When the model is making it, let it finish: it has been paid for.
+      // When it is only being looked up, the new question replaces it: drop the connection, which also drops
+      // what is left of the old answer, and ask again on a new one.
+      if (live.generates) return;
+      liveClose();
+    }
     if (live.player) { live.player.stop(); live.player = null; }
     if (live.audio) { try { live.audio.pause(); } catch (_) {} live.audio = null; }
     current = null; spans = [];
