@@ -84,6 +84,22 @@ async function answerKey(question, env) {
   return `a:${shelf}:${hash}`;
 }
 
+// The model gets a detail wrong in roughly one answer in nine (read on 2026-11-13: 19 of 169). Asked once, that is
+// one wrong answer; kept and replayed, it is the same wrong answer to everyone. So a kept answer is served again
+// only after it has been read: the key "ok:<shelf>" lists the approved ones (tools/avatar/review_store.py writes
+// it). An answer that is kept but not yet approved waits in the store, and the question is answered afresh.
+let okList = null, okAt = 0;
+async function approved(env, key) {
+  if (!okList || Date.now() - okAt > 60000) {
+    try {
+      const list = await env.ANSWERS.get(`ok:${key.split(":")[1]}`, "json");
+      okList = new Set(Array.isArray(list) ? list : []);
+    } catch (_) { okList = okList || new Set(); }
+    okAt = Date.now();
+  }
+  return okList.has(key.split(":")[2]);
+}
+
 async function storedAnswer(env, key) {
   try {
     const hit = await env.ANSWERS.getWithMetadata(key, "arrayBuffer");
@@ -180,7 +196,9 @@ async function session(socket, request, env) {
     const t0 = Date.now();
     // an answer already on the shelf: no model, no render, no cost, so it does not count against any limit
     const alone = standsAlone(question), key = alone ? await answerKey(question, env) : null;
-    const kept = key && !(filling && msg.fresh) ? await storedAnswer(env, key) : null;
+    // a visitor is served a kept answer only if it has been approved; the owner filling the store sees them all
+    const usable = key && !(filling && msg.fresh) && (filling || await approved(env, key));
+    const kept = usable ? await storedAnswer(env, key) : null;
     if (kept) {
       busy = true;
       try {
@@ -200,8 +218,10 @@ async function session(socket, request, env) {
       if ((await countAsk(env, visitor)) > int(env.DAILY_ASKS_PER_VISITOR, 25)) return send({ type: "limit", message: "That's all the live answers for today." });
     }
     busy = true; last = Date.now();
-    // kept only when nothing came before it in this session: the answer must not lean on an earlier one
-    const keep = key && !history.length ? [] : null;
+    // kept only when nothing came before it in this session (the answer must not lean on an earlier one), and
+    // never over an answer already in the store: a visitor cannot replace one that is waiting to be read
+    const taken = key && !filling && !history.length ? await storedAnswer(env, key) : null;
+    const keep = key && !history.length && !taken ? [] : null;
     try {
       let opening = null;   // the render of the first part, started while the rest is still being spoken
       const spoken = await speak(question, env.SPLIT_ANSWERS === "1" ? (pcm) => { opening = render(pcm); } : null);

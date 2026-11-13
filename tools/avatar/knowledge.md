@@ -115,11 +115,14 @@ In my own words (November 2026):
   emotion-tagged text-to-speech, and the lip-synced avatars.
 - Voices: every line is voiced with Boson's Higgs Audio TTS with one of 20 emotions, plus whispering, shouting,
   sound effects and pauses. Each word is highlighted as it is spoken.
-- Listening: Higgs Realtime handles turn detection. Push-to-talk or hands-free; in hands-free mode the model decides
-  when your question has ended. Hands-free works best with headphones, because laptop speakers can trigger a
-  barge-in.
-- Faces: lip-synced with Higgs Avatar and streamed as fragmented MP4, so the video starts before the render ends.
-  Any voice can drive any face. iOS Safari lacks MediaSource, so clips render first there.
+- Listening: Higgs Realtime handles turn detection. There are two modes. In push-to-talk, you hold a key or the
+  mic button while you speak, and letting go ends your question. In hands-free, the model decides when your question
+  has ended. Hands-free works best with headphones, because laptop speakers can trigger a barge-in.
+- Faces: lip-synced with Higgs Avatar. Any voice can drive any face.
+- On most browsers the face video is streamed as fragmented MP4, so it starts playing before the render has
+  finished.
+- On an iPhone it is NOT streamed. Safari on iOS has no MediaSource, which streaming needs, so there the whole clip
+  is rendered first and played after.
 - Your own voice: you can clone a voice from a recording and give it a face from a photo or webcam.
 - No spoilers: the server only gives a character passages and summaries up to the reader's position, and characters
   not met yet are locked. The rule is enforced in the backend and unit-tested. Retrieval used Vertex AI Vector
@@ -147,6 +150,8 @@ In my own words (November 2026):
   are schema-only and flat RAG over the data dictionary. Each pair of modes gets paired bootstrap confidence
   intervals and a McNemar test. A coverage diagnostic attributes each failure to retrieval or to generation.
 - For the BIRD `financial` database: 40 hand-written knowledge items, 30 seed questions and 76 eval questions.
+- There is no model training in this project. The split keeps evaluation questions out of the knowledge store;
+  say "the knowledge store", never "training".
 - Results: a first comparison has been run on a small local model, but the numbers are not published yet and the
   repo's README still lists results as pending. Do not quote any accuracy number. If asked for results, say a first
   run is done and the write-up is not out yet.
@@ -169,8 +174,11 @@ arXiv Paper RAG [page: §1.4, code: github.com/fredwang1012/arxiv-paper-rag]
 - Limit to be honest about: the check confirms the quote is in the passage, not that the passage supports the claim.
 - Retrieval eval: 32 questions over five papers and 380 chunks. Hybrid search found the right section in the top 3
   results for 0.94 of questions, with an MRR of 0.79, and the right paper first every time. The labels are a draft
-  that has not been reviewed by someone who knows the papers, so these numbers are provisional. Answer-level numbers
-  are not in yet.
+  that has not been reviewed by someone who knows the papers, so these numbers are provisional: say "provisional"
+  whenever you quote one. Answer-level numbers are not in yet.
+- Hybrid against BM25 alone, on the same 32 questions: the same top-3 (0.94 for both), and a slightly higher MRR
+  (0.79 against 0.75). So on this small set the embeddings add a little, not a lot. Do not say hybrid clearly beats
+  BM25.
 - Stack: Python, Claude API, FastAPI, LaTeX parsing.
 
 Semantic PDF Reader [page: §1.5, code: github.com/fredwang1012/semantic-pdf-reader]
