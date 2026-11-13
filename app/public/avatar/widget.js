@@ -184,6 +184,11 @@
     "#av .av-play{position:absolute;inset:0;display:grid;place-items:center;width:100%;height:100%;padding:0;border:0;background:linear-gradient(rgba(14,19,29,0) 55%,rgba(14,19,29,.28));cursor:pointer}",
     "#av .av-play span{display:grid;place-items:center;width:60px;height:60px;border-radius:50%;color:#1b1b1b;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 8px 24px -8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.9);transition:transform .2s ease}",
     "#av .av-play:hover span{transform:scale(1.06)}",
+    // pause / resume: a small round button in the corner, in the same light glass as the big play button
+    "#av .av-pause{position:absolute;right:8px;bottom:8px;display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:50%;color:#1b1b1b;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 4px 14px -4px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.9);cursor:pointer;opacity:.9;transition:opacity .2s ease,background .2s ease}",
+    "#av .av-pause:hover,#av .av-pause:focus-visible{opacity:1;background:rgba(255,255,255,.96)}",
+    "#av .av-pause:focus-visible{outline:2px solid #fff;outline-offset:2px}",
+    "#av .av-pause[hidden]{display:none}#av .av-pause svg{width:15px;height:15px}",
     "#av .av-play svg{width:24px;height:24px;margin-left:3px}",
     "#av .av-play[hidden]{display:none}",
     "#av .av-cap{font:13px/1.6 var(--sans);color:var(--muted);margin:0}",
@@ -232,10 +237,11 @@
   ].join("\n");
   var ICON = {
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4.5" width="4" height="15" rx="1.2"/><rect x="14" y="4.5" width="4" height="15" rx="1.2"/></svg>',
     play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5Z"/></svg>'
   };
 
-  var root = null, body, video, idle, still, playB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
+  var root = null, body, video, idle, still, playB, pauseB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
   var manifest = null, index = null, loading = null, current = null, spans = [], lastFocus = null, chipButtons = [];
   // the live service: on = it answered its health check; ws = the open session; turn = the answer in progress
   // generates = the service lets the model answer a new question there and then; otherwise it only looks answers up
@@ -325,6 +331,7 @@
             '<video hidden playsinline webkit-playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture aria-label="Video answer from an AI version of Frederick Wang"></video>' +
             '<span class="av-tag" aria-hidden="true">AI version</span>' +
             '<button type="button" class="av-play"><span>' + ICON.play + '</span></button>' +
+            '<button type="button" class="av-pause" hidden aria-label="Pause answer">' + ICON.pause + '</button>' +
           '</div>' +
           '<figcaption class="av-cap" id="av-cap"><b>Fig. A</b> <span class="av-about"></span> If it and my r\u00e9sum\u00e9 disagree, the r\u00e9sum\u00e9 is right.</figcaption>' +
         '</figure>' +
@@ -344,7 +351,7 @@
       '<p class="av-hint"></p>' +
       '<div class="av-group av-sugg"><p class="av-k" id="av-sugg-k">Try asking</p></div>' +
       '<p class="av-sr" id="av-live" aria-live="polite"></p>';
-    video = body.querySelector("video:not(.av-idle)"); idle = body.querySelector(".av-idle"); still = body.querySelector(".av-still"); playB = body.querySelector(".av-play");
+    video = body.querySelector("video:not(.av-idle)"); idle = body.querySelector(".av-idle"); still = body.querySelector(".av-still"); playB = body.querySelector(".av-play"); pauseB = body.querySelector(".av-pause");
     qEl = body.querySelector(".av-q"); aEl = body.querySelector(".av-a"); noteEl = body.querySelector(".av-note");
     srcEl = body.querySelector(".av-src"); nearEl = body.querySelector(".av-near");
     input = body.querySelector("#av-in"); liveEl = body.querySelector("#av-live");
@@ -368,7 +375,20 @@
       var portrait = manifest.portrait || "/frederick.jpg";
       if (still.getAttribute("src") !== portrait) still.setAttribute("src", portrait); else still.hidden = true;
     });
-    video.addEventListener("loadeddata", function () { video.hidden = false; video.controls = true; });
+    video.addEventListener("loadeddata", function () { video.hidden = false; });
+    // pause / resume: shown whenever an answer is on screen, playing or paused
+    function syncPause() {
+      pauseB.hidden = video.hidden;
+      var paused = video.paused;
+      pauseB.innerHTML = paused ? ICON.play : ICON.pause;
+      pauseB.setAttribute("aria-label", paused ? "Resume answer" : "Pause answer");
+    }
+    pauseB.addEventListener("click", function () {
+      if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); } else video.pause();
+    });
+    video.addEventListener("pause", syncPause);
+    video.addEventListener("playing", syncPause);
+    new MutationObserver(syncPause).observe(video, { attributes: true, attributeFilter: ["hidden"] });
     video.addEventListener("play", function () { video.hidden = false; playB.hidden = true; aEl.classList.add("playing"); mark(); rest(false); });
     video.addEventListener("timeupdate", mark);
     video.addEventListener("ended", function () {
