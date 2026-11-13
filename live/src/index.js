@@ -24,6 +24,7 @@ const MIN_REST_MS = 1500;           // a tail shorter than this is not worth a s
 const SESSION_MS = 10 * 60 * 1000;  // a connection is closed after this long
 const MAX_STORED_VIDEO = 20 * 1024 * 1024;        // one answer; a KV value may be 25 MB
 const MAX_STORE_BYTES = 850 * 1024 * 1024;        // all answers together; the free plan stores 1 GB
+const MAX_FILL_BYTES = 600 * 1024 * 1024;         // how much of that the preload may use: the rest is for visitors' own questions
 
 // The notes file is written for people too: only the facts go to the model, not the editing notes around them.
 const END = NOTES.indexOf("## Page anchors");
@@ -87,15 +88,17 @@ async function storedAnswer(env, key) {
   } catch (_) { return null; }
 }
 
-async function storeAnswer(env, key, question, spoken, chunks) {
+/** Keep an answer. Returns "kept", or why not: "full" (no room within `limit` bytes), "size", "failed". */
+async function storeAnswer(env, key, question, spoken, chunks, limit) {
   try {
     const video = concat(chunks);
-    if (!video.length || video.length > MAX_STORED_VIDEO) return;
+    if (!video.length || video.length > MAX_STORED_VIDEO) return "size";
     const used = int(await env.USAGE.get("stored"), 0);
-    if (used + video.length > MAX_STORE_BYTES) return;
+    if (used + video.length > limit) return "full";
     await env.ANSWERS.put(key, video, { metadata: { text: spoken.text.slice(0, 600), seconds: +spoken.seconds.toFixed(2), q: question.slice(0, 120), at: today() } });
     await env.USAGE.put("stored", String(used + video.length));
-  } catch (_) { /* over the day's writes, or the store is unreachable: the answer was still given */ }
+    return "kept";
+  } catch (_) { return "failed"; }   // over the day's writes, or the store is unreachable: the answer was still given
 }
 
 function cors(origin) {
@@ -186,7 +189,10 @@ async function session(socket, request, env) {
       if (!filling) await addSeconds(env, spoken.seconds);
       const whole = await film(spoken, opening, keep);
       send({ type: "done", ms: Date.now() - t0 });
-      if (whole && keep) await storeAnswer(env, key, question, spoken, keep);
+      if (whole && keep) {
+        const outcome = await storeAnswer(env, key, question, spoken, keep, filling ? MAX_FILL_BYTES : MAX_STORE_BYTES);
+        if (filling) send({ type: "stored", outcome });   // the preload stops when its share of the store is full
+      }
     } finally {
       busy = false; last = Date.now();
     }

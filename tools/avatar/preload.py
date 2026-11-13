@@ -75,6 +75,7 @@ def main() -> int:
         sys.exit("needs live.url in config.json and PRELOAD_TOKEN in the environment")
     origin = "https://fredwang1012.github.io"
     made = kept = failed = unfilmed = 0
+    full = False  # the service has said the preload's share of the store is used up
     seconds = 0.0
     ws = None
 
@@ -87,7 +88,7 @@ def main() -> int:
         return s
 
     for n, text in enumerate(todo, 1):
-        if args.limit is not None and made >= args.limit:
+        if full or (args.limit is not None and made >= args.limit):
             break
         for attempt in (1, 2):
             try:
@@ -106,6 +107,11 @@ def main() -> int:
                         seconds += 0 if was_kept else float(e.get("seconds") or 0)
                     elif e["type"] == "video":
                         filmed = True
+                    elif e["type"] == "stored":  # about the answer before this one: it arrives after that answer's "done"
+                        if e.get("outcome") == "full":
+                            full = True
+                        elif e.get("outcome") != "kept":
+                            print(f"      (the service did not keep the last answer: {e.get('outcome')})", flush=True)
                     elif e["type"] in ("done", "error", "limit"):
                         end = e
                 if end["type"] != "done" or not size:
@@ -130,6 +136,8 @@ def main() -> int:
                     print(f"[{n}/{len(todo)}] FAILED ({type(e).__name__}: {str(e)[:120]})  {text}", flush=True)
                 else:
                     time.sleep(8)
+    if full:
+        print("the preload's share of the answer store is full; the rest is left for visitors' own questions")
     print(f"\nmade {made}, already in the store {kept}, voice only {unfilmed}, failed {failed}; about {seconds / 60:.1f} min of new video (${seconds / 60 * 0.09:.2f} at $0.09/min)")
     return 1 if failed or unfilmed else 0
 
