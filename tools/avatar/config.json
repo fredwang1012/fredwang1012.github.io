@@ -17,17 +17,32 @@
   "avatar": {
     "model": "higgs-avatar",
     "size": "640x640",
-    "portrait": "app/public/frederick.jpg",
-    "portrait_note": "frederick.jpg is only 400x400. Replace with a larger, front-facing, evenly lit head-and-shoulders photo before the full bake.",
-    "usd_per_minute": { "640x640": 0.09, "480x640": 0.07, "640x480": 0.07 },
-    "max_seconds": 58
+    "portrait": "tools/avatar/portrait.jpg",
+    "portrait_note": "portrait.jpg is a 1280x1280 crop of a studio headshot: front-facing, even light.",
+    "usd_per_minute": {
+      "640x640": 0.09,
+      "480x640": 0.07,
+      "640x480": 0.07
+    },
+    "max_seconds": 58,
+    "still": "/avatar/me.webp"
   },
   "output": {
     "dir": "app/public/avatar",
     "transcode": true,
-    "height": 480,
-    "crf": 28,
-    "audio_kbps": 64,
-    "poster_quality": 5
+    "height": 640,
+    "crf": 23,
+    "audio_kbps": 96,
+    "poster_quality": 2
+  },
+  "live": {
+    "url": "",
+    "url_note": "The live service's address once it is deployed, e.g. wss://<name>.<account>.workers.dev/talk. Empty: prepared answers only.",
+    "openers": [
+      "Let me think.",
+      "Sure, one second.",
+      "Okay, give me a second.",
+      "Good question. One second."
+    ]
   }
 }

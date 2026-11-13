@@ -6,7 +6,7 @@
       "id": "greeting",
       "role": "greeting",
       "question": "Say hello",
-      "answer": "Hi, I'm Frederick. Well, an AI version of me. These are short recorded answers about my work, my projects and my background. Pick a question below, or type your own.",
+      "answer": "Hi, I'm Frederick. Well, an AI version of me. Ask me about my work, my projects or my background. Pick a question below, or type your own.",
       "sources": []
     },
     {

@@ -3,24 +3,27 @@
   "answers": {
     "greeting": {
       "question": "Say hello",
-      "answer": "Hi, I'm Frederick. Well, an AI version of me. These are short recorded answers about my work, my projects and my background. Pick a question below, or type your own.",
+      "answer": "Hi, I'm Frederick. Well, an AI version of me. Ask me about my work, my projects or my background. Pick a question below, or type your own.",
       "source": "fixed",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "norecord": {
       "question": "A question I have no clip for",
       "answer": "I don't have that one recorded. My résumé and my email are linked right below, and I'm happy to answer by email.",
       "source": "fixed",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "offtopic": {
       "question": "Something that is not about my work",
       "answer": "I can only talk about my work and background. Try asking about a project, a job, my studies, or how to reach me.",
       "source": "fixed",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "intro": {
       "question": "Who are you?",
@@ -28,17 +31,17 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "current": {
       "question": "What are you working on right now?",
-      "answer": "These days it's mostly my master's at the University of Toronto. On the research side, I'm working on recoverability-aware world models for safe driving. I'm also part of a team of four on Undercurrent, where we're forecasting commodity prices with Unilever Horizon3 Labs. And I'm a teaching assistant for CSC207, leading weekly tutorials and labs.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "These days it's mostly my master's at the University of Toronto. On the research side, I'm co-developing recoverability-aware world models for safe driving. I'm also part of a team of four on Undercurrent, where we're forecasting commodity prices with Unilever Horizon3 Labs. And I'm a teaching assistant for CSC207, leading weekly tutorials and labs.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "strengths": {
       "question": "What are you best at?",
@@ -46,17 +49,17 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "avatar": {
       "question": "Are you real? How does this avatar work?",
-      "answer": "Not quite: this is an AI version of me, not a live video and not me typing. The answers were written ahead of time from my résumé and project notes, then voiced with text-to-speech and lip-synced from one photo with Higgs Avatar, the same kind of pipeline as Talkback. Nothing is generated while you watch, and nothing you type leaves your browser.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Not quite: this is an AI version of me, not a live call and not me typing. A language model answers from my résumé and project notes, the voice is a clone of my own, and the face is lip-synced from one photo with Higgs Avatar, the same kind of pipeline as Talkback. It can get things wrong, so if it and my résumé disagree, trust the résumé.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "projects": {
       "question": "What projects have you built?",
@@ -64,17 +67,17 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "world-models": {
       "question": "What is the recoverability-aware world models project?",
-      "answer": "It's my ongoing research at the University of Toronto on safe driving. A prediction-only world model can call a scene safe after the point of no return, so I'm building one that tracks whether the car can still recover, then distilling it into a driving policy. I mine unrecoverable scenes in CARLA and generate counterfactual variants with NVIDIA Cosmos. There are no public results or code yet.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "It's ongoing research at the University of Toronto on safe driving, which I'm co-developing. A prediction-only world model can call a scene safe after the point of no return, so we're building one that tracks whether the car can still recover, then distilling it into a driving policy. We mine unrecoverable scenes in CARLA and generate counterfactual variants with NVIDIA Cosmos. There are no public results or code yet.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "talkback": {
       "question": "What is Talkback?",
@@ -82,8 +85,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "talkback-role": {
       "question": "What was your part in Talkback?",
@@ -91,8 +95,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "talkback-spoilers": {
       "question": "How does Talkback avoid spoilers?",
@@ -100,8 +105,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "talkback-bargein": {
       "question": "How did you let people interrupt a character mid-answer?",
@@ -109,8 +115,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "talkback-lipsync": {
       "question": "How do the lip-synced faces work?",
@@ -118,26 +125,25 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "text2sql": {
       "question": "What is text2sql-memory?",
-      "answer": "It's a text-to-SQL layer that retrieves business logic, not just schema, because a schema says what a column is called, not what it means. Metric definitions, join paths and verified examples live in a versioned store, and the model names the items it relied on. It hasn't been run against a real model yet, so there are no accuracy numbers.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "It's a text-to-SQL layer that retrieves business logic, not just schema, because a schema says what a column is called, not what it means. Metric definitions, join paths and verified examples live in a versioned store, and the model names the items it relied on. A first comparison has been run on a small local model, and the write-up with the numbers isn't out yet.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "text2sql-eval": {
       "question": "How did you evaluate text-to-SQL without leaking answers?",
-      "answer": "For BIRD, I split questions into seed and evaluation sets by a hash of their ID, so knowledge is only written from seed questions, and a test fails if any item cites an evaluation question. Baselines are schema-only and flat RAG, compared with paired bootstrap confidence intervals and a McNemar test. The comparison hasn't been run against a real model yet, so there are no accuracy numbers.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "For BIRD, I split questions into seed and evaluation sets by a hash of their ID, so knowledge is only written from seed questions, and a test fails if any item cites an evaluation question. Baselines are schema-only and flat RAG, compared with paired bootstrap confidence intervals and a McNemar test. A first run on a small local model is done, and the numbers aren't published yet.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "text2sql-learning": {
       "question": "How does text2sql-memory learn from corrections?",
@@ -145,8 +151,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "arxiv-rag": {
       "question": "What is the arXiv paper RAG project?",
@@ -154,8 +161,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "citations-checked": {
       "question": "How do you check that a citation is real?",
@@ -163,8 +171,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "pdf-reader": {
       "question": "What is the semantic PDF reader?",
@@ -172,17 +181,17 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "retrieval-eval": {
       "question": "How do you evaluate retrieval quality?",
-      "answer": "With labelled questions and rank-based metrics. On my arXiv Paper RAG, hybrid search with BM25 and embeddings found the right section in the top three for ninety-four percent of thirty-two questions, with a mean reciprocal rank of zero point seven nine. The labels are a draft, so treat those as provisional. My Semantic PDF Reader tests a reranker, but those numbers aren't published yet.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "With labelled questions and rank-based metrics. On my arXiv Paper RAG, hybrid search with BM25 and embeddings found the right section in the top three for 94 percent of 32 questions, with a mean reciprocal rank of 0.79. The labels are a draft, so treat those as provisional. My Semantic PDF Reader tests a reranker, but those numbers aren't published yet.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "undercurrent": {
       "question": "What is Undercurrent?",
@@ -190,17 +199,17 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "patient-stratification": {
       "question": "What was the patient stratification project?",
-      "answer": "It was a two-person course project at UBC in April 2026, built on routine health checkup data that mixes structured lab values with free-text organ reports. We used a variational autoencoder to compress those sparse features into a small latent space, then ran K-Means on it. That recovered clinical phenotypes like sensorineural hearing loss, liver fibrosis and hypothyroidism, with no labels at all.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "It was a two-person course project at UBC in early 2026, built on routine health checkup data that mixes structured lab values with free-text organ reports. We used a variational autoencoder to compress more than 18,000 sparse features into a 32-dimensional latent space, then ran K-Means on it. That recovered seven clinical phenotypes, like sensorineural hearing loss, liver fibrosis and hypothyroidism, with no labels at all.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "finance-mcp": {
       "question": "What is the personal finance MCP server?",
@@ -208,8 +217,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "playlist-sorter": {
       "question": "What is the YouTube playlist sorter?",
@@ -217,17 +227,17 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "earlier-projects": {
       "question": "What are GreenLife, WealthComplex and the Great Expectations work?",
-      "answer": "Those are three earlier projects. GreenLife, from 2024, is RAG on AWS Bedrock over Canadian sustainability incentives, and it won first place. WealthComplex, also from 2024, is an investment-management platform. For Great Expectations, the open-source data-quality library, I patched SQL Server and Databricks dialect gaps like regex, identifier quoting and views in my fork during my BCI internship.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Those are three earlier projects. GreenLife, from 2024, is RAG on AWS Bedrock over Canadian sustainability incentives, and it won first place. WealthComplex, also from 2024, is an investment-management platform. For Great Expectations, the open-source data-quality library, I added SQL Server support during my BCI internship.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "experience": {
       "question": "What is your work experience?",
@@ -235,8 +245,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "bci": {
       "question": "What did you do at BCI?",
@@ -244,8 +255,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "bci-mcp": {
       "question": "Tell me about the MCP server you built at BCI.",
@@ -253,26 +265,25 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "bci-optimizer": {
       "question": "What was the hackathon you won at BCI?",
-      "answer": "The winning project at BCI's internal hackathon was a scheduling optimizer that improved efficiency by 25 percent and took first place. Afterwards, I led its production deployment for one of BCI's portfolio companies, where it's projected to unlock 20 million dollars in value. The algorithm details aren't something I can cover here, so feel free to email me. The address is linked below the video.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "The winning project at BCI's internal hackathon was a scheduling optimizer that improved scheduling efficiency by 25 percent and took first place. Afterwards, I led its production deployment for one of BCI's portfolio companies, where it's projected to unlock 20 million dollars in value. The algorithm details aren't something I can cover here, so feel free to email me. The address is linked right below.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "bci-rag": {
       "question": "What was the RAG knowledge base at BCI?",
-      "answer": "At BCI, during my data engineer internship, I developed a RAG knowledge base over the company's internal documents. Retrieval ran on Databricks Vector Search, and the whole thing was served through MLflow Model Serving. That's as much detail as I can share about it here, but if you'd like to know more, my email is linked below the video.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "At BCI, during my data engineer internship, I architected a RAG knowledge base so people could query unstructured enterprise data in natural language. That's as much detail as I can share about it here, but if you'd like to know more, my email is linked right below.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "ta": {
       "question": "What do you teach as a teaching assistant?",
@@ -280,8 +291,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "providence": {
       "question": "What did you do at Providence Research?",
@@ -289,8 +301,9 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "education": {
       "question": "Where did you study?",
@@ -298,109 +311,98 @@
       "source": "model",
       "model": "claude-opus-5-5",
       "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "masters": {
       "question": "What are you studying in your master's?",
-      "answer": "It's a master's in Applied Computing at the University of Toronto, with a concentration in artificial intelligence, which I started in September 2026. My coursework includes Neural Networks, Deep Learning, Imitation Learning for Robotics and Computational Linguistics. Alongside classes, I'm working on recoverability-aware world models for safe driving, which uses imitation learning too.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "It's a master's in Applied Computing at the University of Toronto, with a concentration in artificial intelligence, which I started in September 2026. My coursework includes Neural Networks, Deep Learning, Imitation Learning for Robotics and Computational Linguistics. Alongside classes, I'm co-developing recoverability-aware world models for safe driving, which uses imitation learning too.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "awards": {
       "question": "What awards or scholarships have you received?",
-      "answer": "Yes, I was on the Dean's List at UBC from 2022 to 2026. In 2022 I also received the Trek Excellence Scholarship and the J. Fred Muir Scholarship. Outside of classes, a scheduling optimizer took first place in an internal hackathon during my internship at BCI, and GreenLife, a 2024 RAG project, also won first place.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "I was on the Dean's List at UBC from 2022 to 2026, and in 2022 I received the Trek Excellence Scholarship and the J. Fred Muir Scholarship. Outside of classes, a scheduling optimizer took first place in an internal hackathon during my internship at BCI, and GreenLife, a 2024 RAG project, also won first place.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "skills": {
       "question": "What is your tech stack?",
-      "answer": "Mostly Python and SQL, plus TypeScript, JavaScript, Java, C plus plus, C and R. For models and services I use PyTorch, FastAPI, React and Docker, with Databricks and Spark on the data side. A lot of my recent work is agents and retrieval: the Claude API, MCP servers, hybrid search with BM25 and embeddings, and text-to-SQL. The full list is on the résumé.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Mostly Python and SQL, plus TypeScript, JavaScript, Java, R, C plus plus and C. For machine learning I use PyTorch, scikit-learn and Hugging Face, with Spark and Databricks on the data side. A lot of my recent work is agents and retrieval: the Claude API, MCP, RAG, hybrid search and reranking. The full list is on the résumé.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "skills-agents": {
       "question": "What is your experience with agents, RAG and MCP?",
-      "answer": "At BCI, I shipped a production MCP server that gives Claude governed access to Unity Catalog, cutting ad hoc analysis time by 50 percent, and built a RAG knowledge base on Databricks Vector Search. Since then I've built a citation-grounded RAG over arXiv papers with machine-checked quotes, a text-to-SQL layer that retrieves business logic, and a read-only MCP server for my own investment accounts.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "At BCI, I shipped a production MCP server that gives Claude governed access to Unity Catalog, cutting ad hoc analysis time by 50 percent, and architected a RAG knowledge base over unstructured enterprise data. Since then I've built a citation-grounded RAG over arXiv papers with machine-checked quotes, a text-to-SQL layer that retrieves business logic, and a read-only MCP server for my own investment accounts.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "skills-ml": {
       "question": "What is your machine learning experience?",
-      "answer": "A fair amount, mostly in PyTorch and R. At Providence Research I trained supervised models in R that predict ankle-surgery outcomes, and in a two-person UBC course project we used a variational autoencoder in PyTorch to recover clinical phenotypes with no labels. Right now I'm working on recoverability-aware world models for safe driving in CARLA, though there are no results to share yet.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "A fair amount, mostly in PyTorch and R. At Providence Research I built supervised models in R that predict ankle-surgery outcomes, and in a two-person UBC course project we used a variational autoencoder in PyTorch to recover clinical phenotypes with no labels. Right now I'm co-developing recoverability-aware world models for safe driving in CARLA, though there are no results to share yet.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "skills-data": {
       "question": "What is your data engineering experience?",
-      "answer": "Most of it comes from my 2025 data engineering internship at British Columbia Investment Management Corporation. There I shipped an MCP server on Databricks Apps that lets Claude query Unity Catalog in plain English, cutting ad hoc analysis time by 50 percent. I also patched SQL Server and Databricks dialect gaps in a fork of Great Expectations, the open-source data-quality library.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Most of it comes from my 2025 data engineering internship at British Columbia Investment Management Corporation. There I shipped an MCP server on Databricks Apps that lets Claude query Unity Catalog in plain English, cutting ad hoc analysis time by 50 percent. I also added SQL Server Managed Instance support to Great Expectations, the open-source data-quality library, for data validation on Databricks.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "looking-for": {
       "question": "What kind of role are you looking for?",
-      "answer": "Mostly work where a model has to hold up in production: machine learning engineering, agents and retrieval systems, and the data engineering underneath them. My site calls me a machine learning and data engineer, and my résumé leads with agents, retrieval and evaluation. For details like role type, timing, location or work authorisation, please email me; the link is below the video.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
+      "answer": "Mostly work where a model has to hold up in production: machine learning engineering, agents and retrieval systems, and the data engineering underneath them. For details like role type, timing, location or work authorisation, please email me; the address is linked right below.",
+      "source": "edited",
       "reviewed": false,
       "warnings": [],
       "needs_review": "The résumé and site do not state role type, timing, location or work authorisation. Frederick should rewrite this answer by hand."
     },
     "contact": {
       "question": "How can I contact you?",
-      "answer": "Email is the best way to reach me, and the address is linked below the video. I'm also on LinkedIn and GitHub, and those links are there too. If you'd like more background first, the Résumé link on this site opens my résumé, and you can download it as a PDF.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Email is the best way to reach me, and the address is linked right below. I'm also on LinkedIn and GitHub, and those links are on this page too. If you'd like more background first, the Résumé link on this site opens my résumé, and you can download it as a PDF.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "resume": {
       "question": "Can I see your résumé?",
-      "answer": "Yes, it's right here on the site. The Résumé link opens it, and you can download it as a PDF from there. If anything I say here ever disagrees with the résumé, trust the résumé. And if you'd like to talk about it, my email is linked below the video.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Yes, it's right here on the site. The Résumé link opens it, and you can download it as a PDF from there. If anything I say here ever disagrees with the résumé, trust the résumé. And if you'd like to talk about it, my email is linked right below.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "hobbies": {
       "question": "What do you do outside of work?",
-      "answer": "Mostly piano, and lately that means a lot of Rachmaninov. There's a recording on this site of me playing Kreisler's Liebesleid in his arrangement. I also ski, play soccer and badminton, and read classic literature. Dostoevsky is a favourite, and right now I'm reading Dune by Frank Herbert.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Mostly piano, and lately that means a lot of Rachmaninov. This site links to a recording of me playing Kreisler's Liebesleid, in Rachmaninov's arrangement. I also ski, play soccer and badminton, and read classic literature. Dostoevsky is a favourite, and right now I'm reading Dune by Frank Herbert.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     },
     "music-books": {
       "question": "What music do you play, and what are you reading?",
-      "answer": "Piano, mostly Rachmaninov lately. My favourite pieces are his Third Piano Concerto, then his Second, then Liszt's Petrarch Sonnet 104, and there's a recording of me playing Kreisler's Liebesleid on this site. Right now I'm reading Dune by Frank Herbert, and my favourite books are The Brothers Karamazov and The Idiot by Dostoevsky, and Orwell's 1984.",
-      "source": "model",
-      "model": "claude-opus-5-5",
-      "knowledge": "a2d8a67b3582aaa2",
-      "reviewed": false,
-      "warnings": []
+      "answer": "Piano, mostly Rachmaninov lately. My favourite pieces are his Third Piano Concerto, then his Second, then Liszt's Petrarch Sonnet 104, and this site links to a recording of me playing Kreisler's Liebesleid. Right now I'm reading Dune by Frank Herbert, and my favourite books are The Brothers Karamazov and The Idiot by Dostoevsky, and Orwell's 1984.",
+      "source": "edited",
+      "reviewed": true,
+      "warnings": [],
+      "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     }
   },
-  "updated": "2026-11-12T18:17:44+00:00"
+  "updated": "2026-11-13T05:18:33+00:00"
 }

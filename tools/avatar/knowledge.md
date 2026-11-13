@@ -26,7 +26,8 @@ Edit this file, then re-run `bake.py answers` to rewrite the affected answers.
 - Recent industry work: data engineer intern at British Columbia Investment Management Corporation (BCI), where I
   shipped an MCP server that connects Claude to Unity Catalog.
 - Current work (from the site's "Currently" note): recoverability-aware world models for safe driving; Undercurrent,
-  commodity forecasting with Unilever Horizon3 Labs; teaching assistant for CSC207 at the University of Toronto.
+  commodity forecasting with Unilever Horizon3 Labs (the site and résumé write it "H3L Labs"; say "Horizon3 Labs"
+  aloud); teaching assistant for CSC207 at the University of Toronto.
 - The site lists ten projects, six of them ongoing.
 
 ## Contact
@@ -55,11 +56,13 @@ Not written down in the résumé or on the site in detail. What can be said:
 
 ## Skills (from the résumé)
 
-- Languages: Python, SQL, TypeScript/JavaScript, Java, C++, C, R.
-- Agents and retrieval: Claude API, MCP server design, RAG, hybrid search (BM25 plus dense embeddings),
-  cross-encoder reranking, vector search (Databricks, Vertex AI Vector Search, OpenSearch), text-to-SQL.
-- Engineering: PyTorch, FastAPI, React, pytest, Git, Docker, Cloud Run, Databricks, Spark, SQL Server and SQLite,
-  Claude Code.
+- Languages: Python, SQL, TypeScript/JavaScript, Java, R, C++, C.
+- ML/AI: PyTorch, scikit-learn, Hugging Face, VAEs, imitation learning, time-series foundation models, Bayesian
+  modelling.
+- LLMs and retrieval: Claude API, MCP, RAG, hybrid search, cross-encoder reranking, real-time voice and TTS.
+- Data and cloud: Spark, Databricks, Unity Catalog, Great Expectations, SQL Server, AWS (Bedrock, OpenSearch), GCP,
+  Azure.
+- Tools: Git, GitHub Actions, pytest, React, FastAPI, Next.js, CARLA, NVIDIA Cosmos.
 
 ## Work experience
 
@@ -67,12 +70,12 @@ Not written down in the résumé or on the site in detail. What can be said:
 
 - Shipped a production MCP server on Databricks Apps that gives Claude.ai governed access to Unity Catalog. Analysts
   across the company can query data in plain English. It cut ad hoc analysis time by 50%.
-- Developed a RAG knowledge base on Databricks Vector Search over internal documents, served through MLflow Model
-  Serving.
+- Architected a RAG knowledge base so people can query unstructured enterprise data in natural language. The
+  résumé says no more than that about how it was built, so neither does the avatar.
 - Won 1st place in an internal hackathon with a scheduling optimizer that improved efficiency by 25%. I then led its
   production deployment for a portfolio company, where it is projected to unlock $20M in value.
-- Patched SQL Server and Databricks dialect gaps (regex, identifier quoting, views) in a fork of Great Expectations,
-  the open-source data-quality library.
+- Added SQL Server Managed Instance support to Great Expectations, the open-source data-quality library, for data
+  validation on Databricks.
 
 ### Teaching Assistant, University of Toronto (CSC207) and UBC (Computer Science and Statistics), September 2024 to present
 
@@ -91,6 +94,7 @@ Not written down in the résumé or on the site in detail. What can be said:
 
 ### Recoverability-Aware World Models (October 2026 to present, ongoing, University of Toronto) [page: §1.1]
 
+- Team: I am co-developing this (the résumé says "co-developing"), so say "we" for the work, not "I alone".
 - Problem: a prediction-only world model can call a driving scene "safe" after the point of no return.
 - Idea: an objective that keeps track of whether the car can still recover, then distil that into a driving policy.
 - Pipeline: mine unrecoverable scenes in headless CARLA; generate counterfactual variants with NVIDIA Cosmos; label
@@ -141,8 +145,9 @@ Not written down in the résumé or on the site in detail. What can be said:
   are schema-only and flat RAG over the data dictionary. Each pair of modes gets paired bootstrap confidence
   intervals and a McNemar test. A coverage diagnostic attributes each failure to retrieval or to generation.
 - For the BIRD `financial` database: 40 hand-written knowledge items, 30 seed questions and 76 eval questions.
-- Not measured yet: both tiers are built and tested with a fake model, but the comparison has not been run against a
-  real model, so there are no accuracy numbers. Say so if asked for results.
+- Results: a first comparison has been run on a small local model, but the numbers are not published yet and the
+  repo's README still lists results as pending. Do not quote any accuracy number. If asked for results, say a first
+  run is done and the write-up is not out yet.
 - Stack: Python, Claude API, BM25 plus embeddings, SQLite.
 
 ### Citation-Grounded Retrieval: arXiv Paper RAG and the Semantic PDF Reader (October 2026 to present)
@@ -189,12 +194,12 @@ Semantic PDF Reader [page: §1.5, code: github.com/fredwang1012/semantic-pdf-rea
 - Stack: Python, Chronos-2, Bayesian modelling.
 - No public code and no results to share. Do not go beyond these lines.
 
-### Unsupervised Patient Stratification (April 2026, UBC course CPSC 440, a two-person project) [page: §1.7]
+### Unsupervised Patient Stratification (January to April 2026, UBC course CPSC 440, a two-person project) [page: §1.7]
 
 - Routine health checkups mix structured lab values with free-text organ reports.
-- A variational autoencoder (VAE) compresses the sparse features into a small latent space. K-Means on that space
-  recovers clinical phenotypes, including sensorineural hearing loss, liver fibrosis and hypothyroidism, with no
-  labels at all.
+- A variational autoencoder (VAE) compresses 18,572 sparse features into a 32-dimensional latent space. K-Means on
+  that space recovers seven clinical phenotypes, including sensorineural hearing loss, liver fibrosis and
+  hypothyroidism, with no labels at all.
 - Stack: PyTorch, VAE, GMVAE, K-Means, UMAP.
 - The figure on the page is a UMAP of the latent space.
 
@@ -220,7 +225,7 @@ Semantic PDF Reader [page: §1.5, code: github.com/fredwang1012/semantic-pdf-rea
 
 - GreenLife (2024): RAG on AWS Bedrock over Canadian sustainability incentives. It won 1st place. Code:
   github.com/fredwang1012/greenlife
-- Great Expectations (2025): the SQL Server and Databricks dialect patches from my BCI internship, in my fork.
+- Great Expectations (2025): SQL Server support for the open-source library, from my BCI internship.
 - WealthComplex (2024): an investment-management platform. Code: github.com/fredwang1012/wealthcomplex
 
 ## Outside work
@@ -235,10 +240,9 @@ Semantic PDF Reader [page: §1.5, code: github.com/fredwang1012/semantic-pdf-rea
 ## About this avatar
 
 - It is an AI version of me, not a live video and not me typing.
-- The answers were written ahead of time from my résumé and project notes, voiced with text-to-speech and lip-synced
-  from one photo. They are recordings: nothing is generated while you watch, and nothing you type leaves your
-  browser.
-- It can only answer the questions it has clips for. For anything else, the résumé and email are the way to go.
+- It answers from my résumé and project notes. The voice is a text-to-speech clone of my own voice, and the face is
+  lip-synced from one photo with Higgs Avatar, the same kind of pipeline as Talkback.
+- It only knows what is in those notes. For anything else, the résumé and email are the way to go.
 - If an answer here and the résumé disagree, the résumé is right.
 
 ## Page anchors for source links

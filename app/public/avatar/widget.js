@@ -1,10 +1,13 @@
 /*! Avatar widget: "an AI version of me"
- * A glass sheet with recorded, lip-synced video answers. No backend: the clips, their posters and manifest.json are
- * static files next to this script, made ahead of time by tools/avatar/bake.py.
- * An answer with no clip yet, or whose clip or poster fails to load, is shown as text beside the portrait.
- * This file is loaded only when a visitor first opens the sheet (see the small launcher in index.html), and the
- * manifest, posters and videos only after that. Typed questions are matched to the nearest recorded question here
- * in the browser; nothing a visitor types is sent anywhere.
+ * A glass sheet where a visitor asks a question and an AI version of me answers it aloud, lip-synced.
+ *
+ * Live: when manifest.live.url names the live service (see /live) and it is up, the question goes there. A language
+ * model answers from my notes in a clone of my voice; the words arrive first, then the lip-synced video as it renders.
+ * Prepared: without the live service, or when it is down or over its daily limit, the question is matched here in
+ * the browser to the nearest answer written ahead of time (tools/avatar/bake.py), played as a recorded clip if there
+ * is one and shown as text if not. In that mode nothing a visitor types is sent anywhere.
+ *
+ * This file is loaded only when a visitor first opens the sheet (see the small launcher in index.html).
  */
 (function () {
   "use strict";
@@ -179,6 +182,8 @@
     "#av .av-a.playing span{color:var(--muted)}",
     "#av .av-a.playing span.on{color:var(--ink)}",
     "#av .av-note{margin:0;font:13px/1.6 var(--sans);color:var(--muted)}",
+    "#av .av-note.busy::before{content:'';display:inline-block;width:11px;height:11px;margin-right:8px;vertical-align:-1px;border-radius:50%;border:2px solid var(--glass-edge);border-top-color:var(--link);animation:av-spin .8s linear infinite}",
+    "#av .av-form button:disabled{opacity:.55;cursor:default}",
     "#av .av-src{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;margin:0;font:14px/1.5 var(--sans)}",
     "#av .av-src .k{font:11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}",
     "#av .av-src a,#av .av-src button{font:inherit;color:var(--link);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}",
@@ -207,7 +212,7 @@
     "@media (max-width:560px),(max-height:500px) and (pointer:coarse){#av{padding:0}#av .av-sheet{width:100%;height:100%;max-height:none;border-radius:0;border:0;background:var(--av-solid);-webkit-backdrop-filter:none;backdrop-filter:none}#av .av-bar{padding-top:max(10px,env(safe-area-inset-top));padding-left:max(16px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}#av .av-body{padding:16px max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));gap:18px}#av .av-fig{max-width:240px}}",
     // touch: every control is at least 44px tall
     "@media (pointer:coarse){#av .av-btn{height:44px;min-width:44px}#av .av-btn.av-icon{width:44px}#av .av-chip{min-height:44px;padding:10px 16px}#av summary{padding:10px 0}#av .av-src a,#av .av-src button{padding-block:10px;margin-block:-10px}}",
-    "@media (prefers-reduced-motion:reduce){#av,#av .av-sheet,#av .av-a span,#av .av-play span{transition:none}#av .av-spin{animation:none}}",
+    "@media (prefers-reduced-motion:reduce){#av,#av .av-sheet,#av .av-a span,#av .av-play span{transition:none}#av .av-spin,#av .av-note.busy::before{animation:none}}",
     // answers link back into the page: keep the heading clear of the fixed nav when the sheet closes
     "h2[id^='p-']{scroll-margin-top:104px}",
     "html.av-lock,html.av-lock body{overflow:hidden}"
@@ -219,6 +224,8 @@
 
   var root = null, body, video, still, playB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
   var manifest = null, index = null, loading = null, current = null, spans = [], lastFocus = null, chipButtons = [];
+  // the live service: on = it answered its health check; ws = the open session; turn = the answer in progress
+  var live = { url: null, on: false, ws: null, opening: null, turn: null, player: null, audio: null };
 
   function el(tag, cls, text) { var n = doc.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
   function refresh() { if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh(); }
@@ -275,7 +282,7 @@
   function chip(clip) {
     var b = el("button", "av-chip", clip.question);
     b.type = "button"; b.setAttribute("data-liquid", "snap");
-    b.addEventListener("click", function () { show(clip, { play: true, asked: clip.question }); });
+    b.addEventListener("click", function () { if (live.on) ask(clip.question); else show(clip, { play: true, asked: clip.question }); });
     chipButtons.push({ b: b, id: clip.id });
     return b;
   }
@@ -300,11 +307,11 @@
         '<figure class="av-fig">' +
           '<div class="av-frame">' +
             '<img class="av-still" alt="" decoding="async">' +
-            '<video hidden playsinline webkit-playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture aria-label="Recorded video answer from an AI version of Frederick Wang"></video>' +
+            '<video hidden playsinline webkit-playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture aria-label="Video answer from an AI version of Frederick Wang"></video>' +
             '<span class="av-tag" aria-hidden="true">AI version</span>' +
             '<button type="button" class="av-play"><span>' + ICON.play + '</span></button>' +
           '</div>' +
-          '<figcaption class="av-cap" id="av-cap"><b>Fig. A</b> ' + about + ' If it and my r\u00e9sum\u00e9 disagree, the r\u00e9sum\u00e9 is right.</figcaption>' +
+          '<figcaption class="av-cap" id="av-cap"><b>Fig. A</b> <span class="av-about"></span> If it and my r\u00e9sum\u00e9 disagree, the r\u00e9sum\u00e9 is right.</figcaption>' +
         '</figure>' +
         '<div class="av-talk">' +
           '<p class="av-q" id="av-q"></p>' +
@@ -319,7 +326,7 @@
         '<input id="av-in" type="text" autocomplete="off" autocapitalize="sentences" enterkeyhint="send" maxlength="200" placeholder="Ask about a project, a job, my studies\u2026">' +
         '<button type="submit" class="av-btn av-primary" data-liquid="snap">Ask</button>' +
       '</form>' +
-      '<p class="av-hint">Your question is matched to the closest prepared answer, here in your browser. Nothing you type is sent anywhere.</p>' +
+      '<p class="av-hint"></p>' +
       '<div class="av-group av-sugg"><p class="av-k" id="av-sugg-k">Try asking</p></div>' +
       '<p class="av-sr" id="av-live" aria-live="polite"></p>';
     video = body.querySelector("video"); still = body.querySelector(".av-still"); playB = body.querySelector(".av-play");
@@ -327,6 +334,7 @@
     srcEl = body.querySelector(".av-src"); nearEl = body.querySelector(".av-near");
     input = body.querySelector("#av-in"); liveEl = body.querySelector("#av-live");
 
+    aboutPrepared = about; describe();
     var sugg = body.querySelector(".av-sugg"), list = chipList(suggested);
     list.setAttribute("aria-labelledby", "av-sugg-k"); sugg.appendChild(list);
     if (answers.length > suggested.length) {
@@ -366,9 +374,25 @@
       if (text) ask(text);
     });
     srcEl.addEventListener("click", follow);
+    // someone is about to ask: open the live session now, so the first answer does not wait for it
+    input.addEventListener("focus", function () { if (live.on) liveOpen().then(function (ws) { try { ws.send('{"type":"warm"}'); } catch (_) {} }, function () {}); });
   }
 
-  function note(text) { noteEl.textContent = text || ""; noteEl.hidden = !text; }
+  function note(text, busy) { noteEl.textContent = text || ""; noteEl.hidden = !text; noteEl.classList.toggle("busy", !!(text && busy)); }
+
+  // what the caption and the line under the box say: it differs when a model is answering live
+  var aboutPrepared = "";
+  function describe() {
+    var a = body && body.querySelector(".av-about"), h = body && body.querySelector(".av-hint");
+    if (!a || !h) return;
+    if (live.on) {
+      a.textContent = "An AI version of me, not me on a call: a language model answers from my r\u00e9sum\u00e9 and project notes, in a clone of my voice, lip-synced from one photo. It can get things wrong.";
+      h.textContent = "Your question is sent to an AI service (Boson AI) that writes and voices the answer. I don\u2019t keep it.";
+    } else {
+      a.textContent = aboutPrepared;
+      h.textContent = "Your question is matched to the closest prepared answer, here in your browser. Nothing you type is sent anywhere.";
+    }
+  }
 
   // the sentence being spoken, from the cue times in the manifest
   function mark() {
@@ -379,6 +403,7 @@
   }
 
   function play() {
+    if (live.turn && video.getAttribute("src")) { var lp = video.play(); if (lp && lp.catch) lp.catch(function () { playB.hidden = false; }); return; }
     if (!current || !current.file) return;
     if (!video.getAttribute("src")) video.setAttribute("src", BASE + current.file + (current.key ? "?v=" + current.key : ""));
     var p = video.play();
@@ -459,12 +484,249 @@
     if (target) { if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1"); setTimeout(function () { try { target.focus({ preventScroll: true }); } catch (_) {} }, 0); }
   }
 
+  // ------------------------------------------------------------------ live answers
+  // The address of the live service. A local preview uses a local copy of it (or the address in localStorage.avLive);
+  // on the real site only the address in the manifest is ever used.
+  function liveUrl() {
+    var url = manifest && manifest.live && manifest.live.url || "";
+    if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+      url = url || "ws://127.0.0.1:8787/talk";   // `wrangler dev` in /live; nothing happens if it is not running
+      try { url = localStorage.getItem("avLive") || url; } catch (_) {}
+    }
+    return /^wss?:\/\//.test(url) ? url : "";
+  }
+  function liveCheck() {
+    live.url = liveUrl();
+    if (!live.url || !window.WebSocket) return;
+    fetch(live.url.replace(/^ws/, "http").replace(/\/talk$/, "/health"), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { live.on = !!(j && j.live); describe(); })
+      .catch(function () { live.on = false; });
+  }
+  function liveOpen() {
+    if (live.ws && live.ws.readyState === 1) return Promise.resolve(live.ws);
+    if (live.opening) return live.opening;
+    live.opening = new Promise(function (resolve, reject) {
+      var ws = new WebSocket(live.url), ready = false;
+      ws.binaryType = "arraybuffer";
+      var timer = setTimeout(function () { if (!ready) { try { ws.close(); } catch (_) {} reject(new Error("timeout")); } }, 8000);
+      ws.onmessage = function (ev) {
+        if (!ready) {
+          if (typeof ev.data === "string" && ev.data.indexOf('"ready"') > 0) { ready = true; clearTimeout(timer); live.ws = ws; resolve(ws); }
+          return;
+        }
+        liveMessage(ev.data);
+      };
+      ws.onclose = function () {
+        clearTimeout(timer);
+        if (live.ws === ws) live.ws = null;
+        if (!ready) reject(new Error("closed"));
+        else if (live.turn && !live.turn.done) liveFail("The live voice dropped.");
+      };
+      ws.onerror = function () {};
+    });
+    live.opening.then(function () { live.opening = null; }, function () { live.opening = null; });
+    return live.opening;
+  }
+  function liveClose() {
+    if (live.player) { live.player.stop(); live.player = null; }
+    if (live.audio) { try { live.audio.pause(); } catch (_) {} live.audio = null; }
+    if (live.ws) { try { live.ws.close(); } catch (_) {} live.ws = null; }
+    if (live.turn) clearTimeout(live.turn.guard);
+    live.turn = null; setBusy(false);
+  }
+  function setBusy(on) {
+    var b = body && body.querySelector(".av-form button");
+    if (b) b.disabled = !!on;
+  }
+
+  // A video that plays while it is still arriving. Chunks wait here until the browser can take them; a browser
+  // without MediaSource (older iPhones) gets the whole clip once it has all arrived.
+  // seconds: how long the whole answer runs, which the service knows before the first frame is made
+  function streamPlayer(seconds) {
+    var MS = window.ManagedMediaSource || window.MediaSource, ms = null, sb = null, url = null;
+    var queue = [], all = [], parts = [], head = new Uint8Array(0), mime = null, ended = false, stopped = false, started = false, direct = !MS;
+    function codec(bytes) {   // the H.264 profile and level, read from the stream's own header ("avcC")
+      for (var i = 0; i + 8 < bytes.length; i++) {
+        if (bytes[i] === 0x61 && bytes[i + 1] === 0x76 && bytes[i + 2] === 0x63 && bytes[i + 3] === 0x43) {
+          var hex = function (n) { return (n < 16 ? "0" : "") + n.toString(16); };
+          return "avc1." + hex(bytes[i + 5]) + hex(bytes[i + 6]) + hex(bytes[i + 7]);
+        }
+      }
+      return null;
+    }
+    function begin() {
+      if (started || stopped) return;
+      started = true; video.hidden = false; note("");
+      var p = video.play();
+      if (p && p.catch) p.catch(function () { playB.setAttribute("aria-label", "Play answer"); playB.hidden = false; });
+    }
+    // The renderer's speed varies from about half to twice real time. Starting on the first frame would stutter
+    // whenever it is the slow half, so playback starts once what has arrived, at the rate it is arriving, is enough
+    // to reach the end without stopping.
+    var firstAt = 0;
+    function ready() {
+      if (started || stopped || !sb) return;
+      var have = 0;
+      try { have = sb.buffered.length ? sb.buffered.end(sb.buffered.length - 1) : 0; } catch (_) {}
+      if (!have) return;
+      if (!firstAt) firstAt = Date.now();
+      var waited = (Date.now() - firstAt) / 1000, rate = waited > 0 ? Math.min(1, have / waited) : 0;
+      var total = seconds > 0 ? seconds : have;
+      if (ended || have >= total - 0.3 || (waited >= 1.5 && have >= Math.max(1.5, total * (1 - rate) * 1.15 + 1))) begin();
+    }
+    function pump() {
+      if (stopped || !sb || sb.updating) return;
+      if (queue.length) { try { sb.appendBuffer(queue.shift()); } catch (_) { toDirect(); } return; }
+      if (ended && ms.readyState === "open") { try { ms.endOfStream(); } catch (_) {} }
+    }
+    function toDirect() {   // give up on streaming: play it whole when it has all arrived
+      direct = true; sb = null; queue = [];
+      if (ended) whole();
+    }
+    function whole() {   // without streaming: each part is a file of its own, played one after the other
+      if (stopped) return;
+      parts.push(all); all = [];
+      var next = function () {
+        var part = parts.shift();
+        if (stopped || !part) return;
+        if (url) { try { URL.revokeObjectURL(url); } catch (_) {} }
+        url = URL.createObjectURL(new Blob(part, { type: "video/mp4" }));
+        video.setAttribute("src", url);
+        if (!started) begin(); else { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+      };
+      video.addEventListener("ended", function onEnd() { if (stopped || !parts.length) { video.removeEventListener("ended", onEnd); return; } next(); });
+      next();
+    }
+    function attach() {
+      ms = new MS();
+      url = URL.createObjectURL(ms);
+      video.disableRemotePlayback = true;   // ManagedMediaSource asks for this
+      video.setAttribute("src", url);
+      ms.addEventListener("sourceopen", function () {
+        if (stopped || sb) return;
+        try { sb = ms.addSourceBuffer(mime); sb.mode = "sequence"; } catch (_) { toDirect(); return; }   // "sequence": a second part follows the first
+        sb.addEventListener("updateend", function () { ready(); pump(); });
+        sb.addEventListener("error", toDirect);
+        pump();
+      });
+    }
+    return {
+      push: function (buf) {
+        if (stopped) return;
+        var bytes = new Uint8Array(buf);
+        all.push(bytes);
+        if (direct) return;
+        if (!mime) {
+          var joined = new Uint8Array(head.length + bytes.length); joined.set(head); joined.set(bytes, head.length); head = joined;
+          var c = codec(head);
+          if (!c && head.length < 262144) return;   // the header has not all arrived yet
+          mime = 'video/mp4; codecs="' + (c || "avc1.64001f") + ',mp4a.40.2"';
+          if (!MS.isTypeSupported || !MS.isTypeSupported(mime)) { direct = true; return; }
+          queue.push(head); attach();
+          return;
+        }
+        queue.push(bytes); pump();
+      },
+      cut: function () { if (direct) { parts.push(all); all = []; } },   // the next chunk starts the second part
+      end: function () { ended = true; if (direct) whole(); else { pump(); ready(); } },
+      stop: function () { stopped = true; if (url) { try { URL.revokeObjectURL(url); } catch (_) {} } }
+    };
+  }
+
+  function askLive(text) {
+    if (live.turn && !live.turn.done) return;
+    if (live.player) { live.player.stop(); live.player = null; }
+    if (live.audio) { try { live.audio.pause(); } catch (_) {} live.audio = null; }
+    current = null; spans = [];
+    video.pause(); video.removeAttribute("src"); video.hidden = true; video.controls = false;
+    try { video.load(); } catch (_) {}
+    video.parentNode.style.aspectRatio = "";
+    still.hidden = false; still.setAttribute("src", manifest.portrait || "/frederick.jpg");
+    playB.hidden = true;
+    qEl.textContent = "Q \u00b7 " + text; qEl.hidden = false;
+    aEl.textContent = ""; aEl.classList.remove("playing");
+    sources(null); nearEl.textContent = ""; nearEl.hidden = true;
+    chipButtons.forEach(function (c) { c.b.removeAttribute("aria-current"); });
+    note("Thinking\u2026", true);
+    announce("Answering: " + text);
+    input.value = ""; setBusy(true);
+    var turn = live.turn = { q: text, text: "", done: false, kind: null, chunks: [] };
+    opener();
+    liveOpen().then(function (ws) {
+      if (live.turn !== turn) return;
+      ws.send(JSON.stringify({ type: "ask", text: text }));
+      turn.guard = setTimeout(function () { if (!turn.done) liveFail("That took too long."); }, 90000);
+    }).catch(function () { if (live.turn === turn) liveFail("The live voice isn\u2019t reachable right now."); });
+    var stage = body.querySelector(".av-stage");
+    if (stage && stage.scrollIntoView) { try { stage.scrollIntoView({ block: "nearest" }); } catch (_) {} }
+    refresh();
+  }
+  // a short recorded "one second" in my voice, so the face responds at once while the answer is being made
+  function opener() {
+    var list = manifest.openers || [];
+    if (!list.length) return;
+    var o = list[Math.floor(Math.random() * list.length)];
+    video.setAttribute("src", BASE + o.file + (o.key ? "?v=" + o.key : ""));
+    var p = video.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  function liveFinish() {
+    var turn = live.turn;
+    if (!turn) return;
+    turn.done = true; clearTimeout(turn.guard); setBusy(false);
+  }
+  // the live answer could not be finished: keep whatever words arrived, else fall back to the prepared answers
+  function liveFail(why) {
+    var turn = live.turn;
+    if (!turn || turn.done) return;
+    liveFinish();
+    if (live.player) { live.player.stop(); live.player = null; }
+    if (turn.text) { note(why + " The answer is above as text."); announce(turn.text); return; }
+    live.turn = null;
+    askLocal(turn.q, why + " Here is the closest prepared answer instead.");
+  }
+  function liveMessage(data) {
+    var turn = live.turn;
+    if (!turn || turn.done) return;
+    if (typeof data !== "string") {
+      if (turn.kind === "video" && live.player) live.player.push(data);
+      else if (turn.kind === "audio") turn.chunks.push(data);
+      return;
+    }
+    var m; try { m = JSON.parse(data); } catch (_) { return; }
+    if (m.type === "text") { turn.text += m.delta; aEl.textContent = turn.text; }
+    else if (m.type === "said") { turn.text = m.text; aEl.textContent = m.text; note("Putting my voice and face to it\u2026 a few seconds.", true); }
+    else if (m.type === "video") { turn.kind = "video"; live.player = streamPlayer(m.seconds); }
+    else if (m.type === "video_cut") { if (live.player) live.player.cut(); }
+    else if (m.type === "video_end") { if (live.player) live.player.end(); announce(turn.text); }
+    else if (m.type === "audio") { turn.kind = "audio"; turn.chunks = []; }
+    else if (m.type === "audio_end") {
+      var a = live.audio = new Audio(URL.createObjectURL(new Blob(turn.chunks, { type: "audio/wav" })));
+      var p = a.play(); if (p && p.catch) p.catch(function () {});
+      note("My face couldn\u2019t be rendered this time, so this answer is voice only."); announce(turn.text);
+    }
+    else if (m.type === "done") liveFinish();
+    else if (m.type === "limit") { live.on = false; describe(); liveFinish(); live.turn = null; askLocal(turn.q, m.message + " Here is the closest prepared answer instead."); }
+    else if (m.type === "error") {
+      if (m.code === "busy" || m.code === "too_fast" || m.code === "bad_question") { liveFinish(); note(m.message); }
+      else liveFail(m.message || "The live voice had a problem.");
+    }
+  }
+
   function ask(text) {
+    if (live.on) askLive(text); else askLocal(text);
+  }
+
+  // why: a line explaining that this is a prepared answer standing in for a live one
+  function askLocal(text, why) {
+    live.turn = null;
     var r = match(index, text);
     if (r.type === "answer") show(r.clip, { play: true, asked: text });
     else if (r.type === "greeting") show(fallbackClip("greeting"), { play: true, intro: "Playing the greeting." });
     else show(fallbackClip(r.type), { play: true, asked: text, near: r.near, intro: r.near.length ? "The closest questions I do have are listed after the answer." : "" });
     input.value = "";
+    if (why) note(why);
   }
 
   function open(from) {
@@ -480,6 +742,7 @@
     message('<span class="av-spin"></span>Loading\u2026');
     load().then(function () {
       render();
+      liveCheck();
       show(fallbackClip("greeting") || manifest.clips[0], {});   // poster only: no sound until the visitor presses play or asks
       if (!root.hidden) (playB.hidden ? titleEl : playB).focus({ preventScroll: true });
     }).catch(function () {
@@ -490,6 +753,7 @@
   function close() {
     if (!root || root.hidden) return;
     if (video) video.pause();
+    liveClose();
     root.classList.remove("open");
     doc.documentElement.classList.remove("av-lock");
     Array.prototype.forEach.call(doc.body.children, function (n) { if (n.__avInert) { n.inert = false; n.__avInert = false; } });

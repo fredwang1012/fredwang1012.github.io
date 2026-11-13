@@ -665,10 +665,19 @@ def save_manifest(cfg: dict[str, Any], manifest: dict[str, Any], order: list[str
     manifest["version"] = 1
     manifest["voice"] = cfg["tts"].get("voice_kind", "preset")  # "preset" or "cloned"; the voice id itself stays out
     manifest["placeholders"] = bool(manifest.get("placeholders"))
-    try:  # the still shown when a clip or its poster is missing: the portrait, if the site serves it
-        manifest["portrait"] = "/" + (REPO / cfg["avatar"]["portrait"]).resolve().relative_to((REPO / "app" / "public").resolve()).as_posix()
+    # The still shown when a clip or its poster is missing. "still" is a small copy made for the page; without one,
+    # the portrait itself is used if the site serves it. The full-size portrait is only what Boson animates from.
+    still = cfg["avatar"].get("still")
+    try:
+        manifest["portrait"] = still or "/" + (REPO / cfg["avatar"]["portrait"]).resolve().relative_to((REPO / "app" / "public").resolve()).as_posix()
     except ValueError:
         manifest["portrait"] = None
+    # Live answers: where the live service is (empty until it is deployed), and the short recorded openers the face
+    # plays the moment a question is asked, while the live answer is being made.
+    url = str((cfg.get("live") or {}).get("url") or "").strip()
+    manifest["live"] = {"url": url} if url else None
+    folder = out_dir(cfg) / "openers"
+    manifest["openers"] = [{"file": f"openers/{f.name}", "key": sha(f.read_bytes(), n=10)} for f in sorted(folder.glob("*.mp4"))] if folder.is_dir() else []
     manifest["total_bytes"] = sum(c.get("bytes", 0) for c in manifest["clips"])
     manifest["generated"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     write_json(out_dir(cfg) / "manifest.json", manifest)
@@ -897,6 +906,54 @@ def cmd_status(args: argparse.Namespace) -> None:
     say(f"\n{len(answers)} answers, {len(baked)} clips, {manifest.get('total_bytes', 0) / 1e6:.2f} MB of video")
 
 
+def cmd_openers(args: argparse.Namespace) -> None:
+    """Record the openers in config.json: a few words each, in the configured voice, lip-synced like any other clip."""
+    cfg = load_config()
+    lines = [str(t).strip() for t in (cfg.get("live") or {}).get("openers", []) if str(t).strip()]
+    if not lines:
+        die("no openers in config.json (live.openers)")
+    portrait = REPO / cfg["avatar"]["portrait"]
+    image = portrait.read_bytes()
+    mime, _, _ = image_meta(image)
+    folder = out_dir(cfg) / "openers"
+    folder.mkdir(parents=True, exist_ok=True)
+    raw_dir = CACHE / "openers"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    boson = boson_client(args)
+    made = 0
+    try:
+        for n, text in enumerate(lines, 1):
+            key = sha(cfg["tts"]["model"], cfg["tts"]["voice"], text, sha(image), cfg["avatar"]["size"], json.dumps(cfg["output"], sort_keys=True))
+            out = folder / f"o{n}.mp4"
+            stamp = raw_dir / f"o{n}.key"
+            if out.exists() and stamp.exists() and stamp.read_text(encoding="utf-8") == key and not args.force:
+                say(f"o{n}: current")
+                continue
+            audio = boson.speech(clean_for_tts(text), cfg["tts"]["voice"], cfg["tts"]["model"], bool(cfg["tts"].get("normalize")))
+            log_spend({"clip": f"opener-{n}", "call": "tts", "chars": len(text), "usd": round(len(text) / 1000 * cfg["tts"]["usd_per_1k_chars"], 5)})
+            video_id = boson.create_video(image, mime, audio, cfg["avatar"]["size"], cfg["avatar"]["model"])
+            boson.wait_video(video_id)
+            raw = raw_dir / f"o{n}.mp4"
+            raw.write_bytes(boson.video_content(video_id))
+            seconds = media_seconds(raw)
+            log_spend({"clip": f"opener-{n}", "call": "avatar", "seconds": round(seconds, 2), "size": cfg["avatar"]["size"],
+                       "usd": round(seconds / 60 * avatar_rate(cfg), 5)})
+            make_web_mp4(raw, out, cfg["output"])
+            stamp.write_text(key, encoding="utf-8")
+            made += 1
+            say(f"o{n}: {seconds:.1f}s, {out.stat().st_size / 1024:.0f} KB  \"{text}\"")
+    except BosonError as e:
+        die(f"Boson refused: {e}")
+    finally:
+        boson.close()
+    for extra in sorted(folder.glob("o*.mp4")):  # an opener removed from config.json is removed from the site
+        if int(extra.stem[1:]) > len(lines):
+            extra.unlink()
+    manifest = read_json(out_dir(cfg) / "manifest.json", {}) or {}
+    save_manifest(cfg, manifest, [c["id"] for c in manifest.get("clips", [])])
+    say(f"{made} opener(s) recorded; manifest updated.")
+
+
 def cmd_clone_voice(args: argparse.Namespace) -> None:
     if not args.consent:
         die("voice cloning needs --consent: pass it only if this is your own voice, or you hold the speaker's "
@@ -970,6 +1027,10 @@ def main() -> None:
     m = sub.add_parser("manifest", help="rebuild manifest.json from the files on disk")
     m.add_argument("--placeholders", action="store_true", help="also list written answers that have no clip yet, as text only")
     m.set_defaults(fn=cmd_manifest)
+    o = sub.add_parser("openers", help="record the short openers the face plays while a live answer is being made")
+    o.add_argument("--force", action="store_true", help="re-record openers that are already current")
+    o.add_argument("--boson-env", help="path to a .env file holding BOSON_API_KEY")
+    o.set_defaults(fn=cmd_openers)
     s = sub.add_parser("status", help="show answers, reviews and clips")
     s.set_defaults(fn=cmd_status)
 
