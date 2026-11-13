@@ -392,6 +392,26 @@
     {
       "q": "favourite book",
       "want": "music-books"
+    },
+    {
+      "q": "what kind of jobs do you want",
+      "want": "looking-for"
+    },
+    {
+      "q": "what projects have you build",
+      "want": "projects"
+    },
+    {
+      "q": "where did you studied",
+      "want": "education"
+    },
+    {
+      "q": "tell me about your internships",
+      "want": "experience"
+    },
+    {
+      "q": "what are your hobby",
+      "want": "hobbies"
     }
   ],
   "no_answer": [
