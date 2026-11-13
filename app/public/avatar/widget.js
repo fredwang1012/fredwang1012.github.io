@@ -181,15 +181,17 @@
     "#av .av-idle{opacity:0;transition:opacity .4s ease;pointer-events:none}#av .av-idle.on{opacity:1}",
     ":root[data-theme=dark] #av .av-still,:root[data-theme=dark] #av video{filter:brightness(.92)}",
     "#av .av-tag{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:999px;font:500 10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:rgba(14,19,29,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);pointer-events:none}",
-    "#av .av-play{position:absolute;inset:0;display:grid;place-items:center;width:100%;height:100%;padding:0;border:0;background:linear-gradient(rgba(14,19,29,0) 55%,rgba(14,19,29,.28));cursor:pointer}",
-    "#av .av-play span{display:grid;place-items:center;width:60px;height:60px;border-radius:50%;color:#1b1b1b;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 8px 24px -8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.9);transition:transform .2s ease}",
-    "#av .av-play:hover span{transform:scale(1.06)}",
+    // play: the same small round button as pause, in the same corner, so nothing ever covers the face
+    "#av .av-play{position:absolute;right:8px;bottom:8px;display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:50%;background:none;cursor:pointer}",
+    "#av .av-play span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#1b1b1b;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 4px 14px -4px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.9);opacity:.9;transition:opacity .2s ease,background .2s ease}",
+    "#av .av-play:hover span,#av .av-play:focus-visible span{opacity:1;background:rgba(255,255,255,.96)}",
+    "#av .av-play:focus-visible{outline:2px solid #fff;outline-offset:2px}",
     // pause / resume: a small round button in the corner, in the same light glass as the big play button
     "#av .av-pause{position:absolute;right:8px;bottom:8px;display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:50%;color:#1b1b1b;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 4px 14px -4px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.9);cursor:pointer;opacity:.9;transition:opacity .2s ease,background .2s ease}",
     "#av .av-pause:hover,#av .av-pause:focus-visible{opacity:1;background:rgba(255,255,255,.96)}",
     "#av .av-pause:focus-visible{outline:2px solid #fff;outline-offset:2px}",
     "#av .av-pause[hidden]{display:none}#av .av-pause svg{width:15px;height:15px}",
-    "#av .av-play svg{width:24px;height:24px;margin-left:3px}",
+    "#av .av-play svg{width:15px;height:15px;margin-left:2px}",
     "#av .av-play[hidden]{display:none}",
     "#av .av-cap{font:13px/1.6 var(--sans);color:var(--muted);margin:0}",
     "#av .av-cap b{color:var(--ink);font-weight:600}",
@@ -387,6 +389,7 @@
       if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); } else video.pause();
     });
     video.addEventListener("pause", syncPause);
+    [video, idle].forEach(function (v) { v.addEventListener("contextmenu", function (e) { e.preventDefault(); }); });
     video.addEventListener("playing", syncPause);
     new MutationObserver(syncPause).observe(video, { attributes: true, attributeFilter: ["hidden"] });
     video.addEventListener("play", function () { video.hidden = false; playB.hidden = true; aEl.classList.add("playing"); mark(); rest(false); });
