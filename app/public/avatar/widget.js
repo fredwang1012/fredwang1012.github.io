@@ -70,6 +70,8 @@
     return w;
   }
   function plain(s) { return fold(s).replace(/[^a-z0-9]+/g, " ").trim(); }
+  // every word kept, each cut to its stem: "what kind of jobs do you want" and "what kind of job do you want" agree
+  function stemmed(s) { return plain(s).split(" ").map(stem).join(" "); }
   // content words of a sentence, folded, de-duplicated
   function tokens(s) {
     var out = [], seen = {};
@@ -87,7 +89,7 @@
   // unk scales the weight of typed words that no recorded question uses, so one shared word cannot carry a stray question.
   var W = { cos: 0.3, cov: 0.4, kw: 0.3, unk: 1, threshold: 0.48 };
   function buildIndex(clips) {
-    var entries = [], df = {}, vocab = {}, fallback = {}, exact = {};
+    var entries = [], df = {}, vocab = {}, fallback = {}, exact = {}, close = {};
     clips.forEach(function (c) {
       tokens(c.answer).forEach(function (t) { vocab[t] = 1; });
       if (c.kind === "fallback") { fallback[c.role] = c; return; }
@@ -99,17 +101,22 @@
       phrases.forEach(function (p) { p.forEach(function (t) { bag[t] = 1; }); });
       Object.keys(bag).forEach(function (t) { df[t] = (df[t] || 0) + 1; vocab[t] = 1; });
       var e = { clip: c, phrases: phrases, texts: worded.map(function (p) { return p.text; }), kw: kw, bag: bag };
-      texts.forEach(function (t) { var k = plain(t); if (k && !exact[k]) exact[k] = e; });
+      texts.forEach(function (t) {
+        var k = plain(t); if (k && !exact[k]) exact[k] = e;
+        var c = stemmed(t); if (c && !(c in close)) close[c] = { e: e, text: t }; else if (c && close[c].e !== e) close[c] = null;   // two questions share it: no use
+      });
       entries.push(e);
     });
     var n = entries.length, idf = {};
     Object.keys(df).forEach(function (t) { idf[t] = Math.log(1 + n / df[t]); });
-    return { entries: entries, idf: idf, top: Math.log(1 + n), vocab: vocab, fallback: fallback, exact: exact };
+    return { entries: entries, idf: idf, top: Math.log(1 + n), vocab: vocab, fallback: fallback, exact: exact, close: close };
   }
   function match(index, query) {
     var q = tokens(query), res = { type: "norecord", clip: null, score: 0, near: [] };
     var same = index.exact[plain(query)];
     if (same) { res.type = "answer"; res.clip = same.clip; res.score = 1; return res; }   // typed exactly as recorded
+    var near = index.close && index.close[stemmed(query)];   // or as recorded but for a plural or a tense
+    if (near) { res.type = "answer"; res.clip = near.e.clip; res.score = 1; res.phrase = near.text; return res; }
     if (!q.length) { res.type = "greeting"; return res; }
     if (q.some(function (t) { return HELLO[t]; }) && q.every(function (t) { return HELLO[t] || t === "strength"; })) { res.type = "greeting"; return res; }
     if (!q.some(function (t) { return index.vocab[t]; })) { res.type = "offtopic"; return res; }
