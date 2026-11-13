@@ -57,7 +57,8 @@ def kept(name: str) -> list[dict]:
     for r in rows:
         meta = r.get("metadata") or {}
         text = meta.get("text", "")
-        result.append({"key": r["name"], "id": f"{r['name'].split(':')[2]}.{text_tag(text)}", "q": meta.get("q", ""), "text": text})
+        result.append({"key": r["name"], "id": f"{r['name'].split(':')[2]}.{text_tag(text)}", "q": meta.get("q", ""), "text": text,
+                       "style": meta.get("style", "")})
     return result
 
 

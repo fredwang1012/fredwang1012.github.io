@@ -544,6 +544,21 @@ def clean_for_tts(text: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"<\|.*?\|>", " ", text)).strip()
 
 
+_DELIVERY = re.compile(r"(?:<\|(?:prosody|emotion|style):[a-z_]+\|>)*")
+
+
+def delivery(cfg: dict[str, Any]) -> str:
+    """How every clip is spoken: Boson delivery tags from config.json (tts.delivery), put before the words.
+
+    Placed first they hold for the whole clip. "<|prosody:expressive_high|>" is the livelier reading; the tags are
+    listed at https://docs.boson.ai/models/higgs-tts/tags.md. They are not spoken, counted or billed. Empty: plain.
+    """
+    tags = str(cfg["tts"].get("delivery") or "").strip()
+    if not _DELIVERY.fullmatch(tags):
+        die(f"tts.delivery in config.json must be Boson delivery tags only, e.g. <|prosody:expressive_high|>; got {tags!r}")
+    return tags
+
+
 @dataclass
 class Plan:
     item: dict[str, Any]
@@ -587,7 +602,7 @@ def make_plans(cfg: dict[str, Any], items: list[dict[str, Any]], answers: dict[s
             continue
         text = re.sub(r"\s+", " ", ans["answer"]).strip()
         tts_text = clean_for_tts(ans.get("say") or text)  # "say" is an optional pronunciation override for the voice only
-        audio_key = sha(t["model"], t["voice"], str(bool(t.get("normalize"))), tts_text)
+        audio_key = sha(t["model"], t["voice"], str(bool(t.get("normalize"))), delivery(cfg) + tts_text)   # a new delivery is a new take
         video_key = sha(audio_key, a["model"], a["size"], portrait_sha)
         key = sha(video_key, text, json.dumps({k: o[k] for k in ("transcode", "height", "crf", "audio_kbps")}, sort_keys=True))
         mp4, jpg = out_dir(cfg) / "clips" / f"{it['id']}.mp4", out_dir(cfg) / "clips" / f"{it['id']}.jpg"
@@ -778,7 +793,7 @@ def cmd_bake(args: argparse.Namespace) -> None:
                         say(f"  stopping: the next call (${cost:.4f}) would pass --max-usd {args.max_usd:.2f} (spent ${spent:.4f})")
                         break
                     t0 = time.monotonic()
-                    audio = boson.speech(p.tts_text, cfg["tts"]["voice"], cfg["tts"]["model"], bool(cfg["tts"].get("normalize")))
+                    audio = boson.speech(delivery(cfg) + p.tts_text, cfg["tts"]["voice"], cfg["tts"]["model"], bool(cfg["tts"].get("normalize")))
                     if len(audio) < 1000:
                         raise BosonError(200, "unexpected_response", f"speech returned only {len(audio)} bytes")
                     audio_path.write_bytes(audio)
@@ -923,13 +938,13 @@ def cmd_openers(args: argparse.Namespace) -> None:
     made = 0
     try:
         for n, text in enumerate(lines, 1):
-            key = sha(cfg["tts"]["model"], cfg["tts"]["voice"], text, sha(image), cfg["avatar"]["size"], json.dumps(cfg["output"], sort_keys=True))
+            key = sha(cfg["tts"]["model"], cfg["tts"]["voice"], delivery(cfg) + text, sha(image), cfg["avatar"]["size"], json.dumps(cfg["output"], sort_keys=True))
             out = folder / f"o{n}.mp4"
             stamp = raw_dir / f"o{n}.key"
             if out.exists() and stamp.exists() and stamp.read_text(encoding="utf-8") == key and not args.force:
                 say(f"o{n}: current")
                 continue
-            audio = boson.speech(clean_for_tts(text), cfg["tts"]["voice"], cfg["tts"]["model"], bool(cfg["tts"].get("normalize")))
+            audio = boson.speech(delivery(cfg) + clean_for_tts(text), cfg["tts"]["voice"], cfg["tts"]["model"], bool(cfg["tts"].get("normalize")))
             log_spend({"clip": f"opener-{n}", "call": "tts", "chars": len(text), "usd": round(len(text) / 1000 * cfg["tts"]["usd_per_1k_chars"], 5)})
             video_id = boson.create_video(image, mime, audio, cfg["avatar"]["size"], cfg["avatar"]["model"])
             boson.wait_video(video_id)

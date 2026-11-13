@@ -162,6 +162,7 @@ export default {
 
     const pair = new WebSocketPair(), client = pair[0], server = pair[1];
     server.accept();
+    try { server.binaryType = "arraybuffer"; } catch (_) { /* older runtimes: parts arrive as Blobs, read below */ }
     ctx.waitUntil(session(server, request, env));
     return new Response(null, { status: 101, webSocket: client });
   },
@@ -171,7 +172,8 @@ async function session(socket, request, env) {
   const visitor = await visitorKey(request, env);
   const history = [];
   let boson = null, busy = false, asks = 0, looks = 0, last = 0, open = true;
-  let filling = false;   // the owner filling the answer store (tools/avatar/preload.py): the visitor limits do not apply
+  let filling = false;
+  let putting = null;   // a new recording of a kept answer, arriving in parts (the owner restyling the store)   // the owner filling the answer store (tools/avatar/preload.py): the visitor limits do not apply
   const send = (obj) => { if (open) try { socket.send(typeof obj === "string" || obj instanceof Uint8Array ? obj : JSON.stringify(obj)); } catch (_) { open = false; } };
   const closeAll = (code, reason) => {
     open = false;
@@ -183,8 +185,25 @@ async function session(socket, request, env) {
   socket.addEventListener("close", () => { clearTimeout(timer); closeAll(1000, "bye"); });
   socket.addEventListener("error", () => { clearTimeout(timer); closeAll(1011, "error"); });
   socket.addEventListener("message", (ev) => {
+    if (typeof ev.data !== "string") {   // binary: only ever the parts of a recording being put into the store
+      if (filling && putting && !putting.failed) {
+        const p = putting, data = ev.data;
+        // a Blob is read asynchronously: each part waits for the one before, so the parts stay in order
+        p.reading = p.reading.then(async () => {
+          const part = data instanceof ArrayBuffer ? new Uint8Array(data)
+            : ArrayBuffer.isView(data) ? new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
+            : data && typeof data.arrayBuffer === "function" ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(0);
+          if (!part.length) p.why = `a part arrived as ${Object.prototype.toString.call(data)}`;
+          p.got += part.length;
+          if (p.got > p.want) p.failed = true; else p.parts.push(part);
+        });
+      }
+      return;
+    }
     let msg;
-    try { msg = JSON.parse(typeof ev.data === "string" ? ev.data : ""); } catch (_) { return; }
+    try { msg = JSON.parse(ev.data); } catch (_) { return; }
+    if (msg && msg.type === "put") { startPut(msg).catch(() => send({ type: "put_ready", ok: false, why: "failed" })); return; }
+    if (msg && msg.type === "put_end") { endPut().catch(() => send({ type: "put_done", ok: false, why: "failed" })); return; }
     if (msg && msg.type === "fill") { filling = !!env.PRELOAD_TOKEN && msg.token === env.PRELOAD_TOKEN; send({ type: "fill", ok: filling }); return; }
     if (msg && msg.type === "forget") {   // only while filling: the owner removing an answer that came out wrong
       const q = filling ? cleanQuestion(msg.text) : null;
@@ -255,6 +274,38 @@ async function session(socket, request, env) {
     } finally {
       busy = false; last = Date.now();
     }
+  }
+
+  // A new recording of a kept answer (tools/avatar/restyle_store.py: the same words in another delivery, made
+  // smaller). Only while filling, only for an answer already in the store, and only with exactly its words: the
+  // approval belongs to the words, so it carries over, and a recording can never change what is said.
+  async function startPut(msg) {
+    putting = null;
+    const q = filling ? cleanQuestion(msg.text) : null;
+    const said = typeof msg.said === "string" ? msg.said : "";
+    const seconds = Number(msg.seconds), want = Number(msg.bytes);
+    const style = /^[a-z-]{1,24}$/.test(String(msg.style || "")) ? String(msg.style) : "";
+    if (!q || !standsAlone(q) || !(want > 0 && want <= MAX_STORED_VIDEO) || !plausibleSpeech(said, seconds)) {
+      return send({ type: "put_ready", ok: false, why: "not a valid recording" });
+    }
+    const key = await answerKey(q, env);
+    const now = await storedAnswer(env, key);
+    if (!now || now.failed || now.text !== said) return send({ type: "put_ready", ok: false, why: "not the words in the store" });
+    putting = { key, q, said, seconds, style, want, got: 0, parts: [], old: now.video.length, failed: false, reading: Promise.resolve() };
+    send({ type: "put_ready", ok: true });
+  }
+  async function endPut() {
+    const p = putting;
+    putting = null;
+    if (p) await p.reading.catch(() => { p.failed = true; });   // every part read before the end is checked
+    if (!filling || !p || p.failed || p.got !== p.want) {
+      return send({ type: "put_done", ok: false, why: `incomplete: ${p && p.why ? p.why + "; " : ""}${p ? `${p.got} of ${p.want} bytes in ${p.parts.length} parts${p.failed ? ", too many" : ""}` : "no recording started"}` });
+    }
+    const video = concat(p.parts);
+    await env.ANSWERS.put(p.key, video, { metadata: { text: p.said.slice(0, 600), seconds: +p.seconds.toFixed(2), q: p.q.slice(0, 120), at: today(), ...(p.style ? { style: p.style } : {}) } });
+    const used = int(await env.USAGE.get("stored"), 0);
+    await env.USAGE.put("stored", String(Math.max(0, used - p.old + video.length)));
+    send({ type: "put_done", ok: true, bytes: video.length });
   }
 
   /** Whether this session may reach the model at all: the owner filling the store, or a visitor when that is switched on. */
