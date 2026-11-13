@@ -19,6 +19,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 from websockets.sync.client import connect
@@ -27,14 +28,20 @@ HERE = Path(__file__).resolve().parent
 REFERS_BACK = re.compile(r"\b(more|that|it|its|this|these|those|them|they|one|ones|again|else|also|same|then|there|earlier|before|previous|above)\b")
 
 
+def _folded(question: str) -> str:
+    return "".join(c for c in unicodedata.normalize("NFKD", question) if not "\u0300" <= c <= "\u036f")
+
+
 def store_name(question: str) -> str:
-    """The same filing rule as storeName in live/src/lib.js (ASCII questions; an accent would differ)."""
-    return re.sub(r"[^a-z0-9]+", " ", question.lower()).strip()
+    """The same filing rule as storeName in live/src/lib.js."""
+    return re.sub(r"[^a-z0-9]+", " ", _folded(question).lower()).strip()
 
 
 def stands_alone(question: str) -> bool:
+    """The same rule as standsAlone in live/src/lib.js: the service keeps the answer only to such a question."""
     name = store_name(question)
-    return len(name.split()) >= 3 and not REFERS_BACK.search(name)
+    in_full = re.fullmatch(r"[\x20-\x7e]*", _folded(question)) is not None
+    return in_full and len(name.split()) >= 3 and not REFERS_BACK.search(name)
 
 
 def questions() -> list[str]:

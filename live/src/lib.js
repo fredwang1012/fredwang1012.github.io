@@ -80,12 +80,24 @@ export function storeName(question) {
 const REFERS_BACK = /\b(more|that|it|its|this|these|those|them|they|one|ones|again|else|also|same|then|there|earlier|before|previous|above)\b/;
 
 /**
- * Whether a question means the same whatever was said before it, so its answer can be kept and reused.
- * "Tell me more" and "why is that?" do not: they are answered afresh every time.
+ * Whether the store's name for a question keeps everything in it that the model would read. The name keeps only
+ * a-z and 0-9, so words in any other script, and symbols such as emoji, would vanish from it: a question like
+ * "What is Talkback? [an instruction in another script]" would be answered as written but filed under
+ * "what is talkback", and that answer then served to everyone who asks the plain question. Such a question is
+ * answered afresh every time and never kept. Accented Latin letters are fine: they fold to their base letter.
+ */
+export function namedInFull(question) {
+  const folded = String(question).normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+  return /^[\x20-\x7e]*$/.test(folded);
+}
+
+/**
+ * Whether a question's answer can be kept and reused: it must mean the same whatever was said before it ("tell me
+ * more" and "why is that?" do not), and its name in the store must lose nothing (see namedInFull).
  */
 export function standsAlone(question) {
   const name = storeName(question);
-  return name.split(" ").length >= 3 && !REFERS_BACK.test(name);
+  return namedInFull(question) && name.split(" ").length >= 3 && !REFERS_BACK.test(name);
 }
 
 /** The video seconds allowed today: the higher allowance up to and including BOOST_UNTIL (YYYY-MM-DD), then the usual one. */
