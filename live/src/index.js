@@ -68,10 +68,13 @@ async function countAsk(env, key) {
 // ---------------------------------------------------------------- the answer store
 // Every answer to a question that stands on its own is kept: the video in ANSWERS, the words in its metadata. The
 // next visitor who asks the same thing gets it at once, it costs nothing, and it still plays when the Boson credit
-// has run out. An answer is filed under the notes, rules, voice and size it was made with, so changing any of them
-// starts a fresh shelf instead of serving answers that no longer match.
+// has run out. Answers are filed on a shelf. STORE_SHELF names it; change the name to start an empty one (after a
+// new voice or portrait, say). After an edit to the notes, the answers it affects are removed one by one instead,
+// so the hundreds it does not affect are kept. With no name set, the shelf is a hash of the notes, rules, voice
+// and size, and any edit starts a fresh one.
 let shelf = null;
 async function answerKey(question, env) {
+  if (!shelf && env.STORE_SHELF) shelf = String(env.STORE_SHELF).replace(/[^A-Za-z0-9_-]/g, "");
   if (!shelf) {
     const made = new TextEncoder().encode(`${INSTRUCTIONS}|${env.BOSON_VOICE}|${env.VIDEO_SIZE || "640x640"}`);
     shelf = base64(new Uint8Array(await crypto.subtle.digest("SHA-256", made)).subarray(0, 6)).replace(/[+/=]/g, "");

@@ -365,11 +365,11 @@
     },
     "looking-for": {
       "question": "What kind of role are you looking for?",
-      "answer": "Mostly work where a model has to hold up in production: machine learning engineering, agents and retrieval systems, and the data engineering underneath them. For details like role type, timing, location or work authorisation, please email me; the address is linked right below.",
+      "answer": "I'm looking for AI and machine learning engineering roles. I'm also open to data science, data engineering, software engineering and forward deployed engineering. Really, any kind of engineering that has to do with data, AI, machine learning or software. For timing and location, please email me; the address is linked right below.",
       "source": "edited",
-      "reviewed": false,
+      "reviewed": true,
       "warnings": [],
-      "needs_review": "The résumé and site do not state role type, timing, location or work authorisation. Frederick should rewrite this answer by hand."
+      "review": "Frederick's own words, 2026-11-13"
     },
     "contact": {
       "question": "How can I contact you?",
@@ -404,5 +404,5 @@
       "review": "checked against the résumé, the site and the project repos, 2026-11-13"
     }
   },
-  "updated": "2026-11-13T05:18:33+00:00"
+  "updated": "2026-11-13T06:20:29+00:00"
 }

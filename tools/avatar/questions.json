@@ -1223,7 +1223,10 @@
         "What are you hoping to do after your master's?",
         "Are you open to internships?",
         "What sort of team do you want to join?",
-        "When are you available to start?"
+        "When are you available to start?",
+        "Are you open to software engineering roles?",
+        "Would you take a data science job?",
+        "Are you interested in forward deployed engineering?"
       ],
       "keywords": [
         "looking",
@@ -1236,7 +1239,6 @@
         "next"
       ],
       "suggested": true,
-      "needs_review": "The résumé and site do not state role type, timing, location or work authorisation. Frederick should rewrite this answer by hand.",
       "sources": [
         {
           "label": "§5 Contact",

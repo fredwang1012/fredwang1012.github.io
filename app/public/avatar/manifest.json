@@ -2132,7 +2132,10 @@
         "What are you hoping to do after your master's?",
         "Are you open to internships?",
         "What sort of team do you want to join?",
-        "When are you available to start?"
+        "When are you available to start?",
+        "Are you open to software engineering roles?",
+        "Would you take a data science job?",
+        "Are you interested in forward deployed engineering?"
       ],
       "keywords": [
         "looking",
@@ -2144,28 +2147,36 @@
         "position",
         "next"
       ],
-      "answer": "Mostly work where a model has to hold up in production: machine learning engineering, agents and retrieval systems, and the data engineering underneath them. For details like role type, timing, location or work authorisation, please email me; the address is linked right below.",
+      "answer": "I'm looking for AI and machine learning engineering roles. I'm also open to data science, data engineering, software engineering and forward deployed engineering. Really, any kind of engineering that has to do with data, AI, machine learning or software. For timing and location, please email me; the address is linked right below.",
       "cues": [
         {
           "t": 0.0,
-          "text": "Mostly work where a model has to hold up in production: machine learning engineering, agents and retrieval systems, and the data engineering underneath them."
+          "text": "I'm looking for AI and machine learning engineering roles."
         },
         {
-          "t": 9.85,
-          "text": "For details like role type, timing, location or work authorisation, please email me; the address is linked right below."
+          "t": 3.85,
+          "text": "I'm also open to data science, data engineering, software engineering and forward deployed engineering."
+        },
+        {
+          "t": 10.7,
+          "text": "Really, any kind of engineering that has to do with data, AI, machine learning or software."
+        },
+        {
+          "t": 16.75,
+          "text": "For timing and location, please email me; the address is linked right below."
         }
       ],
       "file": "clips/looking-for.mp4",
       "poster": "clips/looking-for.jpg",
-      "duration": 17.32,
-      "bytes": 843612,
+      "duration": 21.8,
+      "bytes": 1077402,
       "sources": [
         {
           "label": "§5 Contact",
           "href": "#contact"
         }
       ],
-      "key": "9c54200a142d1476"
+      "key": "0dbbc2b6595e1a5c"
     },
     {
       "id": "contact",
@@ -2409,8 +2420,8 @@
   "version": 1,
   "voice": "cloned",
   "portrait": "/avatar/me.webp",
-  "total_bytes": 50431670,
-  "generated": "2026-11-13T06:01:22+00:00",
+  "total_bytes": 50665460,
+  "generated": "2026-11-13T06:23:32+00:00",
   "live": {
     "url": "wss://fredwang-avatar-live.fredwang1012.workers.dev/talk"
   },

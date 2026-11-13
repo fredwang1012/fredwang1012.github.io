@@ -39,12 +39,14 @@ Edit this file, then re-run `bake.py answers` to rewrite the affected answers.
 
 ## What I am looking for
 
-Not written down in the résumé or on the site in detail. What can be said:
+In my own words (November 2026):
 
-- The site title is "ML & Data Engineer". The résumé leads with agents, retrieval and evaluation.
-- I like work where a model has to hold up in production: ML engineering, agents and retrieval systems, and the data
-  engineering underneath them.
-- For role type, timing, location and work authorisation: ask me by email. Do not guess these.
+- I am looking for AI and machine learning engineering roles.
+- I am also open to data science, data engineering, software engineering and forward deployed engineering (FDE)
+  roles.
+- In short: any kind of engineering that has to do with data, AI, ML or software.
+- I like work where a model has to hold up in production.
+- Timing, location and work authorisation are not written down here: ask me by email. Do not guess these.
 
 ## Education
 
