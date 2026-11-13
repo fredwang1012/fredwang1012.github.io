@@ -92,12 +92,13 @@
       tokens(c.answer).forEach(function (t) { vocab[t] = 1; });
       if (c.kind === "fallback") { fallback[c.role] = c; return; }
       var texts = [c.question].concat(c.paraphrases || []);
-      var phrases = texts.map(tokens).filter(function (p) { return p.length; });
+      var worded = texts.map(function (t) { return { text: t, tok: tokens(t) }; }).filter(function (p) { return p.tok.length; });
+      var phrases = worded.map(function (p) { return p.tok; });
       var kw = {}, bag = {};
       tokens((c.keywords || []).join(" ")).forEach(function (t) { kw[t] = 1; bag[t] = 1; });
       phrases.forEach(function (p) { p.forEach(function (t) { bag[t] = 1; }); });
       Object.keys(bag).forEach(function (t) { df[t] = (df[t] || 0) + 1; vocab[t] = 1; });
-      var e = { clip: c, phrases: phrases, kw: kw, bag: bag };
+      var e = { clip: c, phrases: phrases, texts: worded.map(function (p) { return p.text; }), kw: kw, bag: bag };
       texts.forEach(function (t) { var k = plain(t); if (k && !exact[k]) exact[k] = e; });
       entries.push(e);
     });
@@ -115,20 +116,23 @@
     function w(t) { var v = index.idf[t] || index.top * W.unk; return v * v; }
     var qn = 0; q.forEach(function (t) { qn += w(t); });
     var scored = index.entries.map(function (e, i) {
-      var cos = 0, cov = 0, kw = 0;
-      e.phrases.forEach(function (p) {
+      var cos = 0, cov = 0, kw = 0, best = 0;
+      e.phrases.forEach(function (p, at) {
         var has = {}, pn = 0, dot = 0;
         p.forEach(function (t) { has[t] = 1; pn += w(t); });
         q.forEach(function (t) { if (has[t]) dot += w(t); });
         var c = dot / Math.sqrt(qn * pn);
-        if (c > cos) cos = c;
+        if (c > cos) { cos = c; best = at; }
       });
       q.forEach(function (t) { if (e.bag[t]) cov += w(t); if (e.kw[t]) kw += w(t); });
-      return { e: e, i: i, s: W.cos * cos + W.cov * cov / qn + W.kw * kw / qn };
+      return { e: e, i: i, p: best, s: W.cos * cos + W.cov * cov / qn + W.kw * kw / qn };
     }).sort(function (a, b) { return b.s - a.s || a.i - b.i; });
     res.score = scored.length ? scored[0].s : 0;
     res.near = scored.slice(0, 4).filter(function (x) { return x.s > 0.12; }).map(function (x) { return x.e.clip; });
-    if (scored.length && scored[0].s >= W.threshold) { res.type = "answer"; res.clip = scored[0].e.clip; res.near = res.near.slice(1); }
+    if (scored.length && scored[0].s >= W.threshold) {
+      res.type = "answer"; res.clip = scored[0].e.clip; res.near = res.near.slice(1);
+      res.phrase = scored[0].e.texts[scored[0].p] || null;   // the recorded wording closest to what was typed
+    }
     return res;
   }
   var Match = { tokens: tokens, buildIndex: buildIndex, match: match, W: W };
@@ -225,7 +229,8 @@
   var root = null, body, video, still, playB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
   var manifest = null, index = null, loading = null, current = null, spans = [], lastFocus = null, chipButtons = [];
   // the live service: on = it answered its health check; ws = the open session; turn = the answer in progress
-  var live = { url: null, on: false, ws: null, opening: null, turn: null, player: null, audio: null };
+  // generates = the service lets the model answer a new question there and then; otherwise it only looks answers up
+  var live = { url: null, on: false, generates: false, ws: null, opening: null, turn: null, player: null, audio: null };
 
   function el(tag, cls, text) { var n = doc.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
   function refresh() { if (window.Liquid && window.Liquid.refresh) window.Liquid.refresh(); }
@@ -385,9 +390,12 @@
   function describe() {
     var a = body && body.querySelector(".av-about"), h = body && body.querySelector(".av-hint");
     if (!a || !h) return;
-    if (live.on) {
+    if (live.on && live.generates) {
       a.textContent = "An AI version of me, not me on a call: a language model answers from my r\u00e9sum\u00e9 and project notes, in a clone of my voice, lip-synced from one photo. It can get things wrong.";
       h.textContent = "Your question is sent to an AI service (Boson AI) that writes and voices the answer. I don\u2019t keep it.";
+    } else if (live.on) {
+      a.textContent = "An AI version of me, not me on a call: answers a language model wrote from my r\u00e9sum\u00e9 and project notes, each checked before it was added, in a clone of my voice and lip-synced from one photo.";
+      h.textContent = "Your question is sent to my server to find the closest checked answer. It isn\u2019t kept, and no AI model sees it.";
     } else {
       a.textContent = aboutPrepared;
       h.textContent = "Your question is matched to the closest prepared answer, here in your browser. Nothing you type is sent anywhere.";
@@ -500,7 +508,7 @@
     if (!live.url || !window.WebSocket) return;
     fetch(live.url.replace(/^ws/, "http").replace(/\/talk$/, "/health"), { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) { live.on = !!(j && j.live); describe(); })
+      .then(function (j) { live.on = !!(j && j.live); live.generates = !!(j && j.generates); describe(); })
       .catch(function () { live.on = false; });
   }
   function liveOpen() {
@@ -558,7 +566,7 @@
     }
     function begin() {
       if (started || stopped) return;
-      started = true; video.hidden = false; note("");
+      started = true; video.hidden = false; if (!kept) note("");
       var p = video.play();
       if (p && p.catch) p.catch(function () { playB.setAttribute("aria-label", "Play answer"); playB.hidden = false; });
     }
@@ -636,7 +644,10 @@
     };
   }
 
-  function askLive(text) {
+  // opts.asked: what the visitor typed, when `text` is the closest recorded wording being looked up in its place
+  // opts.clip: the recorded clip to play if the service has no checked answer for `text` either
+  function askLive(text, opts) {
+    opts = opts || {};
     if (live.turn && !live.turn.done) return;
     if (live.player) { live.player.stop(); live.player = null; }
     if (live.audio) { try { live.audio.pause(); } catch (_) {} live.audio = null; }
@@ -646,16 +657,17 @@
     video.parentNode.style.aspectRatio = "";
     still.hidden = false; still.setAttribute("src", manifest.portrait || "/frederick.jpg");
     playB.hidden = true;
-    qEl.textContent = "Q \u00b7 " + text; qEl.hidden = false;
+    qEl.textContent = "Q \u00b7 " + (opts.asked || text); qEl.hidden = false;
     aEl.textContent = ""; aEl.classList.remove("playing");
     sources(null); nearEl.textContent = ""; nearEl.hidden = true;
     chipButtons.forEach(function (c) { c.b.removeAttribute("aria-current"); });
-    note("Thinking\u2026", true);
-    announce("Answering: " + text);
+    note(live.generates ? "Thinking\u2026" : "Looking that up\u2026", true);
+    if (!opts.asked) announce("Answering: " + text);
     input.value = ""; setBusy(true);
-    var turn = live.turn = { q: text, text: "", done: false, kind: null, chunks: [] };
-    // an answer I have given before comes back within half a second: say "one second" only when it will be longer
-    turn.opener = setTimeout(function () { if (live.turn === turn && !turn.kind && !turn.done) opener(); }, 700);
+    var turn = live.turn = { q: text, asked: opts.asked || text, clip: opts.clip || null, second: !!opts.asked, text: "", done: false, kind: null, chunks: [] };
+    // an answer I have given before comes back within half a second: say "one second" only when it will be longer,
+    // which is only when the model is answering there and then
+    if (live.generates) turn.opener = setTimeout(function () { if (live.turn === turn && !turn.kind && !turn.done) opener(); }, 700);
     liveOpen().then(function (ws) {
       if (live.turn !== turn) return;
       ws.send(JSON.stringify({ type: "ask", text: text }));
@@ -687,7 +699,19 @@
     if (live.player) { live.player.stop(); live.player = null; }
     if (turn.text) { note(why + " The answer is above as text."); announce(turn.text); return; }
     live.turn = null;
-    askLocal(turn.q, why + " Here is the closest prepared answer instead.");
+    askLocal(turn.asked, why + " Here is the closest prepared answer instead.");
+  }
+  // The service has no checked answer under those exact words. Find the closest recorded wording here in the page
+  // and ask the service for that one; if it has none either, play the recorded clip for that question.
+  function liveNone(turn) {
+    liveFinish(); live.turn = null;
+    if (turn.second) {
+      if (turn.clip) show(turn.clip, { play: true, asked: turn.asked }); else askLocal(turn.asked);
+      return;
+    }
+    var r = match(index, turn.q);
+    if (r.type === "answer" && r.phrase && plain(r.phrase) !== plain(turn.q)) askLive(r.phrase, { asked: turn.q, clip: r.clip });
+    else askLocal(turn.q);
   }
   function liveMessage(data) {
     var turn = live.turn;
@@ -699,9 +723,11 @@
     }
     var m; try { m = JSON.parse(data); } catch (_) { return; }
     if (m.type === "text") { turn.text += m.delta; aEl.textContent = turn.text; }
+    else if (m.type === "none") liveNone(turn);
     else if (m.type === "said") {
       turn.text = m.text; aEl.textContent = m.text;
-      if (m.kept) { clearTimeout(turn.opener); note(""); } else note("Putting my voice and face to it\u2026 a few seconds.", true);
+      if (m.kept) { clearTimeout(turn.opener); note(turn.second ? "The closest question I have an answer for: \u201c" + turn.q + "\u201d" : ""); }
+      else note("Putting my voice and face to it\u2026 a few seconds.", true);
     }
     else if (m.type === "video") { turn.kind = "video"; clearTimeout(turn.opener); live.player = streamPlayer(m.seconds, !!m.kept); }
     else if (m.type === "video_cut") { if (live.player) live.player.cut(); }
@@ -713,7 +739,7 @@
       note("My face couldn\u2019t be rendered this time, so this answer is voice only."); announce(turn.text);
     }
     else if (m.type === "done") liveFinish();
-    else if (m.type === "limit") { live.on = false; describe(); liveFinish(); live.turn = null; askLocal(turn.q, m.message + " Here is the closest prepared answer instead."); }
+    else if (m.type === "limit") { live.on = false; describe(); liveFinish(); live.turn = null; askLocal(turn.asked, live.generates ? m.message + " Here is the closest prepared answer instead." : ""); }
     else if (m.type === "error") {
       if (m.code === "busy" || m.code === "too_fast" || m.code === "bad_question") { liveFinish(); note(m.message); }
       else liveFail(m.message || "The live voice had a problem.");

@@ -88,8 +88,16 @@ async function answerKey(question, env) {
 // one wrong answer; kept and replayed, it is the same wrong answer to everyone. So a kept answer is served again
 // only after it has been read: the key "ok:<shelf>" lists the approved ones (tools/avatar/review_store.py writes
 // it). An answer that is kept but not yet approved waits in the store, and the question is answered afresh.
+//
+// An approval is for the words that were read, not for the question: each entry is "<question hash>.<text hash>".
+// If the answer under a question is ever a different one (removed and made again, or remade by the preload), its
+// text hash differs and it is unapproved until it has been read too.
 let okList = null, okAt = 0;
-async function approved(env, key) {
+async function textTag(text) {
+  const hash = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(text))));
+  return Array.from(hash.subarray(0, 6), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+async function approved(env, key, text) {
   if (!okList || Date.now() - okAt > 60000) {
     try {
       const list = await env.ANSWERS.get(`ok:${key.split(":")[1]}`, "json");
@@ -97,14 +105,14 @@ async function approved(env, key) {
     } catch (_) { okList = okList || new Set(); }
     okAt = Date.now();
   }
-  return okList.has(key.split(":")[2]);
+  return okList.has(`${key.split(":")[2]}.${await textTag(text)}`);
 }
 
 async function storedAnswer(env, key) {
   try {
     const hit = await env.ANSWERS.getWithMetadata(key, "arrayBuffer");
     return hit && hit.value && hit.metadata && hit.metadata.text ? { video: new Uint8Array(hit.value), text: hit.metadata.text, seconds: hit.metadata.seconds || 0 } : null;
-  } catch (_) { return null; }
+  } catch (_) { return { failed: true }; }   // not "nothing there": the caller must not write over what it could not read
 }
 
 /** Keep an answer. Returns "kept", or why not: "full" (no room within `limit` bytes), "size", "failed". */
@@ -142,13 +150,15 @@ export default {
     const url = new URL(request.url), origin = request.headers.get("Origin");
     if (url.pathname === "/health") {
       const ok = allowedOrigin(origin, env);
-      const live = !!env.BOSON_API_KEY && !!env.BOSON_VOICE && (await secondsLeft(env)) > 0;
-      return Response.json({ ok: true, live }, { headers: ok ? cors(origin) : { "Cache-Control": "no-store" } });
+      // generates: whether a visitor's question may be answered by the model there and then (see LIVE_FOR_VISITORS)
+      const generates = env.LIVE_FOR_VISITORS === "1";
+      const live = generates ? !!env.BOSON_API_KEY && !!env.BOSON_VOICE && (await secondsLeft(env)) > 0 : true;
+      return Response.json({ ok: true, live, generates }, { headers: ok ? cors(origin) : { "Cache-Control": "no-store" } });
     }
     if (url.pathname !== "/talk") return new Response("Not found", { status: 404 });
     if (request.headers.get("Upgrade") !== "websocket") return new Response("Expected a WebSocket", { status: 426 });
     if (!allowedOrigin(origin, env)) return new Response("Forbidden", { status: 403 });
-    if (!env.BOSON_API_KEY || !env.BOSON_VOICE) return new Response("Not configured", { status: 503 });
+    if (env.LIVE_FOR_VISITORS === "1" && (!env.BOSON_API_KEY || !env.BOSON_VOICE)) return new Response("Not configured", { status: 503 });
 
     const pair = new WebSocketPair(), client = pair[0], server = pair[1];
     server.accept();
@@ -160,7 +170,7 @@ export default {
 async function session(socket, request, env) {
   const visitor = await visitorKey(request, env);
   const history = [];
-  let boson = null, busy = false, asks = 0, last = 0, open = true;
+  let boson = null, busy = false, asks = 0, looks = 0, last = 0, open = true;
   let filling = false;   // the owner filling the answer store (tools/avatar/preload.py): the visitor limits do not apply
   const send = (obj) => { if (open) try { socket.send(typeof obj === "string" || obj instanceof Uint8Array ? obj : JSON.stringify(obj)); } catch (_) { open = false; } };
   const closeAll = (code, reason) => {
@@ -192,13 +202,14 @@ async function session(socket, request, env) {
     const question = cleanQuestion(msg.text);
     if (!question) return send({ type: "error", code: "bad_question", message: "Ask one question, up to 300 characters." });
     if (busy) return send({ type: "error", code: "busy", message: "I'm still answering the last one." });
-    if (!filling && Date.now() - last < MIN_GAP_MS) return send({ type: "error", code: "too_fast", message: "One moment, then ask again." });
+    if (!filling && env.LIVE_FOR_VISITORS === "1" && Date.now() - last < MIN_GAP_MS) return send({ type: "error", code: "too_fast", message: "One moment, then ask again." });   // looking an answer up costs nothing, so needs no pause
     const t0 = Date.now();
     // an answer already on the shelf: no model, no render, no cost, so it does not count against any limit
     const alone = standsAlone(question), key = alone ? await answerKey(question, env) : null;
-    // a visitor is served a kept answer only if it has been approved; the owner filling the store sees them all
-    const usable = key && !(filling && msg.fresh) && (filling || await approved(env, key));
-    const kept = usable ? await storedAnswer(env, key) : null;
+    // a visitor is served a kept answer only if those very words have been approved; the owner filling the store
+    // is given whatever is there
+    const inStore = key && !(filling && msg.fresh) ? await storedAnswer(env, key) : null;
+    const kept = inStore && !inStore.failed && (filling || await approved(env, key, inStore.text)) ? inStore : null;
     if (kept) {
       busy = true;
       try {
@@ -212,6 +223,13 @@ async function session(socket, request, env) {
       } finally { busy = false; last = Date.now(); }
       return;
     }
+    // Unless LIVE_FOR_VISITORS is "1", the model never answers a visitor: about one answer in nine it makes has a
+    // detail wrong, and here it would be said in my voice with nobody having read it. A visitor gets a checked
+    // answer or none; with none, the page plays the closest recorded clip instead.
+    if (!filling && env.LIVE_FOR_VISITORS !== "1") {
+      if (++looks > 80) return send({ type: "limit", message: "That's all for this session." });
+      return send({ type: "none" });
+    }
     if (!filling) {
       if (++asks > int(env.ASKS_PER_SESSION, 12)) return send({ type: "limit", message: "That's all the live answers for this session." });
       if ((await secondsLeft(env)) <= 0) return send({ type: "limit", message: "The live answers are used up for today." });
@@ -219,9 +237,8 @@ async function session(socket, request, env) {
     }
     busy = true; last = Date.now();
     // kept only when nothing came before it in this session (the answer must not lean on an earlier one), and
-    // never over an answer already in the store: a visitor cannot replace one that is waiting to be read
-    const taken = key && !filling && !history.length ? await storedAnswer(env, key) : null;
-    const keep = key && !history.length && !taken ? [] : null;
+    // never over an answer already in the store: a visitor cannot replace one, approved or waiting to be read
+    const keep = key && !history.length && !inStore ? [] : null;
     try {
       let opening = null;   // the render of the first part, started while the rest is still being spoken
       const spoken = await speak(question, env.SPLIT_ANSWERS === "1" ? (pcm) => { opening = render(pcm); } : null);
