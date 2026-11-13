@@ -15,10 +15,12 @@
   "vars": {
     // pages allowed to open a session, comma separated: the site, and the copy of it Cloudflare serves
     "ALLOWED_ORIGINS": "https://fredwang1012.github.io,https://fredwang1012.fredwang1012.workers.dev",
-    // "1": the model answers a visitor's new question there and then, unchecked. Anything else: a visitor gets
-    // only answers that have been read and approved (tools/avatar/review_store.py), and the model is used only
-    // by the owner's preload. Read on 2026-11-13: 19 of 169 model answers had a detail wrong or overstated.
-    "LIVE_FOR_VISITORS": "0",
+    // "always": the model answers every visitor question there and then, unchecked; when it cannot (Boson out of
+    // credit or unreachable, a limit reached) the approved answer to that question stands in, else the page's
+    // closest recorded clip. "1": an approved answer when there is one, else the model. Anything else: a visitor
+    // gets only approved answers (tools/avatar/review_store.py), and the model is used only by the owner's
+    // preload. Read on 2026-11-13: 19 of 169 model answers had a detail wrong or overstated.
+    "LIVE_FOR_VISITORS": "always",
     "REALTIME_MODEL": "higgs-realtime-1.5-preview",
     // the shelf the kept answers are filed on; a new name starts an empty one
     "STORE_SHELF": "YiGRBjf",
