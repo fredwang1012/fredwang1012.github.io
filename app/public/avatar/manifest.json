@@ -2421,7 +2421,7 @@
   "voice": "cloned",
   "portrait": "/avatar/me.webp",
   "total_bytes": 50549025,
-  "generated": "2026-11-13T08:25:57+00:00",
+  "generated": "2026-11-13T16:46:49+00:00",
   "live": {
     "url": "wss://fredwang-avatar-live.fredwang1012.workers.dev/talk"
   },
@@ -2442,5 +2442,9 @@
       "file": "openers/o4.mp4",
       "key": "9609b00e12"
     }
-  ]
+  ],
+  "idle": {
+    "file": "idle.mp4",
+    "key": "b7b475febb"
+  }
 }

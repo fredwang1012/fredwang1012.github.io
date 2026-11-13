@@ -693,6 +693,8 @@ def save_manifest(cfg: dict[str, Any], manifest: dict[str, Any], order: list[str
     manifest["live"] = {"url": url} if url else None
     folder = out_dir(cfg) / "openers"
     manifest["openers"] = [{"file": f"openers/{f.name}", "key": sha(f.read_bytes(), n=10)} for f in sorted(folder.glob("*.mp4"))] if folder.is_dir() else []
+    idle = out_dir(cfg) / "idle.mp4"
+    manifest["idle"] = {"file": "idle.mp4", "key": sha(idle.read_bytes(), n=10)} if idle.exists() else None
     manifest["total_bytes"] = sum(c.get("bytes", 0) for c in manifest["clips"])
     manifest["generated"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     write_json(out_dir(cfg) / "manifest.json", manifest)
@@ -921,6 +923,62 @@ def cmd_status(args: argparse.Namespace) -> None:
     say(f"\n{len(answers)} answers, {len(baked)} clips, {manifest.get('total_bytes', 0) / 1e6:.2f} MB of video")
 
 
+IDLE_SECONDS = 8.0
+
+
+def near_silence(seconds: float, rate: int = 24000) -> bytes:
+    """Very quiet room tone as a WAV: the renderer may refuse a signal of pure zeros as having no audio."""
+    import io
+    import math
+    import struct
+    import wave
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        w.writeframes(b"".join(struct.pack("<h", int(12 * math.sin(i * 0.05))) for i in range(int(seconds * rate))))
+    return buf.getvalue()
+
+
+def cmd_idle(args: argparse.Namespace) -> None:
+    """Record the face at rest: the portrait lip-synced to near-silence, so it breathes, blinks and shifts a little
+    with the mouth closed. Played forwards then backwards, it loops with no jump; it has no sound track at all."""
+    cfg = load_config()
+    image = (REPO / cfg["avatar"]["portrait"]).read_bytes()
+    mime, _, _ = image_meta(image)
+    out = out_dir(cfg) / "idle.mp4"
+    raw = CACHE / "idle-raw.mp4"
+    stamp = CACHE / "idle.key"
+    key = sha(sha(image), cfg["avatar"]["size"], str(IDLE_SECONDS), json.dumps(cfg["output"], sort_keys=True))
+    if out.exists() and stamp.exists() and stamp.read_text(encoding="utf-8") == key and not args.force:
+        say("idle: current")
+    else:
+        CACHE.mkdir(parents=True, exist_ok=True)
+        boson = boson_client(args)
+        try:
+            video_id = boson.create_video(image, mime, near_silence(IDLE_SECONDS), cfg["avatar"]["size"], cfg["avatar"]["model"])
+            boson.wait_video(video_id)
+            raw.write_bytes(boson.video_content(video_id))
+        except BosonError as e:
+            die(f"Boson refused: {e}")
+        finally:
+            boson.close()
+        seconds = media_seconds(raw)
+        log_spend({"clip": "idle", "call": "avatar", "seconds": round(seconds, 2), "size": cfg["avatar"]["size"],
+                   "usd": round(seconds / 60 * avatar_rate(cfg), 5)})
+        ocfg = cfg["output"]
+        run_ffmpeg(["-i", str(raw), "-filter_complex",
+                    f"[0:v]scale=-2:{int(ocfg['height'])}:flags=lanczos,split[f][b];[b]reverse,trim=start_frame=1[r];[f][r]concat=n=2:v=1:a=0,format=yuv420p[v]",
+                    "-map", "[v]", "-an", "-c:v", "libx264", "-profile:v", "main", "-preset", "slow", "-crf", str(int(ocfg["crf"]) + 3),
+                    "-movflags", "+faststart", str(out)])
+        stamp.write_text(key, encoding="utf-8")
+        say(f"idle: {media_seconds(out):.1f}s loop, {out.stat().st_size / 1024:.0f} KB")
+    manifest = read_json(out_dir(cfg) / "manifest.json", {}) or {}
+    save_manifest(cfg, manifest, [c["id"] for c in manifest.get("clips", [])])
+    say("manifest updated.")
+
+
 def cmd_openers(args: argparse.Namespace) -> None:
     """Record the openers in config.json: a few words each, in the configured voice, lip-synced like any other clip."""
     cfg = load_config()
@@ -1046,6 +1104,10 @@ def main() -> None:
     o.add_argument("--force", action="store_true", help="re-record openers that are already current")
     o.add_argument("--boson-env", help="path to a .env file holding BOSON_API_KEY")
     o.set_defaults(fn=cmd_openers)
+    i = sub.add_parser("idle", help="record the face at rest, looped under the answers while nothing is being said")
+    i.add_argument("--boson-env", help="a .env file holding BOSON_API_KEY")
+    i.add_argument("--force", action="store_true", help="record it again even if it is current")
+    i.set_defaults(fn=cmd_idle)
     s = sub.add_parser("status", help="show answers, reviews and clips")
     s.set_defaults(fn=cmd_status)
 
