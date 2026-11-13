@@ -30,6 +30,7 @@ import time
 import warnings
 from pathlib import Path
 
+from websockets.exceptions import ConnectionClosed
 from websockets.sync.client import connect
 
 HERE = Path(__file__).resolve().parent
@@ -136,7 +137,7 @@ def main() -> int:
                             if not done.get("ok"):
                                 raise RuntimeError(f"not stored: {done.get('why')}")
                             break
-                        except (OSError, TimeoutError, ConnectionError) as e:
+                        except (OSError, TimeoutError, ConnectionError, ConnectionClosed) as e:   # the service ends a session after 10 minutes
                             try:
                                 ws and ws.close()
                             except Exception:
