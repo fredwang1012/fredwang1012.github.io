@@ -177,6 +177,8 @@
     "#av .av-frame{position:relative;aspect-ratio:1/1;border-radius:6px;overflow:hidden;background:var(--av-well);box-shadow:0 0 0 1px var(--glass-edge)}",
     "#av .av-still,#av video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;background:transparent}",
     "#av .av-still[hidden],#av video[hidden]{display:none}",
+    // the face at rest: faded in once it is actually playing, so a blocked autoplay just leaves the still
+    "#av .av-idle{opacity:0;transition:opacity .4s ease;pointer-events:none}#av .av-idle.on{opacity:1}",
     ":root[data-theme=dark] #av .av-still,:root[data-theme=dark] #av video{filter:brightness(.92)}",
     "#av .av-tag{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:999px;font:500 10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:rgba(14,19,29,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);pointer-events:none}",
     "#av .av-play{position:absolute;inset:0;display:grid;place-items:center;width:100%;height:100%;padding:0;border:0;background:linear-gradient(rgba(14,19,29,0) 55%,rgba(14,19,29,.28));cursor:pointer}",
@@ -233,7 +235,7 @@
     play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5Z"/></svg>'
   };
 
-  var root = null, body, video, still, playB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
+  var root = null, body, video, idle, still, playB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
   var manifest = null, index = null, loading = null, current = null, spans = [], lastFocus = null, chipButtons = [];
   // the live service: on = it answered its health check; ws = the open session; turn = the answer in progress
   // generates = the service lets the model answer a new question there and then; otherwise it only looks answers up
@@ -319,6 +321,7 @@
         '<figure class="av-fig">' +
           '<div class="av-frame">' +
             '<img class="av-still" alt="" decoding="async">' +
+            '<video class="av-idle" muted loop playsinline webkit-playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>' +
             '<video hidden playsinline webkit-playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture aria-label="Video answer from an AI version of Frederick Wang"></video>' +
             '<span class="av-tag" aria-hidden="true">AI version</span>' +
             '<button type="button" class="av-play"><span>' + ICON.play + '</span></button>' +
@@ -341,7 +344,7 @@
       '<p class="av-hint"></p>' +
       '<div class="av-group av-sugg"><p class="av-k" id="av-sugg-k">Try asking</p></div>' +
       '<p class="av-sr" id="av-live" aria-live="polite"></p>';
-    video = body.querySelector("video"); still = body.querySelector(".av-still"); playB = body.querySelector(".av-play");
+    video = body.querySelector("video:not(.av-idle)"); idle = body.querySelector(".av-idle"); still = body.querySelector(".av-still"); playB = body.querySelector(".av-play");
     qEl = body.querySelector(".av-q"); aEl = body.querySelector(".av-a"); noteEl = body.querySelector(".av-note");
     srcEl = body.querySelector(".av-src"); nearEl = body.querySelector(".av-near");
     input = body.querySelector("#av-in"); liveEl = body.querySelector("#av-live");
@@ -366,9 +369,20 @@
       if (still.getAttribute("src") !== portrait) still.setAttribute("src", portrait); else still.hidden = true;
     });
     video.addEventListener("loadeddata", function () { video.hidden = false; video.controls = true; });
-    video.addEventListener("play", function () { playB.hidden = true; aEl.classList.add("playing"); mark(); });
+    video.addEventListener("play", function () { video.hidden = false; playB.hidden = true; aEl.classList.add("playing"); mark(); rest(false); });
     video.addEventListener("timeupdate", mark);
-    video.addEventListener("ended", function () { aEl.classList.remove("playing"); });
+    video.addEventListener("ended", function () {
+      aEl.classList.remove("playing");
+      // back to the face at rest, unless another part or a replay has started in the meantime
+      setTimeout(function () {
+        if (!video.ended) return;
+        video.hidden = true; video.controls = false;
+        if (!(live.turn && !live.turn.done) && (current && current.file || live.turn)) playB.hidden = false;
+        rest(true);
+      }, 150);
+    });
+    idle.addEventListener("playing", function () { idle.classList.add("on"); });
+    rest(true);
     video.addEventListener("loadedmetadata", function () {
       if (video.videoWidth && video.videoHeight) video.parentNode.style.aspectRatio = video.videoWidth + " / " + video.videoHeight;
     });
@@ -417,6 +431,17 @@
     spans.forEach(function (s, i) { s.classList.toggle("on", i === on); });
   }
 
+  // The idle loop plays only while no answer is on screen, and not at all for reduced motion or Save-Data.
+  function rest(on) {
+    if (!idle || !manifest || !manifest.idle) return;
+    var calm = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData);
+    if (!on || calm || (root && root.hidden)) { idle.pause(); return; }
+    if (!idle.getAttribute("src")) { idle.preload = "auto"; idle.setAttribute("src", BASE + manifest.idle.file + (manifest.idle.key ? "?v=" + manifest.idle.key : "")); }
+    idle.muted = true;
+    var p = idle.play();
+    if (p && p.catch) p.catch(function () { idle.classList.remove("on"); });   // blocked (Low Power Mode): the still stays
+  }
+
   function play() {
     if (live.turn && video.getAttribute("src")) { var lp = video.play(); if (lp && lp.catch) lp.catch(function () { playB.hidden = false; }); return; }
     if (!current || !current.file) return;
@@ -434,7 +459,7 @@
     video.pause(); video.removeAttribute("src"); video.hidden = true; video.controls = false;
     try { video.load(); } catch (_) {}
     video.parentNode.style.aspectRatio = "";
-    still.hidden = false;
+    still.hidden = false; rest(true);
     still.setAttribute("src", clip && clip.poster ? BASE + clip.poster + (clip.key ? "?v=" + clip.key : "") : (manifest.portrait || "/frederick.jpg"));
     var text = clip ? clip.answer : NORECORD;
     aEl.textContent = ""; aEl.classList.remove("playing"); spans = [];
@@ -669,7 +694,7 @@
     video.pause(); video.removeAttribute("src"); video.hidden = true; video.controls = false;
     try { video.load(); } catch (_) {}
     video.parentNode.style.aspectRatio = "";
-    still.hidden = false; still.setAttribute("src", manifest.portrait || "/frederick.jpg");
+    still.hidden = false; still.setAttribute("src", manifest.portrait || "/frederick.jpg"); rest(true);
     playB.hidden = true;
     qEl.textContent = "Q \u00b7 " + (opts.asked || text); qEl.hidden = false;
     aEl.textContent = ""; aEl.classList.remove("playing");
@@ -784,7 +809,7 @@
     Array.prototype.forEach.call(doc.body.children, function (n) { if (n !== root && n.id !== "lq-ptr" && !n.inert) { n.inert = true; n.__avInert = true; } });
     closeB.focus({ preventScroll: true });
     refresh();
-    if (manifest && video) { (playB.hidden ? titleEl : playB).focus({ preventScroll: true }); return; }
+    if (manifest && video) { if (video.hidden) rest(true); (playB.hidden ? titleEl : playB).focus({ preventScroll: true }); return; }
     message('<span class="av-spin"></span>Loading\u2026');
     load().then(function () {
       render();
@@ -799,6 +824,7 @@
   function close() {
     if (!root || root.hidden) return;
     if (video) video.pause();
+    if (idle) idle.pause();
     liveClose();
     root.classList.remove("open");
     doc.documentElement.classList.remove("av-lock");
