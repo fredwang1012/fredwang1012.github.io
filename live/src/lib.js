@@ -69,6 +69,32 @@ export function quietCut(pcm, target, rate = RATE) {
   return best & ~1;
 }
 
+/**
+ * A question as the answer store files it: lower case, no punctuation, single spaces. "What is Talkback?" and
+ * "what is talkback" are the same question; a different wording is a different one.
+ */
+export function storeName(question) {
+  return String(question).toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+const REFERS_BACK = /\b(more|that|it|its|this|these|those|them|they|one|ones|again|else|also|same|then|there|earlier|before|previous|above)\b/;
+
+/**
+ * Whether a question means the same whatever was said before it, so its answer can be kept and reused.
+ * "Tell me more" and "why is that?" do not: they are answered afresh every time.
+ */
+export function standsAlone(question) {
+  const name = storeName(question);
+  return name.split(" ").length >= 3 && !REFERS_BACK.test(name);
+}
+
+/** The video seconds allowed today: the higher allowance up to and including BOOST_UNTIL (YYYY-MM-DD), then the usual one. */
+export function dailySeconds(env, today) {
+  const number = (v, fallback) => { const n = parseInt(v, 10); return Number.isFinite(n) ? n : fallback; };
+  const usual = number(env.DAILY_SECONDS, 300);
+  return env.BOOST_UNTIL && today <= env.BOOST_UNTIL ? number(env.BOOST_DAILY_SECONDS, usual) : usual;
+}
+
 export function allowedOrigin(origin, env) {
   if (!origin) return false;
   const list = String(env.ALLOWED_ORIGINS || "").split(",").map((s) => s.trim()).filter(Boolean);

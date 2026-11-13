@@ -7,7 +7,7 @@
 // Why it is a Worker and not a call from the page: the Boson key, the voice id and the instructions never leave this
 // file's side of the connection. The browser can send one thing, a question. It cannot choose the voice, the
 // instructions or the text that is spoken, so the cloned voice only ever says what the model answered under rules.md.
-import { RATE, allowedOrigin, base64, cleanQuestion, concat, quietCut, unbase64, userTurn, wav } from "./lib.js";
+import { RATE, allowedOrigin, base64, cleanQuestion, concat, dailySeconds, quietCut, standsAlone, storeName, unbase64, userTurn, wav } from "./lib.js";
 import RULES from "./rules.md";
 import NOTES from "../../tools/avatar/knowledge.md";
 import PORTRAIT from "../../tools/avatar/portrait.jpg";
@@ -22,6 +22,8 @@ const MIN_GAP_MS = 1500;            // between two questions on one connection
 const OPENING_MS = 2500;
 const MIN_REST_MS = 1500;           // a tail shorter than this is not worth a second render
 const SESSION_MS = 10 * 60 * 1000;  // a connection is closed after this long
+const MAX_STORED_VIDEO = 20 * 1024 * 1024;        // one answer; a KV value may be 25 MB
+const MAX_STORE_BYTES = 850 * 1024 * 1024;        // all answers together; the free plan stores 1 GB
 
 // The notes file is written for people too: only the facts go to the model, not the editing notes around them.
 const END = NOTES.indexOf("## Page anchors");
@@ -47,7 +49,7 @@ async function visitorKey(request, env) {
 /** Seconds of video left today, for everyone together. */
 async function secondsLeft(env) {
   const used = int(await env.USAGE.get("s:" + today()), 0);
-  return int(env.DAILY_SECONDS, 900) - used;
+  return dailySeconds(env, today()) - used;
 }
 
 async function addSeconds(env, seconds) {
@@ -60,6 +62,40 @@ async function countAsk(env, key) {
   const n = int(await env.USAGE.get(key), 0) + 1;
   await env.USAGE.put(key, String(n), { expirationTtl: 2 * 86400 });
   return n;
+}
+
+// ---------------------------------------------------------------- the answer store
+// Every answer to a question that stands on its own is kept: the video in ANSWERS, the words in its metadata. The
+// next visitor who asks the same thing gets it at once, it costs nothing, and it still plays when the Boson credit
+// has run out. An answer is filed under the notes, rules, voice and size it was made with, so changing any of them
+// starts a fresh shelf instead of serving answers that no longer match.
+let shelf = null;
+async function answerKey(question, env) {
+  if (!shelf) {
+    const made = new TextEncoder().encode(`${INSTRUCTIONS}|${env.BOSON_VOICE}|${env.VIDEO_SIZE || "640x640"}`);
+    shelf = base64(new Uint8Array(await crypto.subtle.digest("SHA-256", made)).subarray(0, 6)).replace(/[+/=]/g, "");
+  }
+  const name = new TextEncoder().encode(storeName(question));
+  const hash = base64(new Uint8Array(await crypto.subtle.digest("SHA-256", name)).subarray(0, 15)).replace(/[+/=]/g, "-");
+  return `a:${shelf}:${hash}`;
+}
+
+async function storedAnswer(env, key) {
+  try {
+    const hit = await env.ANSWERS.getWithMetadata(key, "arrayBuffer");
+    return hit && hit.value && hit.metadata && hit.metadata.text ? { video: new Uint8Array(hit.value), text: hit.metadata.text, seconds: hit.metadata.seconds || 0 } : null;
+  } catch (_) { return null; }
+}
+
+async function storeAnswer(env, key, question, spoken, chunks) {
+  try {
+    const video = concat(chunks);
+    if (!video.length || video.length > MAX_STORED_VIDEO) return;
+    const used = int(await env.USAGE.get("stored"), 0);
+    if (used + video.length > MAX_STORE_BYTES) return;
+    await env.ANSWERS.put(key, video, { metadata: { text: spoken.text.slice(0, 600), seconds: +spoken.seconds.toFixed(2), q: question.slice(0, 120), at: today() } });
+    await env.USAGE.put("stored", String(used + video.length));
+  } catch (_) { /* over the day's writes, or the store is unreachable: the answer was still given */ }
 }
 
 function cors(origin) {
@@ -90,6 +126,7 @@ async function session(socket, request, env) {
   const visitor = await visitorKey(request, env);
   const history = [];
   let boson = null, busy = false, asks = 0, last = 0, open = true;
+  let filling = false;   // the owner filling the answer store (tools/avatar/preload.py): the visitor limits do not apply
   const send = (obj) => { if (open) try { socket.send(typeof obj === "string" || obj instanceof Uint8Array ? obj : JSON.stringify(obj)); } catch (_) { open = false; } };
   const closeAll = (code, reason) => {
     open = false;
@@ -103,6 +140,7 @@ async function session(socket, request, env) {
   socket.addEventListener("message", (ev) => {
     let msg;
     try { msg = JSON.parse(typeof ev.data === "string" ? ev.data : ""); } catch (_) { return; }
+    if (msg && msg.type === "fill") { filling = !!env.PRELOAD_TOKEN && msg.token === env.PRELOAD_TOKEN; send({ type: "fill", ok: filling }); return; }
     if (msg && msg.type === "warm") { connect().catch(() => {}); return; }   // open the voice session ahead of the first question
     if (!msg || msg.type !== "ask") return;   // a question is the only other thing a visitor can send
     handle(msg).catch(() => { busy = false; send({ type: "error", code: "failed", message: "Something went wrong on my side. Try again." }); });
@@ -113,21 +151,42 @@ async function session(socket, request, env) {
     const question = cleanQuestion(msg.text);
     if (!question) return send({ type: "error", code: "bad_question", message: "Ask one question, up to 300 characters." });
     if (busy) return send({ type: "error", code: "busy", message: "I'm still answering the last one." });
-    if (Date.now() - last < MIN_GAP_MS) return send({ type: "error", code: "too_fast", message: "One moment, then ask again." });
-    if (++asks > int(env.ASKS_PER_SESSION, 12)) return send({ type: "limit", message: "That's all the live answers for this session." });
-    if ((await secondsLeft(env)) <= 0) return send({ type: "limit", message: "The live answers are used up for today." });
-    if ((await countAsk(env, visitor)) > int(env.DAILY_ASKS_PER_VISITOR, 25)) return send({ type: "limit", message: "That's all the live answers for today." });
-    busy = true; last = Date.now();
+    if (!filling && Date.now() - last < MIN_GAP_MS) return send({ type: "error", code: "too_fast", message: "One moment, then ask again." });
     const t0 = Date.now();
+    // an answer already on the shelf: no model, no render, no cost, so it does not count against any limit
+    const alone = standsAlone(question), key = alone ? await answerKey(question, env) : null;
+    const kept = key && !(filling && msg.fresh) ? await storedAnswer(env, key) : null;
+    if (kept) {
+      busy = true;
+      try {
+        if (!filling) history.push({ q: question, a: kept.text });
+        send({ type: "text", delta: kept.text });
+        send({ type: "said", text: kept.text, seconds: kept.seconds, kept: true, ms: Date.now() - t0 });
+        send({ type: "video", mime: "video/mp4", seconds: kept.seconds, kept: true });
+        for (let at = 0; at < kept.video.length && open; at += 65536) send(kept.video.subarray(at, at + 65536));
+        send({ type: "video_end" });
+        send({ type: "done", kept: true, ms: Date.now() - t0 });
+      } finally { busy = false; last = Date.now(); }
+      return;
+    }
+    if (!filling) {
+      if (++asks > int(env.ASKS_PER_SESSION, 12)) return send({ type: "limit", message: "That's all the live answers for this session." });
+      if ((await secondsLeft(env)) <= 0) return send({ type: "limit", message: "The live answers are used up for today." });
+      if ((await countAsk(env, visitor)) > int(env.DAILY_ASKS_PER_VISITOR, 25)) return send({ type: "limit", message: "That's all the live answers for today." });
+    }
+    busy = true; last = Date.now();
+    // kept only when nothing came before it in this session: the answer must not lean on an earlier one
+    const keep = key && !history.length ? [] : null;
     try {
       let opening = null;   // the render of the first part, started while the rest is still being spoken
       const spoken = await speak(question, env.SPLIT_ANSWERS === "1" ? (pcm) => { opening = render(pcm); } : null);
       if (!spoken) { if (opening) opening.then((r) => r && r.body && r.body.cancel()).catch(() => {}); return; }
-      history.push({ q: question, a: spoken.text });
+      if (!filling) history.push({ q: question, a: spoken.text });   // while filling the store every question is a first question
       send({ type: "said", text: spoken.text, seconds: +spoken.seconds.toFixed(2), ms: Date.now() - t0 });
-      await addSeconds(env, spoken.seconds);
-      await film(spoken, opening);
+      if (!filling) await addSeconds(env, spoken.seconds);
+      const whole = await film(spoken, opening, keep);
       send({ type: "done", ms: Date.now() - t0 });
+      if (whole && keep) await storeAnswer(env, key, question, spoken, keep);
     } finally {
       busy = false; last = Date.now();
     }
@@ -226,14 +285,14 @@ async function session(socket, request, env) {
     } catch (_) { return null; }
   }
 
-  /** Pass one render's video on as it arrives. False when the visitor has gone. */
-  async function pipe(resp) {
+  /** Pass one render's video on as it arrives, keeping a copy in `keep` if given. False when the visitor has gone. */
+  async function pipe(resp, keep) {
     const reader = resp.body.getReader();
     for (;;) {
       const { done, value } = await reader.read();
       if (done) return true;
       if (!open) { try { await reader.cancel(); } catch (_) {} return false; }
-      if (value && value.length) send(value);
+      if (value && value.length) { send(value); if (keep) keep.push(value); }
     }
   }
 
@@ -248,28 +307,31 @@ async function session(socket, request, env) {
   /**
    * Send the lip-synced video. `opening` is the render of the first part, already under way, or null when the
    * answer is filmed whole. The rest is asked for now and waits here until the opening has gone out, so the
-   * browser gets one video after the other and plays them as one.
+   * browser gets one video after the other and plays them as one. True when one whole video went out (and into
+   * `keep`); an answer filmed in two parts is not kept, as the parts are two files.
    */
-  async function film(spoken, opening) {
+  async function film(spoken, opening, keep) {
     const split = opening && spoken.cut > 0 && spoken.cut < spoken.pcm.length;
     const rest = split ? render(spoken.pcm.subarray(spoken.cut)) : null;
     const first = await (opening && spoken.cut > 0 ? opening : render(spoken.pcm));
     if (!first) {
       if (rest) rest.then((r) => r && r.body.cancel()).catch(() => {});
-      return voiceOnly(spoken.pcm);
+      voiceOnly(spoken.pcm);
+      return false;
     }
     send({ type: "video", mime: "video/mp4", seconds: +spoken.seconds.toFixed(2), parts: split ? 2 : 1 });
-    if (!(await pipe(first))) { if (rest) rest.then((r) => r && r.body.cancel()).catch(() => {}); return; }
+    if (!(await pipe(first, split ? null : keep))) { if (rest) rest.then((r) => r && r.body.cancel()).catch(() => {}); return false; }
     if (split) {
       const second = await rest;
       if (second) {
         send({ type: "video_cut" });
-        if (!(await pipe(second))) return;
+        if (!(await pipe(second))) return false;
       } else {
         send({ type: "video_end", partial: true });   // the face stops here; the words are all on the page
-        return;
+        return false;
       }
     }
     send({ type: "video_end" });
+    return !split;
   }
 }

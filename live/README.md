@@ -38,7 +38,7 @@ answers only.
 
 ## Limits (in `wrangler.jsonc`)
 
-- `DAILY_SECONDS` seconds of video per day for everyone together (900 is about $1.35 of video a day)
+- `DAILY_SECONDS` seconds of video per day for everyone together (300 is about $0.45 of video a day)
 - `DAILY_ASKS_PER_VISITOR`, `ASKS_PER_SESSION`
 - `ALLOWED_ORIGINS` the pages allowed to open a session
 

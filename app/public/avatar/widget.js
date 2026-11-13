@@ -652,7 +652,8 @@
     announce("Answering: " + text);
     input.value = ""; setBusy(true);
     var turn = live.turn = { q: text, text: "", done: false, kind: null, chunks: [] };
-    opener();
+    // an answer I have given before comes back within half a second: say "one second" only when it will be longer
+    turn.opener = setTimeout(function () { if (live.turn === turn && !turn.kind && !turn.done) opener(); }, 700);
     liveOpen().then(function (ws) {
       if (live.turn !== turn) return;
       ws.send(JSON.stringify({ type: "ask", text: text }));
@@ -674,7 +675,7 @@
   function liveFinish() {
     var turn = live.turn;
     if (!turn) return;
-    turn.done = true; clearTimeout(turn.guard); setBusy(false);
+    turn.done = true; clearTimeout(turn.guard); clearTimeout(turn.opener); setBusy(false);
   }
   // the live answer could not be finished: keep whatever words arrived, else fall back to the prepared answers
   function liveFail(why) {
@@ -696,8 +697,11 @@
     }
     var m; try { m = JSON.parse(data); } catch (_) { return; }
     if (m.type === "text") { turn.text += m.delta; aEl.textContent = turn.text; }
-    else if (m.type === "said") { turn.text = m.text; aEl.textContent = m.text; note("Putting my voice and face to it\u2026 a few seconds.", true); }
-    else if (m.type === "video") { turn.kind = "video"; live.player = streamPlayer(m.seconds); }
+    else if (m.type === "said") {
+      turn.text = m.text; aEl.textContent = m.text;
+      if (m.kept) { clearTimeout(turn.opener); note(""); } else note("Putting my voice and face to it\u2026 a few seconds.", true);
+    }
+    else if (m.type === "video") { turn.kind = "video"; clearTimeout(turn.opener); live.player = streamPlayer(m.seconds); }
     else if (m.type === "video_cut") { if (live.player) live.player.cut(); }
     else if (m.type === "video_end") { if (live.player) live.player.end(); announce(turn.text); }
     else if (m.type === "audio") { turn.kind = "audio"; turn.chunks = []; }

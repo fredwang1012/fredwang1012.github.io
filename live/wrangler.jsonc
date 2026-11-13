@@ -10,7 +10,8 @@
     { "type": "Text", "globs": ["**/*.md"], "fallthrough": true },
     { "type": "Data", "globs": ["**/*.jpg"], "fallthrough": true }
   ],
-  "kv_namespaces": [{ "binding": "USAGE" }],
+  // USAGE: the day's counters. ANSWERS: every answer already given, kept so a repeated question costs nothing.
+  "kv_namespaces": [{ "binding": "USAGE" }, { "binding": "ANSWERS" }],
   "vars": {
     // pages allowed to open a session, comma separated
     "ALLOWED_ORIGINS": "https://fredwang1012.github.io",
@@ -18,9 +19,13 @@
     "VIDEO_SIZE": "640x640",
     // spending limits: seconds of rendered video per day for everyone together, questions per visitor per day,
     // questions per open session
-    "DAILY_SECONDS": "900",
+    "DAILY_SECONDS": "300",
+    // a higher allowance while there is credit that would otherwise expire unused
+    "BOOST_UNTIL": "2026-11-17",
+    "BOOST_DAILY_SECONDS": "6000",
     "DAILY_ASKS_PER_VISITOR": "25",
     "ASKS_PER_SESSION": "12"
   }
-  // secrets, set with `wrangler secret put`: BOSON_API_KEY, BOSON_VOICE, VISITOR_SALT
+  // secrets, set with `wrangler secret put`: BOSON_API_KEY, BOSON_VOICE, VISITOR_SALT, and PRELOAD_TOKEN while
+  // filling the answer store
 }

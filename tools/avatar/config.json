@@ -36,8 +36,7 @@
     "poster_quality": 2
   },
   "live": {
-    "url": "",
-    "url_note": "The live service's address once it is deployed, e.g. wss://<name>.<account>.workers.dev/talk. Empty: prepared answers only.",
+    "url": "wss://fredwang-avatar-live.fredwang1012.workers.dev/talk",
     "openers": [
       "Let me think.",
       "Sure, one second.",

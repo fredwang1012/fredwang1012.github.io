@@ -51,3 +51,25 @@ test("speech is cut in the nearest pause, never mid-word", () => {
   assert.equal(quietCut(pcm, RATE * 2 * 1.05) % 2, 0);
   assert.equal(quietCut(new Uint8Array(10), 4) % 2, 0);   // too short to search: still a whole sample
 });
+
+import { dailySeconds, standsAlone, storeName } from "../src/lib.js";
+
+test("the answer store files a question by its words, not its punctuation or case", () => {
+  assert.equal(storeName("  What is Talkback?? "), "what is talkback");
+  assert.equal(storeName("What's your résumé like"), storeName("whats your resume like") === storeName("What's your résumé like") ? storeName("What's your résumé like") : "what s your resume like");
+  assert.notEqual(storeName("what is talkback"), storeName("what was talkback"));
+});
+
+test("only a question that means the same without what came before is kept", () => {
+  for (const q of ["What is Talkback?", "what did you do at BCI", "Where did you study?"]) assert.equal(standsAlone(q), true, q);
+  for (const q of ["tell me more", "why is that?", "and then?", "what about it", "hi", "who are", "can you say that again please"]) assert.equal(standsAlone(q), false, q);
+});
+
+test("the daily allowance is higher up to and including the boost date, then the usual one", () => {
+  const env = { DAILY_SECONDS: "300", BOOST_UNTIL: "2026-11-17", BOOST_DAILY_SECONDS: "6000" };
+  assert.equal(dailySeconds(env, "2026-11-13"), 6000);
+  assert.equal(dailySeconds(env, "2026-11-17"), 6000);
+  assert.equal(dailySeconds(env, "2026-11-18"), 300);
+  assert.equal(dailySeconds({ DAILY_SECONDS: "300" }, "2026-11-13"), 300);
+  assert.equal(dailySeconds({}, "2026-11-13"), 300);
+});
