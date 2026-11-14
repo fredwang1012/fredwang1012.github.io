@@ -15,6 +15,9 @@ import PORTRAIT from "../../tools/avatar/portrait.jpg";
 const BOSON = "https://api.boson.ai";
 const MAX_SPEECH_S = 45;            // the renderer takes at most 60 s; an answer this long has already broken the rules
 const MIN_GAP_MS = 1500;            // between two questions on one connection
+const STT_MODEL = "higgs-stt-3.1";  // writes out a spoken question
+const MAX_HEARD_BYTES = 44 + 16000 * 2 * 30;   // 30 s of the 16 kHz mono 16-bit WAV the page records
+const HEARS_PER_SESSION = 40;
 // The renderer takes longer to start the more audio it is given, so an answer can be filmed in two parts: its opening
 // (cut at the first pause after OPENING_MS) as soon as that has been spoken, and the rest while the opening plays.
 // It is off unless SPLIT_ANSWERS is "1": measured on 2026-11-13, Boson slows each render down when two run at once,
@@ -151,6 +154,13 @@ async function forgetAnswer(env, key) {
   } catch (_) { return false; }
 }
 
+/** A binary WebSocket message as bytes: an ArrayBuffer, a view of one, or (older runtimes) a Blob. */
+async function bytes(data) {
+  return data instanceof ArrayBuffer ? new Uint8Array(data)
+    : ArrayBuffer.isView(data) ? new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
+    : data && typeof data.arrayBuffer === "function" ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(0);
+}
+
 function cors(origin) {
   return { "Access-Control-Allow-Origin": origin, Vary: "Origin", "Cache-Control": "no-store" };
 }
@@ -183,6 +193,7 @@ async function session(socket, request, env) {
   const history = [];
   let boson = null, busy = false, asks = 0, looks = 0, last = 0, open = true;
   let filling = false;
+  let hearing = null, hears = 0;   // a spoken question arriving in parts, and how many this session has sent
   let putting = null;   // a new recording of a kept answer, arriving in parts (the owner restyling the store)   // the owner filling the answer store (tools/avatar/preload.py): the visitor limits do not apply
   const send = (obj) => { if (open) try { socket.send(typeof obj === "string" || obj instanceof Uint8Array ? obj : JSON.stringify(obj)); } catch (_) { open = false; } };
   const closeAll = (code, reason) => {
@@ -195,14 +206,21 @@ async function session(socket, request, env) {
   socket.addEventListener("close", () => { clearTimeout(timer); closeAll(1000, "bye"); });
   socket.addEventListener("error", () => { clearTimeout(timer); closeAll(1011, "error"); });
   socket.addEventListener("message", (ev) => {
-    if (typeof ev.data !== "string") {   // binary: only ever the parts of a recording being put into the store
+    if (typeof ev.data !== "string") {   // binary: the parts of a spoken question, or of a recording being put into the store
+      if (hearing) {
+        const h = hearing, data = ev.data;
+        h.reading = h.reading.then(async () => {
+          const part = await bytes(data);
+          h.got += part.length;
+          if (h.got > h.want) h.failed = true; else h.parts.push(part);
+        });
+        return;
+      }
       if (filling && putting && !putting.failed) {
         const p = putting, data = ev.data;
         // a Blob is read asynchronously: each part waits for the one before, so the parts stay in order
         p.reading = p.reading.then(async () => {
-          const part = data instanceof ArrayBuffer ? new Uint8Array(data)
-            : ArrayBuffer.isView(data) ? new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
-            : data && typeof data.arrayBuffer === "function" ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(0);
+          const part = await bytes(data);
           if (!part.length) p.why = `a part arrived as ${Object.prototype.toString.call(data)}`;
           p.got += part.length;
           if (p.got > p.want) p.failed = true; else p.parts.push(part);
@@ -222,10 +240,43 @@ async function session(socket, request, env) {
       return;
     }
     if (msg && msg.type === "warm") { if (mayUseModel()) connect().catch(() => {}); return; }   // open the voice session ahead of the first question
+    if (msg && msg.type === "hear") { startHear(msg); return; }
+    if (msg && msg.type === "hear_end") { endHear().catch(() => { hearing = null; send({ type: "heard", ok: false, why: "failed" }); }); return; }
     if (!msg || msg.type !== "ask") return;   // a question is the only other thing a visitor can send
     handle(msg).catch(() => { busy = false; send({ type: "error", code: "failed", message: "Something went wrong on my side. Try again." }); });
   });
   send({ type: "ready" });
+
+  // A spoken question: the page records it as a 16 kHz WAV and sends it in parts after a "hear" message; Boson's
+  // speech-to-text writes it out and the words go back to the page, which then asks with them as if they were typed
+  // (or, when dictating, puts them in the box to check first). The recording is not kept.
+  function startHear(msg) {
+    const want = Math.floor(Number(msg.bytes));
+    if (!env.BOSON_API_KEY) return send({ type: "heard", ok: false, why: "off" });
+    if (hearing) return send({ type: "heard", ok: false, why: "busy" });
+    if (!(want > 44 && want <= MAX_HEARD_BYTES)) return send({ type: "heard", ok: false, why: "size" });
+    if (!filling && ++hears > HEARS_PER_SESSION) return send({ type: "heard", ok: false, why: "limit" });
+    hearing = { want, got: 0, parts: [], failed: false, reading: Promise.resolve() };
+  }
+  async function endHear() {
+    const h = hearing;
+    if (!h) return;   // the "hear" was refused, and the page has been told
+    await h.reading;
+    hearing = null;
+    if (h.failed || h.got !== h.want) return send({ type: "heard", ok: false, why: "size" });
+    const audio = concat(h.parts), tag = (at) => String.fromCharCode(...audio.subarray(at, at + 4));
+    if (tag(0) !== "RIFF" || tag(8) !== "WAVE") return send({ type: "heard", ok: false, why: "format" });
+    const form = new FormData();
+    form.append("model", STT_MODEL);
+    form.append("file", new Blob([audio], { type: "audio/wav" }), "question.wav");
+    let r;
+    try {
+      r = await fetch(`${BOSON}/v1/audio/transcriptions`, { method: "POST", headers: { Authorization: `Bearer ${env.BOSON_API_KEY}` }, body: form, signal: AbortSignal.timeout(20000) });
+    } catch (_) { r = null; }
+    if (!r || !r.ok) return send({ type: "heard", ok: false, why: "unavailable" });
+    const j = await r.json().catch(() => ({}));
+    send({ type: "heard", ok: true, text: String(j.text || "").replace(/[\u0000-\u001f\u007f]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 300) });
+  }
 
   async function handle(msg) {
     const question = cleanQuestion(msg.text);
