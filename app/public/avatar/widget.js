@@ -894,25 +894,39 @@
       : vox.talk ? "Talk mode: I\u2019ll listen again after the answer" : vox.placeholder;
     if (m !== "dictate" && m !== "talk") level(0);
   }
-  function level(rms) {
-    var v = Math.min(1, rms / 0.12).toFixed(2);
+  // iOS: while the mic is open the phone is in "call" audio, with its own volume (often at the top). Say so before
+  // recording, and hand the audio back to ordinary media playback the moment the recording ends.
+  function audioSession(type) {
+    try { if (navigator.audioSession) navigator.audioSession.type = type; } catch (_) {}
+  }
+  function level(rms, top) {
+    var v = Math.min(1, rms / (top || 0.12)).toFixed(2);
     micB.style.setProperty("--lvl", v); talkB.style.setProperty("--lvl", v);
   }
 
   // Record until the gate hears the end of speech, the button is tapped again, or a cap is reached.
   // done(why, rec): why is "silence", "tap", "long" or "nothing"; rec.heard says whether any speech came at all
-  function record(ctx, gate, done) {
+  // The audio context lives only as long as the recording: one left open keeps an iPhone in call audio, so the
+  // answer that follows plays at the call volume. The gate's threshold rises over the room's own level, measured in
+  // the first moments (a phone's automatic gain lifts a quiet room well over a laptop's), so the end of a question
+  // is still heard in a noisy room.
+  function record(gate, done) {
+    audioSession("play-and-record");
     return navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } }).then(function (stream) {
+      var ctx = audioCtx();   // made in the tap when there was one; otherwise allowed because the page is capturing
       var src = ctx.createMediaStreamSource(stream), node = ctx.createScriptProcessor(2048, 1, 1);
       var chunks = [], from = 0, t0 = Date.now(), heard = false, above = null, below = null, over = false, rec;
+      var room = [], threshold = gate.threshold;
       node.onaudioprocess = function (e) {
         if (over) return;
         var d = e.inputBuffer.getChannelData(0), sum = 0, now = Date.now();
         chunks.push(new Float32Array(d));
         for (var i = 0; i < d.length; i++) sum += d[i] * d[i];
         var rms = Math.sqrt(sum / d.length);
-        level(rms);
-        if (rms >= gate.threshold) {
+        if (now - t0 < 400) { room.push(rms); return; }   // the room's own level, before anyone speaks
+        if (room.length) { room.sort(function (x, y) { return x - y; }); threshold = Math.min(0.2, Math.max(gate.threshold, 2.5 * room[room.length >> 1])); room = []; }
+        level(rms, threshold * 3.5);
+        if (rms >= threshold) {
           below = null;
           if (above == null) above = now;
           // speech: keep from half a second before it began, so the first word is not clipped
@@ -932,6 +946,9 @@
         clearInterval(guard);
         try { node.disconnect(); src.disconnect(); } catch (_) {}
         stream.getTracks().forEach(function (t) { t.stop(); });
+        if (vox.ctx === ctx) vox.ctx = null;
+        try { ctx.close(); } catch (_) {}
+        audioSession("playback");
       }
       function finish(why) { if (over) return; over = true; release(); done(why, rec); }
       rec = {
@@ -976,10 +993,9 @@
   }
 
   function listen(mode) {
-    var ctx = audioCtx();
     vox.mode = mode; vox.from = mode; paint();
     if (mode === "dictate") announce("Listening. Tap the stop button when you\u2019re done.");
-    record(ctx, GATE[mode], function (why, rec) {
+    record(GATE[mode], function (why, rec) {
       vox.rec = null;
       if (!rec.heard) {
         vox.mode = null; paint();
@@ -1003,6 +1019,8 @@
         note("Voice isn\u2019t available right now. Type your question instead.");
       });
     }).then(function (rec) { if (vox.mode === mode) vox.rec = rec; else rec.cancel(); }, function (err) {
+      audioSession("playback");
+      if (vox.ctx) { try { vox.ctx.close(); } catch (_) {} vox.ctx = null; }
       vox.mode = null; paint(); endTalk();
       note(err && (err.name === "NotAllowedError" || err.name === "SecurityError")
         ? "The microphone is blocked. Allow it for this site to ask by voice."
