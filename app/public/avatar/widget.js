@@ -851,10 +851,17 @@
   // The microphone is recorded here as 16 kHz mono WAV and sent to the live service, where Boson's speech-to-text
   // writes it out. Two ways in. The mic button dictates: tap, speak, tap again (or pause), and the words land in the
   // box to check before Ask. The talk button is a hands-free conversation: it listens, sends the question once you
-  // stop speaking, and listens again when the answer has been said. The mic is closed while an answer plays, so the
-  // avatar never hears itself, and talk mode ends after a stretch of silence.
+  // stop speaking, and keeps listening while the answer plays: speak over it and it stops and takes the new question.
+  // Talk mode ends after a stretch of silence once nothing is being said.
   // The voice gate is Talkback's hands-free one (level threshold, a minimum length of speech, then a pause).
-  var GATE = { talk: { threshold: 0.035, minSpeechMs: 150, silenceMs: 900 }, dictate: { threshold: 0.035, minSpeechMs: 150, silenceMs: 2500 } };
+  var GATE = {
+    talk: { threshold: 0.035, minSpeechMs: 150, silenceMs: 900, during: during, onBarge: interrupt },
+    dictate: { threshold: 0.035, minSpeechMs: 150, silenceMs: 2500 }
+  };
+  // Over the avatar's own voice (Talkback's echo floor): what the echo canceller leaves of it is measured while it
+  // speaks (the median of the last 2 s; all of the first 0.3 s, then only readings under the bar), and an interruption
+  // must be louder than that by ECHO_RATIO, and last longer, so the avatar does not cut itself off.
+  var BARGE = { threshold: 0.04, minSpeechMs: 300, ratio: 2, learnMs: 300, windowMs: 2000 };
   var NO_SPEECH_MS = 12000, MAX_LISTEN_MS = 30000;
   var vox = { ctx: null, rec: null, mode: null, from: null, hearing: null, talk: false, tick: null, calm: 0, placeholder: "" };
 
@@ -889,7 +896,7 @@
     talkB.setAttribute("aria-label", vox.talk ? "End talk mode" : "Talk hands-free");
     talkB.title = vox.talk ? "End talk mode" : "Talk";
     input.placeholder = m === "dictate" ? "Listening\u2026 tap \u25a0 when you\u2019re done"
-      : m === "talk" ? "Listening\u2026 just ask"
+      : m === "talk" ? "Listening\u2026 speak any time"
       : m === "hear" ? "Writing out what you said\u2026"
       : vox.talk ? "Talk mode: I\u2019ll listen again after the answer" : vox.placeholder;
     if (m !== "dictate" && m !== "talk") level(0);
@@ -915,40 +922,61 @@
     return navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } }).then(function (stream) {
       var ctx = audioCtx();   // made in the tap when there was one; otherwise allowed because the page is capturing
       var src = ctx.createMediaStreamSource(stream), node = ctx.createScriptProcessor(2048, 1, 1);
-      var chunks = [], from = 0, t0 = Date.now(), heard = false, above = null, below = null, over = false, rec;
-      var room = [], threshold = gate.threshold;
+      var chunks = [], from = 0, quietSince = Date.now(), heard = false, heardAt = 0, above = null, below = null, over = false, rec;
+      var room = [], roomDone = false, threshold = gate.threshold, echo = [], sounding = false, soundFrom = 0;
       node.onaudioprocess = function (e) {
         if (over) return;
-        var d = e.inputBuffer.getChannelData(0), sum = 0, now = Date.now();
+        var d = e.inputBuffer.getChannelData(0), sum = 0, now = Date.now(), k;
         chunks.push(new Float32Array(d));
         for (var i = 0; i < d.length; i++) sum += d[i] * d[i];
         var rms = Math.sqrt(sum / d.length);
-        if (now - t0 < 400) { room.push(rms); return; }   // the room's own level, before anyone speaks
-        if (room.length) { room.sort(function (x, y) { return x - y; }); threshold = Math.min(0.2, Math.max(gate.threshold, 2.5 * room[room.length >> 1])); room = []; }
-        level(rms, threshold * 3.5);
-        if (rms >= threshold) {
+        // 0: nothing is being said; 1: an answer is on its way, or paused; 2: the avatar is speaking
+        var state = gate.during ? gate.during() : 0;
+        if (state) quietSince = now;   // the silence that ends talk mode counts from the end of the answer
+        if (state === 2) { if (!sounding) { sounding = true; soundFrom = now; echo = []; } } else sounding = false;
+        if (!roomDone && state === 0) {   // the room's own level, before anyone speaks (about 0.4 s of it)
+          room.push(rms);
+          if (room.length < Math.ceil(0.4 * ctx.sampleRate / d.length)) return;
+          room.sort(function (x, y) { return x - y; });
+          threshold = Math.min(0.2, Math.max(gate.threshold, 2.5 * room[room.length >> 1]));
+          roomDone = true;
+        }
+        var need = threshold, minMs = gate.minSpeechMs;
+        if (sounding) {
+          while (echo.length && now - echo[0].t > BARGE.windowMs) echo.shift();
+          var med = 0;
+          if (echo.length) { var v = []; for (k = 0; k < echo.length; k++) v.push(echo[k].rms); v.sort(function (x, y) { return x - y; }); med = v[v.length >> 1]; }
+          need = Math.max(BARGE.threshold, threshold, BARGE.ratio * med); minMs = BARGE.minSpeechMs;
+          if (now - soundFrom < BARGE.learnMs || rms < need) echo.push({ t: now, rms: rms });
+          if (now - soundFrom < BARGE.learnMs) { level(rms, need * 3.5); return; }   // still learning the echo
+        }
+        level(rms, need * 3.5);
+        if (rms >= need) {
           below = null;
           if (above == null) above = now;
           // speech: keep from half a second before it began, so the first word is not clipped
-          if (!heard && now - above >= gate.minSpeechMs) { heard = true; from = Math.max(0, chunks.length - 1 - Math.ceil(0.5 * ctx.sampleRate / d.length)); }
+          if (!heard && now - above >= minMs) {
+            heard = true; heardAt = now; from = Math.max(0, chunks.length - 1 - Math.ceil(0.5 * ctx.sampleRate / d.length));
+            if (state && gate.onBarge) gate.onBarge();   // spoken over an answer: stop it and take the new question
+          }
         } else {
           above = null;
           if (heard && below == null) below = now;
         }
         if (heard && below != null && now - below >= gate.silenceMs) finish("silence");
-        else if (!heard && now - t0 > NO_SPEECH_MS) finish("nothing");
-        else if (now - t0 > MAX_LISTEN_MS) finish("long");
+        else if (!heard && now - quietSince > NO_SPEECH_MS) finish("nothing");
+        else if (heard && now - heardAt > MAX_LISTEN_MS) finish("long");
       };
       src.connect(node); node.connect(ctx.destination);   // the processor only runs when connected; it outputs silence
       // the same caps on the clock, in case a microphone stops sending sound altogether
-      var guard = setInterval(function () { var now = Date.now(); if (!heard && now - t0 > NO_SPEECH_MS + 500) finish("nothing"); else if (now - t0 > MAX_LISTEN_MS + 500) finish("long"); }, 500);
+      var guard = setInterval(function () { var now = Date.now(); if (!heard && now - quietSince > NO_SPEECH_MS + 500) finish("nothing"); else if (heard && now - heardAt > MAX_LISTEN_MS + 500) finish("long"); }, 500);
       function release() {
         clearInterval(guard);
         try { node.disconnect(); src.disconnect(); } catch (_) {}
         stream.getTracks().forEach(function (t) { t.stop(); });
         if (vox.ctx === ctx) vox.ctx = null;
         try { ctx.close(); } catch (_) {}
-        audioSession("playback");
+        if (!vox.talk) audioSession("playback");
       }
       function finish(why) { if (over) return; over = true; release(); done(why, rec); }
       rec = {
@@ -1035,11 +1063,30 @@
     if (!video || !video.getAttribute("src")) return true;
     return video.ended || !!video.error;   // a paused answer is not over: pausing it is not asking to talk
   }
+  function during() {
+    var speaking = (live.audio && !live.audio.paused && !live.audio.ended) ||
+      (video && video.getAttribute("src") && !video.paused && !video.ended);
+    return speaking ? 2 : answerOver() ? 0 : 1;
+  }
+  // spoken over: stop the answer at once and drop what is left of it (closing the connection also stops a live one
+  // still being made), so the new question is the one heard and answered
+  function interrupt() {
+    if (live.turn || live.player || live.audio) liveClose();
+    if (video) {
+      video.pause(); video.removeAttribute("src"); video.hidden = true;
+      try { video.load(); } catch (_) {}
+      video.parentNode.style.aspectRatio = "";
+    }
+    if (still) still.hidden = false;
+    if (playB) playB.hidden = true;
+    if (aEl) aEl.classList.remove("playing");
+    note(""); rest(true);
+    announce("Go ahead.");
+  }
+  // talk mode: the mic is open all the time, except while what was said is being written out
   function talkTick() {
     if (!vox.talk) return;
-    var over = answerOver();
-    if (vox.mode === "talk" && vox.rec && !over) { vox.rec.cancel(); vox.rec = null; vox.mode = null; paint(); }
-    if (!vox.mode && over) { if (++vox.calm >= 2) { vox.calm = 0; listen("talk"); } }
+    if (!vox.mode) { if (++vox.calm >= 2) { vox.calm = 0; listen("talk"); } }
     else vox.calm = 0;
   }
   function endTalk(msg) {
@@ -1047,6 +1094,7 @@
     if (!vox.talk) return;
     vox.talk = false;
     if (vox.rec && vox.mode === "talk") { vox.rec.cancel(); vox.rec = null; vox.mode = null; }
+    audioSession("playback");
     paint();
     if (msg) note(msg); else announce("Talk mode off.");
   }
