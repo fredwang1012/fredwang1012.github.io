@@ -212,6 +212,17 @@
     "#av .av-form input{flex:1;min-width:0;height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--glass-edge);background:var(--glass-strong);color:var(--ink);font:16px/1 var(--sans);box-shadow:inset 0 1px 0 var(--glass-hi)}",
     "#av .av-form input::placeholder{color:var(--muted);opacity:1}",
     "#av .av-form .av-btn{height:44px;padding:0 20px}",
+    // speaking a question: dictate into the box, or talk hands-free
+    "#av .av-form .av-btn.av-voice{width:44px;padding:0;flex:none;transition:box-shadow .08s linear,background .2s ease}",
+    "#av .av-form .av-voice svg{width:18px;height:18px}#av .av-form .av-voice[hidden]{display:none}",
+    "#av .av-mic.on{background:#d93a3a;border-color:transparent;color:#fff;box-shadow:0 0 0 calc(var(--lvl,0) * 9px) rgba(217,58,58,.28)}",
+    "#av .av-mic.on:hover{background:#c53030}",
+    "#av .av-talkb.on{background:var(--ink);border-color:transparent;color:var(--paper)}",
+    "#av .av-talkb.on:hover{background:var(--ink);opacity:.9}",
+    "#av .av-talkb.listening{box-shadow:0 0 0 calc(3px + var(--lvl,0) * 9px) color-mix(in srgb,var(--link) 30%,transparent)}",
+    "#av .av-voice.wait svg{animation:av-pulse 1s ease-in-out infinite}@keyframes av-pulse{50%{opacity:.35}}",
+    "@media (max-width:400px){#av .av-form{gap:6px}#av .av-form input{padding:0 14px}#av .av-form .av-btn.av-primary{padding:0 14px}}",
+    "@media (prefers-reduced-motion:reduce){#av .av-voice.wait svg{animation:none}}",
     "#av .av-hint{margin:-10px 0 0;padding-left:18px;font:12.5px/1.5 var(--sans);color:var(--muted)}",
     "#av .av-group{display:flex;flex-direction:column;gap:10px}",
     "#av .av-k{margin:0;font:11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}",
@@ -239,11 +250,14 @@
   ].join("\n");
   var ICON = {
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>',
+    wave: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>',
+    stop: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="2.2"/></svg>',
     pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4.5" width="4" height="15" rx="1.2"/><rect x="14" y="4.5" width="4" height="15" rx="1.2"/></svg>',
     play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5Z"/></svg>'
   };
 
-  var root = null, body, video, idle, still, playB, pauseB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
+  var root = null, body, video, idle, still, playB, pauseB, micB, talkB, qEl, aEl, noteEl, srcEl, nearEl, input, liveEl, closeB, titleEl, hasClips = false;
   var manifest = null, index = null, loading = null, current = null, spans = [], lastFocus = null, chipButtons = [];
   // the live service: on = it answered its health check; ws = the open session; turn = the answer in progress
   // generates = the service lets the model answer a new question there and then; otherwise it only looks answers up
@@ -348,6 +362,8 @@
       '<form class="av-form" novalidate>' +
         '<label class="av-sr" for="av-in">Ask a question about my work or background</label>' +
         '<input id="av-in" type="text" autocomplete="off" autocapitalize="sentences" enterkeyhint="send" maxlength="200" placeholder="Ask about a project, a job, my studies\u2026">' +
+        '<button type="button" class="av-btn av-voice av-mic" hidden aria-label="Dictate a question" title="Dictate">' + ICON.mic + '</button>' +
+        '<button type="button" class="av-btn av-voice av-talkb" hidden aria-pressed="false" aria-label="Talk hands-free" title="Talk">' + ICON.wave + '</button>' +
         '<button type="submit" class="av-btn av-primary" data-liquid="snap">Ask</button>' +
       '</form>' +
       '<p class="av-hint"></p>' +
@@ -357,6 +373,7 @@
     qEl = body.querySelector(".av-q"); aEl = body.querySelector(".av-a"); noteEl = body.querySelector(".av-note");
     srcEl = body.querySelector(".av-src"); nearEl = body.querySelector(".av-near");
     input = body.querySelector("#av-in"); liveEl = body.querySelector("#av-live");
+    micB = body.querySelector(".av-mic"); talkB = body.querySelector(".av-talkb"); vox.placeholder = input.placeholder;
 
     aboutPrepared = about; describe();
     var sugg = body.querySelector(".av-sugg"), list = chipList(suggested);
@@ -420,7 +437,22 @@
     body.querySelector("form").addEventListener("submit", function (e) {
       e.preventDefault();
       var text = input.value.replace(/\s+/g, " ").trim();
-      if (text) ask(text);
+      if (!text) return;
+      if (vox.rec) { vox.rec.cancel(); vox.rec = null; vox.mode = null; paint(); }   // typed instead
+      ask(text);
+    });
+    micB.addEventListener("click", function () {
+      if (vox.mode === "dictate" && vox.rec) { vox.rec.stop(); return; }   // second tap: stop and write it out
+      if (vox.mode === "hear") return;
+      if (vox.talk) endTalk();
+      audioCtx(); listen("dictate");
+    });
+    talkB.addEventListener("click", function () {
+      if (vox.talk) { endTalk(); return; }
+      if (vox.rec) { vox.rec.cancel(); vox.rec = null; vox.mode = null; }
+      audioCtx(); vox.talk = true; vox.calm = 0; paint();
+      announce("Talk mode on. Ask your question out loud.");
+      clearInterval(vox.tick); vox.tick = setInterval(talkTick, 250); talkTick();
     });
     srcEl.addEventListener("click", follow);
     // someone is about to ask: open the live session now, so the first answer does not wait for it
@@ -432,14 +464,15 @@
   // what the caption and the line under the box say: it differs when a model is answering live
   var aboutPrepared = "";
   function describe() {
+    voiceButtons();
     var a = body && body.querySelector(".av-about"), h = body && body.querySelector(".av-hint");
     if (!a || !h) return;
     if (live.on && live.generates) {
       a.textContent = "An AI version of me, not me on a call: a language model answers from my r\u00e9sum\u00e9 and project notes, in a clone of my voice, lip-synced from one photo. It can get things wrong.";
-      h.textContent = "Your question is sent to an AI service (Boson AI) that writes and voices the answer. I don\u2019t keep it.";
+      h.textContent = "Your question, typed or spoken, is sent to an AI service (Boson AI) that writes and voices the answer. I don\u2019t keep it.";
     } else if (live.on) {
       a.textContent = "An AI version of me, not me on a call: answers a language model wrote from my r\u00e9sum\u00e9 and project notes, each checked before it was added, in a clone of my voice and lip-synced from one photo.";
-      h.textContent = "Your question is sent to my server to find the closest checked answer. It isn\u2019t kept, and no AI model sees it.";
+      h.textContent = "Your question is sent to my server to find the closest checked answer (a spoken one is first written out by Boson AI). It isn\u2019t kept.";
     } else {
       a.textContent = aboutPrepared;
       h.textContent = "Your question is matched to the closest prepared answer, here in your browser. Nothing you type is sent anywhere.";
@@ -584,6 +617,7 @@
         clearTimeout(timer);
         var mine = live.ws === ws;   // false once liveClose has let this socket go: its turn is no longer the page's
         if (mine) live.ws = null;
+        if (mine && vox.hearing) { var h = vox.hearing; vox.hearing = null; clearTimeout(h.timer); h.reject(new Error("closed")); }
         if (!ready) reject(new Error("closed"));
         else if (mine && live.turn && !live.turn.done) liveFail("The live voice dropped.");
       };
@@ -776,6 +810,11 @@
     else askLocal(turn.q);
   }
   function liveMessage(data) {
+    if (typeof data === "string" && data.indexOf('"heard"') > 0) {   // a spoken question, written out
+      var h = vox.hearing;
+      if (h) { vox.hearing = null; clearTimeout(h.timer); try { h.resolve(JSON.parse(data)); } catch (e) { h.reject(e); } }
+      return;
+    }
     var turn = live.turn;
     if (!turn || turn.done) return;
     if (typeof data !== "string") {
@@ -806,6 +845,192 @@
       if (m.code === "busy" || m.code === "too_fast" || m.code === "bad_question") { liveFinish(); note(m.message); }
       else liveFail(m.message || "The live voice had a problem.");
     }
+  }
+
+  // ------------------------------------------------------------------ speaking a question
+  // The microphone is recorded here as 16 kHz mono WAV and sent to the live service, where Boson's speech-to-text
+  // writes it out. Two ways in. The mic button dictates: tap, speak, tap again (or pause), and the words land in the
+  // box to check before Ask. The talk button is a hands-free conversation: it listens, sends the question once you
+  // stop speaking, and listens again when the answer has been said. The mic is closed while an answer plays, so the
+  // avatar never hears itself, and talk mode ends after a stretch of silence.
+  // The voice gate is Talkback's hands-free one (level threshold, a minimum length of speech, then a pause).
+  var GATE = { talk: { threshold: 0.035, minSpeechMs: 150, silenceMs: 900 }, dictate: { threshold: 0.035, minSpeechMs: 150, silenceMs: 2500 } };
+  var NO_SPEECH_MS = 12000, MAX_LISTEN_MS = 30000;
+  var vox = { ctx: null, rec: null, mode: null, from: null, hearing: null, talk: false, tick: null, calm: 0, placeholder: "" };
+
+  function voiceOk() {
+    return !!(live.on && window.WebSocket && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext));
+  }
+  function voiceButtons() {
+    if (!micB) return;
+    var ok = voiceOk();
+    micB.hidden = talkB.hidden = !ok;
+    if (!ok) { endTalk(); if (vox.rec) { vox.rec.cancel(); vox.rec = null; vox.mode = null; paint(); } }
+  }
+  // made inside the tap, so a phone lets it run; kept for the next listen in talk mode, which has no tap of its own
+  function audioCtx() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!vox.ctx || vox.ctx.state === "closed") vox.ctx = new AC();
+    if (vox.ctx.state === "suspended" && vox.ctx.resume) vox.ctx.resume().catch(function () {});
+    return vox.ctx;
+  }
+  function paint() {
+    if (!micB) return;
+    var m = vox.mode;
+    micB.classList.toggle("on", m === "dictate");
+    micB.classList.toggle("wait", m === "hear" && vox.from === "dictate");
+    micB.innerHTML = m === "dictate" ? ICON.stop : ICON.mic;
+    micB.setAttribute("aria-label", m === "dictate" ? "Stop and write it out" : "Dictate a question");
+    talkB.classList.toggle("on", vox.talk);
+    talkB.classList.toggle("listening", vox.talk && m === "talk");
+    talkB.classList.toggle("wait", m === "hear" && vox.from === "talk");
+    talkB.innerHTML = vox.talk ? ICON.close : ICON.wave;
+    talkB.setAttribute("aria-pressed", vox.talk ? "true" : "false");
+    talkB.setAttribute("aria-label", vox.talk ? "End talk mode" : "Talk hands-free");
+    talkB.title = vox.talk ? "End talk mode" : "Talk";
+    input.placeholder = m === "dictate" ? "Listening\u2026 tap \u25a0 when you\u2019re done"
+      : m === "talk" ? "Listening\u2026 just ask"
+      : m === "hear" ? "Writing out what you said\u2026"
+      : vox.talk ? "Talk mode: I\u2019ll listen again after the answer" : vox.placeholder;
+    if (m !== "dictate" && m !== "talk") level(0);
+  }
+  function level(rms) {
+    var v = Math.min(1, rms / 0.12).toFixed(2);
+    micB.style.setProperty("--lvl", v); talkB.style.setProperty("--lvl", v);
+  }
+
+  // Record until the gate hears the end of speech, the button is tapped again, or a cap is reached.
+  // done(why, rec): why is "silence", "tap", "long" or "nothing"; rec.heard says whether any speech came at all
+  function record(ctx, gate, done) {
+    return navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } }).then(function (stream) {
+      var src = ctx.createMediaStreamSource(stream), node = ctx.createScriptProcessor(2048, 1, 1);
+      var chunks = [], from = 0, t0 = Date.now(), heard = false, above = null, below = null, over = false, rec;
+      node.onaudioprocess = function (e) {
+        if (over) return;
+        var d = e.inputBuffer.getChannelData(0), sum = 0, now = Date.now();
+        chunks.push(new Float32Array(d));
+        for (var i = 0; i < d.length; i++) sum += d[i] * d[i];
+        var rms = Math.sqrt(sum / d.length);
+        level(rms);
+        if (rms >= gate.threshold) {
+          below = null;
+          if (above == null) above = now;
+          // speech: keep from half a second before it began, so the first word is not clipped
+          if (!heard && now - above >= gate.minSpeechMs) { heard = true; from = Math.max(0, chunks.length - 1 - Math.ceil(0.5 * ctx.sampleRate / d.length)); }
+        } else {
+          above = null;
+          if (heard && below == null) below = now;
+        }
+        if (heard && below != null && now - below >= gate.silenceMs) finish("silence");
+        else if (!heard && now - t0 > NO_SPEECH_MS) finish("nothing");
+        else if (now - t0 > MAX_LISTEN_MS) finish("long");
+      };
+      src.connect(node); node.connect(ctx.destination);   // the processor only runs when connected; it outputs silence
+      // the same caps on the clock, in case a microphone stops sending sound altogether
+      var guard = setInterval(function () { var now = Date.now(); if (!heard && now - t0 > NO_SPEECH_MS + 500) finish("nothing"); else if (now - t0 > MAX_LISTEN_MS + 500) finish("long"); }, 500);
+      function release() {
+        clearInterval(guard);
+        try { node.disconnect(); src.disconnect(); } catch (_) {}
+        stream.getTracks().forEach(function (t) { t.stop(); });
+      }
+      function finish(why) { if (over) return; over = true; release(); done(why, rec); }
+      rec = {
+        stop: function () { finish("tap"); },
+        cancel: function () { if (!over) { over = true; release(); } },
+        get heard() { return heard; },
+        wav: function () { return toWav(chunks.slice(from), ctx.sampleRate); }
+      };
+      return rec;
+    });
+  }
+  // float samples at the context's rate to 16 kHz mono 16-bit WAV, averaging each 16 kHz step
+  function toWav(chunks, rate) {
+    var n = 0, at = 0, i;
+    chunks.forEach(function (c) { n += c.length; });
+    var all = new Float32Array(n);
+    chunks.forEach(function (c) { all.set(c, at); at += c.length; });
+    var step = rate / 16000, len = Math.floor(n / step), view = new DataView(new ArrayBuffer(44 + len * 2));
+    function tag(o, t) { for (var k = 0; k < 4; k++) view.setUint8(o + k, t.charCodeAt(k)); }
+    tag(0, "RIFF"); view.setUint32(4, 36 + len * 2, true); tag(8, "WAVE"); tag(12, "fmt ");
+    view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+    view.setUint32(24, 16000, true); view.setUint32(28, 32000, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true);
+    tag(36, "data"); view.setUint32(40, len * 2, true);
+    for (i = 0; i < len; i++) {
+      var a = Math.floor(i * step), b = Math.max(a + 1, Math.min(n, Math.floor((i + 1) * step))), sum = 0;
+      for (var j = a; j < b; j++) sum += all[j];
+      var v = Math.max(-1, Math.min(1, sum / (b - a)));
+      view.setInt16(44 + i * 2, v < 0 ? v * 32768 : v * 32767, true);
+    }
+    return new Uint8Array(view.buffer);
+  }
+  // the recording to the live service; resolves to its reply: { ok, text } or { ok: false, why }
+  function transcribe(wav) {
+    return liveOpen().then(function (ws) {
+      return new Promise(function (resolve, reject) {
+        vox.hearing = { resolve: resolve, reject: reject, timer: setTimeout(function () { vox.hearing = null; reject(new Error("timeout")); }, 25000) };
+        ws.send(JSON.stringify({ type: "hear", bytes: wav.length }));
+        for (var at = 0; at < wav.length; at += 65536) ws.send(wav.subarray(at, Math.min(wav.length, at + 65536)));
+        ws.send('{"type":"hear_end"}');
+      });
+    });
+  }
+
+  function listen(mode) {
+    var ctx = audioCtx();
+    vox.mode = mode; vox.from = mode; paint();
+    if (mode === "dictate") announce("Listening. Tap the stop button when you\u2019re done.");
+    record(ctx, GATE[mode], function (why, rec) {
+      vox.rec = null;
+      if (!rec.heard) {
+        vox.mode = null; paint();
+        if (mode === "talk") endTalk("I didn\u2019t hear anything, so talk mode is off.");
+        else note("I didn\u2019t hear anything. Tap the mic and try again.");
+        return;
+      }
+      vox.mode = "hear"; paint();
+      transcribe(rec.wav()).then(function (m) {
+        vox.mode = null; paint();
+        var text = m && m.ok ? m.text : "";
+        if (!text) {
+          if (m && m.why === "limit") { endTalk(); note("That\u2019s all the spoken questions for this session. You can still type one."); return; }
+          note("I didn\u2019t catch that." + (mode === "talk" && vox.talk ? " Say it again?" : ""));
+          return;   // talk mode listens again on its next tick
+        }
+        if (mode === "talk") { if (vox.talk) ask(text); }
+        else { input.value = text; input.focus(); try { input.setSelectionRange(text.length, text.length); } catch (_) {} announce("You said: " + text); }
+      }, function () {
+        vox.mode = null; paint(); endTalk();
+        note("Voice isn\u2019t available right now. Type your question instead.");
+      });
+    }).then(function (rec) { if (vox.mode === mode) vox.rec = rec; else rec.cancel(); }, function (err) {
+      vox.mode = null; paint(); endTalk();
+      note(err && (err.name === "NotAllowedError" || err.name === "SecurityError")
+        ? "The microphone is blocked. Allow it for this site to ask by voice."
+        : "No microphone was found. Type your question instead.");
+    });
+  }
+
+  // talk mode: listen whenever nothing is being said, and stop listening if an answer starts some other way
+  function answerOver() {
+    if (live.turn && !live.turn.done) return false;
+    if (live.audio && !live.audio.paused && !live.audio.ended) return false;
+    if (!video || !video.getAttribute("src")) return true;
+    return video.ended || !!video.error;   // a paused answer is not over: pausing it is not asking to talk
+  }
+  function talkTick() {
+    if (!vox.talk) return;
+    var over = answerOver();
+    if (vox.mode === "talk" && vox.rec && !over) { vox.rec.cancel(); vox.rec = null; vox.mode = null; paint(); }
+    if (!vox.mode && over) { if (++vox.calm >= 2) { vox.calm = 0; listen("talk"); } }
+    else vox.calm = 0;
+  }
+  function endTalk(msg) {
+    clearInterval(vox.tick); vox.tick = null;
+    if (!vox.talk) return;
+    vox.talk = false;
+    if (vox.rec && vox.mode === "talk") { vox.rec.cancel(); vox.rec = null; vox.mode = null; }
+    paint();
+    if (msg) note(msg); else announce("Talk mode off.");
   }
 
   function ask(text) {
@@ -848,6 +1073,8 @@
     if (!root || root.hidden) return;
     if (video) video.pause();
     if (idle) idle.pause();
+    endTalk();
+    if (vox.rec) { vox.rec.cancel(); vox.rec = null; vox.mode = null; paint(); }
     liveClose();
     root.classList.remove("open");
     doc.documentElement.classList.remove("av-lock");
