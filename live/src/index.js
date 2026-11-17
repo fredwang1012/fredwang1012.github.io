@@ -173,7 +173,8 @@ export default {
       // generates: whether a visitor's question may be answered by the model there and then (see LIVE_FOR_VISITORS)
       const gen = generates(env);
       const live = gen ? !!env.BOSON_API_KEY && !!env.BOSON_VOICE && (await secondsLeft(env)) > 0 : true;
-      return Response.json({ ok: true, live, generates: gen }, { headers: ok ? cors(origin) : { "Cache-Control": "no-store" } });
+      const hears = env.HEARS !== "0" && !!env.BOSON_API_KEY;
+      return Response.json({ ok: true, live, generates: gen, hears }, { headers: ok ? cors(origin) : { "Cache-Control": "no-store" } });
     }
     if (url.pathname !== "/talk") return new Response("Not found", { status: 404 });
     if (request.headers.get("Upgrade") !== "websocket") return new Response("Expected a WebSocket", { status: 426 });
@@ -252,7 +253,7 @@ async function session(socket, request, env) {
   // (or, when dictating, puts them in the box to check first). The recording is not kept.
   function startHear(msg) {
     const want = Math.floor(Number(msg.bytes));
-    if (!env.BOSON_API_KEY) return send({ type: "heard", ok: false, why: "off" });
+    if (!env.BOSON_API_KEY || env.HEARS === "0") return send({ type: "heard", ok: false, why: "off" });
     if (hearing) return send({ type: "heard", ok: false, why: "busy" });
     if (!(want > 44 && want <= MAX_HEARD_BYTES)) return send({ type: "heard", ok: false, why: "size" });
     if (!filling && ++hears > HEARS_PER_SESSION) return send({ type: "heard", ok: false, why: "limit" });

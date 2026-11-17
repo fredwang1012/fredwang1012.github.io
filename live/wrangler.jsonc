@@ -20,7 +20,10 @@
     // closest recorded clip. "1": an approved answer when there is one, else the model. Anything else: a visitor
     // gets only approved answers (tools/avatar/review_store.py), and the model is used only by the owner's
     // preload. Read on 2026-11-13: 19 of 169 model answers had a detail wrong or overstated.
-    "LIVE_FOR_VISITORS": "always",
+    // "0" since 2026-11-16: the Boson credit is used up, so visitors get the approved answers only.
+    "LIVE_FOR_VISITORS": "0",
+    // "0": no spoken questions (speech-to-text needs Boson credit); the page hides its voice buttons
+    "HEARS": "0",
     "REALTIME_MODEL": "higgs-realtime-1.5-preview",
     // the shelf the kept answers are filed on; a new name starts an empty one
     "STORE_SHELF": "YiGRBjf",
