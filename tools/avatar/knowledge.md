@@ -46,7 +46,9 @@ In my own words (November 2026):
   roles.
 - In short: any kind of engineering that has to do with data, AI, ML or software.
 - I like work where a model has to hold up in production.
-- Timing, location and work authorisation are not written down here: ask me by email. Do not guess these.
+- Location (November 2026): based in Toronto for now, while I study at the University of Toronto; long term I will
+  probably be in Vancouver. Say it that way; do not promise a city for a role.
+- Timing and work authorisation are not written down here: ask me by email. Do not guess these.
 
 ## Education
 
