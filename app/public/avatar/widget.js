@@ -596,7 +596,7 @@
     if (!live.url || !window.WebSocket) return;
     fetch(live.url.replace(/^ws/, "http").replace(/\/talk$/, "/health"), { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) { live.on = !!(j && j.live); live.generates = !!(j && j.generates); describe(); })
+      .then(function (j) { live.on = !!(j && j.live); live.generates = !!(j && j.generates); live.hears = !(j && j.hears === false); describe(); })
       .catch(function () { live.on = false; });
   }
   function liveOpen() {
@@ -866,7 +866,7 @@
   var vox = { ctx: null, rec: null, mode: null, from: null, hearing: null, talk: false, tick: null, calm: 0, placeholder: "" };
 
   function voiceOk() {
-    return !!(live.on && window.WebSocket && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext));
+    return !!(live.on && live.hears !== false && window.WebSocket && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext));
   }
   function voiceButtons() {
     if (!micB) return;
